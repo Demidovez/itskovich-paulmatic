@@ -5,3 +5,4 @@ package-lock.json
 /.idea
 /.github/*
 .env
+.DS_Store

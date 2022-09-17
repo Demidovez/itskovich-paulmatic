@@ -1,6 +1,7 @@
+import { Button } from "reactstrap";
 
 const UploadContacts = (props) => {
-  return <div>UploadContacts</div>
-}
+  return <Button color="primary">Загрузить</Button>;
+};
 
 export default UploadContacts;
