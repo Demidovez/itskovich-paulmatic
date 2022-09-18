@@ -6,17 +6,17 @@ export const contactsApi = createApi({
   tagTypes: ["Contacts"],
   endpoints: (builder) => ({
     getContacts: builder.query({
-      query: () => ({
+      query: (search) => ({
         url: "/search",
         method: "POST",
-        body: {},
+        body: search ? { name: search } : {},
         headers: {
           "caller-version-code": 1,
           sessionToken: "user-1",
           "Content-type": "application/json",
         },
       }),
-      transformResponse: (response) => response.result,
+      transformResponse: (response) => response.result || [],
       providesTags: (result) =>
         result
           ? [
@@ -55,7 +55,7 @@ export const contactsApi = createApi({
 });
 
 export const {
-  useGetContactsQuery,
+  useLazyGetContactsQuery,
   useCreateOrUpdateContactMutation,
   useDeleteContactMutation,
 } = contactsApi;

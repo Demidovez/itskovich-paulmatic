@@ -4,14 +4,20 @@ import FormContacts from "../../components/FormContacts/FormContacts";
 import SearchContacts from "../../components/SearchContacts/SearchContacts";
 import UploadContacts from "../../components/UploadContacts/UploadContacts";
 import {
-  useGetContactsQuery,
+  useLazyGetContactsQuery,
   useCreateOrUpdateContactMutation,
   useDeleteContactMutation,
 } from "../../store/api/contacts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Contacts = () => {
-  const { data: contacts, isLoading } = useGetContactsQuery();
+  const [searchContacts, { data: contacts, isFetching }] =
+    useLazyGetContactsQuery();
+
+  useEffect(() => {
+    searchContacts();
+  }, []);
+
   const [createOrUpdateContact, { isLoading: isUpdating }] =
     useCreateOrUpdateContactMutation();
 
@@ -25,7 +31,6 @@ const Contacts = () => {
   };
 
   const onSave = (contact) => {
-    console.log(contact);
     createOrUpdateContact(contact);
   };
 
@@ -38,13 +43,18 @@ const Contacts = () => {
     setActiveContact(contacts.find((contact) => contact.id === id));
   };
 
+  const onSearch = (searchStr) => {
+    // console.log(searchStr);
+    searchContacts(searchStr);
+  };
+
   return (
     <>
       <Container fluid>
         <Row>
           <div className="col col-8 d-flex align-items-center">
             <h1 className="mt-4 mb-4 mr-3">Контакты</h1>
-            {(isLoading || isUpdating || isDeleting) && (
+            {(isFetching || isUpdating || isDeleting) && (
               <Spinner color="primary" />
             )}
           </div>
@@ -55,7 +65,7 @@ const Contacts = () => {
               <CardHeader className="border-0 ">
                 <Row>
                   <Col md={6}>
-                    <SearchContacts />
+                    <SearchContacts onSearch={onSearch} />
                   </Col>
                   <Col md={6} className="d-flex justify-content-end">
                     <UploadContacts />

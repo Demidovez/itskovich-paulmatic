@@ -71,7 +71,7 @@ const FormContacts = ({
             <Button
               color="primary"
               onClick={handleSave}
-              disabled={Object.keys(currentContact).length === 0}
+              disabled={!currentContact.name || !currentContact.email}
             >
               Сохранить
             </Button>
