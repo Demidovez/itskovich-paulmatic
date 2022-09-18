@@ -1,18 +1,12 @@
-import {
-  Badge,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  Media,
-  Progress,
-  Table,
-  Input,
-} from "reactstrap";
+import { Table } from "reactstrap";
+import "./TableContacts.scss";
 
-const TableContacts = ({ data = [] }) => {
+const TableContacts = ({ onSelect, activeContactId, data = [] }) => {
   return (
-    <Table className={`align-items-center table-flush table-hover`} responsive>
+    <Table
+      className={`align-items-center table-flush table-hover table-contacts`}
+      responsive
+    >
       <thead className="thead-light">
         <tr>
           <th scope="col"></th>
@@ -26,7 +20,11 @@ const TableContacts = ({ data = [] }) => {
       </thead>
       <tbody>
         {data.map((contact) => (
-          <tr key={contact.id}>
+          <tr
+            key={contact.id}
+            onClick={() => onSelect(contact.id)}
+            className={activeContactId === contact.id ? "table-primary" : ""}
+          >
             <td scope="row">
               <div className="d-flex align-items-center justify-content-center">
                 <input type="checkbox" />
