@@ -4,6 +4,7 @@ import Maps from "views/examples/Maps.js";
 import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
 import Contacts from "views/examples/Contacts.js";
+import BtoB from "views/examples/BtoB.js";
 import Icons from "views/examples/Icons.js";
 
 var routes = [
@@ -40,6 +41,13 @@ var routes = [
     name: "Контакты",
     icon: "ni ni-bullet-list-67 text-red",
     component: Contacts,
+    layout: "/admin",
+  },
+  {
+    path: "/b2b",
+    name: "B2B Database",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: BtoB,
     layout: "/admin",
   },
   {
