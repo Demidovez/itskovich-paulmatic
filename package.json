@@ -22,13 +22,9 @@
   "bugs": {
     "url": "https://github.com/creativetimofficial/argon-dashboard-react/issues"
   },
-  "homepage": "https://demidovez.github.io/itskovich-paulmatic/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build_gh_pages": "cross-env PUBLIC_URL=/itskovich-paulmatic react-scripts build",
-    "predeploy": "npm run build_gh_pages",
-    "deploy": "gh-pages -d build",
     "install-force": "npm install --force",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -66,7 +62,6 @@
     "sass": "1.54.5"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3",
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.9"
   },
