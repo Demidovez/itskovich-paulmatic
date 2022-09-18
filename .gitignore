@@ -6,3 +6,4 @@ package-lock.json
 /.github/*
 .env
 .DS_Store
+deploy.sh
