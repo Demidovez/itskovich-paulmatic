@@ -1,7 +1,8 @@
 import { Container, Row } from "reactstrap";
-import { Route, Switch, Link, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import B2Companies from "./B2Companies";
 import B2People from "./B2People";
+import Tabs from "../../components/Tabs/Tabs";
 
 const tabs = [
   {
@@ -23,16 +24,8 @@ const BtoB = (props) => {
     <>
       <Container fluid>
         <Row>
-          <div className="col col-8 d-flex align-items-center mt-4 mb-4">
-            {tabs.map((tab) => (
-              <Link
-                to={props.match.path + tab.link}
-                className="btn btn-primary"
-                key={tab.link}
-              >
-                {tab.label}
-              </Link>
-            ))}
+          <div className="col mt-2 mb-2">
+            <Tabs data={tabs} parentPath={props.match.path} />
           </div>
         </Row>
         <Row>

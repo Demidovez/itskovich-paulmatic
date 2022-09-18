@@ -1,0 +1,82 @@
+.tabs-component {
+  display: flex;
+  align-items: center;
+
+  label {
+    margin-bottom: 0px;
+  }
+
+  .tabs {
+    display: flex;
+    position: relative;
+    background-color: #fff;
+    box-shadow: 0 0 1px 0 rgba(#185ee0, 0.15), 0 6px 12px 0 rgba(#185ee0, 0.15);
+    padding: 0.4rem;
+    border-radius: 99px; // just a high number to create pill effect
+    * {
+      z-index: 2;
+    }
+  }
+
+  input[type="radio"] {
+    display: none;
+  }
+
+  .tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 150px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 99px; // just a high number to create pill effect
+    cursor: pointer;
+    transition: color 0.15s ease-in;
+  }
+
+  input[type="radio"] {
+    &:checked {
+      & + label {
+        color: var(--secondary);
+        & > .notification {
+          background-color: var(--secondary);
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  input[id="radio-1"] {
+    &:checked {
+      & ~ .glider {
+        transform: translateX(0);
+      }
+    }
+  }
+
+  input[id="radio-2"] {
+    &:checked {
+      & ~ .glider {
+        transform: translateX(100%);
+      }
+    }
+  }
+
+  .glider {
+    position: absolute;
+    display: flex;
+    height: 30px;
+    width: 150px;
+    background-color: var(--primary);
+    z-index: 1;
+    border-radius: 99px; // just a high number to create pill effect
+    transition: 0.25s ease-out;
+  }
+
+  @media (max-width: 700px) {
+    .tabs {
+      transform: scale(0.6);
+    }
+  }
+}
