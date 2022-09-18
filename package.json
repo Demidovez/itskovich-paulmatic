@@ -22,10 +22,12 @@
   "bugs": {
     "url": "https://github.com/creativetimofficial/argon-dashboard-react/issues"
   },
-  "homepage": "https://demos.creative-tim.com/argon-dashboard-react/",
+  "homepage": "https://demidovez.github.io/itskovich-paulmatic/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "install-force": "npm install --force",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
