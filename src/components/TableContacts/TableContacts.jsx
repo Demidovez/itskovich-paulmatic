@@ -10,7 +10,7 @@ import {
   Input,
 } from "reactstrap";
 
-const TableContacts = (props) => {
+const TableContacts = ({ data = [] }) => {
   return (
     <Table className={`align-items-center table-flush table-hover`} responsive>
       <thead className="thead-light">
@@ -25,58 +25,21 @@ const TableContacts = (props) => {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td scope="row">
-            <div className="d-flex align-items-center justify-content-center">
-              <input type="checkbox" />
-            </div>
-          </td>
-          <td>Алексей7777777</td>
-          <td>kenda@gmail.com</td>
-          <td>2323232323</td>
-          <td>no company</td>
-          <td>Gogoll</td>
-          <td>Основная</td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <div className="d-flex align-items-center justify-content-center">
-              <input type="checkbox" />
-            </div>
-          </td>
-          <td>Алексей7777777</td>
-          <td>kenda@gmail.com</td>
-          <td>2323232323</td>
-          <td>no company</td>
-          <td>Gogoll</td>
-          <td>Основная</td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <div className="d-flex align-items-center justify-content-center">
-              <input type="checkbox" />
-            </div>
-          </td>
-          <td>Алексей7777777</td>
-          <td>kenda@gmail.com</td>
-          <td>2323232323</td>
-          <td>no company</td>
-          <td>Gogoll</td>
-          <td>Основная</td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <div className="d-flex align-items-center justify-content-center">
-              <input type="checkbox" />
-            </div>
-          </td>
-          <td>Алексей7777777</td>
-          <td>kenda@gmail.com</td>
-          <td>2323232323</td>
-          <td>no company</td>
-          <td>Gogoll</td>
-          <td>Основная</td>
-        </tr>
+        {data.map((contact) => (
+          <tr key={contact.id}>
+            <td scope="row">
+              <div className="d-flex align-items-center justify-content-center">
+                <input type="checkbox" />
+              </div>
+            </td>
+            <td>{contact.name}</td>
+            <td>{contact.email}</td>
+            <td>{contact.phone}</td>
+            <td>{contact.company}</td>
+            <td>{contact.linkedin}</td>
+            <td>Основная</td>
+          </tr>
+        ))}
       </tbody>
     </Table>
   );

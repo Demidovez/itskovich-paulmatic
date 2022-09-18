@@ -1,8 +1,8 @@
 import { Card, CardBody, CardHeader, Input, Button } from "reactstrap";
 
-const FormContacts = (props) => {
+const FormContacts = ({ className = "", style = {} }) => {
   return (
-    <Card className="shadow" color="secondary">
+    <Card className={`${className} shadow`} color="secondary" style={style}>
       <CardHeader className="border-0">
         <h3 className="mb-0">Warner Corner</h3>
       </CardHeader>
