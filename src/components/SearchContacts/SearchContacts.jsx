@@ -2,17 +2,19 @@ import { useEffect, useState } from "react";
 import { Input } from "reactstrap";
 
 const SearchContacts = ({ onSearch }) => {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(null);
 
   const onChange = ({ target }) => {
     setValue(target.value);
   };
 
   useEffect(() => {
+    if (value === null) return;
+
     const idTimer = setTimeout(() => {
       console.log(value);
       onSearch(value);
-    }, 300);
+    }, 200);
 
     return () => {
       clearTimeout(idTimer);
@@ -24,7 +26,7 @@ const SearchContacts = ({ onSearch }) => {
       <Input
         type="search"
         placeholder="Поиск..."
-        value={value}
+        value={value || ""}
         onChange={onChange}
       />
       <i className="fas fa-search ml-2"></i>

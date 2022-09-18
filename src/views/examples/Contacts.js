@@ -16,6 +16,7 @@ const Contacts = () => {
 
   useEffect(() => {
     searchContacts();
+    console.log(1111);
   }, []);
 
   const [createOrUpdateContact, { isLoading: isUpdating }] =
