@@ -33,6 +33,7 @@ const Contacts = () => {
 
   const onSave = (contact) => {
     createOrUpdateContact(contact);
+    onResetForm();
   };
 
   const onRemove = (id) => {
@@ -45,7 +46,6 @@ const Contacts = () => {
   };
 
   const onSearch = (searchStr) => {
-    // console.log(searchStr);
     searchContacts(searchStr);
   };
 
