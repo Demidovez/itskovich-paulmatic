@@ -1,16 +1,16 @@
 import { Card, CardHeader, Container, Row, Col, Spinner } from "reactstrap";
-import TableContacts from "../../components/TableContacts/TableContacts";
-import FormContacts from "../../components/FormContacts/FormContacts";
-import SearchContacts from "../../components/SearchContacts/SearchContacts";
-import UploadContacts from "../../components/UploadContacts/UploadContacts";
+import TableContacts from "../TableContacts/TableContacts";
+import FormContacts from "../FormContacts/FormContacts";
+import SearchContacts from "../SearchContacts/SearchContacts";
+import UploadContacts from "../UploadContacts/UploadContacts";
 import {
   useLazyGetContactsQuery,
   useCreateOrUpdateContactMutation,
   useDeleteContactMutation,
 } from "../../store/api/contacts";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const B2People = () => {
+const B2Persons = () => {
   const [searchContacts, { data: contacts, isFetching }] =
     useLazyGetContactsQuery();
 
@@ -81,4 +81,4 @@ const B2People = () => {
   );
 };
 
-export default B2People;
+export default React.memo(B2Persons);

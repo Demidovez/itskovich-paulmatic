@@ -1,28 +1,36 @@
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { Fragment, useState } from "react";
 import "./Tabs.scss";
 
 const Tabs = ({ data, parentPath }) => {
+  const [checkedIndex, setCheckedIndex] = useState(0);
+
+  const history = useHistory();
+
+  const handleChecked = (index, link) => {
+    setCheckedIndex(index);
+    history.replace(parentPath + link);
+  };
+
+  // TODO: radio-1 radio-2 radio-3 radio-4 - Сделать динамическими в SCSS
   return (
     <>
-      {/* {data.map((tab) => (
-        <Link
-          to={parentPath + tab.link}
-          className="btn btn-primary"
-          key={tab.link}
-        >
-          {tab.label}
-        </Link>
-      ))} */}
       <div className="tabs-component">
         <div className="tabs">
-          <input type="radio" id="radio-1" name="tabs" />
-          <label className="tab" htmlFor="radio-1">
-            Компании
-          </label>
-          <input type="radio" id="radio-2" name="tabs" />
-          <label className="tab" htmlFor="radio-2">
-            Люди
-          </label>
+          {data.map((tab, index) => (
+            <Fragment key={tab.link}>
+              <input
+                type="radio"
+                id={`radio-${index + 1}`}
+                name="tabs"
+                checked={index === checkedIndex}
+                onChange={() => handleChecked(index, tab.link)}
+              />
+              <label className="tab" htmlFor={`radio-${index + 1}`}>
+                {tab.label}
+              </label>
+            </Fragment>
+          ))}
           <span className="glider"></span>
         </div>
       </div>
