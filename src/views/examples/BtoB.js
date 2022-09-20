@@ -59,13 +59,13 @@ const BtoB = (props) => {
 
   return (
     <>
-      <Container fluid>
+      <Container fluid className="d-flex flex-column h-100vh ">
         <Row>
           <div className="col mt-3 mb-3">
             <Tabs data={tabs} parentPath={props.match.path} />
           </div>
         </Row>
-        <Row>
+        <Row className="flex-fill">
           {tabs.length > 0 && (
             <Switch>
               <Route

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardBody, CardHeader, Input, Button, Form } from "reactstrap";
 import { useLazyGetCompaniesQuery } from "store/api/companies";
 import FilterType from "../FilterType/FilterType";
+import "./FilterCompanies.scss";
 
 const FilterCompanies = ({
   filters,
@@ -11,9 +12,14 @@ const FilterCompanies = ({
   requestParams,
 }) => {
   return (
-    <Card className={`${className} shadow`} color="secondary" style={style}>
-      <CardHeader className="border-0">
+    <Card
+      className={`${className} shadow filter-companies`}
+      color="secondary"
+      style={style}
+    >
+      <CardHeader className="border-0 d-flex justify-content-between">
         <h3 className="mb-0">Фильтр</h3>
+        <div className="filter-reset">очистить</div>
       </CardHeader>
       <CardBody>
         <Form>

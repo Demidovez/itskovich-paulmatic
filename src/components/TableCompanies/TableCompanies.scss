@@ -1,12 +1,32 @@
 .table-companies {
-  tr {
-    cursor: pointer;
-  }
-
   .message {
     text-align: center;
     margin: 30px 0;
     font-size: 17px;
     opacity: 0.6;
+  }
+
+  .table-cell {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    vertical-align: middle;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    font-size: 0.8125rem;
+    cursor: pointer;
+
+    &:hover {
+      // background-color: #e9ecef;
+    }
+
+    &.level-0 {
+      background: #f6f9fc;
+      color: #525f7f;
+      letter-spacing: 1px;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      border-bottom: 1px solid #e9ecef;
+    }
   }
 }

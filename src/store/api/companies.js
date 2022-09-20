@@ -28,7 +28,27 @@ export const companiesApi = createApi({
         },
       }),
       transformResponse: (response) => {
-        return response.result || [];
+        return (
+          [
+            ...response.result.map((obj) => Object.values(obj)),
+            // ...response.result.map((obj) => Object.values(obj)),
+            // ...response.result.map((obj) => Object.values(obj)),
+            // ...response.result.map((obj) => Object.values(obj)),
+            // ...response.result.map((obj) => Object.values(obj)),
+            // ...response.result.map((obj) => Object.values(obj)),
+            // ...response.result.map((obj) => Object.values(obj)),
+            // ...response.result.map((obj) => Object.values(obj)),
+            // ...response.result.map((obj) => Object.values(obj)),
+            // ...response.result.map((obj) => Object.values(obj)),
+            // ...response.result.map((obj) => Object.values(obj)),
+            // ...response.result.map((obj) => Object.values(obj)),
+            // ...response.result.map((obj) => Object.values(obj)),
+            // ...response.result.map((obj) => Object.values(obj)),
+            // ...response.result.map((obj) => Object.values(obj)),
+            // ...response.result.map((obj) => Object.values(obj)),
+            // ...response.result.map((obj) => Object.values(obj)),
+          ] || []
+        );
       },
     }),
   }),

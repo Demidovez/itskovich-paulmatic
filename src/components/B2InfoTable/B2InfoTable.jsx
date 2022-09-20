@@ -28,8 +28,8 @@ const B2InfoTable = ({ info, data, isLoading, fetchData }) => {
         </div>
       ) : (
         <>
-          <div className="col col-9 mb-5">
-            <Card className="shadow">
+          <div className="col col-9 mb-3 d-flex">
+            <Card className="shadow flex-fill">
               <CardHeader className="border-0 ">
                 <Row>
                   <Col md={6}>
@@ -38,11 +38,7 @@ const B2InfoTable = ({ info, data, isLoading, fetchData }) => {
                   <Col md={6} className="d-flex justify-content-end"></Col>
                 </Row>
               </CardHeader>
-              <TableCompanies
-                data={data}
-                onSelect={() => {}}
-                activeContactId={-1}
-              />
+              <TableCompanies data={data} />
             </Card>
           </div>
           <div className="col col-3">

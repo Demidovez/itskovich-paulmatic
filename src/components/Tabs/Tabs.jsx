@@ -8,8 +8,12 @@ const Tabs = ({ data, parentPath }) => {
   const history = useHistory();
 
   useEffect(() => {
-    setTimeout(() => history.replace(parentPath + data[checkedIndex].link), 0);
-  }, [checkedIndex]);
+    data.length > 0 &&
+      setTimeout(
+        () => history.replace(parentPath + data[checkedIndex].link),
+        0
+      );
+  }, [checkedIndex, data]);
 
   // TODO: radio-1 radio-2 radio-3 radio-4 - Сделать динамическими в SCSS
   return (
