@@ -1,5 +1,5 @@
 import { useHistory } from "react-router-dom";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import "./Tabs.scss";
 
 const Tabs = ({ data, parentPath }) => {
@@ -7,10 +7,9 @@ const Tabs = ({ data, parentPath }) => {
 
   const history = useHistory();
 
-  const handleChecked = (index, link) => {
-    setCheckedIndex(index);
-    history.replace(parentPath + link);
-  };
+  useEffect(() => {
+    setTimeout(() => history.replace(parentPath + data[checkedIndex].link), 0);
+  }, [checkedIndex]);
 
   // TODO: radio-1 radio-2 radio-3 radio-4 - Сделать динамическими в SCSS
   return (
@@ -24,7 +23,7 @@ const Tabs = ({ data, parentPath }) => {
                 id={`radio-${index + 1}`}
                 name="tabs"
                 checked={index === checkedIndex}
-                onChange={() => handleChecked(index, tab.link)}
+                onChange={() => setCheckedIndex(index)}
               />
               <label className="tab" htmlFor={`radio-${index + 1}`}>
                 {tab.label}

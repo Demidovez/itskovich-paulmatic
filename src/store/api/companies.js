@@ -3,7 +3,6 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const companiesApi = createApi({
   reducerPath: "companiesApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://45.156.119.155:3002/b2b" }),
-  // tagTypes: ["Companies"],
   endpoints: (builder) => ({
     getCompaniesInfo: builder.query({
       query: () => ({
@@ -29,17 +28,8 @@ export const companiesApi = createApi({
         },
       }),
       transformResponse: (response) => {
-        console.log("transformResponse");
-
         return response.result || [];
       },
-      // providesTags: (result) =>
-      //   result
-      //     ? [
-      //         ...result.map(({ id }) => ({ type: "Companies", id })),
-      //         { type: "Companies", id: "LIST" },
-      //       ]
-      //     : [{ type: "Companies", id: "LIST" }],
     }),
   }),
 });

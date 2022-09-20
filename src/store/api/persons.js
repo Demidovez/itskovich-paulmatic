@@ -16,7 +16,22 @@ export const personsApi = createApi({
       }),
       transformResponse: (response) => response.result || {},
     }),
+    getPersons: builder.query({
+      query: (params) => ({
+        url: "/search/persons",
+        method: "GET",
+        params: params || {},
+        headers: {
+          "caller-version-code": 1,
+          sessionToken: "user-1",
+          "Content-type": "application/json",
+        },
+      }),
+      transformResponse: (response) => {
+        return response.result || [];
+      },
+    }),
   }),
 });
 
-export const { useGetPersonsInfoQuery } = personsApi;
+export const { useGetPersonsInfoQuery, useLazyGetPersonsQuery } = personsApi;

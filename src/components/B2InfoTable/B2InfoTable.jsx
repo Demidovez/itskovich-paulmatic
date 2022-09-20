@@ -5,10 +5,7 @@ import SearchContacts from "../SearchContacts/SearchContacts";
 import { useLazyGetCompaniesQuery } from "../../store/api/companies";
 import React, { useEffect, useState } from "react";
 
-const B2Companies = ({ info }) => {
-  const [fetchCompanies, { data: companies, isFetching, isLoading }] =
-    useLazyGetCompaniesQuery();
-
+const B2InfoTable = ({ info, data, isLoading, fetchData }) => {
   const [requestParams, setRequestParams] = useState({});
 
   const addRequestParams = (param, value) => {
@@ -16,9 +13,12 @@ const B2Companies = ({ info }) => {
   };
 
   useEffect(() => {
-    console.log(requestParams);
-    fetchCompanies(requestParams);
+    fetchData(requestParams);
   }, [requestParams]);
+
+  useEffect(() => {
+    console.log("mount");
+  }, []);
 
   return (
     <>
@@ -33,13 +33,13 @@ const B2Companies = ({ info }) => {
               <CardHeader className="border-0 ">
                 <Row>
                   <Col md={6}>
-                    Найдено: <strong>{(companies || []).length}</strong>
+                    Найдено: <strong>{(data || []).length}</strong>
                   </Col>
                   <Col md={6} className="d-flex justify-content-end"></Col>
                 </Row>
               </CardHeader>
               <TableCompanies
-                data={companies}
+                data={data}
                 onSelect={() => {}}
                 activeContactId={-1}
               />
@@ -74,4 +74,4 @@ const B2Companies = ({ info }) => {
   );
 };
 
-export default B2Companies;
+export default B2InfoTable;
