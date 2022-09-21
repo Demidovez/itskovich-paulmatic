@@ -29,7 +29,8 @@ const FilterB2B = ({ name, filterState, filters, style, className }) => {
         <h3 className="mb-0">Фильтр</h3>
         {filterState && Object.keys(filterState).length ? (
           <div className="filter-reset" onClick={onResetFilter}>
-            очистить
+            <i className="fas fa-solid fa-trash"></i>
+            <span>очистить</span>
           </div>
         ) : null}
       </CardHeader>
