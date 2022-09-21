@@ -59,7 +59,7 @@ const BtoB = (props) => {
 
   return (
     <>
-      <Container fluid className="d-flex flex-column h-100vh ">
+      <Container fluid className="d-flex flex-column h-100vh">
         <Row>
           <div className="col mt-3 mb-3">
             <Tabs data={tabs} parentPath={props.match.path} />

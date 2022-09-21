@@ -28,27 +28,7 @@ export const personsApi = createApi({
         },
       }),
       transformResponse: (response) => {
-        return (
-          [
-            ...response.result.map((obj) => Object.values(obj)),
-            // ...response.result.map((obj) => Object.values(obj)),
-            // ...response.result.map((obj) => Object.values(obj)),
-            // ...response.result.map((obj) => Object.values(obj)),
-            // ...response.result.map((obj) => Object.values(obj)),
-            // ...response.result.map((obj) => Object.values(obj)),
-            // ...response.result.map((obj) => Object.values(obj)),
-            // ...response.result.map((obj) => Object.values(obj)),
-            // ...response.result.map((obj) => Object.values(obj)),
-            // ...response.result.map((obj) => Object.values(obj)),
-            // ...response.result.map((obj) => Object.values(obj)),
-            // ...response.result.map((obj) => Object.values(obj)),
-            // ...response.result.map((obj) => Object.values(obj)),
-            // ...response.result.map((obj) => Object.values(obj)),
-            // ...response.result.map((obj) => Object.values(obj)),
-            // ...response.result.map((obj) => Object.values(obj)),
-            // ...response.result.map((obj) => Object.values(obj)),
-          ] || []
-        );
+        return [...response.result.slice(0, 500)] || [];
       },
     }),
   }),

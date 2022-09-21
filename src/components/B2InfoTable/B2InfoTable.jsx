@@ -1,8 +1,9 @@
-import { Card, CardHeader, Container, Row, Col, Spinner } from "reactstrap";
+import { Card, CardFooter, Spinner } from "reactstrap";
 import TableCompanies from "../TableCompanies/TableCompanies";
 import FilterCompanies from "../FilterCompanies/FilterCompanies";
 import SearchContacts from "../SearchContacts/SearchContacts";
 import { useLazyGetCompaniesQuery } from "../../store/api/companies";
+import Pagination from "../Pagination/Pagination";
 import React, { useEffect, useState } from "react";
 
 const B2InfoTable = ({ info, data, isLoading, fetchData }) => {
@@ -29,16 +30,11 @@ const B2InfoTable = ({ info, data, isLoading, fetchData }) => {
       ) : (
         <>
           <div className="col col-9 mb-3 d-flex">
-            <Card className="shadow flex-fill">
-              <CardHeader className="border-0 ">
-                <Row>
-                  <Col md={6}>
-                    Найдено: <strong>{(data || []).length}</strong>
-                  </Col>
-                  <Col md={6} className="d-flex justify-content-end"></Col>
-                </Row>
-              </CardHeader>
+            <Card className="shadow flex-fill overflow-hidden">
               <TableCompanies data={data} />
+              <CardFooter>
+                <Pagination />
+              </CardFooter>
             </Card>
           </div>
           <div className="col col-3">
