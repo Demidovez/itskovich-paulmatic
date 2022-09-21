@@ -5,6 +5,8 @@ import SearchContacts from "../SearchContacts/SearchContacts";
 import { useLazyGetCompaniesQuery } from "../../store/api/companies";
 import Pagination from "../Pagination/Pagination";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { checkFilter } from "store/slices/b2bFilterSlice";
 
 const B2InfoTable = ({
   info,
@@ -13,19 +15,16 @@ const B2InfoTable = ({
   fetchData,
   fields = [],
 }) => {
-  const [requestParams, setRequestParams] = useState({});
-
-  const addRequestParams = (param, value) => {
-    setRequestParams((prev) => ({ ...prev, [param]: value }));
-  };
+  const filterState = useSelector((state) => state.filter[info.name]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchData(requestParams);
-  }, [requestParams]);
-
-  useEffect(() => {
-    console.log("mount");
+    dispatch(checkFilter(info.name));
   }, []);
+
+  useEffect(() => {
+    fetchData(filterState);
+  }, [JSON.stringify(filterState)]);
 
   return (
     <>
@@ -48,25 +47,11 @@ const B2InfoTable = ({
           </div>
           <div className="col col-3">
             <FilterB2B
-              filters={info.filters.map((filter) =>
-                filter.Name === "country"
-                  ? { ...filter, Variants: ["Россия"] }
-                  : filter.Name === "region"
-                  ? {
-                      ...filter,
-                      Variants: [
-                        "country=Россия;Абакан",
-                        "country=Россия;Архангельск",
-                        "country=Россия;Астрахань",
-                        "country=Россия;Барнаул",
-                      ],
-                    }
-                  : filter
-              )}
+              name={info.name}
+              filterState={filterState}
+              filters={info.filters}
               className="sticky-top"
               style={{ top: 20 }}
-              onSelectFilter={addRequestParams}
-              requestParams={requestParams}
             />
           </div>
         </>

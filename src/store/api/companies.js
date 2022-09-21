@@ -14,7 +14,26 @@ export const companiesApi = createApi({
           "Content-type": "application/json",
         },
       }),
-      transformResponse: (response) => response.result || {},
+      transformResponse: (response) =>
+        ({
+          description: response.result.description,
+          name: response.result.name,
+          filters: response.result.filters.map((filter) =>
+            filter.Name === "country"
+              ? { ...filter, Variants: ["Россия"] }
+              : filter.Name === "region"
+              ? {
+                  ...filter,
+                  Variants: [
+                    "country=Россия;Абакан",
+                    "country=Россия;Архангельск",
+                    "country=Россия;Астрахань",
+                    "country=Россия;Барнаул",
+                  ],
+                }
+              : filter
+          ),
+        } || {}),
     }),
     getCompanies: builder.query({
       query: (params) => ({

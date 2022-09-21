@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Card, CardBody, Label, Input, FormGroup } from "reactstrap";
 import Selector from "../Selector/Selector";
+import "./FilterType.scss";
 
-const FilterType = ({ data, onChange, isDisabled }) => {
+const FilterType = ({ data, value, onChange, isDisabled }) => {
   switch (data.Type) {
     case "choise":
       return (
@@ -13,6 +14,7 @@ const FilterType = ({ data, onChange, isDisabled }) => {
           <div className="mb-3">
             <Selector
               data={data}
+              value={value}
               onSelect={(value) => onChange(data.Name, value)}
               isDisabled={isDisabled}
             />
@@ -21,14 +23,22 @@ const FilterType = ({ data, onChange, isDisabled }) => {
       );
     case "flag":
       return (
-        <FormGroup check className="mb-2">
-          <Input
-            type="checkbox"
-            style={{ width: "17px", height: "17px", marginTop: "4px" }}
-          />
-          <Label check className="ml-2">
-            {data.Description}
-          </Label>
+        <FormGroup className="mb-2 filter-type">
+          <div className="custom-control custom-checkbox mb-3">
+            <input
+              className="custom-control-input"
+              checked={!!value}
+              onChange={(e) => onChange(data.Name, e.target.checked)}
+              id={data.Name + "_check"}
+              type="checkbox"
+            />
+            <Label
+              className="custom-control-label"
+              htmlFor={data.Name + "_check"}
+            >
+              {data.Description}
+            </Label>
+          </div>
         </FormGroup>
       );
     default:

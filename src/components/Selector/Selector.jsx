@@ -6,16 +6,10 @@ import {
   DropdownItem,
 } from "reactstrap";
 
-const Selector = ({ data, onSelect, isDisabled }) => {
+const Selector = ({ data, value, onSelect, isDisabled }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState("");
 
   const toggle = () => setDropdownOpen((prevState) => !prevState);
-
-  const handleSelect = (value) => {
-    setSelectedValue(value);
-    onSelect(value);
-  };
 
   return (
     <Dropdown
@@ -29,14 +23,29 @@ const Selector = ({ data, onSelect, isDisabled }) => {
       <DropdownToggle
         caret
         color="primary"
-        style={{ width: "100%" }}
+        style={{ width: "100%", overflow: "hidden" }}
         className="d-flex align-items-center justify-content-between"
       >
-        {selectedValue || "Все"}
+        <div
+          style={{
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            display: "inline-block",
+            textOverflow: "ellipsis",
+            width: "1000px",
+            textAlign: "left",
+          }}
+          // className="d-flex mr-2"
+        >
+          {value || "Все"}
+        </div>
       </DropdownToggle>
-      <DropdownMenu style={{ width: "100%" }}>
+      <DropdownMenu
+        style={{ minWidth: "100%", maxHeight: "60vh", overflow: "auto" }}
+        right
+      >
         {(data.Variants || []).map((variant, index) => (
-          <DropdownItem key={index} onClick={() => handleSelect(variant)}>
+          <DropdownItem key={index} onClick={() => onSelect(variant)}>
             {variant}
           </DropdownItem>
         ))}

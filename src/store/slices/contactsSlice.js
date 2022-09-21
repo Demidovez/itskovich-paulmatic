@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// Пока редусер не нужен, работа идет через RTK
+// TODO: Пока редусер не нужен, работа идет через RTK
 // возможно понадобиться в будущем
 
 const initialState = {
