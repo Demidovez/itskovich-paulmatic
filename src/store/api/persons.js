@@ -28,7 +28,19 @@ export const personsApi = createApi({
         },
       }),
       transformResponse: (response) => {
-        return [...response.result.slice(0, 500)] || [];
+        return (
+          [
+            ...response.result.slice(0, 500).map((person) => ({
+              id: person.id,
+              FullName: person.FullName,
+              Title: person.Title,
+              Company: person.Company,
+              Email: person.Email,
+              Linkedin: person.Linkedin,
+              Phone: person.Phone || "555 - 5 - 5555",
+            })),
+          ] || []
+        );
       },
     }),
   }),

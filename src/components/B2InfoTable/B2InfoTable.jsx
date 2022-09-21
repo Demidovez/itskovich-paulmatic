@@ -1,12 +1,18 @@
 import { Card, CardHeader, CardFooter, Spinner } from "reactstrap";
 import TableCompanies from "../TableCompanies/TableCompanies";
-import FilterCompanies from "../FilterCompanies/FilterCompanies";
+import FilterB2B from "../FilterB2B/FilterB2B";
 import SearchContacts from "../SearchContacts/SearchContacts";
 import { useLazyGetCompaniesQuery } from "../../store/api/companies";
 import Pagination from "../Pagination/Pagination";
 import React, { useEffect, useState } from "react";
 
-const B2InfoTable = ({ info, data = [], isLoading, fetchData }) => {
+const B2InfoTable = ({
+  info,
+  data = [],
+  isLoading,
+  fetchData,
+  fields = [],
+}) => {
   const [requestParams, setRequestParams] = useState({});
 
   const addRequestParams = (param, value) => {
@@ -34,14 +40,14 @@ const B2InfoTable = ({ info, data = [], isLoading, fetchData }) => {
               <CardHeader className="border-0">
                 <h5 className="mb-0">Найдено: {data.length}</h5>
               </CardHeader>
-              <TableCompanies data={data} />
+              <TableCompanies data={data} fields={fields} />
               <CardFooter>
                 <Pagination />
               </CardFooter>
             </Card>
           </div>
           <div className="col col-3">
-            <FilterCompanies
+            <FilterB2B
               filters={info.filters.map((filter) =>
                 filter.Name === "country"
                   ? { ...filter, Variants: ["Россия"] }

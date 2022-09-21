@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { Card, CardBody, CardHeader, Input, Button, Form } from "reactstrap";
 import { useLazyGetCompaniesQuery } from "store/api/companies";
 import FilterType from "../FilterType/FilterType";
-import "./FilterCompanies.scss";
+import "./FilterB2B.scss";
 
-const FilterCompanies = ({
+const FilterB2B = ({
   filters,
   style,
   className,
@@ -13,7 +13,7 @@ const FilterCompanies = ({
 }) => {
   return (
     <Card
-      className={`${className} shadow filter-companies`}
+      className={`${className} shadow filter-b2b`}
       color="secondary"
       style={style}
     >
@@ -43,4 +43,4 @@ const FilterCompanies = ({
   );
 };
 
-export default FilterCompanies;
+export default FilterB2B;

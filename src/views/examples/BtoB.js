@@ -10,6 +10,92 @@ import {
 import { useEffect, useState } from "react";
 import { useLazyGetPersonsQuery } from "store/api/persons";
 
+const companiesFields = [
+  {
+    label: "",
+    name: "checkbox",
+  },
+  {
+    label: "Название",
+    name: "Name",
+  },
+  {
+    label: "Адрес",
+    name: "Address",
+  },
+  {
+    label: "Категория",
+    name: "Category",
+  },
+  {
+    label: "Город",
+    name: "City",
+  },
+  {
+    label: "Страна",
+    name: "Country",
+  },
+  {
+    label: "E-mail",
+    name: "Email",
+  },
+  {
+    label: "Телефон",
+    name: "Phone",
+  },
+  {
+    label: "Регион",
+    name: "Region",
+  },
+  {
+    label: "Соц. сети",
+    name: "Socials",
+  },
+  {
+    label: "Подкатегория",
+    name: "Subcategory",
+  },
+  {
+    label: "Сайт",
+    name: "Website",
+  },
+  {
+    label: "Индекс",
+    name: "ZipCode",
+  },
+];
+
+const personsFields = [
+  {
+    label: "",
+    name: "checkbox",
+  },
+  {
+    label: "Имя",
+    name: "FullName",
+  },
+  {
+    label: "Title",
+    name: "Title",
+  },
+  {
+    label: "Компания",
+    name: "Company",
+  },
+  {
+    label: "E-mail",
+    name: "Email",
+  },
+  {
+    label: "LinkedIn",
+    name: "Linkedin",
+  },
+  {
+    label: "Телефон",
+    name: "Phone",
+  },
+];
+
 const BtoB = (props) => {
   const { data: companiesInfo, isFetching: isFetchingCompaniesInfo } =
     useGetCompaniesInfoQuery();
@@ -77,6 +163,7 @@ const BtoB = (props) => {
                     isLoading={isLoadingCompanies}
                     fetchData={fetchCompanies}
                     key={tabs[0].info.name}
+                    fields={companiesFields}
                   />
                 )}
               />
@@ -89,6 +176,7 @@ const BtoB = (props) => {
                     isLoading={isLoadingPersons}
                     fetchData={fetchPersons}
                     key={tabs[1].info.name}
+                    fields={personsFields}
                   />
                 )}
               />
