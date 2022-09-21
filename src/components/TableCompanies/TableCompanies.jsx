@@ -4,12 +4,11 @@ import { Table } from "reactstrap";
 
 const TableCompanies = ({ data = [] }) => {
   return (
-    <div className="table-companies flex-fill">
-      <Table
-        className="align-items-center table-flush table-hover"
-        // responsive
-        style={{ overflow: "auto", height: "100px" }}
-      >
+    <div
+      className="table-companies flex-fill"
+      style={{ overflow: "auto", height: "100px" }}
+    >
+      <Table className="align-items-center table-flush table-hover">
         <thead className="thead-light">
           <tr>
             <th scope="col"></th>

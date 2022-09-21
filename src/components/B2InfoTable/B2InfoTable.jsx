@@ -1,4 +1,4 @@
-import { Card, CardFooter, Spinner } from "reactstrap";
+import { Card, CardHeader, CardFooter, Spinner } from "reactstrap";
 import TableCompanies from "../TableCompanies/TableCompanies";
 import FilterCompanies from "../FilterCompanies/FilterCompanies";
 import SearchContacts from "../SearchContacts/SearchContacts";
@@ -6,7 +6,7 @@ import { useLazyGetCompaniesQuery } from "../../store/api/companies";
 import Pagination from "../Pagination/Pagination";
 import React, { useEffect, useState } from "react";
 
-const B2InfoTable = ({ info, data, isLoading, fetchData }) => {
+const B2InfoTable = ({ info, data = [], isLoading, fetchData }) => {
   const [requestParams, setRequestParams] = useState({});
 
   const addRequestParams = (param, value) => {
@@ -31,6 +31,9 @@ const B2InfoTable = ({ info, data, isLoading, fetchData }) => {
         <>
           <div className="col col-9 mb-3 d-flex">
             <Card className="shadow flex-fill overflow-hidden">
+              <CardHeader className="border-0">
+                <h5 className="mb-0">Найдено: {data.length}</h5>
+              </CardHeader>
               <TableCompanies data={data} />
               <CardFooter>
                 <Pagination />
