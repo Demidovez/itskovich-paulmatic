@@ -29,17 +29,23 @@ export const personsApi = createApi({
       }),
       transformResponse: (response) => {
         return (
-          [
-            ...response.result.slice(0, 500).map((person) => ({
-              id: person.id,
-              FullName: person.FullName,
-              Title: person.Title,
-              Company: person.Company,
-              Email: person.Email,
-              Linkedin: person.Linkedin,
-              Phone: person.Phone || "555 - 5 - 5555",
-            })),
-          ] || []
+          {
+            allCount: 1000,
+            items: [
+              ...response.result.map((person) => ({
+                id: person.id,
+                FullName: person.FullName,
+                Title: person.Title,
+                Company: person.Company,
+                Email: person.Email,
+                Linkedin: person.Linkedin,
+                Phone: person.Phone || "555 - 5 - 5555",
+              })),
+            ],
+          } || {
+            allCount: 0,
+            items: [],
+          }
         );
       },
     }),

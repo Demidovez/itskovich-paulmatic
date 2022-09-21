@@ -47,7 +47,12 @@ export const companiesApi = createApi({
         },
       }),
       transformResponse: (response) => {
-        return [...response.result.slice(0, 500)] || [];
+        return (
+          { allCount: 1000, items: response.result } || {
+            allCount: 0,
+            items: [],
+          }
+        );
       },
     }),
   }),

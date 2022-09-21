@@ -1,45 +1,76 @@
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import { shiftPage } from "store/slices/b2bFilterSlice";
+import { moveToPage } from "store/slices/b2bFilterSlice";
+import { isIndexShowed } from "utils/utils";
 
-const PaginationCustom = () => {
+const PaginationCustom = ({ allCount = 0, page, moveToPage, countOnPage }) => {
+  const countPages = Math.ceil(allCount / countOnPage);
+
   return (
-    <nav aria-label="...">
-      <Pagination
-        className="pagination justify-content-end mb-0"
-        listClassName="justify-content-end mb-0"
-      >
-        <PaginationItem className="disabled">
-          <PaginationLink
-            href="#pablo"
-            onClick={(e) => e.preventDefault()}
-            tabIndex="-1"
+    <div className="d-flex justify-content-between align-items-center">
+      <p className="m-0">
+        Найдено: <strong>{allCount}</strong>
+      </p>
+      {allCount > countOnPage && (
+        <nav aria-label="...">
+          <Pagination
+            className="pagination justify-content-end mb-0 ml-4"
+            listClassName="justify-content-end mb-0"
           >
-            <i className="fas fa-angle-left" />
-            <span className="sr-only">Previous</span>
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem className="active">
-          <PaginationLink href="#pablo" onClick={(e) => e.preventDefault()}>
-            1
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#pablo" onClick={(e) => e.preventDefault()}>
-            2 <span className="sr-only">(current)</span>
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#pablo" onClick={(e) => e.preventDefault()}>
-            3
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#pablo" onClick={(e) => e.preventDefault()}>
-            <i className="fas fa-angle-right" />
-            <span className="sr-only">Next</span>
-          </PaginationLink>
-        </PaginationItem>
-      </Pagination>
-    </nav>
+            <PaginationItem>
+              <PaginationLink
+                onClick={() => (page - 1 >= 0 ? moveToPage(page - 1) : null)}
+              >
+                <i className="fas fa-angle-left" />
+              </PaginationLink>
+            </PaginationItem>
+            {Array(countPages)
+              .fill()
+              .map((_, index) => {
+                if (countPages <= 5) {
+                  return (
+                    <PaginationItem
+                      className={`${index === page ? "active" : ""}`}
+                      key={index}
+                    >
+                      <PaginationLink onClick={() => moveToPage(index)}>
+                        {index + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  );
+                } else {
+                  if (isIndexShowed(page, index, countPages, 3, 5)) {
+                    return (
+                      <PaginationItem
+                        className={`${index === page ? "active" : ""}`}
+                        key={index}
+                      >
+                        <PaginationLink onClick={() => moveToPage(index)}>
+                          {index + 1}
+                        </PaginationLink>
+                      </PaginationItem>
+                    );
+                  } else {
+                    return null;
+                  }
+                }
+              })}
+
+            <PaginationItem>
+              <PaginationLink
+                onClick={() =>
+                  page + 1 < countPages ? moveToPage(page + 1) : null
+                }
+              >
+                <i className="fas fa-angle-right" />
+              </PaginationLink>
+            </PaginationItem>
+          </Pagination>
+        </nav>
+      )}
+    </div>
   );
 };
 

@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardFooter, Spinner } from "reactstrap";
+import { Card, CardHeader, CardFooter, Spinner, Row, Col } from "reactstrap";
 import TableCompanies from "../TableCompanies/TableCompanies";
 import FilterB2B from "../FilterB2B/FilterB2B";
 import SearchContacts from "../SearchContacts/SearchContacts";
@@ -7,24 +7,51 @@ import Pagination from "../Pagination/Pagination";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { checkFilter } from "store/slices/b2bFilterSlice";
+import { setCurrentPage } from "store/slices/b2bFilterSlice";
+
+const COUNT_ON_PAGE = 100;
 
 const B2InfoTable = ({
   info,
-  data = [],
+  data,
   isLoading,
   fetchData,
   fields = [],
+  isInitialized,
 }) => {
   const filterState = useSelector((state) => state.filter[info.name]);
+  const currentPage = useSelector(
+    (state) => state.filter.currentPage[info.name] || 0
+  );
+  const filterStatus = useSelector((state) => state.filter.status[info.name]);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(checkFilter(info.name));
-  }, []);
+    if (filterStatus === "event") {
+      onSetCurrentPage(0);
+      fetchData({
+        ...filterState,
+        offset: 0,
+        count: COUNT_ON_PAGE,
+      });
+    }
+  }, [filterStatus]);
 
   useEffect(() => {
-    fetchData(filterState);
-  }, [JSON.stringify(filterState)]);
+    dispatch(checkFilter({ filter: info.name }));
+  }, []);
+
+  const onSetCurrentPage = (page) => {
+    dispatch(setCurrentPage({ filter: info.name, page }));
+  };
+
+  useEffect(() => {
+    fetchData({
+      ...filterState,
+      offset: currentPage * COUNT_ON_PAGE,
+      count: COUNT_ON_PAGE,
+    });
+  }, [currentPage]);
 
   return (
     <>
@@ -37,11 +64,22 @@ const B2InfoTable = ({
           <div className="col col-9 mb-3 d-flex">
             <Card className="shadow flex-fill overflow-hidden">
               <CardHeader className="border-0">
-                <h5 className="mb-0">Найдено: {data.length}</h5>
+                <Row>
+                  <Col md={8}></Col>
+                  <Col md={4}>
+                    <SearchContacts onSearch={() => {}} />
+                  </Col>
+                </Row>
               </CardHeader>
-              <TableCompanies data={data} fields={fields} />
-              <CardFooter>
-                <Pagination />
+              <TableCompanies data={data ? data.items : []} fields={fields} />
+              <CardFooter className="d-flex justify-content-between align-items-center">
+                <div>data</div>
+                <Pagination
+                  allCount={data ? data.allCount : 0}
+                  countOnPage={COUNT_ON_PAGE}
+                  page={currentPage}
+                  moveToPage={onSetCurrentPage}
+                />
               </CardFooter>
             </Card>
           </div>

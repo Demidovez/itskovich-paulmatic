@@ -106,7 +106,7 @@ const BtoB = (props) => {
   const [
     fetchCompanies,
     {
-      data: companies,
+      data: companiesData,
       isFetching: isFetchingCompanies,
       isLoading: isLoadingCompanies,
     },
@@ -115,13 +115,18 @@ const BtoB = (props) => {
   const [
     fetchPersons,
     {
-      data: persons,
+      data: personsData,
       isFetching: isFetchingPersons,
       isLoading: isLoadingPersons,
     },
   ] = useLazyGetPersonsQuery();
 
+  const [isMounted, setIsMounted] = useState(false);
   const [tabs, setTabs] = useState([]);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     if (personsInfo && companiesInfo) {
@@ -159,11 +164,12 @@ const BtoB = (props) => {
                 render={() => (
                   <B2InfoTable
                     info={tabs[0].info}
-                    data={companies}
+                    data={companiesData}
                     isLoading={isLoadingCompanies}
                     fetchData={fetchCompanies}
                     key={tabs[0].info.name}
                     fields={companiesFields}
+                    isInitialized={isMounted}
                   />
                 )}
               />
@@ -172,11 +178,12 @@ const BtoB = (props) => {
                 render={() => (
                   <B2InfoTable
                     info={tabs[1].info}
-                    data={persons}
+                    data={personsData}
                     isLoading={isLoadingPersons}
                     fetchData={fetchPersons}
                     key={tabs[1].info.name}
                     fields={personsFields}
+                    isInitialized={isMounted}
                   />
                 )}
               />
