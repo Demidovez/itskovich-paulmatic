@@ -5,7 +5,7 @@ import HiddenTableCell from "components/HiddenTableCell/HiddenTableCell";
 import { addSelectedId } from "store/slices/tablesSlice";
 import { useDispatch } from "react-redux";
 
-const TableInfo = ({ data = [], fields = [], table, selectedIds }) => {
+const TableInfo = ({ data = [], fields = [], table, selectedIds = [] }) => {
   const dispatch = useDispatch();
 
   const onSelectId = (id) => {

@@ -24,7 +24,9 @@ const SearchBar = ({ onSearch, search, className }) => {
   }, [value, isTyping]);
 
   return (
-    <div className="d-flex justify-content-end align-items-center">
+    <div
+      className={`${className} d-flex justify-content-end align-items-center`}
+    >
       <Input
         type="search"
         placeholder="Поиск..."

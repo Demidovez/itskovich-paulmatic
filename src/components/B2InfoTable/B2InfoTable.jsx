@@ -9,6 +9,7 @@ import { checkFilter } from "store/slices/b2bFilterSlice";
 import { setCurrentPage } from "store/slices/b2bFilterSlice";
 import { setSearchValue } from "store/slices/b2bFilterSlice";
 import ActionTableBar from "components/ActionTableBar/ActionTableBar";
+import { clearSelectedIds } from "store/slices/tablesSlice";
 
 const COUNT_ON_PAGE = 100;
 
@@ -33,6 +34,7 @@ const B2InfoTable = ({ info, data, isLoading, fetchData, fields = [] }) => {
         count: COUNT_ON_PAGE,
         name: searchValue,
       });
+      dispatch(clearSelectedIds(info.name));
     }
   }, [JSON.stringify(filterState), searchValue, filterStatus]);
 
