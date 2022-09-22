@@ -21,11 +21,7 @@ const B2InfoTable = ({ info, data, isLoading, fetchData, fields = [] }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(filterStatus);
     if (["reset", "event"].includes(filterStatus)) {
-      // console.log(filterState);
-      // console.log("useEffect JSON.stringify(filterState)");
-
       onSetCurrentPage(0);
       fetchData({
         ...filterState,
@@ -45,8 +41,6 @@ const B2InfoTable = ({ info, data, isLoading, fetchData, fields = [] }) => {
   };
 
   useEffect(() => {
-    // console.log(filterState);
-    // console.log("useEffect currentPage");
     fetchData({
       ...filterState,
       offset: currentPage * COUNT_ON_PAGE,
@@ -77,7 +71,11 @@ const B2InfoTable = ({ info, data, isLoading, fetchData, fields = [] }) => {
                   </Col>
                 </Row>
               </CardHeader>
-              <TableCompanies data={data ? data.Items : []} fields={fields} />
+              <TableCompanies
+                data={data ? data.Items : []}
+                fields={fields}
+                table={info.name}
+              />
               <CardFooter className="d-flex justify-content-between align-items-center">
                 <div>data</div>
                 <Pagination

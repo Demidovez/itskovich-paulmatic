@@ -1,8 +1,9 @@
 // import { Table } from "reactstrap";
 import "./TableCompanies.scss";
 import { Table } from "reactstrap";
+import HiddenTableCell from "components/HiddenTableCell/HiddenTableCell";
 
-const TableCompanies = ({ data = [], fields = [] }) => {
+const TableCompanies = ({ data = [], fields = [], table }) => {
   // console.log(data);
   return (
     <div
@@ -30,6 +31,28 @@ const TableCompanies = ({ data = [], fields = [] }) => {
                         <input type="checkbox" />
                       </div>
                     </td>
+                  );
+                } else if (field.name === "Linkedin") {
+                  return (
+                    <td
+                      key={company[field.name]}
+                      style={{
+                        maxWidth: 350,
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <a href={company[field.name]} target="_blank">
+                        {company[field.name]}
+                      </a>
+                    </td>
+                  );
+                } else if (["Email", "Phone"].includes(field.name)) {
+                  return (
+                    <HiddenTableCell
+                      key={field.name}
+                      value={company[field.name]}
+                    />
                   );
                 } else {
                   return <td key={field.name}>{company[field.name]}</td>;
