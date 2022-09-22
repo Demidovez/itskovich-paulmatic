@@ -16,7 +16,6 @@ import Modal from "components/Modal/Modal";
 
 const Contacts = () => {
   const dispatch = useDispatch();
-
   const [searchContacts, { data: contactsData, isFetching }] =
     useLazyGetContactsQuery();
 

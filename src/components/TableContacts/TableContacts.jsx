@@ -6,7 +6,7 @@ import "./TableContacts.scss";
 const TableContacts = ({
   onSelect,
   activeContactId,
-  data = { Items: [] },
+  data = { Items: [], TotalCpunt: 0 },
   selectedIds,
 }) => {
   const dispatch = useDispatch();
@@ -17,7 +17,10 @@ const TableContacts = ({
 
   return (
     <div className="table-contacts">
-      <Table className="align-items-center table-flush table-hover fixed-header" responsive>
+      <Table
+        className="align-items-center table-flush table-hover fixed-header"
+        responsive
+      >
         <thead className="thead-light">
           <tr>
             <th scope="col"></th>
@@ -61,7 +64,7 @@ const TableContacts = ({
           ))}
         </tbody>
       </Table>
-      {data.length === 0 && (
+      {data.TotalCpunt === 0 && (
         <p className="message">Добавьте контакты вручную или загрузите файл</p>
       )}
     </div>
