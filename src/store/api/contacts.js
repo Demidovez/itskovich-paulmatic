@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {getServerUrl} from "./server";
 
 export const contactsApi = createApi({
   reducerPath: "contactsApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://45.156.119.155:3002/contacts" }),
+  baseQuery: fetchBaseQuery({ baseUrl: getServerUrl("contacts") }),
   tagTypes: ["Contacts"],
   endpoints: (builder) => ({
     getContacts: builder.query({
@@ -16,7 +17,7 @@ export const contactsApi = createApi({
           "Content-type": "application/json",
         },
       }),
-      transformResponse: (response) => response.result || {},
+      transformResponse: (response) => response.result.Items || [],
       providesTags: (result) =>
         result.Items
           ? [

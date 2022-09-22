@@ -49,7 +49,7 @@ import {
   Table,
   Container,
   Row,
-  Col
+  Col,
 } from "reactstrap";
 
 var ps;
@@ -92,12 +92,12 @@ const Sidebar = (props) => {
   if (logo && logo.innerLink) {
     navbarBrandProps = {
       to: logo.innerLink,
-      tag: Link
+      tag: Link,
     };
   } else if (logo && logo.outterLink) {
     navbarBrandProps = {
       href: logo.outterLink,
-      target: "_blank"
+      target: "_blank",
     };
   }
 
@@ -118,11 +118,12 @@ const Sidebar = (props) => {
         </button>
         {/* Brand */}
         {logo ? (
-          <NavbarBrand className="pt-0" {...navbarBrandProps}>
+          <NavbarBrand className="pt-0 pb-0" {...navbarBrandProps}>
             <img
               alt={logo.imgAlt}
               className="navbar-brand-img"
               src={logo.imgSrc}
+              style={{ maxHeight: "8.5rem" }}
             />
           </NavbarBrand>
         ) : null}
@@ -270,7 +271,7 @@ const Sidebar = (props) => {
 };
 
 Sidebar.defaultProps = {
-  routes: [{}]
+  routes: [{}],
 };
 
 Sidebar.propTypes = {
@@ -286,8 +287,8 @@ Sidebar.propTypes = {
     // the image src of the logo
     imgSrc: PropTypes.string.isRequired,
     // the alt for the img
-    imgAlt: PropTypes.string.isRequired
-  })
+    imgAlt: PropTypes.string.isRequired,
+  }),
 };
 
 export default Sidebar;

@@ -1,7 +1,7 @@
 import { Card, CardHeader, Container, Row, Col, Spinner } from "reactstrap";
 import TableContacts from "../../components/TableContacts/TableContacts";
 import FormContacts from "../../components/FormContacts/FormContacts";
-import SearchContacts from "../../components/SearchContacts/SearchContacts";
+import SearchBar from "../../components/SearchBar/SearchBar";
 import UploadContacts from "../../components/UploadContacts/UploadContacts";
 import {
   useLazyGetContactsQuery,
@@ -74,9 +74,9 @@ const Contacts = () => {
         <Row>
           <div className="col col-8 d-flex align-items-center">
             <h1 className="mt-4 mb-4 mr-3">Контакты</h1>
-            {/* {(isFetching || isUpdating || isDeleting) && (
-              <Spinner color="primary" />
-            )} */}
+            {/*{(isFetching || isUpdating || isDeleting) && (*/}
+            {/*  <Spinner color="primary" />*/}
+            {/*)}*/}
           </div>
         </Row>
         <Row>
@@ -85,7 +85,7 @@ const Contacts = () => {
               <CardHeader className="border-0 ">
                 <Row>
                   <Col md={6}>
-                    <SearchContacts onSearch={onSearch} />
+                    <SearchBar onSearch={onSearch} />
                   </Col>
                   <Col
                     md={6}

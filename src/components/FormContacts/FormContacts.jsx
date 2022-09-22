@@ -40,26 +40,31 @@ const FormContacts = ({
       <CardBody>
         <Input
           className="mb-4"
+          placeholder={"Имя"}
           value={currentContact.name || ""}
           onChange={(e) => onInputChange(e, "name")}
         />
         <Input
           className="mb-4"
           value={currentContact.email || ""}
+          placeholder={"Email"}
           onChange={(e) => onInputChange(e, "email")}
         />
         <Input
           className="mb-4"
           value={currentContact.phone || ""}
+          placeholder={"Телефон"}
           onChange={(e) => onInputChange(e, "phone")}
         />
         <Input
           className="mb-4"
           value={currentContact.company || ""}
+          placeholder={"Компания"}
           onChange={(e) => onInputChange(e, "company")}
         />
         <Input
           className="mb-4"
+          placeholder={"LinkedIn"}
           value={currentContact.linkedin || ""}
           onChange={(e) => onInputChange(e, "linkedin")}
         />
