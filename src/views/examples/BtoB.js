@@ -2,124 +2,124 @@ import { Container, Row } from "reactstrap";
 import { Route, Switch, Redirect } from "react-router-dom";
 import B2InfoTable from "../../components/B2InfoTable/B2InfoTable";
 import Tabs from "../../components/Tabs/Tabs";
-import { useGetPersonsInfoQuery } from "store/api/persons";
+import {useGetPersonsInfoQuery} from "store/api/persons";
 import {
-  useGetCompaniesInfoQuery,
-  useLazyGetCompaniesQuery,
+    useGetCompaniesInfoQuery,
+    useLazyGetCompaniesQuery,
 } from "store/api/companies";
-import { useEffect, useState } from "react";
-import { useLazyGetPersonsQuery } from "store/api/persons";
+import {useEffect, useState} from "react";
+import {useLazyGetPersonsQuery} from "store/api/persons";
 
 const companiesFields = [
-  {
-    label: "",
-    name: "checkbox",
-  },
-  {
-    label: "Название",
-    name: "Name",
-  },
-  {
-    label: "Адрес",
-    name: "Address",
-  },
-  {
-    label: "Категория",
-    name: "Category",
-  },
-  {
-    label: "Город",
-    name: "City",
-  },
-  {
-    label: "Страна",
-    name: "Country",
-  },
-  {
-    label: "E-mail",
-    name: "Email",
-  },
-  {
-    label: "Телефон",
-    name: "Phone",
-  },
-  {
-    label: "Регион",
-    name: "Region",
-  },
-  {
-    label: "Соц. сети",
-    name: "Socials",
-  },
-  {
-    label: "Подкатегория",
-    name: "Subcategory",
-  },
-  {
-    label: "Сайт",
-    name: "Website",
-  },
-  {
-    label: "Индекс",
-    name: "ZipCode",
-  },
+    {
+        label: "",
+        name: "checkbox",
+    },
+    {
+        label: "Название",
+        name: "Name",
+    },
+    {
+        label: "Категория",
+        name: "Category",
+    },
+    {
+        label: "Город",
+        name: "City",
+    },
+    {
+        label: "Адрес",
+        name: "Address",
+    },
+    // {
+    //     label: "Страна",
+    //     name: "Country",
+    // },
+    {
+        label: "E-mail",
+        name: "Email",
+    },
+    {
+        label: "Телефон",
+        name: "Phone",
+    },
+    // {
+    //     label: "Регион",
+    //     name: "Region",
+    // },
+    {
+        label: "Соц.сети",
+        name: "Socials",
+    },
+    {
+        label: "Подкатегория",
+        name: "Subcategory",
+    },
+    {
+        label: "Сайт",
+        name: "Website",
+    },
+    {
+        label: "Индекс",
+        name: "ZipCode",
+    },
 ];
 
 const personsFields = [
-  {
-    label: "",
-    name: "checkbox",
-  },
-  {
-    label: "Имя",
-    name: "FullName",
-  },
-  {
-    label: "Title",
-    name: "Title",
-  },
-  {
-    label: "Компания",
-    name: "Company",
-  },
-  {
-    label: "E-mail",
-    name: "Email",
-  },
-  {
-    label: "LinkedIn",
-    name: "Linkedin",
-  },
-  {
-    label: "Телефон",
-    name: "Phone",
-  },
+    {
+        label: "",
+        name: "checkbox",
+    },
+    {
+        label: "Имя",
+        name: "FullName",
+    },
+    {
+        label: "Title",
+        name: "Title",
+    },
+    {
+        label: "Компания",
+        name: "Company",
+    },
+    {
+        label: "E-mail",
+        name: "Email",
+    },
+    {
+        label: "LinkedIn",
+        name: "Linkedin",
+    },
+    {
+        label: "Телефон",
+        name: "Phone",
+    },
 ];
 
 const BtoB = (props) => {
-  const { data: companiesInfo, isFetching: isFetchingCompaniesInfo } =
-    useGetCompaniesInfoQuery();
+    const {data: companiesInfo, isFetching: isFetchingCompaniesInfo} =
+        useGetCompaniesInfoQuery();
 
-  const { data: personsInfo, isFetching: isFetchingPersonsInfo } =
-    useGetPersonsInfoQuery();
+    const {data: personsInfo, isFetching: isFetchingPersonsInfo} =
+        useGetPersonsInfoQuery();
 
-  const [
-    fetchCompanies,
-    {
-      data: companiesData,
-      isFetching: isFetchingCompanies,
-      isLoading: isLoadingCompanies,
-    },
-  ] = useLazyGetCompaniesQuery();
+    const [
+        fetchCompanies,
+        {
+            data: companiesData,
+            isFetching: isFetchingCompanies,
+            isLoading: isLoadingCompanies,
+        },
+    ] = useLazyGetCompaniesQuery();
 
-  const [
-    fetchPersons,
-    {
-      data: personsData,
-      isFetching: isFetchingPersons,
-      isLoading: isLoadingPersons,
-    },
-  ] = useLazyGetPersonsQuery();
+    const [
+        fetchPersons,
+        {
+            data: personsData,
+            isFetching: isFetchingPersons,
+            isLoading: isLoadingPersons,
+        },
+    ] = useLazyGetPersonsQuery();
 
   const [tabs, setTabs] = useState([]);
 
@@ -132,16 +132,16 @@ const BtoB = (props) => {
         info: companiesInfo,
       };
 
-      const persons = personsInfo && {
-        link: "/" + personsInfo.name,
-        label: personsInfo.description,
-        isIndex: false,
-        info: personsInfo,
-      };
+            const persons = personsInfo && {
+                link: "/" + personsInfo.name,
+                label: personsInfo.description,
+                isIndex: false,
+                info: personsInfo,
+            };
 
-      setTabs([companies, persons]);
-    }
-  }, [personsInfo, companiesInfo]);
+            setTabs([companies, persons]);
+        }
+    }, [personsInfo, companiesInfo]);
 
   return (
     <>
@@ -181,16 +181,16 @@ const BtoB = (props) => {
                 )}
               />
 
-              <Redirect
-                from={props.match.path}
-                to={props.match.path + tabs[0].link}
-              />
-            </Switch>
-          )}
-        </Row>
-      </Container>
-    </>
-  );
+                            <Redirect
+                                from={props.match.path}
+                                to={props.match.path + tabs[0].link}
+                            />
+                        </Switch>
+                    )}
+                </Row>
+            </Container>
+        </>
+    );
 };
 
 export default BtoB;

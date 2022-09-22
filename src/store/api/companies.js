@@ -1,8 +1,9 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+import {getServerUrl} from "./server";
 
 export const companiesApi = createApi({
   reducerPath: "companiesApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://45.156.119.155:3002/b2b" }),
+  baseQuery: fetchBaseQuery({baseUrl: getServerUrl("b2b")}),
   endpoints: (builder) => ({
     getCompaniesInfo: builder.query({
       query: () => ({
@@ -40,7 +41,7 @@ export const companiesApi = createApi({
 });
 
 export const {
-  useGetCompaniesInfoQuery,
-  useGetCompaniesQuery,
-  useLazyGetCompaniesQuery,
+    useGetCompaniesInfoQuery,
+    useGetCompaniesQuery,
+    useLazyGetCompaniesQuery,
 } = companiesApi;

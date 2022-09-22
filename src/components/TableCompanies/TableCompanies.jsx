@@ -9,7 +9,7 @@ const TableCompanies = ({ data = [], fields = [] }) => {
       className="table-companies flex-fill"
       style={{ overflow: "auto", height: "100px" }}
     >
-      <Table className="align-items-center table-flush table-hover">
+      <Table className="align-items-center table-flush table-hover fixed-header">
         <thead className="thead-light">
           <tr>
             {fields.map((field) => (
