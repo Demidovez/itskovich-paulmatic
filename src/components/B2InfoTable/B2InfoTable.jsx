@@ -57,7 +57,7 @@ const B2InfoTable = ({
     <>
       {isLoading ? (
         <div className="container d-flex justify-content-center">
-          <Spinner color="primary" className="m-5 " />
+          {/*<Spinner color="primary" className="m-5 " />*/}
         </div>
       ) : (
         <>

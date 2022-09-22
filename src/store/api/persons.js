@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {getServerUrl} from "./server";
 
 export const personsApi = createApi({
   reducerPath: "personsApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://45.156.119.155:3002/b2b" }),
+  baseQuery: fetchBaseQuery({ baseUrl: getServerUrl("b2b") }),
   endpoints: (builder) => ({
     getPersonsInfo: builder.query({
       query: () => ({
