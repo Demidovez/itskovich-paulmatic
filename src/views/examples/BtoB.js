@@ -11,10 +11,10 @@ import {useEffect, useState} from "react";
 import {useLazyGetPersonsQuery} from "store/api/persons";
 
 const companiesFields = [
-    {
-        label: "",
-        name: "checkbox",
-    },
+    // {
+    //     label: "",
+    //     name: "checkbox",
+    // }, ----- пока здесь не нужен чекбокс, возможно потом он пригодится
     {
         label: "Название",
         name: "Name",
