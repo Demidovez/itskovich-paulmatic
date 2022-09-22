@@ -9,6 +9,7 @@ import {
   useDeleteContactMutation,
 } from "../../store/api/contacts";
 import { useEffect, useState } from "react";
+import ActionContactsBar from "components/ActionContactsBar/ActionContactsBar";
 
 const Contacts = () => {
   const [searchContacts, { data: contactsData, isFetching }] =
@@ -67,7 +68,11 @@ const Contacts = () => {
                   <Col md={6}>
                     <SearchContacts onSearch={onSearch} />
                   </Col>
-                  <Col md={6} className="d-flex justify-content-end">
+                  <Col
+                    md={6}
+                    className="d-flex justify-content-end align-items-center"
+                  >
+                    <ActionContactsBar />
                     <UploadContacts />
                   </Col>
                 </Row>
