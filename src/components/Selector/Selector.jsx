@@ -18,7 +18,6 @@ const Selector = ({ data, value, onSelect, isDisabled, dependValue }) => {
       let variants = data.Variants;
 
       if (dependValue) {
-        console.log(dependValue);
         variants = variants
           .filter((variant) => variant.includes(`=${dependValue};`))
           .map((variant) => variant.replace(/(.*);(.*)/gi, "$2"));
@@ -28,11 +27,11 @@ const Selector = ({ data, value, onSelect, isDisabled, dependValue }) => {
     }
   }, [data.Variants, dependValue]);
 
-  useEffect(() => {
-    if (!variants.includes(value)) {
-      onSelect(null);
-    }
-  }, [variants, value]);
+  // useEffect(() => {
+  //   if (!variants.includes(value)) {
+  //     onSelect(null);
+  //   }
+  // }, [variants, value]);
 
   return (
     <Dropdown

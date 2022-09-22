@@ -9,8 +9,8 @@ import "./FilterB2B.scss";
 const FilterB2B = ({ name, filterState = {}, filters, style, className }) => {
   const dispatch = useDispatch();
 
-  const onSelectFilter = (item, value) => {
-    dispatch(addFilterItem({ filter: name, item, value }));
+  const onSelectFilter = (item, value, dependValue) => {
+    dispatch(addFilterItem({ filter: name, item, value, dependValue }));
   };
 
   const onResetFilter = () => {
@@ -42,7 +42,15 @@ const FilterB2B = ({ name, filterState = {}, filters, style, className }) => {
                 dependValue={filterState[filter.DependsOnFilter]}
                 value={getValueOfObjectByField(filterState, filter.Name)}
                 key={filter.Name}
-                onChange={onSelectFilter}
+                onChange={(...args) =>
+                  onSelectFilter(
+                    ...args,
+                    (
+                      filters.find((f) => f.DependsOnFilter === filter.Name) ||
+                      {}
+                    ).Name
+                  )
+                }
                 isDisabled={
                   filter.DependsOnFilter === ""
                     ? false

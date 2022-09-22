@@ -1,12 +1,13 @@
 import { Card, CardHeader, CardFooter, Spinner, Row, Col } from "reactstrap";
 import TableCompanies from "../TableCompanies/TableCompanies";
 import FilterB2B from "../FilterB2B/FilterB2B";
-import SearchContacts from "../SearchContacts/SearchContacts";
+import SearchBar from "../SearchBar/SearchBar";
 import Pagination from "../Pagination/Pagination";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { checkFilter } from "store/slices/b2bFilterSlice";
 import { setCurrentPage } from "store/slices/b2bFilterSlice";
+import { setSearchValue } from "store/slices/b2bFilterSlice";
 
 const COUNT_ON_PAGE = 100;
 
@@ -16,18 +17,24 @@ const B2InfoTable = ({ info, data, isLoading, fetchData, fields = [] }) => {
     (state) => state.filter.currentPage[info.name] || 0
   );
   const filterStatus = useSelector((state) => state.filter.status[info.name]);
+  const searchValue = useSelector((state) => state.filter.search[info.name]);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (filterStatus === "event") {
+    console.log(filterStatus);
+    if (["reset", "event"].includes(filterStatus)) {
+      // console.log(filterState);
+      // console.log("useEffect JSON.stringify(filterState)");
+
       onSetCurrentPage(0);
       fetchData({
         ...filterState,
         offset: 0,
         count: COUNT_ON_PAGE,
+        name: searchValue,
       });
     }
-  }, [filterStatus]);
+  }, [JSON.stringify(filterState), searchValue, filterStatus]);
 
   useEffect(() => {
     dispatch(checkFilter({ filter: info.name }));
@@ -38,12 +45,19 @@ const B2InfoTable = ({ info, data, isLoading, fetchData, fields = [] }) => {
   };
 
   useEffect(() => {
+    // console.log(filterState);
+    // console.log("useEffect currentPage");
     fetchData({
       ...filterState,
       offset: currentPage * COUNT_ON_PAGE,
       count: COUNT_ON_PAGE,
+      name: searchValue,
     });
   }, [currentPage]);
+
+  const onSearchItems = (searchStr) => {
+    dispatch(setSearchValue({ filter: info.name, search: searchStr }));
+  };
 
   return (
     <>
@@ -59,7 +73,7 @@ const B2InfoTable = ({ info, data, isLoading, fetchData, fields = [] }) => {
                 <Row>
                   <Col md={8}></Col>
                   <Col md={4}>
-                    <SearchContacts onSearch={() => {}} />
+                    <SearchBar onSearch={onSearchItems} search={searchValue} />
                   </Col>
                 </Row>
               </CardHeader>

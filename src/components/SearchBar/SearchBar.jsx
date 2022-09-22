@@ -1,25 +1,27 @@
 import { useEffect, useState } from "react";
 import { Input } from "reactstrap";
 
-const SearchContacts = ({ onSearch }) => {
-  const [value, setValue] = useState(null);
+const SearchBar = ({ onSearch, search }) => {
+  const [isTyping, setIsTyping] = useState(false);
+  const [value, setValue] = useState(search || null);
 
   const onChange = ({ target }) => {
     setValue(target.value);
+    setIsTyping(true);
   };
 
   useEffect(() => {
-    if (value === null) return;
+    if (value === null || isTyping === false) return;
 
     const idTimer = setTimeout(() => {
-      console.log(value);
+      setIsTyping(false);
       onSearch(value);
     }, 200);
 
     return () => {
       clearTimeout(idTimer);
     };
-  }, [value]);
+  }, [value, isTyping]);
 
   return (
     <div className="d-flex justify-content-end align-items-center">
@@ -34,4 +36,4 @@ const SearchContacts = ({ onSearch }) => {
   );
 };
 
-export default SearchContacts;
+export default SearchBar;
