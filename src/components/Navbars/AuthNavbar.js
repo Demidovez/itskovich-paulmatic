@@ -52,7 +52,7 @@ const AdminNavbar = () => {
                     <img
                       alt="..."
                       src={require("../../assets/img/brand/logo.png")}
-                      style={{ height: "4.5rem" }}
+                      style={{ height: "8.5rem" }}
                     />
                   </Link>
                 </Col>

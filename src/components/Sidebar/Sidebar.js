@@ -123,7 +123,7 @@ const Sidebar = (props) => {
               alt={logo.imgAlt}
               className="navbar-brand-img"
               src={logo.imgSrc}
-              style={{ maxHeight: "4.5rem" }}
+              style={{ maxHeight: "8.5rem" }}
             />
           </NavbarBrand>
         ) : null}
