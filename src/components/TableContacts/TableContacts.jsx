@@ -1,7 +1,7 @@
 import { Table } from "reactstrap";
 import "./TableContacts.scss";
 
-const TableContacts = ({ onSelect, activeContactId, data = [] }) => {
+const TableContacts = ({ onSelect, activeContactId, data = { Items: [] } }) => {
   return (
     <div className="table-contacts">
       <Table className="align-items-center table-flush table-hover" responsive>
@@ -17,7 +17,7 @@ const TableContacts = ({ onSelect, activeContactId, data = [] }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((contact) => (
+          {data.Items.map((contact) => (
             <tr
               key={contact.id}
               onClick={() => onSelect(contact.id)}

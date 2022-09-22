@@ -11,7 +11,7 @@ import {
 import { useEffect, useState } from "react";
 
 const Contacts = () => {
-  const [searchContacts, { data: contacts, isFetching }] =
+  const [searchContacts, { data: contactsData, isFetching }] =
     useLazyGetContactsQuery();
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const Contacts = () => {
   };
 
   const onSelectActiveContact = (id) => {
-    setActiveContact(contacts.find((contact) => contact.id === id));
+    setActiveContact(contactsData.Items.find((contact) => contact.id === id));
   };
 
   const onSearch = (searchStr) => {
@@ -73,7 +73,7 @@ const Contacts = () => {
                 </Row>
               </CardHeader>
               <TableContacts
-                data={contacts}
+                data={contactsData}
                 onSelect={onSelectActiveContact}
                 activeContactId={activeContact.id}
               />

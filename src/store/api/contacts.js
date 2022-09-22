@@ -16,11 +16,11 @@ export const contactsApi = createApi({
           "Content-type": "application/json",
         },
       }),
-      transformResponse: (response) => response.result || [],
+      transformResponse: (response) => response.result || {},
       providesTags: (result) =>
-        result
+        result.Items
           ? [
-              ...result.map(({ id }) => ({ type: "Contacts", id })),
+              ...result.Items.map(({ id }) => ({ type: "Contacts", id })),
               { type: "Contacts", id: "LIST" },
             ]
           : [{ type: "Contacts", id: "LIST" }],
