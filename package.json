@@ -22,10 +22,10 @@
   "bugs": {
     "url": "https://github.com/creativetimofficial/argon-dashboard-react/issues"
   },
-  "homepage": "https://demos.creative-tim.com/argon-dashboard-react/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "deploy": "./deploy.sh",
     "install-force": "npm install --force",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -45,6 +45,8 @@
   ],
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.15.3",
+    "@reduxjs/toolkit": "^1.8.5",
+    "@tanstack/react-table": "^8.5.13",
     "bootstrap": "4.6.0",
     "chart.js": "2.9.4",
     "classnames": "2.3.1",
@@ -55,9 +57,11 @@
     "react-copy-to-clipboard": "5.1.0",
     "react-datetime": "3.1.1",
     "react-dom": "18.2.0",
+    "react-redux": "^8.0.2",
     "react-router-dom": "5.2.0",
     "react-scripts": "5.0.1",
-    "reactstrap": "8.9.0",
+    "react-virtual": "^2.10.4",
+    "reactstrap": "8.9.0",    
     "sass": "1.54.5"
   },
   "devDependencies": {
