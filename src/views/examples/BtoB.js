@@ -1,5 +1,5 @@
-import {Container, Row, Spinner} from "reactstrap";
-import {Route, Switch, Redirect} from "react-router-dom";
+import { Container, Row } from "reactstrap";
+import { Route, Switch, Redirect } from "react-router-dom";
 import B2InfoTable from "../../components/B2InfoTable/B2InfoTable";
 import Tabs from "../../components/Tabs/Tabs";
 import {useGetPersonsInfoQuery} from "store/api/persons";
@@ -121,21 +121,16 @@ const BtoB = (props) => {
         },
     ] = useLazyGetPersonsQuery();
 
-    const [isMounted, setIsMounted] = useState(false);
-    const [tabs, setTabs] = useState([]);
+  const [tabs, setTabs] = useState([]);
 
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
-
-    useEffect(() => {
-        if (personsInfo && companiesInfo) {
-            const companies = companiesInfo && {
-                link: "/" + companiesInfo.name,
-                label: companiesInfo.description,
-                isIndex: true,
-                info: companiesInfo,
-            };
+  useEffect(() => {
+    if (personsInfo && companiesInfo) {
+      const companies = companiesInfo && {
+        link: "/" + companiesInfo.name,
+        label: companiesInfo.description,
+        isIndex: true,
+        info: companiesInfo,
+      };
 
             const persons = personsInfo && {
                 link: "/" + personsInfo.name,
@@ -148,45 +143,43 @@ const BtoB = (props) => {
         }
     }, [personsInfo, companiesInfo]);
 
-    return (
-        <>
-            <Container fluid className="d-flex flex-column h-100vh overflow-hidden">
-                <Row>
-                    <div className="col mt-3 mb-3">
-                        <Tabs data={tabs} parentPath={props.match.path}/>
-                    </div>
-                </Row>
-                <Row className="flex-fill">
-                    {tabs.length > 0 && (
-                        <Switch>
-                            <Route
-                                path={props.match.path + tabs[0].link}
-                                render={() => (
-                                    <B2InfoTable
-                                        info={tabs[0].info}
-                                        data={companiesData}
-                                        isLoading={isLoadingCompanies}
-                                        fetchData={fetchCompanies}
-                                        key={tabs[0].info.name}
-                                        fields={companiesFields}
-                                        isInitialized={isMounted}
-                                    />
-                                )}
-                            />
-                            <Route
-                                path={props.match.path + tabs[1].link}
-                                render={() => (
-                                    <B2InfoTable
-                                        info={tabs[1].info}
-                                        data={personsData}
-                                        isLoading={isLoadingPersons}
-                                        fetchData={fetchPersons}
-                                        key={tabs[1].info.name}
-                                        fields={personsFields}
-                                        isInitialized={isMounted}
-                                    />
-                                )}
-                            />
+  return (
+    <>
+      <Container fluid className="d-flex flex-column h-100vh overflow-hidden">
+        <Row>
+          <div className="col mt-3 mb-3">
+            <Tabs data={tabs} parentPath={props.match.path} />
+          </div>
+        </Row>
+        <Row className="flex-fill">
+          {tabs.length > 0 && (
+            <Switch>
+              <Route
+                path={props.match.path + tabs[0].link}
+                render={() => (
+                  <B2InfoTable
+                    info={tabs[0].info}
+                    data={companiesData}
+                    isLoading={isLoadingCompanies}
+                    fetchData={fetchCompanies}
+                    key={tabs[0].info.name}
+                    fields={companiesFields}
+                  />
+                )}
+              />
+              <Route
+                path={props.match.path + tabs[1].link}
+                render={() => (
+                  <B2InfoTable
+                    info={tabs[1].info}
+                    data={personsData}
+                    isLoading={isLoadingPersons}
+                    fetchData={fetchPersons}
+                    key={tabs[1].info.name}
+                    fields={personsFields}
+                  />
+                )}
+              />
 
                             <Redirect
                                 from={props.match.path}

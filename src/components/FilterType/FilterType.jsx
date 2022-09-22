@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
-import { Card, CardBody, Label, Input, FormGroup } from "reactstrap";
+import { Label, FormGroup } from "reactstrap";
 import Selector from "../Selector/Selector";
 import "./FilterType.scss";
 
-const FilterType = ({ data, value, onChange, isDisabled }) => {
+const FilterType = ({ data, value, onChange, isDisabled, dependValue }) => {
   switch (data.Type) {
     case "choise":
       return (
@@ -14,6 +13,7 @@ const FilterType = ({ data, value, onChange, isDisabled }) => {
           <div className="mb-3">
             <Selector
               data={data}
+              dependValue={dependValue}
               value={value}
               onSelect={(value) => onChange(data.Name, value)}
               isDisabled={isDisabled}

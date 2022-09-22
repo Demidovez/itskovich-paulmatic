@@ -6,10 +6,32 @@ import {
   DropdownItem,
 } from "reactstrap";
 
-const Selector = ({ data, value, onSelect, isDisabled }) => {
+const Selector = ({ data, value, onSelect, isDisabled, dependValue }) => {
+  const [variants, setVariants] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const toggle = () => setDropdownOpen((prevState) => !prevState);
+
+  // TODO: Наверное плохое решение, лучше перенести в редусер
+  useEffect(() => {
+    if (data.Variants) {
+      let variants = data.Variants;
+
+      if (dependValue) {
+        variants = variants
+          .filter((variant) => variant.includes(`=${dependValue};`))
+          .map((variant) => variant.replace(/(.*);(.*)/gi, "$2"));
+      }
+
+      setVariants(variants);
+    }
+  }, [data.Variants, dependValue]);
+
+  // useEffect(() => {
+  //   if (!variants.includes(value)) {
+  //     onSelect(null);
+  //   }
+  // }, [variants, value]);
 
   return (
     <Dropdown
@@ -35,7 +57,6 @@ const Selector = ({ data, value, onSelect, isDisabled }) => {
             width: "1000px",
             textAlign: "left",
           }}
-          // className="d-flex mr-2"
         >
           {value || "Все"}
         </div>
@@ -44,7 +65,7 @@ const Selector = ({ data, value, onSelect, isDisabled }) => {
         style={{ minWidth: "100%", maxHeight: "60vh", overflow: "auto" }}
         right
       >
-        {(data.Variants || []).map((variant, index) => (
+        {variants.map((variant, index) => (
           <DropdownItem key={index} onClick={() => onSelect(variant)}>
             {variant}
           </DropdownItem>

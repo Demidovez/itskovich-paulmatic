@@ -1,18 +1,16 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Card, CardBody, CardHeader, Input, Button, Form } from "reactstrap";
-import { useLazyGetCompaniesQuery } from "store/api/companies";
+import { useDispatch } from "react-redux";
+import { Card, CardBody, CardHeader, Form } from "reactstrap";
 import { resetFilter } from "store/slices/b2bFilterSlice";
 import { addFilterItem } from "store/slices/b2bFilterSlice";
 import { getValueOfObjectByField } from "utils/utils";
 import FilterType from "../FilterType/FilterType";
 import "./FilterB2B.scss";
 
-const FilterB2B = ({ name, filterState, filters, style, className }) => {
+const FilterB2B = ({ name, filterState = {}, filters, style, className }) => {
   const dispatch = useDispatch();
 
-  const onSelectFilter = (item, value) => {
-    dispatch(addFilterItem({ filter: name, item, value }));
+  const onSelectFilter = (item, value, dependValue) => {
+    dispatch(addFilterItem({ filter: name, item, value, dependValue }));
   };
 
   const onResetFilter = () => {
@@ -41,14 +39,23 @@ const FilterB2B = ({ name, filterState, filters, style, className }) => {
             .map((filter) => (
               <FilterType
                 data={filter}
+                dependValue={filterState[filter.DependsOnFilter]}
                 value={getValueOfObjectByField(filterState, filter.Name)}
-                key={filter.Index}
-                onChange={onSelectFilter}
-                // isDisabled={
-                //   filter.DependsOnFilter === ""
-                //     ? false
-                //     : !requestParams[filter.DependsOnFilter]
-                // }
+                key={filter.Name}
+                onChange={(...args) =>
+                  onSelectFilter(
+                    ...args,
+                    (
+                      filters.find((f) => f.DependsOnFilter === filter.Name) ||
+                      {}
+                    ).Name
+                  )
+                }
+                isDisabled={
+                  filter.DependsOnFilter === ""
+                    ? false
+                    : !filterState[filter.DependsOnFilter]
+                }
               />
             ))}
         </Form>

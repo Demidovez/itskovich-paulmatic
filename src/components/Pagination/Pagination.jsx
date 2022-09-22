@@ -1,23 +1,38 @@
-import {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {Pagination, PaginationItem, PaginationLink} from "reactstrap";
-import {shiftPage} from "store/slices/b2bFilterSlice";
-import {moveToPage} from "store/slices/b2bFilterSlice";
-import {isIndexShowed} from "utils/utils";
+import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import { isIndexShowed } from "utils/utils";
 
 const PaginationCustom = ({allCount = 0, page, moveToPage, countOnPage}) => {
     const countPages = Math.ceil(allCount / countOnPage);
 
-    return (
-        <div className="d-flex justify-content-between align-items-center">
-            <p className="m-0" style={{"font-size": "small"}}>
-                Найдено: <strong>{allCount}</strong> позиций ({countPages} страниц)
-            </p>
-            {allCount > countOnPage && (
-                <nav aria-label="...">
-                    <Pagination
-                        className="pagination justify-content-end mb-0 ml-4"
-                        listClassName="justify-content-end mb-0"
+
+  return (
+    <div className="d-flex justify-content-between align-items-center">
+      {allCount ? (
+        <p className="m-0">
+          Найдено: <strong>{allCount}</strong>
+        </p>
+      ) : null}
+      {allCount > countOnPage && (
+        <nav aria-label="...">
+          <Pagination
+            className="pagination justify-content-end mb-0 ml-4"
+            listClassName="justify-content-end mb-0"
+          >
+            <PaginationItem>
+              <PaginationLink
+                onClick={() => (page - 1 >= 0 ? moveToPage(page - 1) : null)}
+              >
+                <i className="fas fa-angle-left" />
+              </PaginationLink>
+            </PaginationItem>
+            {Array(countPages)
+              .fill()
+              .map((_, index) => {
+                if (countPages <= 5) {
+                  return (
+                    <PaginationItem
+                      className={`${index === page ? "active" : ""}`}
+                      key={index}
                     >
                         <PaginationItem>
                             <PaginationLink
