@@ -9,9 +9,15 @@ import {
   useDeleteContactMutation,
 } from "../../store/api/contacts";
 import { useEffect, useState } from "react";
+import ActionContactsBar from "components/ActionContactsBar/ActionContactsBar";
+import { useDispatch, useSelector } from "react-redux";
+import { clearSelectedIds } from "store/slices/contactsSlice";
+import Modal from "components/Modal/Modal";
 
 const Contacts = () => {
-  const [searchContacts, { data: contacts, isFetching }] =
+  const dispatch = useDispatch();
+
+  const [searchContacts, { data: contactsData, isFetching }] =
     useLazyGetContactsQuery();
 
   useEffect(() => {
@@ -21,10 +27,15 @@ const Contacts = () => {
   const [createOrUpdateContact, { isLoading: isUpdating }] =
     useCreateOrUpdateContactMutation();
 
-  const [deleteContactByID, { isLoading: isDeleting }] =
-    useDeleteContactMutation();
+  const [
+    deleteContactByID,
+    { isLoading: isDeleting, isFetching: isFetching1 },
+  ] = useDeleteContactMutation();
+
+  const selectedIds = useSelector((state) => state.contacts.selectedIds);
 
   const [activeContact, setActiveContact] = useState({});
+  const [isShowModalDelete, setIsShowModalDelete] = useState(false);
 
   const onResetForm = () => {
     setActiveContact({});
@@ -41,11 +52,20 @@ const Contacts = () => {
   };
 
   const onSelectActiveContact = (id) => {
-    setActiveContact(contacts.find((contact) => contact.id === id));
+    setActiveContact(contactsData.Items.find((contact) => contact.id === id));
   };
 
   const onSearch = (searchStr) => {
     searchContacts(searchStr);
+  };
+
+  const handleAddToSequence = () => {};
+
+  const handleDeleteContact = () => {
+    setIsShowModalDelete(false);
+    selectedIds.map((id) => deleteContactByID(id));
+    onResetForm();
+    dispatch(clearSelectedIds());
   };
 
   return (
@@ -67,14 +87,23 @@ const Contacts = () => {
                   <Col md={6}>
                     <SearchBar onSearch={onSearch} />
                   </Col>
-                  <Col md={6} className="d-flex justify-content-end">
+                  <Col
+                    md={6}
+                    className="d-flex justify-content-end align-items-center"
+                  >
+                    <ActionContactsBar
+                      disabled={selectedIds.length === 0}
+                      onDelete={() => setIsShowModalDelete(true)}
+                      onAddToSequence={handleAddToSequence}
+                    />
                     <UploadContacts />
                   </Col>
                 </Row>
               </CardHeader>
               <TableContacts
-                data={contacts}
+                data={contactsData}
                 onSelect={onSelectActiveContact}
+                selectedIds={selectedIds}
                 activeContactId={activeContact.id}
               />
             </Card>
@@ -91,6 +120,13 @@ const Contacts = () => {
           </div>
         </Row>
       </Container>
+      <Modal
+        isShow={isShowModalDelete}
+        title="Вы уверены?!"
+        text="Удалить выбранные контакты?"
+        onAgree={handleDeleteContact}
+        onCancel={() => setIsShowModalDelete(false)}
+      />
     </>
   );
 };

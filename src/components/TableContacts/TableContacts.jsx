@@ -1,7 +1,20 @@
-import { Table } from "reactstrap";
+import { useDispatch } from "react-redux";
+import { Label, Table } from "reactstrap";
+import { addContactId } from "store/slices/contactsSlice";
 import "./TableContacts.scss";
 
-const TableContacts = ({ onSelect, activeContactId, data = [] }) => {
+const TableContacts = ({
+  onSelect,
+  activeContactId,
+  data = { Items: [] },
+  selectedIds,
+}) => {
+  const dispatch = useDispatch();
+
+  const onSelectContact = (id) => {
+    dispatch(addContactId(id));
+  };
+
   return (
     <div className="table-contacts">
       <Table className="align-items-center table-flush table-hover fixed-header" responsive>
@@ -17,15 +30,25 @@ const TableContacts = ({ onSelect, activeContactId, data = [] }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((contact) => (
+          {data.Items.map((contact) => (
             <tr
               key={contact.id}
               onClick={() => onSelect(contact.id)}
               className={activeContactId === contact.id ? "table-primary" : ""}
             >
-              <td scope="row">
-                <div className="d-flex align-items-center justify-content-center">
-                  <input type="checkbox" />
+              <td scope="row" className="p-0">
+                <div className="custom-control checkbox-contact custom-checkbox ">
+                  <input
+                    className="custom-control-input"
+                    checked={selectedIds.includes(contact.id)}
+                    onChange={() => onSelectContact(contact.id)}
+                    id={"check_" + contact.id}
+                    type="checkbox"
+                  />
+                  <Label
+                    className="custom-control-label"
+                    htmlFor={"check_" + contact.id}
+                  ></Label>
                 </div>
               </td>
               <td>{contact.name}</td>
