@@ -1,7 +1,20 @@
-import { Label, Table, Form, FormGroup } from "reactstrap";
+import { useDispatch } from "react-redux";
+import { Label, Table } from "reactstrap";
+import { addContactId } from "store/slices/contactsSlice";
 import "./TableContacts.scss";
 
-const TableContacts = ({ onSelect, activeContactId, data = { Items: [] } }) => {
+const TableContacts = ({
+  onSelect,
+  activeContactId,
+  data = { Items: [] },
+  selectedIds,
+}) => {
+  const dispatch = useDispatch();
+
+  const onSelectContact = (id) => {
+    dispatch(addContactId(id));
+  };
+
   return (
     <div className="table-contacts">
       <Table className="align-items-center table-flush table-hover" responsive>
@@ -27,8 +40,8 @@ const TableContacts = ({ onSelect, activeContactId, data = { Items: [] } }) => {
                 <div className="custom-control checkbox-contact custom-checkbox ">
                   <input
                     className="custom-control-input"
-                    // checked={!!value}
-                    // onChange={(e) => onChange(data.Name, e.target.checked)}
+                    checked={selectedIds.includes(contact.id)}
+                    onChange={() => onSelectContact(contact.id)}
                     id={"check_" + contact.id}
                     type="checkbox"
                   />

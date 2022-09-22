@@ -7,20 +7,31 @@ import {
   Button,
 } from "reactstrap";
 
-const ActionContactsBar = () => {
+const ActionContactsBar = ({ onDelete, onAddToSequence, disabled }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const toggle = () => setDropdownOpen((prevState) => !prevState);
 
   return (
     <div className="d-flex pr-3">
-      <Dropdown isOpen={dropdownOpen} toggle={toggle} direction="down">
-        <DropdownToggle caret className="btn btn-outline-primary">
+      <Dropdown
+        isOpen={dropdownOpen}
+        toggle={toggle}
+        direction="down"
+        disabled={disabled}
+      >
+        <DropdownToggle
+          caret
+          className="btn btn-outline-primary"
+          disabled={disabled}
+        >
           Действия
         </DropdownToggle>
         <DropdownMenu right>
-          <DropdownItem>Удалить</DropdownItem>
-          <DropdownItem>Добавить в последовательность</DropdownItem>
+          <DropdownItem onClick={onDelete}>Удалить</DropdownItem>
+          <DropdownItem onClick={onAddToSequence}>
+            Добавить в последовательность
+          </DropdownItem>
         </DropdownMenu>
       </Dropdown>
     </div>

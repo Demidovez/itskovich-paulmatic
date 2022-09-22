@@ -4,16 +4,21 @@ import { createSlice } from "@reduxjs/toolkit";
 // возможно понадобиться в будущем
 
 const initialState = {
-  contacts: [],
+  selectedIds: [],
 };
 
 export const contactsSlice = createSlice({
   name: "contacts",
   initialState,
   reducers: {
-    // increment: (state) => {
-    //   state.value += 1;
-    // },
+    addContactId: (state, action) => {
+      state.selectedIds = state.selectedIds.includes(action.payload)
+        ? state.selectedIds.filter((id) => id !== action.payload)
+        : [...state.selectedIds, action.payload];
+    },
+    clearSelectedIds: (state, action) => {
+      state.selectedIds = [];
+    },
     // decrement: (state) => {
     //   state.value -= 1;
     // },
@@ -23,7 +28,6 @@ export const contactsSlice = createSlice({
   },
 });
 
-export const { increment, decrement, incrementByAmount } =
-  contactsSlice.actions;
+export const { addContactId, clearSelectedIds } = contactsSlice.actions;
 
 export default contactsSlice.reducer;
