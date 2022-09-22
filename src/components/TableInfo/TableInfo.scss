@@ -1,0 +1,51 @@
+.table-info-component {
+  .message {
+    text-align: center;
+    margin: 30px 0;
+    font-size: 17px;
+    opacity: 0.6;
+  }
+
+  .table-cell {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    vertical-align: middle;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    font-size: 0.8125rem;
+    cursor: pointer;
+
+    &:hover {
+      // background-color: #e9ecef;
+    }
+
+    &.level-0 {
+      background: #f6f9fc;
+      color: #525f7f;
+      letter-spacing: 1px;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      border-bottom: 1px solid #e9ecef;
+    }
+  }
+
+  .custom-checkbox {
+    .custom-control-input:checked ~ .custom-control-label {
+      &::after {
+        background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%278%27 height=%278%27 viewBox=%270 0 8 8%27%3e%3cpath fill=%27%23fff%27 d=%27M6.564.75l-3.59 3.612-1.538-1.55L0 4.26l2.974 2.99L8 2.193z%27/%3e%3c/svg%3e");
+      }
+    }
+
+    .custom-control-label {
+      &::before,
+      &::after {
+        left: -2rem;
+      }
+    }
+
+    .custom-checkbox .custom-control-input ~ .custom-control-label {
+      font-size: 1rem;
+    }
+  }
+}

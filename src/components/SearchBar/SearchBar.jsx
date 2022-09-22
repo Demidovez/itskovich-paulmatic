@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Input } from "reactstrap";
 
-const SearchBar = ({ onSearch, search }) => {
+const SearchBar = ({ onSearch, search, className }) => {
   const [isTyping, setIsTyping] = useState(false);
   const [value, setValue] = useState(search || null);
 

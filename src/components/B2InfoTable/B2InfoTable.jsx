@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardFooter, Spinner, Row, Col } from "reactstrap";
-import TableCompanies from "../TableCompanies/TableCompanies";
+import TableInfo from "../TableInfo/TableInfo";
 import FilterB2B from "../FilterB2B/FilterB2B";
 import SearchBar from "../SearchBar/SearchBar";
 import Pagination from "../Pagination/Pagination";
@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { checkFilter } from "store/slices/b2bFilterSlice";
 import { setCurrentPage } from "store/slices/b2bFilterSlice";
 import { setSearchValue } from "store/slices/b2bFilterSlice";
+import ActionTableBar from "components/ActionTableBar/ActionTableBar";
 
 const COUNT_ON_PAGE = 100;
 
@@ -18,6 +19,9 @@ const B2InfoTable = ({ info, data, isLoading, fetchData, fields = [] }) => {
   );
   const filterStatus = useSelector((state) => state.filter.status[info.name]);
   const searchValue = useSelector((state) => state.filter.search[info.name]);
+  const selectedIds = useSelector(
+    (state) => state.tables.selectedIds[info.name] || []
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -53,6 +57,10 @@ const B2InfoTable = ({ info, data, isLoading, fetchData, fields = [] }) => {
     dispatch(setSearchValue({ filter: info.name, search: searchStr }));
   };
 
+  const onAddContact = () => {};
+
+  const onAddToSequence = () => {};
+
   return (
     <>
       {isLoading ? (
@@ -65,19 +73,29 @@ const B2InfoTable = ({ info, data, isLoading, fetchData, fields = [] }) => {
             <Card className="shadow flex-fill overflow-hidden">
               <CardHeader className="border-0">
                 <Row>
-                  <Col md={8}></Col>
-                  <Col md={4}>
-                    <SearchBar onSearch={onSearchItems} search={searchValue} />
+                  <Col md={6}></Col>
+                  <Col md={6} className="d-flex">
+                    <ActionTableBar
+                      disabled={selectedIds.length === 0}
+                      onAddContact={onAddContact}
+                      onAddToSequence={onAddToSequence}
+                    />
+                    <SearchBar
+                      onSearch={onSearchItems}
+                      search={searchValue}
+                      className="flex-fill"
+                    />
                   </Col>
                 </Row>
               </CardHeader>
-              <TableCompanies
+              <TableInfo
                 data={data ? data.Items : []}
                 fields={fields}
                 table={info.name}
+                selectedIds={selectedIds}
               />
               <CardFooter className="d-flex justify-content-between align-items-center">
-                <div>data</div>
+                <div></div>
                 <Pagination
                   allCount={data ? data.TotalCount : 0}
                   countOnPage={COUNT_ON_PAGE}
