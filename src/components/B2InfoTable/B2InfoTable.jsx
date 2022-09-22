@@ -2,23 +2,15 @@ import { Card, CardHeader, CardFooter, Spinner, Row, Col } from "reactstrap";
 import TableCompanies from "../TableCompanies/TableCompanies";
 import FilterB2B from "../FilterB2B/FilterB2B";
 import SearchContacts from "../SearchContacts/SearchContacts";
-import { useLazyGetCompaniesQuery } from "../../store/api/companies";
 import Pagination from "../Pagination/Pagination";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { checkFilter } from "store/slices/b2bFilterSlice";
 import { setCurrentPage } from "store/slices/b2bFilterSlice";
 
 const COUNT_ON_PAGE = 100;
 
-const B2InfoTable = ({
-  info,
-  data,
-  isLoading,
-  fetchData,
-  fields = [],
-  isInitialized,
-}) => {
+const B2InfoTable = ({ info, data, isLoading, fetchData, fields = [] }) => {
   const filterState = useSelector((state) => state.filter[info.name]);
   const currentPage = useSelector(
     (state) => state.filter.currentPage[info.name] || 0
@@ -71,11 +63,11 @@ const B2InfoTable = ({
                   </Col>
                 </Row>
               </CardHeader>
-              <TableCompanies data={data ? data.items : []} fields={fields} />
+              <TableCompanies data={data ? data.Items : []} fields={fields} />
               <CardFooter className="d-flex justify-content-between align-items-center">
                 <div>data</div>
                 <Pagination
-                  allCount={data ? data.allCount : 0}
+                  allCount={data ? data.TotalCount : 0}
                   countOnPage={COUNT_ON_PAGE}
                   page={currentPage}
                   moveToPage={onSetCurrentPage}

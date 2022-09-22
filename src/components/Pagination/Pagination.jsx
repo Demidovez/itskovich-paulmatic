@@ -1,8 +1,4 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
-import { shiftPage } from "store/slices/b2bFilterSlice";
-import { moveToPage } from "store/slices/b2bFilterSlice";
 import { isIndexShowed } from "utils/utils";
 
 const PaginationCustom = ({ allCount = 0, page, moveToPage, countOnPage }) => {
@@ -10,9 +6,11 @@ const PaginationCustom = ({ allCount = 0, page, moveToPage, countOnPage }) => {
 
   return (
     <div className="d-flex justify-content-between align-items-center">
-      <p className="m-0">
-        Найдено: <strong>{allCount}</strong>
-      </p>
+      {allCount ? (
+        <p className="m-0">
+          Найдено: <strong>{allCount}</strong>
+        </p>
+      ) : null}
       {allCount > countOnPage && (
         <nav aria-label="...">
           <Pagination

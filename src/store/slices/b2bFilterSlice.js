@@ -21,7 +21,9 @@ export const b2bFilterSlice = createSlice({
         state[action.payload.filter][action.payload.item] =
           action.payload.value;
       } else {
-        delete state[action.payload.filter][action.payload.item];
+        if (state[action.payload.filter]) {
+          delete state[action.payload.filter][action.payload.item];
+        }
       }
       state.status[action.payload.filter] = "event";
     },

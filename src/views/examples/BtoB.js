@@ -1,4 +1,4 @@
-import { Container, Row, Spinner } from "reactstrap";
+import { Container, Row } from "reactstrap";
 import { Route, Switch, Redirect } from "react-router-dom";
 import B2InfoTable from "../../components/B2InfoTable/B2InfoTable";
 import Tabs from "../../components/Tabs/Tabs";
@@ -121,12 +121,7 @@ const BtoB = (props) => {
     },
   ] = useLazyGetPersonsQuery();
 
-  const [isMounted, setIsMounted] = useState(false);
   const [tabs, setTabs] = useState([]);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   useEffect(() => {
     if (personsInfo && companiesInfo) {
@@ -169,7 +164,6 @@ const BtoB = (props) => {
                     fetchData={fetchCompanies}
                     key={tabs[0].info.name}
                     fields={companiesFields}
-                    isInitialized={isMounted}
                   />
                 )}
               />
@@ -183,7 +177,6 @@ const BtoB = (props) => {
                     fetchData={fetchPersons}
                     key={tabs[1].info.name}
                     fields={personsFields}
-                    isInitialized={isMounted}
                   />
                 )}
               />
