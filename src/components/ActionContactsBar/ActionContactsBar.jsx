@@ -4,6 +4,7 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
+  Button,
 } from "reactstrap";
 
 const ActionContactsBar = () => {
@@ -14,7 +15,9 @@ const ActionContactsBar = () => {
   return (
     <div className="d-flex pr-3">
       <Dropdown isOpen={dropdownOpen} toggle={toggle} direction="down">
-        <DropdownToggle caret>Действия</DropdownToggle>
+        <DropdownToggle caret className="btn btn-outline-primary">
+          Действия
+        </DropdownToggle>
         <DropdownMenu right>
           <DropdownItem>Удалить</DropdownItem>
           <DropdownItem>Добавить в последовательность</DropdownItem>

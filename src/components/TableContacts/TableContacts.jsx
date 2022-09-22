@@ -1,4 +1,4 @@
-import { Table } from "reactstrap";
+import { Label, Table, Form, FormGroup } from "reactstrap";
 import "./TableContacts.scss";
 
 const TableContacts = ({ onSelect, activeContactId, data = { Items: [] } }) => {
@@ -23,9 +23,19 @@ const TableContacts = ({ onSelect, activeContactId, data = { Items: [] } }) => {
               onClick={() => onSelect(contact.id)}
               className={activeContactId === contact.id ? "table-primary" : ""}
             >
-              <td scope="row">
-                <div className="d-flex align-items-center justify-content-center">
-                  <input type="checkbox" />
+              <td scope="row" className="p-0">
+                <div className="custom-control checkbox-contact custom-checkbox ">
+                  <input
+                    className="custom-control-input"
+                    // checked={!!value}
+                    // onChange={(e) => onChange(data.Name, e.target.checked)}
+                    id={"check_" + contact.id}
+                    type="checkbox"
+                  />
+                  <Label
+                    className="custom-control-label"
+                    htmlFor={"check_" + contact.id}
+                  ></Label>
                 </div>
               </td>
               <td>{contact.name}</td>

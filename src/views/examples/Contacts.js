@@ -55,9 +55,9 @@ const Contacts = () => {
         <Row>
           <div className="col col-8 d-flex align-items-center">
             <h1 className="mt-4 mb-4 mr-3">Контакты</h1>
-            {(isFetching || isUpdating || isDeleting) && (
+            {/* {(isFetching || isUpdating || isDeleting) && (
               <Spinner color="primary" />
-            )}
+            )} */}
           </div>
         </Row>
         <Row>
