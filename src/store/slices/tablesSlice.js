@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   selectedIds: {},
+  tabs: [],
 };
 
 export const tablesSlice = createSlice({
@@ -23,9 +24,12 @@ export const tablesSlice = createSlice({
     clearSelectedIds: (state, action) => {
       state.selectedIds[action.payload] = [];
     },
+    setTab: (state, action) => {
+      state.tabs = [...state.tabs, action.payload].sort((a, b) => a.id - b.id);
+    },
   },
 });
 
-export const { addSelectedId, clearSelectedIds } = tablesSlice.actions;
+export const { addSelectedId, clearSelectedIds, setTab } = tablesSlice.actions;
 
 export default tablesSlice.reducer;

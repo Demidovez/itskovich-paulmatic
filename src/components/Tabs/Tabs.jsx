@@ -5,8 +5,9 @@ import { useLazyGetCompaniesInfoQuery } from "store/api/companies";
 import { checkFilters } from "store/slices/b2bFilterSlice";
 import "./Tabs.scss";
 import { useDispatch } from "react-redux";
+import { setTab } from "store/slices/tablesSlice";
 
-const Tabs = ({ data, parentPath, onTabs }) => {
+const Tabs = ({ parentPath, tabs }) => {
   const [getCompaniesInfo, companiesInfo] = useLazyGetCompaniesInfoQuery({
     selectFromResult: ({ data }) => data,
   });
@@ -15,34 +16,43 @@ const Tabs = ({ data, parentPath, onTabs }) => {
     selectFromResult: ({ data }) => data,
   });
 
-  const [tabs, setTabs] = useState([]);
   const [checkedIndex, setCheckedIndex] = useState(null);
 
   const history = useHistory();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getCompaniesInfo();
-    getPersonsInfo();
-  }, []);
+    if (tabs.length === 0) {
+      getCompaniesInfo();
+      getPersonsInfo();
+    }
+  }, [tabs.length]);
 
   useEffect(() => {
-    if (personsInfo && companiesInfo) {
+    if (companiesInfo) {
       const companies = {
+        id: 0,
         link: "/" + companiesInfo.name,
         label: companiesInfo.description,
         info: companiesInfo,
       };
 
+      dispatch(setTab(companies));
+    }
+  }, [companiesInfo]);
+
+  useEffect(() => {
+    if (personsInfo) {
       const persons = {
+        id: 1,
         link: "/" + personsInfo.name,
         label: personsInfo.description,
         info: personsInfo,
       };
 
-      setTabs([companies, persons]);
+      dispatch(setTab(persons));
     }
-  }, [personsInfo, companiesInfo]);
+  }, [personsInfo]);
 
   useEffect(() => {
     if (tabs.length > 0 && checkedIndex !== null) {
@@ -55,8 +65,6 @@ const Tabs = ({ data, parentPath, onTabs }) => {
 
   useEffect(() => {
     if (tabs.length > 0) {
-      onTabs(tabs);
-
       dispatch(checkFilters({ names: tabs.map((tab) => tab.info.name) }));
     }
   }, [tabs.length]);
