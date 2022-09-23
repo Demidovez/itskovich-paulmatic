@@ -1,3 +1,4 @@
+import React from "react";
 import { useDispatch } from "react-redux";
 import { Label, Table } from "reactstrap";
 import { addContactId } from "store/slices/contactsSlice";
@@ -74,4 +75,5 @@ const TableContacts = ({
   );
 };
 
-export default TableContacts;
+export default React.memo(TableContacts);
+// export default TableContacts;

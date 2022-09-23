@@ -1,3 +1,4 @@
+import React from "react";
 import { Card, CardHeader, Container, Row, Col, CardFooter } from "reactstrap";
 import TableContacts from "../../components/TableContacts/TableContacts";
 import FormContacts from "../../components/FormContacts/FormContacts";
@@ -25,8 +26,9 @@ const Contacts = () => {
     (state) => state.contacts
   );
 
-  const [searchContacts, { data: contactsData, isFetching }] =
-    useLazyGetContactsQuery();
+  const [searchContacts, contactsData] = useLazyGetContactsQuery({
+    selectFromResult: ({ data }) => data,
+  });
 
   useEffect(() => {
     searchContacts({
@@ -38,19 +40,20 @@ const Contacts = () => {
   }, [currentPage, searchValue]);
 
   useEffect(() => {
-    if (contactsData && contactsData.TotalCount) {
+    if (
+      contactsData &&
+      contactsData.TotalCount &&
+      currentPage > 0 &&
+      selectedIds.length > 0
+    ) {
       contactsData.TotalCount && onSetCurrentPage(0);
       dispatch(clearSelectedIds());
     }
   }, [contactsData && contactsData.TotalCount]);
 
-  const [createOrUpdateContact, { isLoading: isUpdating }] =
-    useCreateOrUpdateContactMutation();
+  const [createOrUpdateContact] = useCreateOrUpdateContactMutation();
 
-  const [
-    deleteContactsByID,
-    { isLoading: isDeleting, isFetching: isFetching1 },
-  ] = useDeleteContactsMutation();
+  const [deleteContactsByID] = useDeleteContactsMutation();
 
   const [activeContact, setActiveContact] = useState({});
   const [isShowModalDelete, setIsShowModalDelete] = useState(false);
@@ -97,9 +100,6 @@ const Contacts = () => {
         <Row>
           <div className="col col-8 d-flex align-items-center">
             <h1 className="mt-4 mb-4 mr-3">Контакты</h1>
-            {/*{(isFetching || isUpdating || isDeleting) && (*/}
-            {/*  <Spinner color="primary" />*/}
-            {/*)}*/}
           </div>
         </Row>
         <Row className="flex-fill">

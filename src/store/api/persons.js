@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import {getServerUrl} from "./server";
+import { getServerUrl } from "./server";
 
 export const personsApi = createApi({
   reducerPath: "personsApi",
@@ -40,4 +40,5 @@ export const personsApi = createApi({
   }),
 });
 
-export const { useGetPersonsInfoQuery, useLazyGetPersonsQuery } = personsApi;
+export const { useLazyGetPersonsInfoQuery, useLazyGetPersonsQuery } =
+  personsApi;

@@ -64,6 +64,7 @@
     "sass": "1.54.5"
   },
   "devDependencies": {
+    "@welldone-software/why-did-you-render": "^7.0.1",
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.9"
   },
