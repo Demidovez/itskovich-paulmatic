@@ -4,6 +4,7 @@ import { getServerUrl } from "./server";
 export const personsApi = createApi({
   reducerPath: "personsApi",
   baseQuery: fetchBaseQuery({ baseUrl: getServerUrl("b2b") }),
+  tagTypes: ["Persons"],
   endpoints: (builder) => ({
     getPersonsInfo: builder.query({
       query: () => ({
@@ -36,6 +37,13 @@ export const personsApi = createApi({
           }
         );
       },
+      providesTags: (result) =>
+        result.Items
+          ? [
+              ...result.Items.map(({ id }) => ({ type: "Persons", id })),
+              { type: "Persons", id: "LIST" },
+            ]
+          : [{ type: "Persons", id: "LIST" }],
     }),
   }),
 });

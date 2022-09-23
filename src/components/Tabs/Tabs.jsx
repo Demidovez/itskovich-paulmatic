@@ -6,8 +6,9 @@ import { checkFilters } from "store/slices/b2bFilterSlice";
 import "./Tabs.scss";
 import { useDispatch } from "react-redux";
 import { addTables } from "store/slices/tablesSlice";
+import { setActiveTable } from "store/slices/tablesSlice";
 
-const Tabs = ({ parentPath, tabs }) => {
+const Tabs = ({ tabs, activeTable }) => {
   const { companies, persons } = tabs;
 
   const [getCompaniesInfo, { data: companiesInfo }] =
@@ -15,9 +16,6 @@ const Tabs = ({ parentPath, tabs }) => {
 
   const [getPersonsInfo, { data: personsInfo }] = useLazyGetPersonsInfoQuery();
 
-  const [checkedTab, setCheckedTab] = useState(null);
-
-  const history = useHistory();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -60,26 +58,22 @@ const Tabs = ({ parentPath, tabs }) => {
     }
   }, [companiesInfo, personsInfo]);
 
-  useEffect(() => {
-    if (checkedTab !== null) {
-      setTimeout(() => history.replace(parentPath + tabs[checkedTab].link), 0);
-    }
-  }, [checkedTab]);
+  const onActiveTable = (table) => {
+    dispatch(setActiveTable(table));
+  };
 
   return (
     <>
       <div className="tabs-component">
         <div className="tabs">
           {Object.keys(companies).length > 0 && (
-            <Fragment key={companies.link}>
+            <Fragment>
               <input
                 type="radio"
                 id={`radio-1`}
                 name="tabs"
-                checked={
-                  checkedTab === null || checkedTab === companies.info.name
-                }
-                onChange={() => setCheckedTab(companies.info.name)}
+                checked={activeTable === companies.info.name}
+                onChange={() => onActiveTable(companies.info.name)}
               />
               <label className="tab" htmlFor={`radio-1`}>
                 {companies.label}
@@ -88,13 +82,13 @@ const Tabs = ({ parentPath, tabs }) => {
           )}
 
           {Object.keys(persons).length > 0 && (
-            <Fragment key={persons.link}>
+            <Fragment>
               <input
                 type="radio"
                 id={`radio-2`}
                 name="tabs"
-                checked={checkedTab === persons.info.name}
-                onChange={() => setCheckedTab(persons.info.name)}
+                checked={activeTable === persons.info.name}
+                onChange={() => onActiveTable(persons.info.name)}
               />
               <label className="tab" htmlFor={`radio-2`}>
                 {persons.label}

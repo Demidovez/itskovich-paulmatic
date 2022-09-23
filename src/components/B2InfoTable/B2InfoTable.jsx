@@ -43,6 +43,7 @@ const B2InfoTable = ({ info, data = {}, fetchData, fields = [] }) => {
   };
 
   useEffect(() => {
+    console.log("fetchData useEffect");
     fetchData({
       ...filterState,
       offset: currentPage * COUNT_ON_PAGE,
@@ -110,4 +111,4 @@ const B2InfoTable = ({ info, data = {}, fetchData, fields = [] }) => {
   );
 };
 
-export default B2InfoTable;
+export default React.memo(B2InfoTable);

@@ -19,7 +19,7 @@ const TableInfo = ({ data, fields = [], table, selectedIds = [] }) => {
       style={{ overflow: "auto", height: 0 }}
     >
       {data && (
-        <Table className="align-items-center table-flush table-hover fixed-header">
+        <Table className="align-items-center table-flush table-hover">
           <thead className="thead-light">
             <tr>
               {fields.map((field) => (
@@ -32,7 +32,7 @@ const TableInfo = ({ data, fields = [], table, selectedIds = [] }) => {
           <tbody>
             {data.map((company) => (
               <tr key={company.id}>
-                {fields.map((field, index) => {
+                {fields.map((field) => {
                   if (field.name === "checkbox") {
                     return (
                       <td scope="row" className="p-0" key={field.name}>

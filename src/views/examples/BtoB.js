@@ -93,61 +93,43 @@ const personsFields = [
   },
 ];
 
-const BtoB = (props) => {
-  const [fetchCompanies, { data: companiesData }] = useLazyGetCompaniesQuery();
+const BtoB = () => {
+  const [fetchCompanies, companiesData] = useLazyGetCompaniesQuery({
+    selectFromResult: ({ data }) => data,
+  });
 
-  const [fetchPersons, { data: personsData }] = useLazyGetPersonsQuery();
+  const [fetchPersons, personsData] = useLazyGetPersonsQuery({
+    selectFromResult: ({ data }) => data,
+  });
 
   const { companies, persons } = useSelector((state) => state.tables.tables);
-
-  console.log("BtoB", companiesData);
+  const activeTable = useSelector((state) => state.tables.activeTable);
 
   return (
     <>
       <Container fluid className="d-flex flex-column h-100vh overflow-hidden">
         <Row>
           <div className="col mt-3 mb-3">
-            <Tabs tabs={{ companies, persons }} parentPath={props.match.path} />
+            <Tabs tabs={{ companies, persons }} activeTable={activeTable} />
           </div>
         </Row>
         <Row className="flex-fill">
-          <Switch>
-            {Object.keys(companies).length > 0 && (
-              <Route
-                path={props.match.path + companies.link}
-                render={() => (
-                  <B2InfoTable
-                    info={companies.info}
-                    data={companiesData}
-                    fetchData={fetchCompanies}
-                    key={companies.info.name}
-                    fields={companiesFields}
-                  />
-                )}
-              />
-            )}
-            {Object.keys(persons).length > 0 && (
-              <Route
-                path={props.match.path + persons.link}
-                render={() => (
-                  <B2InfoTable
-                    info={persons.info}
-                    data={personsData}
-                    fetchData={fetchPersons}
-                    key={persons.info.name}
-                    fields={personsFields}
-                  />
-                )}
-              />
-            )}
-
-            {Object.keys(companies).length > 0 && (
-              <Redirect
-                from={props.match.path}
-                to={props.match.path + companies.link}
-              />
-            )}
-          </Switch>
+          {activeTable === "companies" && Object.keys(companies).length > 0 && (
+            <B2InfoTable
+              info={companies.info}
+              data={companiesData}
+              fetchData={fetchCompanies}
+              fields={companiesFields}
+            />
+          )}
+          {activeTable === "persons" && Object.keys(persons).length > 0 && (
+            <B2InfoTable
+              info={persons.info}
+              data={personsData}
+              fetchData={fetchPersons}
+              fields={personsFields}
+            />
+          )}
         </Row>
       </Container>
     </>

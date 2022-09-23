@@ -30,8 +30,6 @@ const Contacts = () => {
     selectFromResult: ({ data }) => data,
   });
 
-  console.log("Contacts", contactsData);
-
   useEffect(() => {
     searchContacts({
       body: {
