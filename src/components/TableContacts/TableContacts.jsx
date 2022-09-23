@@ -16,7 +16,10 @@ const TableContacts = ({
   };
 
   return (
-    <div className="table-contacts">
+    <div
+      className="table-contacts flex-fill"
+      style={{ overflow: "auto", height: 0 }}
+    >
       <Table
         className="align-items-center table-flush table-hover fixed-header"
         responsive

@@ -7,10 +7,11 @@ export const contactsApi = createApi({
   tagTypes: ["Contacts"],
   endpoints: (builder) => ({
     getContacts: builder.query({
-      query: (search) => ({
+      query: ({ body, params }) => ({
         url: "/search",
         method: "POST",
-        body: search ? { name: search } : {},
+        params: params || {},
+        body: body || {},
         headers: {
           "caller-version-code": 1,
           sessionToken: "user-1",
