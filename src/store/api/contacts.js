@@ -40,18 +40,20 @@ export const contactsApi = createApi({
       }),
       invalidatesTags: [{ type: "Contacts", id: "LIST" }],
     }),
-    deleteContact: builder.mutation({
-      query: (id) => ({
+    deleteContacts: builder.mutation({
+      query: (ids) => ({
         url: "/delete",
         method: "POST",
-        body: { id },
+        body: ids,
         headers: {
           "caller-version-code": 1,
           sessionToken: "user-1",
           "Content-type": "application/json",
         },
       }),
-      invalidatesTags: (_, __, id) => [{ type: "Contacts", id }],
+      invalidatesTags: (_, __, ids) => [
+        ...ids.map((id) => ({ type: "Contacts", id })),
+      ],
     }),
   }),
 });
@@ -59,5 +61,5 @@ export const contactsApi = createApi({
 export const {
   useLazyGetContactsQuery,
   useCreateOrUpdateContactMutation,
-  useDeleteContactMutation,
+  useDeleteContactsMutation,
 } = contactsApi;

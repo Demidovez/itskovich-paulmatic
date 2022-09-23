@@ -6,7 +6,7 @@ import UploadContacts from "../../components/UploadContacts/UploadContacts";
 import {
   useLazyGetContactsQuery,
   useCreateOrUpdateContactMutation,
-  useDeleteContactMutation,
+  useDeleteContactsMutation,
 } from "../../store/api/contacts";
 import { useEffect, useState } from "react";
 import ActionContactsBar from "components/ActionContactsBar/ActionContactsBar";
@@ -27,9 +27,9 @@ const Contacts = () => {
     useCreateOrUpdateContactMutation();
 
   const [
-    deleteContactByID,
+    deleteContactsByID,
     { isLoading: isDeleting, isFetching: isFetching1 },
-  ] = useDeleteContactMutation();
+  ] = useDeleteContactsMutation();
 
   const selectedIds = useSelector((state) => state.contacts.selectedIds);
 
@@ -46,7 +46,7 @@ const Contacts = () => {
   };
 
   const onRemove = (id) => {
-    deleteContactByID(id);
+    deleteContactsByID([id]);
     onResetForm();
   };
 
@@ -62,7 +62,7 @@ const Contacts = () => {
 
   const handleDeleteContact = () => {
     setIsShowModalDelete(false);
-    selectedIds.map((id) => deleteContactByID(id));
+    deleteContactsByID(selectedIds);
     onResetForm();
     dispatch(clearSelectedIds());
   };
