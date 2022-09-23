@@ -11,6 +11,8 @@ const TableInfo = ({ data, fields = [], table, selectedIds = [] }) => {
     dispatch(addSelectedId({ table, id }));
   };
 
+  // console.log(data);
+
   return (
     <div
       className="table-info-component flex-fill"
