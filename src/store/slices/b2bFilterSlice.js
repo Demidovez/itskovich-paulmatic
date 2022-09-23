@@ -6,11 +6,13 @@ export const b2bFilterSlice = createSlice({
   name: "b2bFilter",
   initialState,
   reducers: {
-    checkFilter: (state, action) => {
-      if (!state[action.payload.filter]) {
-        state[action.payload.filter] = {};
-        state.status[action.payload.filter] = "init";
-      }
+    checkFilters: (state, action) => {
+      action.payload.names.map((name) => {
+        if (!state[name]) {
+          state[name] = {};
+          state.status[name] = "init";
+        }
+      });
     },
     resetFilter: (state, action) => {
       state[action.payload] = {};
@@ -21,7 +23,6 @@ export const b2bFilterSlice = createSlice({
         state[action.payload.filter][action.payload.item] =
           action.payload.value;
 
-        // console.log("addFilterItem");
         state.status[action.payload.filter] = "event";
 
         if (action.payload.dependValue) {
@@ -30,6 +31,7 @@ export const b2bFilterSlice = createSlice({
       } else {
         if (state[action.payload.filter]) {
           delete state[action.payload.filter][action.payload.item];
+          state.status[action.payload.filter] = "event";
         }
       }
     },
@@ -40,13 +42,12 @@ export const b2bFilterSlice = createSlice({
     setSearchValue: (state, action) => {
       state.search[action.payload.filter] = action.payload.search;
       state.status[action.payload.filter] = "event";
-      // console.log("setSearchValue ");
     },
   },
 });
 
 export const {
-  checkFilter,
+  checkFilters,
   resetFilter,
   addFilterItem,
   setCurrentPage,

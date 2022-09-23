@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// TODO: Пока редусер не нужен, работа идет через RTK
-// возможно понадобиться в будущем
-
 const initialState = {
   selectedIds: [],
+  currentPage: 0,
+  searchValue: "",
 };
 
 export const contactsSlice = createSlice({
@@ -19,6 +18,12 @@ export const contactsSlice = createSlice({
     clearSelectedIds: (state, action) => {
       state.selectedIds = [];
     },
+    setCurrentContactPage: (state, action) => {
+      state.currentPage = action.payload;
+    },
+    searchValueContactPage: (state, action) => {
+      state.searchValue = action.payload;
+    },
     // decrement: (state) => {
     //   state.value -= 1;
     // },
@@ -28,6 +33,11 @@ export const contactsSlice = createSlice({
   },
 });
 
-export const { addContactId, clearSelectedIds } = contactsSlice.actions;
+export const {
+  addContactId,
+  clearSelectedIds,
+  setCurrentContactPage,
+  searchValueContactPage,
+} = contactsSlice.actions;
 
 export default contactsSlice.reducer;

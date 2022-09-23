@@ -2,6 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   selectedIds: {},
+  activeTable: "companies",
+  tables: {
+    companies: {},
+    persons: {},
+  },
 };
 
 export const tablesSlice = createSlice({
@@ -23,9 +28,18 @@ export const tablesSlice = createSlice({
     clearSelectedIds: (state, action) => {
       state.selectedIds[action.payload] = [];
     },
+    addTables: (state, action) => {
+      action.payload.map((table) => {
+        state.tables[table.table] = table.data;
+      });
+    },
+    setActiveTable: (state, action) => {
+      state.activeTable = action.payload;
+    },
   },
 });
 
-export const { addSelectedId, clearSelectedIds } = tablesSlice.actions;
+export const { addSelectedId, clearSelectedIds, addTables, setActiveTable } =
+  tablesSlice.actions;
 
 export default tablesSlice.reducer;

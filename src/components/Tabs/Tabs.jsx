@@ -1,39 +1,101 @@
 import { useHistory } from "react-router-dom";
 import { Fragment, useState, useEffect } from "react";
+import { useLazyGetPersonsInfoQuery } from "store/api/persons";
+import { useLazyGetCompaniesInfoQuery } from "store/api/companies";
+import { checkFilters } from "store/slices/b2bFilterSlice";
 import "./Tabs.scss";
+import { useDispatch } from "react-redux";
+import { addTables } from "store/slices/tablesSlice";
+import { setActiveTable } from "store/slices/tablesSlice";
 
-const Tabs = ({ data, parentPath }) => {
-  const [checkedIndex, setCheckedIndex] = useState(0);
+const Tabs = ({ tabs, activeTable }) => {
+  const { companies, persons } = tabs;
 
-  const history = useHistory();
+  const [getCompaniesInfo, { data: companiesInfo }] =
+    useLazyGetCompaniesInfoQuery();
+
+  const [getPersonsInfo, { data: personsInfo }] = useLazyGetPersonsInfoQuery();
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    data.length > 0 &&
-      setTimeout(
-        () => history.replace(parentPath + data[checkedIndex].link),
-        0
+    if (
+      Object.keys(companies).length === 0 &&
+      Object.keys(persons).length === 0
+    ) {
+      getCompaniesInfo();
+      getPersonsInfo();
+    } else if (
+      Object.keys(companies).length > 0 &&
+      Object.keys(persons).length > 0
+    ) {
+      dispatch(
+        checkFilters({ names: [companies.info.name, persons.info.name] })
       );
-  }, [checkedIndex, data]);
+    }
+  }, [companies, persons]);
 
-  // TODO: radio-1 radio-2 radio-3 radio-4 - Сделать динамическими в SCSS
+  useEffect(() => {
+    if (companiesInfo && personsInfo) {
+      const companies = {
+        link: "/" + companiesInfo.name,
+        label: companiesInfo.description,
+        info: companiesInfo,
+      };
+
+      const persons = {
+        link: "/" + personsInfo.name,
+        label: personsInfo.description,
+        info: personsInfo,
+      };
+
+      dispatch(
+        addTables([
+          { table: "companies", data: companies },
+          { table: "persons", data: persons },
+        ])
+      );
+    }
+  }, [companiesInfo, personsInfo]);
+
+  const onActiveTable = (table) => {
+    dispatch(setActiveTable(table));
+  };
+
   return (
     <>
       <div className="tabs-component">
         <div className="tabs">
-          {data.map((tab, index) => (
-            <Fragment key={tab.link}>
+          {Object.keys(companies).length > 0 && (
+            <Fragment>
               <input
                 type="radio"
-                id={`radio-${index + 1}`}
+                id={`radio-1`}
                 name="tabs"
-                checked={index === checkedIndex}
-                onChange={() => setCheckedIndex(index)}
+                checked={activeTable === companies.info.name}
+                onChange={() => onActiveTable(companies.info.name)}
               />
-              <label className="tab" htmlFor={`radio-${index + 1}`}>
-                {tab.label}
+              <label className="tab" htmlFor={`radio-1`}>
+                {companies.label}
               </label>
             </Fragment>
-          ))}
+          )}
+
+          {Object.keys(persons).length > 0 && (
+            <Fragment>
+              <input
+                type="radio"
+                id={`radio-2`}
+                name="tabs"
+                checked={activeTable === persons.info.name}
+                onChange={() => onActiveTable(persons.info.name)}
+              />
+              <label className="tab" htmlFor={`radio-2`}>
+                {persons.label}
+              </label>
+            </Fragment>
+          )}
+
           <span className="glider"></span>
         </div>
       </div>

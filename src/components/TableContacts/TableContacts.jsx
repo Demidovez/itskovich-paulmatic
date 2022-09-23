@@ -1,3 +1,4 @@
+import React from "react";
 import { useDispatch } from "react-redux";
 import { Label, Table } from "reactstrap";
 import { addContactId } from "store/slices/contactsSlice";
@@ -16,7 +17,10 @@ const TableContacts = ({
   };
 
   return (
-    <div className="table-contacts">
+    <div
+      className="table-contacts flex-fill"
+      style={{ overflow: "auto", height: 0 }}
+    >
       <Table
         className="align-items-center table-flush table-hover fixed-header"
         responsive
@@ -71,4 +75,5 @@ const TableContacts = ({
   );
 };
 
-export default TableContacts;
+export default React.memo(TableContacts);
+// export default TableContacts;

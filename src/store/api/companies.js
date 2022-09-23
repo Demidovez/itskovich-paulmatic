@@ -1,9 +1,10 @@
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import {getServerUrl} from "./server";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { getServerUrl } from "./server";
 
 export const companiesApi = createApi({
   reducerPath: "companiesApi",
-  baseQuery: fetchBaseQuery({baseUrl: getServerUrl("b2b")}),
+  baseQuery: fetchBaseQuery({ baseUrl: getServerUrl("b2b") }),
+  tagTypes: ["Companies"],
   endpoints: (builder) => ({
     getCompaniesInfo: builder.query({
       query: () => ({
@@ -36,12 +37,19 @@ export const companiesApi = createApi({
           }
         );
       },
+      providesTags: (result) =>
+        result.Items
+          ? [
+              ...result.Items.map(({ id }) => ({ type: "Companies", id })),
+              { type: "Companies", id: "LIST" },
+            ]
+          : [{ type: "Companies", id: "LIST" }],
     }),
   }),
 });
 
 export const {
-    useGetCompaniesInfoQuery,
-    useGetCompaniesQuery,
-    useLazyGetCompaniesQuery,
+  useLazyGetCompaniesInfoQuery,
+  useGetCompaniesQuery,
+  useLazyGetCompaniesQuery,
 } = companiesApi;
