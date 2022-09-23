@@ -22,7 +22,7 @@ const TableContacts = ({
       style={{ overflow: "auto", height: 0 }}
     >
       <Table
-        className="align-items-center table-flush table-hover fixed-header"
+        className="align-items-center table-flush table-hover fixed-header flex-fill"
         responsive
       >
         <thead className="thead-light">

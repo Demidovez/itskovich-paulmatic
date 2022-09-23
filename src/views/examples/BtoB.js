@@ -4,8 +4,10 @@ import B2InfoTable from "../../components/B2InfoTable/B2InfoTable";
 import Tabs from "../../components/Tabs/Tabs";
 import { useLazyGetPersonsQuery } from "store/api/persons";
 import { useLazyGetCompaniesQuery } from "store/api/companies";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { companiesApi } from "store/api/companies";
+import { useGetCompaniesQuery } from "store/api/companies";
 
 const companiesFields = [
   {
@@ -94,9 +96,7 @@ const personsFields = [
 ];
 
 const BtoB = () => {
-  const [fetchCompanies, companiesData] = useLazyGetCompaniesQuery({
-    selectFromResult: ({ data }) => data,
-  });
+  const [fetchCompanies, { data: companiesData }] = useLazyGetCompaniesQuery();
 
   const [fetchPersons, personsData] = useLazyGetPersonsQuery({
     selectFromResult: ({ data }) => data,

@@ -5,7 +5,10 @@ const PaginationCustom = ({ allCount = 0, page, moveToPage, countOnPage }) => {
   const countPages = Math.ceil(allCount / countOnPage);
 
   return (
-    <div className="d-flex justify-content-between align-items-center">
+    <div
+      className="d-flex justify-content-between align-items-center"
+      style={{ minHeight: 36 }}
+    >
       {allCount ? (
         <p className="m-0">
           Найдено: <strong>{allCount}</strong>

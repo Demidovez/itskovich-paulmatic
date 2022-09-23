@@ -3,17 +3,19 @@ import TableInfo from "../TableInfo/TableInfo";
 import FilterB2B from "../FilterB2B/FilterB2B";
 import SearchBar from "../SearchBar/SearchBar";
 import Pagination from "../Pagination/Pagination";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { setCurrentPage } from "store/slices/b2bFilterSlice";
 import { setSearchValue } from "store/slices/b2bFilterSlice";
 import ActionTableBar from "components/ActionTableBar/ActionTableBar";
 import { clearSelectedIds } from "store/slices/tablesSlice";
+import { useGetCompaniesState } from "store/api/companies";
+import { setCache } from "store/slices/tablesSlice";
 
 const COUNT_ON_PAGE = 100;
 
-const B2InfoTable = ({ info, data = {}, fetchData, fields = [] }) => {
+const B2InfoTable = ({ info, data, fetchData, fields = [] }) => {
   const filterState = useSelector((state) => state.filter[info.name]);
   const currentPage = useSelector(
     (state) => state.filter.currentPage[info.name] || 0
@@ -23,6 +25,7 @@ const B2InfoTable = ({ info, data = {}, fetchData, fields = [] }) => {
   const selectedIds = useSelector(
     (state) => state.tables.selectedIds[info.name] || []
   );
+  const cacheTables = useSelector((state) => state.tables.cache);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -43,7 +46,6 @@ const B2InfoTable = ({ info, data = {}, fetchData, fields = [] }) => {
   };
 
   useEffect(() => {
-    console.log("fetchData useEffect");
     fetchData({
       ...filterState,
       offset: currentPage * COUNT_ON_PAGE,
@@ -59,6 +61,10 @@ const B2InfoTable = ({ info, data = {}, fetchData, fields = [] }) => {
   const onAddContact = () => {};
 
   const onAddToSequence = () => {};
+
+  useEffect(() => {
+    data && dispatch(setCache({ table: info.name, data }));
+  }, [data]);
 
   return (
     <>
@@ -82,15 +88,25 @@ const B2InfoTable = ({ info, data = {}, fetchData, fields = [] }) => {
             </Row>
           </CardHeader>
           <TableInfo
-            data={data.Items}
+            data={
+              (data && data.Items) ||
+              (cacheTables[info.name] && cacheTables[info.name].Items)
+            }
             fields={fields}
             table={info.name}
             selectedIds={selectedIds}
           />
-          <CardFooter className="d-flex justify-content-between align-items-center">
+          <CardFooter
+            className="d-flex justify-content-between align-items-center"
+            // style={{ position: "absolute", bottom: 0 }}
+          >
             <div></div>
             <Pagination
-              allCount={data ? data.TotalCount : 0}
+              allCount={
+                data
+                  ? data.TotalCount
+                  : cacheTables[info.name] && cacheTables[info.name].TotalCount
+              }
               countOnPage={COUNT_ON_PAGE}
               page={currentPage}
               moveToPage={onSetCurrentPage}
