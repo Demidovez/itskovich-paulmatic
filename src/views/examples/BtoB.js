@@ -36,6 +36,10 @@ const companiesFields = [
     //     name: "Country",
     // },
     {
+        label: "Индекс",
+        name: "ZipCode",
+    },
+    {
         label: "E-mail",
         name: "Email",
     },
@@ -51,18 +55,14 @@ const companiesFields = [
         label: "Соц.сети",
         name: "Socials",
     },
-    {
-        label: "Подкатегория",
-        name: "Subcategory",
-    },
+    // {
+    //     label: "Подкатегория",
+    //     name: "Subcategory",
+    // },
     {
         label: "Сайт",
         name: "Website",
-    },
-    {
-        label: "Индекс",
-        name: "ZipCode",
-    },
+    }
 ];
 
 const personsFields = [

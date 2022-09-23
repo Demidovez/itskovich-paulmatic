@@ -21,7 +21,7 @@ const HiddenTableCell = ({ value }) => {
           size="sm"
           style={{ width: 100 }}
           color="primary"
-          className="ml-2 mr-2"
+          className="ml-2 mr-2 btn-outline-primary"
         >
           {isLoading ? <Spinner size="sm" /> : "Получить"}
         </Button>
