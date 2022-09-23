@@ -75,7 +75,11 @@ const personsFields = [
         name: "FullName",
     },
     {
-        label: "Title",
+        label: "Индустрия",
+        name: "Industry",
+    },
+    {
+        label: "Должность",
         name: "Title",
     },
     {

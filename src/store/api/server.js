@@ -8,5 +8,5 @@ const serverUrls = {
 }
 
 export function getServerUrl(category) {
-    return serverUrls.remote.dev + "/" + category
+    return serverUrls.local.dev + "/" + category
 }
