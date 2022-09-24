@@ -18,7 +18,10 @@ const TableInfo = ({ data, fields = [], table, selectedIds = [] }) => {
       className="table-info-component flex-fill"
       style={{ overflow: "auto", height: 0 }}
     >
-      <Table className="align-items-center table-flush table-hover">
+      <Table
+        className="align-items-center table-flush table-hover fixed-header"
+        responsive
+      >
         <thead className="thead-light">
           <tr>
             {fields.map((field) => (
@@ -113,7 +116,14 @@ const TableInfo = ({ data, fields = [], table, selectedIds = [] }) => {
                         </a>
                       </td>
                     );
-                  } else if (["Email", "Phone"].includes(field.name)) {
+                  } else if (["Email"].includes(field.name)) {
+                    return (
+                      <HiddenTableCell
+                        key={field.name}
+                        value={company[field.name]}
+                      />
+                    );
+                  } else if (["Phone"].includes(field.name)) {
                     return (
                       <HiddenTableCell
                         key={field.name}

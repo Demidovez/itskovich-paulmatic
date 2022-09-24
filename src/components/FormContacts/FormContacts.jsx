@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
-import { Card, CardBody, CardHeader, Input, Button } from "reactstrap";
+import {
+  Card,
+  Col,
+  CardBody,
+  CardHeader,
+  Input,
+  Button,
+  Row,
+} from "reactstrap";
 
 const DEFAULT_CONTACT = {
   name: "",
@@ -68,25 +76,47 @@ const FormContacts = ({
           value={currentContact.linkedin || ""}
           onChange={(e) => onInputChange(e, "linkedin")}
         />
-        <div className="d-flex justify-content-between">
-          <div>
-            <Button color="primary" onClick={onNew}>
+        <Row>
+          <div className="col mb-3">
+            <Button color="primary" onClick={onNew} className="w-100">
               Новый
             </Button>
+          </div>
+          <div className="col mb-3">
             <Button
               color="primary"
+              className="w-100"
               onClick={handleSave}
               disabled={!currentContact.name || !currentContact.email}
             >
               Сохранить
             </Button>
           </div>
-          {contact.id && (
-            <Button color="danger" outline onClick={handleRemove}>
-              Удалить
-            </Button>
-          )}
-        </div>
+        </Row>
+
+        {contact.id && (
+          <Row>
+            <div className="col">
+              <Button
+                color="danger"
+                className="w-100"
+                outline
+                onClick={handleRemove}
+              >
+                Удалить
+              </Button>
+            </div>
+          </Row>
+        )}
+
+        {/* <div className="d-flex justify-content-between">
+          <div>
+            
+            
+          </div>
+          <div></div>
+          
+        </div> */}
       </CardBody>
     </Card>
   );

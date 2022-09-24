@@ -24,15 +24,15 @@ export const b2bFilterSlice = createSlice({
           action.payload.value;
 
         state.status[action.payload.filter] = "event";
-
-        if (action.payload.dependValue) {
-          delete state[action.payload.filter][action.payload.dependValue];
-        }
       } else {
         if (state[action.payload.filter]) {
           delete state[action.payload.filter][action.payload.item];
           state.status[action.payload.filter] = "event";
         }
+      }
+
+      if (action.payload.dependValue) {
+        delete state[action.payload.filter][action.payload.dependValue];
       }
     },
     setCurrentPage: (state, action) => {

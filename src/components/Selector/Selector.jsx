@@ -12,7 +12,6 @@ const Selector = ({ data, value, onSelect, isDisabled, dependValue }) => {
 
   const toggle = () => setDropdownOpen((prevState) => !prevState);
 
-  // TODO: Наверное плохое решение, лучше перенести в редусер
   useEffect(() => {
     if (data.Variants) {
       let variants = data.Variants;
@@ -23,15 +22,9 @@ const Selector = ({ data, value, onSelect, isDisabled, dependValue }) => {
           .map((variant) => variant.replace(/(.*);(.*)/gi, "$2"));
       }
 
-      setVariants(variants);
+      setVariants(["Все", ...variants]);
     }
   }, [data.Variants, dependValue]);
-
-  // useEffect(() => {
-  //   if (!variants.includes(value)) {
-  //     onSelect(null);
-  //   }
-  // }, [variants, value]);
 
   return (
     <Dropdown
@@ -66,7 +59,10 @@ const Selector = ({ data, value, onSelect, isDisabled, dependValue }) => {
         right
       >
         {variants.map((variant, index) => (
-          <DropdownItem key={index} onClick={() => onSelect(variant)}>
+          <DropdownItem
+            key={index}
+            onClick={() => onSelect(variant === "Все" ? "" : variant)}
+          >
             {variant}
           </DropdownItem>
         ))}

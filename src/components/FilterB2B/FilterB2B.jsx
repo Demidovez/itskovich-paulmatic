@@ -10,6 +10,7 @@ const FilterB2B = ({ name, filterState = {}, filters, style, className }) => {
   const dispatch = useDispatch();
 
   const onSelectFilter = (item, value, dependValue) => {
+    console.log(name, item, value, dependValue);
     dispatch(addFilterItem({ filter: name, item, value, dependValue }));
   };
 

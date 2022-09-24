@@ -111,7 +111,7 @@ const Contacts = () => {
           </div>
         </Row>
         <Row className="flex-fill">
-          <div className="col col-9 mb-5 d-flex">
+          <div className="col col-9 mb-3 d-flex">
             <Card className="shadow flex-fill overflow-hidden">
               <CardHeader className="border-0 ">
                 <Row>
