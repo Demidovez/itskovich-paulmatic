@@ -48,6 +48,15 @@ export const companiesApi = createApi({
   }),
 });
 
+export const useGetCompaniesState =
+  companiesApi.endpoints.getCompanies.useQueryState;
+
+export const useLazyGetCompaniesSubscription =
+  companiesApi.endpoints.getCompanies.useLazyQuerySubscription;
+
+export const useGetCompaniesSubscription =
+  companiesApi.endpoints.getCompanies.useQuerySubscription;
+
 export const {
   useLazyGetCompaniesInfoQuery,
   useGetCompaniesQuery,

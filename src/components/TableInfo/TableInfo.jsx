@@ -18,19 +18,19 @@ const TableInfo = ({ data, fields = [], table, selectedIds = [] }) => {
       className="table-info-component flex-fill"
       style={{ overflow: "auto", height: 0 }}
     >
-      {data && (
-        <Table className="align-items-center table-flush table-hover">
-          <thead className="thead-light">
-            <tr>
-              {fields.map((field) => (
-                <th scope="col" key={field.name + "1"}>
-                  {field.label}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((company) => (
+      <Table className="align-items-center table-flush table-hover">
+        <thead className="thead-light">
+          <tr>
+            {fields.map((field) => (
+              <th scope="col" key={field.name + "1"}>
+                {field.label}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {data &&
+            data.map((company) => (
               <tr key={company.id}>
                 {fields.map((field) => {
                   if (field.name === "checkbox") {
@@ -126,9 +126,8 @@ const TableInfo = ({ data, fields = [], table, selectedIds = [] }) => {
                 })}
               </tr>
             ))}
-          </tbody>
-        </Table>
-      )}
+        </tbody>
+      </Table>
 
       {data && data.length === 0 && <p className="message">Не найдено :(</p>}
     </div>

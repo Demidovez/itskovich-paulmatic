@@ -16,14 +16,32 @@ const TableContacts = ({
         dispatch(addContactId(id));
     };
 
-    return (
-        <div
-            className="table-contacts flex-fill"
-            style={{overflow: "auto", height: 0}}
-        >
-            <Table
-                className="align-items-center table-flush table-hover fixed-header"
-                responsive
+  return (
+    <div
+      className="table-contacts flex-fill"
+      style={{ overflow: "auto", height: 0 }}
+    >
+      <Table
+        className="align-items-center table-flush table-hover fixed-header flex-fill"
+        responsive
+      >
+        <thead className="thead-light">
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Имя</th>
+            <th scope="col">Компания</th>
+            <th scope="col">Email</th>
+            <th scope="col">Телефон</th>
+            <th scope="col">Linkedin</th>
+            <th scope="col">Последовательность</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.Items.map((contact) => (
+            <tr
+              key={contact.id}
+              onClick={() => onSelect(contact.id)}
+              className={activeContactId === contact.id ? "table-primary" : ""}
             >
                 <thead className="thead-light">
                 <tr>

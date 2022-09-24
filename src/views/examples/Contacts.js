@@ -17,6 +17,7 @@ import Modal from "components/Modal/Modal";
 import { setCurrentContactPage } from "store/slices/contactsSlice";
 import Pagination from "components/Pagination/Pagination";
 import { searchValueContactPage } from "store/slices/contactsSlice";
+import { setCache } from "store/slices/tablesSlice";
 
 const COUNT_ON_PAGE = 100;
 
@@ -26,9 +27,16 @@ const Contacts = () => {
     (state) => state.contacts
   );
 
+  const cacheTables = useSelector((state) => state.tables.cache);
+
   const [searchContacts, contactsData] = useLazyGetContactsQuery({
     selectFromResult: ({ data }) => data,
   });
+
+  useEffect(() => {
+    contactsData &&
+      dispatch(setCache({ table: "contacts", data: contactsData }));
+  }, [contactsData]);
 
   useEffect(() => {
     searchContacts({
@@ -124,7 +132,7 @@ const Contacts = () => {
                 </Row>
               </CardHeader>
               <TableContacts
-                data={contactsData}
+                data={contactsData || cacheTables["contacts"]}
                 onSelect={onSelectActiveContact}
                 selectedIds={selectedIds}
                 activeContactId={activeContact.id}
@@ -132,7 +140,12 @@ const Contacts = () => {
               <CardFooter className="d-flex justify-content-between align-items-center">
                 <div></div>
                 <Pagination
-                  allCount={contactsData ? contactsData.TotalCount : 0}
+                  allCount={
+                    contactsData
+                      ? contactsData.TotalCount
+                      : cacheTables["contacts"] &&
+                        cacheTables["contacts"].TotalCount
+                  }
                   countOnPage={COUNT_ON_PAGE}
                   page={currentPage}
                   moveToPage={onSetCurrentPage}

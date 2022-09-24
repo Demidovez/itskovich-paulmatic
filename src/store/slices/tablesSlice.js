@@ -7,6 +7,7 @@ const initialState = {
     companies: {},
     persons: {},
   },
+  cache: {},
 };
 
 export const tablesSlice = createSlice({
@@ -36,10 +37,18 @@ export const tablesSlice = createSlice({
     setActiveTable: (state, action) => {
       state.activeTable = action.payload;
     },
+    setCache: (state, action) => {
+      state.cache[action.payload.table] = action.payload.data;
+    },
   },
 });
 
-export const { addSelectedId, clearSelectedIds, addTables, setActiveTable } =
-  tablesSlice.actions;
+export const {
+  addSelectedId,
+  clearSelectedIds,
+  addTables,
+  setActiveTable,
+  setCache,
+} = tablesSlice.actions;
 
 export default tablesSlice.reducer;
