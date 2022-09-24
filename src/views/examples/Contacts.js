@@ -103,7 +103,7 @@ const Contacts = () => {
           </div>
         </Row>
         <Row className="flex-fill">
-          <div className="col col-8 mb-5 d-flex">
+          <div className="col col-9 mb-5 d-flex">
             <Card className="shadow flex-fill overflow-hidden">
               <CardHeader className="border-0 ">
                 <Row>
@@ -140,7 +140,7 @@ const Contacts = () => {
               </CardFooter>
             </Card>
           </div>
-          <div className="col col-4">
+          <div className="col col-3">
             <FormContacts
               className="sticky-top"
               style={{ top: 20 }}
