@@ -1,7 +1,7 @@
 import { Container, Row } from "reactstrap";
 import { Route, Switch, Redirect } from "react-router-dom";
-import B2InfoTable from "../../components/B2InfoTable/B2InfoTable";
-import Tabs from "../../components/Tabs/Tabs";
+import B2InfoTable from "../components/B2InfoTable/B2InfoTable";
+import Tabs from "../components/Tabs/Tabs";
 import { useLazyGetPersonsQuery } from "store/api/persons";
 import { useLazyGetCompaniesQuery } from "store/api/companies";
 import { useEffect, useState } from "react";

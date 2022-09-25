@@ -3,6 +3,7 @@ import { useLocation, Route, Switch, Redirect } from "react-router-dom";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
 import routes from "routes.js";
+import Menu from "components/Menu/Menu";
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);
@@ -44,7 +45,16 @@ const Admin = (props) => {
 
   return (
     <>
-      <Sidebar
+      {/* <Sidebar
+        {...props}
+        routes={routes}
+        logo={{
+          innerLink: "/admin/index",
+          imgSrc: require("../assets/img/brand/logo.png"),
+          imgAlt: "...",
+        }}
+      /> */}
+      <Menu
         {...props}
         routes={routes}
         logo={{
@@ -54,17 +64,10 @@ const Admin = (props) => {
         }}
       />
       <div className="main-content" ref={mainContent}>
-        {/* <AdminNavbar
-          {...props}
-          brandText={getBrandText(props.location.pathname)}
-        /> */}
         <Switch>
           {getRoutes(routes)}
           <Redirect from="*" to="/admin/index" />
         </Switch>
-        {/* <Container fluid>
-          <AdminFooter />
-        </Container> */}
       </div>
     </>
   );

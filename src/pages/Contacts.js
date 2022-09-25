@@ -1,14 +1,14 @@
 import React from "react";
 import { Card, CardHeader, Container, Row, Col, CardFooter } from "reactstrap";
-import TableContacts from "../../components/TableContacts/TableContacts";
-import FormContacts from "../../components/FormContacts/FormContacts";
-import SearchBar from "../../components/SearchBar/SearchBar";
-import UploadContacts from "../../components/UploadContacts/UploadContacts";
+import TableContacts from "components/TableContacts/TableContacts";
+import FormContacts from "components/FormContacts/FormContacts";
+import SearchBar from "components/SearchBar/SearchBar";
+import UploadContacts from "components/UploadContacts/UploadContacts";
 import {
   useLazyGetContactsQuery,
   useCreateOrUpdateContactMutation,
   useDeleteContactsMutation,
-} from "../../store/api/contacts";
+} from "../store/api/contacts";
 import { useEffect, useState } from "react";
 import ActionContactsBar from "components/ActionContactsBar/ActionContactsBar";
 import { useDispatch, useSelector } from "react-redux";

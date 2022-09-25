@@ -1,0 +1,42 @@
+.menu-component {
+  background-color: #ffffff;
+
+  .navbar-nav .nav-link.active:before {
+    content: "";
+    position: absolute;
+  }
+
+  .navbar-nav .nav-link {
+    font-size: 0.9rem;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  .navbar-nav .nav-link.active {
+    position: relative;
+  }
+
+  .navbar-nav .nav-link:hover {
+    color: rgba(0, 0, 0, 0.7);
+  }
+
+  .navbar-nav .active > .nav-link,
+  .navbar-nav .nav-link.active {
+    color: rgba(0, 0, 0, 0.9);
+  }
+
+  @media (min-width: 768px) {
+    & {
+      padding-left: 39px !important;
+      padding-right: 39px !important;
+    }
+
+    .navbar-nav .nav-link.active:before {
+      //   top: 0.25rem;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      border-bottom: 2px solid #5e72e4;
+    }
+  }
+}
