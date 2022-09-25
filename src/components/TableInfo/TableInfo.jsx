@@ -127,7 +127,15 @@ const TableInfo = ({ data, fields = [], table, selectedIds = [] }) => {
                     return (
                       <HiddenTableCell
                         key={field.name}
-                        value={company[field.name]}
+                        value={
+                          company[field.name] &&
+                          company[field.name]
+                            .trim()
+                            .split(";")
+                            .map((phone, index) => (
+                              <div key={index}>{phone.trim()}</div>
+                            ))
+                        }
                       />
                     );
                   } else {

@@ -14,7 +14,7 @@ const HiddenTableCell = ({ value }) => {
   };
 
   return (
-    <td className="p-0">
+    <td className="p-0 text-nowrap">
       {value && !isShow ? (
         <Button
           onClick={onShow}
@@ -26,7 +26,7 @@ const HiddenTableCell = ({ value }) => {
           {isLoading ? <Spinner size="sm" /> : "Получить"}
         </Button>
       ) : null}
-      {isShow && value}
+      {isShow && <div className="p-2">{value}</div>}
     </td>
   );
 };
