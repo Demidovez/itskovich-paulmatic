@@ -1,28 +1,35 @@
 .menu-component {
-  background-color: #ffffff;
+  .container-fluid {
+    display: block;
+  }
+  // background-color: #ffffff;
 
   .navbar-nav .nav-link.active:before {
     content: "";
     position: absolute;
   }
 
-  .navbar-nav .nav-link {
-    font-size: 0.9rem;
-    color: rgba(0, 0, 0, 0.5);
+  // .navbar-nav .nav-link {
+  //   font-size: 0.9rem;
+  //   color: rgba(0, 0, 0, 0.5);
+  // }
+
+  .navbar-collapse {
+    flex-grow: 0;
   }
 
   .navbar-nav .nav-link.active {
     position: relative;
   }
 
-  .navbar-nav .nav-link:hover {
-    color: rgba(0, 0, 0, 0.7);
-  }
+  // .navbar-nav .nav-link:hover {
+  //   color: rgba(0, 0, 0, 0.7);
+  // }
 
-  .navbar-nav .active > .nav-link,
-  .navbar-nav .nav-link.active {
-    color: rgba(0, 0, 0, 0.9);
-  }
+  // .navbar-nav .active > .nav-link,
+  // .navbar-nav .nav-link.active {
+  //   color: rgba(0, 0, 0, 0.9);
+  // }
 
   @media (min-width: 768px) {
     & {

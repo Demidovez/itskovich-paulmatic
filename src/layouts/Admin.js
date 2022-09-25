@@ -1,6 +1,5 @@
 import React from "react";
 import { useLocation, Route, Switch, Redirect } from "react-router-dom";
-import Sidebar from "components/Sidebar/Sidebar.js";
 
 import routes from "routes.js";
 import Menu from "components/Menu/Menu";
@@ -45,15 +44,6 @@ const Admin = (props) => {
 
   return (
     <>
-      {/* <Sidebar
-        {...props}
-        routes={routes}
-        logo={{
-          innerLink: "/admin/index",
-          imgSrc: require("../assets/img/brand/logo.png"),
-          imgAlt: "...",
-        }}
-      /> */}
       <Menu
         {...props}
         routes={routes}
