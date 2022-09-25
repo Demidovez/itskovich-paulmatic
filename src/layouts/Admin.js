@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation, Route, Switch, Redirect } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 import routes from "routes.js";
 import Menu from "components/Menu/Menu";
@@ -59,6 +60,18 @@ const Admin = (props) => {
           <Redirect from="*" to="/admin/index" />
         </Switch>
       </div>
+      <ToastContainer
+        theme="colored"
+        position="bottom-right"
+        hideProgressBar
+        autoClose={3000}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover={false}
+      />
     </>
   );
 };
