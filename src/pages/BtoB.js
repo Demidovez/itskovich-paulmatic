@@ -107,7 +107,10 @@ const BtoB = () => {
 
   return (
     <>
-      <Container fluid className="d-flex flex-column h-100vh overflow-hidden">
+      <Container
+        fluid
+        className="d-flex flex-column overflow-hidden height-fill"
+      >
         <Row>
           <div className="col mt-3 mb-3">
             <Tabs tabs={{ companies, persons }} activeTable={activeTable} />

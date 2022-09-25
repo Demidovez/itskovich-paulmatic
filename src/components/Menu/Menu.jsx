@@ -77,13 +77,14 @@ const Sidebar = (props) => {
 
   return (
     <Navbar
-      className="fixed-left navbar-light bg-white menu-component shadow pt-0 pb-0 pl-3 pr-3"
+      className="fixed-left navbar-light bg-white menu-component shadow pt-0 pb-0 sticky-top"
+      style={{ zIndex: 1100 }}
       expand="md"
       id="sidenav-main"
     >
       <Container fluid>
         <Row>
-          <div className="col-1">
+          <div className="col-1 pl-0">
             <button
               className="navbar-toggler"
               type="button"
@@ -92,12 +93,11 @@ const Sidebar = (props) => {
               <span className="navbar-toggler-icon" />
             </button>
             {logo ? (
-              <NavbarBrand className="pt-0 pb-0 pl-2" {...navbarBrandProps}>
+              <NavbarBrand className="pt-0 pb-0 pl-0" {...navbarBrandProps}>
                 <img
                   alt={logo.imgAlt}
-                  className="navbar-brand-img"
+                  className="navbar-brand-img logo-height"
                   src={logo.imgSrc}
-                  style={{ maxHeight: "6rem" }}
                 />
               </NavbarBrand>
             ) : null}
@@ -212,7 +212,7 @@ const Sidebar = (props) => {
             </Collapse>
           </div>
 
-          <div className="col-1"></div>
+          <div className="col-1 pr-0"></div>
         </Row>
       </Container>
     </Navbar>

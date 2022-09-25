@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Card, CardHeader, Container, Row, Col, CardFooter } from "reactstrap";
 import TableContacts from "components/TableContacts/TableContacts";
 import FormContacts from "components/FormContacts/FormContacts";
@@ -104,7 +104,10 @@ const Contacts = () => {
 
   return (
     <>
-      <Container fluid className="d-flex flex-column h-100vh overflow-hidden">
+      <Container
+        fluid
+        className="d-flex flex-column overflow-hidden height-fill"
+      >
         <Row>
           <div className="col col-8 d-flex align-items-center">
             <h1 className="mt-4 mb-4 mr-3">Контакты</h1>

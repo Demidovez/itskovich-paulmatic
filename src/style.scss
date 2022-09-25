@@ -1,4 +1,13 @@
 :root {
   --toastify-color-success: var(--primary);
   --toastify-color-error: var(--danger);
+  --height-menu: 6rem;
+}
+
+.height-fill {
+  height: calc(100vh - var(--height-menu));
+}
+
+.logo-height {
+  max-height: var(--height-menu);
 }
