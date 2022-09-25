@@ -25,7 +25,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "deploy": "./deploy.sh",
+    "deploy_dev": "./deploy_dev.sh",
+    "deploy_prod": "./deploy_prod.sh",
     "install-force": "npm install --force",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
