@@ -44,7 +44,7 @@ const Admin = (props) => {
   };
 
   return (
-    <div>
+    <>
       <Menu
         {...props}
         routes={routes}
@@ -72,7 +72,7 @@ const Admin = (props) => {
         draggable={false}
         pauseOnHover={false}
       />
-    </div>
+    </>
   );
 };
 

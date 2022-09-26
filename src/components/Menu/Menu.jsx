@@ -25,7 +25,7 @@ import {
 
 import "./Menu.scss";
 
-const Sidebar = (props) => {
+const Menu = (props) => {
   const [collapseOpen, setCollapseOpen] = useState();
 
   const toggleCollapse = () => {
@@ -47,7 +47,7 @@ const Sidebar = (props) => {
               tag={NavLinkRRD}
               onClick={closeCollapse}
               activeClassName="active"
-              className="pl-lg-3 pl-md-0 pr-lg-3 pr-md-0 h-100 d-flex justify-content-center align-items-center align-content-center"
+              className="pl-lg-3 pr-lg-3 pl-sm-2 pr-sm-2 nav-link-menu"
               // className="h-100 d-flex justify-content-center align-items-center align-content-center"
             >
               <i
@@ -56,6 +56,19 @@ const Sidebar = (props) => {
               <span className="pl-1">{prop.name}</span>
             </NavLink>
           </NavItem>
+        );
+      });
+  };
+
+  const createUserLinks = (routes) => {
+    return routes
+      .filter((route) => route.position === "user")
+      .map((prop, key) => {
+        return (
+          <DropdownItem to={prop.layout + prop.path} tag={Link}>
+            <i className={`${prop.icon}`} />
+            <span>{prop.name}</span>
+          </DropdownItem>
         );
       });
   };
@@ -74,6 +87,18 @@ const Sidebar = (props) => {
     };
   }
 
+  const renderLogo = () => {
+    return logo ? (
+      <NavbarBrand className="pt-0 pb-0 pl-0 mr-0" {...navbarBrandProps}>
+        <img
+          alt={logo.imgAlt}
+          className="navbar-brand-img logo-height"
+          src={logo.imgSrc}
+        />
+      </NavbarBrand>
+    ) : null;
+  };
+
   return (
     <Navbar
       className="fixed-left navbar-light bg-white menu-component shadow pt-0 pb-0 sticky-top"
@@ -82,189 +107,120 @@ const Sidebar = (props) => {
       id="sidenav-main"
     >
       <Container fluid>
-        <Row>
-          <div className="col-2 pl-0">
-            <button
-              className="navbar-toggler"
-              type="button"
-              onClick={toggleCollapse}
-            >
-              <span className="navbar-toggler-icon" />
-            </button>
-            {logo ? (
-              <NavbarBrand
-                className="pt-0 pb-0 pl-0 mr-0"
-                {...navbarBrandProps}
-              >
-                <img
-                  alt={logo.imgAlt}
-                  className="navbar-brand-img logo-height w-100"
-                  src={logo.imgSrc}
-                />
-              </NavbarBrand>
-            ) : null}
-          </div>
+        <Row className="d-flex justify-content-between">
+          <button
+            className="navbar-toggler p-3"
+            type="button"
+            onClick={toggleCollapse}
+          >
+            <span className="navbar-toggler-icon" />
+          </button>
+          <div className="d-none d-md-block">{renderLogo()}</div>
 
-          <div className="col-8 d-flex justify-content-center align-items-center navbar-nav">
-            <Nav className="align-items-center d-md-none">
-              <UncontrolledDropdown nav>
-                <DropdownToggle nav className="nav-link-icon">
-                  <i className="ni ni-bell-55" />
-                </DropdownToggle>
-                <DropdownMenu
-                  aria-labelledby="navbar-default_dropdown_1"
-                  className="dropdown-menu-arrow"
-                  right
-                >
-                  <DropdownItem>Action</DropdownItem>
-                  <DropdownItem>Another action</DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem>Something else here</DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-              <UncontrolledDropdown nav>
-                <DropdownToggle nav>
-                  <Media className="align-items-center">
-                    <span className="avatar avatar-sm rounded-circle">
-                      <img
-                        alt="..."
-                        src={require("../../assets/img/theme/team-1-800x800.jpg")}
-                      />
-                    </span>
-                  </Media>
-                </DropdownToggle>
-                <DropdownMenu className="dropdown-menu-arrow" right>
-                  <DropdownItem className="noti-title" header tag="div">
-                    <h6 className="text-overflow m-0">Welcome!</h6>
-                  </DropdownItem>
-                  <DropdownItem to="/admin/user-profile" tag={Link}>
-                    <i className="ni ni-single-02" />
-                    <span>My profile</span>
-                  </DropdownItem>
-                  <DropdownItem to="/admin/user-profile" tag={Link}>
-                    <i className="ni ni-settings-gear-65" />
-                    <span>Settings</span>
-                  </DropdownItem>
-                  <DropdownItem to="/admin/user-profile" tag={Link}>
-                    <i className="ni ni-calendar-grid-58" />
-                    <span>Activity</span>
-                  </DropdownItem>
-                  <DropdownItem to="/admin/user-profile" tag={Link}>
-                    <i className="ni ni-support-16" />
-                    <span>Support</span>
-                  </DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                  >
-                    <i className="ni ni-user-run" />
-                    <span>Logout</span>
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-            </Nav>
-            <Collapse navbar isOpen={collapseOpen} className="h-100">
-              <div className="navbar-collapse-header d-md-none">
-                <Row>
-                  {logo ? (
-                    <Col className="collapse-brand" xs="6">
-                      {logo.innerLink ? (
-                        <Link to={logo.innerLink}>
-                          <img alt={logo.imgAlt} src={logo.imgSrc} />
-                        </Link>
-                      ) : (
-                        <a href={logo.outterLink}>
-                          <img alt={logo.imgAlt} src={logo.imgSrc} />
-                        </a>
-                      )}
-                    </Col>
-                  ) : null}
-                  <Col className="collapse-close" xs="6">
-                    <button
-                      className="navbar-toggler"
-                      type="button"
-                      onClick={toggleCollapse}
-                    >
-                      <span />
-                      <span />
-                    </button>
+          <div className="d-md-none d-sm-block">{renderLogo()}</div>
+          <Collapse
+            navbar
+            isOpen={collapseOpen}
+            className="justify-content-center"
+          >
+            <div className="navbar-collapse-header d-md-none">
+              <Row>
+                {logo ? (
+                  <Col className="collapse-brand" xs="6">
+                    {logo.innerLink ? (
+                      <Link to={logo.innerLink}>
+                        <img alt={logo.imgAlt} src={logo.imgSrc} />
+                      </Link>
+                    ) : (
+                      <a href={logo.outterLink}>
+                        <img alt={logo.imgAlt} src={logo.imgSrc} />
+                      </a>
+                    )}
                   </Col>
-                </Row>
-              </div>
-              {/* Form */}
-              <Form className="mt-4 mb-3 d-md-none">
-                <InputGroup className="input-group-rounded input-group-merge">
-                  <Input
-                    aria-label="Search"
-                    className="form-control-rounded form-control-prepended"
-                    placeholder="Search"
-                    type="search"
-                  />
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <span className="fa fa-search" />
-                    </InputGroupText>
-                  </InputGroupAddon>
-                </InputGroup>
-              </Form>
-              <Nav navbar className="h-100">
-                {createLinks(routes)}
-              </Nav>
-            </Collapse>
-          </div>
-
-          <div className="col-2 d-flex justify-content-end">
-            <Nav className="align-items-center d-none d-md-flex" navbar>
-              <UncontrolledDropdown nav>
-                <DropdownToggle className="pr-0" nav>
-                  <Media className="align-items-center">
-                    <span className="avatar avatar-sm rounded-circle">
-                      <img
-                        alt="..."
-                        src={require("../../assets/img/theme/team-1-800x800.jpg")}
-                      />
-                    </span>
-                    <Media className="ml-2 d-none d-lg-block">
-                      <span className="mb-0 text-sm font-weight-bold">
-                        Администратор
-                      </span>
-                    </Media>
-                  </Media>
-                </DropdownToggle>
-                <DropdownMenu className="dropdown-menu-arrow" right>
-                  <DropdownItem to="/admin/user-profile" tag={Link}>
-                    <i className="ni ni-single-02" />
-                    <span>My profile</span>
-                  </DropdownItem>
-                  <DropdownItem to="/admin/user-profile" tag={Link}>
-                    <i className="ni ni-settings-gear-65" />
-                    <span>Settings</span>
-                  </DropdownItem>
-                  <DropdownItem to="/admin/user-profile" tag={Link}>
-                    <i className="ni ni-calendar-grid-58" />
-                    <span>Activity</span>
-                  </DropdownItem>
-                  <DropdownItem to="/admin/user-profile" tag={Link}>
-                    <i className="ni ni-support-16" />
-                    <span>Support</span>
-                  </DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
+                ) : null}
+                <Col className="collapse-close" xs="6">
+                  <button
+                    className="navbar-toggler"
+                    type="button"
+                    onClick={toggleCollapse}
                   >
-                    <i className="ni ni-user-run" />
-                    <span>Logout</span>
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
+                    <span />
+                    <span />
+                  </button>
+                </Col>
+              </Row>
+            </div>
+            {/* Form */}
+            <Form className="mt-4 mb-3 d-md-none">
+              <InputGroup className="input-group-rounded input-group-merge">
+                <Input
+                  aria-label="Search"
+                  className="form-control-rounded form-control-prepended"
+                  placeholder="Search"
+                  type="search"
+                />
+                <InputGroupAddon addonType="prepend">
+                  <InputGroupText>
+                    <span className="fa fa-search" />
+                  </InputGroupText>
+                </InputGroupAddon>
+              </InputGroup>
+            </Form>
+            <Nav navbar className="h-100">
+              {createLinks(routes)}
             </Nav>
-          </div>
+          </Collapse>
+
+          <Nav
+            className="align-items-center d-md-flex justify-content-center p-3 p-md-0 "
+            navbar
+          >
+            <UncontrolledDropdown nav>
+              <DropdownToggle className="pr-0" nav>
+                <Media className="align-items-center">
+                  <span className="avatar avatar-sm rounded-circle">
+                    <img
+                      alt="..."
+                      src={require("../../assets/img/theme/team-1-800x800.jpg")}
+                    />
+                  </span>
+                  <Media className="ml-2 d-none d-lg-block">
+                    <span className="mb-0 text-sm font-weight-bold">
+                      Администратор
+                    </span>
+                  </Media>
+                </Media>
+              </DropdownToggle>
+              <DropdownMenu
+                className="dropdown-menu-arrow shadow"
+                right
+                style={{ minWidth: "12rem" }}
+              >
+                <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <i className="ni ni-single-02" />
+                  <span>My profile</span>
+                </DropdownItem>
+                <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <i className="ni ni-settings-gear-65" />
+                  <span>Settings</span>
+                </DropdownItem>
+                <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <i className="ni ni-calendar-grid-58" />
+                  <span>Activity</span>
+                </DropdownItem>
+                <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <i className="ni ni-support-16" />
+                  <span>Support</span>
+                </DropdownItem>
+                <DropdownItem divider />
+                {createUserLinks(routes)}
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </Nav>
         </Row>
       </Container>
     </Navbar>
   );
 };
 
-export default Sidebar;
+export default Menu;
