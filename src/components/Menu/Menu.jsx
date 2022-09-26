@@ -37,23 +37,27 @@ const Sidebar = (props) => {
   };
 
   const createLinks = (routes) => {
-    return routes.map((prop, key) => {
-      return (
-        <NavItem key={key}>
-          <NavLink
-            to={prop.layout + prop.path}
-            tag={NavLinkRRD}
-            onClick={closeCollapse}
-            activeClassName="active"
-            className="pl-lg-3 pl-md-0 pr-lg-3 pr-md-0 h-100 d-flex justify-content-center align-items-center align-content-center"
-            // className="h-100 d-flex justify-content-center align-items-center align-content-center"
-          >
-            <i className={`${prop.icon} pr-lg-2 pr-md-0 ml--2 ml-md-0 mt--1`} />
-            <span className="pl-1">{prop.name}</span>
-          </NavLink>
-        </NavItem>
-      );
-    });
+    return routes
+      .filter((route) => route.position !== "user")
+      .map((prop, key) => {
+        return (
+          <NavItem key={key}>
+            <NavLink
+              to={prop.layout + prop.path}
+              tag={NavLinkRRD}
+              onClick={closeCollapse}
+              activeClassName="active"
+              className="pl-lg-3 pl-md-0 pr-lg-3 pr-md-0 h-100 d-flex justify-content-center align-items-center align-content-center"
+              // className="h-100 d-flex justify-content-center align-items-center align-content-center"
+            >
+              <i
+                className={`${prop.icon} pr-lg-2 pr-md-0 ml--2 ml-md-0 mt--1`}
+              />
+              <span className="pl-1">{prop.name}</span>
+            </NavLink>
+          </NavItem>
+        );
+      });
   };
 
   const { bgColor, routes, logo } = props;
@@ -79,7 +83,7 @@ const Sidebar = (props) => {
     >
       <Container fluid>
         <Row>
-          <div className="col-1 pl-0">
+          <div className="col-2 pl-0">
             <button
               className="navbar-toggler"
               type="button"
@@ -101,7 +105,7 @@ const Sidebar = (props) => {
             ) : null}
           </div>
 
-          <div className="col-10 d-flex justify-content-center align-items-center navbar-nav">
+          <div className="col-8 d-flex justify-content-center align-items-center navbar-nav">
             <Nav className="align-items-center d-md-none">
               <UncontrolledDropdown nav>
                 <DropdownToggle nav className="nav-link-icon">
@@ -210,45 +214,52 @@ const Sidebar = (props) => {
             </Collapse>
           </div>
 
-          <div className="col-1 pr-0">
-            <UncontrolledDropdown nav>
-              <DropdownToggle nav>
-                <Media className="align-items-center">
-                  <span className="avatar avatar-sm rounded-circle">
-                    <img
-                      alt="..."
-                      src={require("../../assets/img/theme/team-1-800x800.jpg")}
-                    />
-                  </span>
-                </Media>
-              </DropdownToggle>
-              <DropdownMenu className="dropdown-menu-arrow" right>
-                <DropdownItem className="noti-title" header tag="div">
-                  <h6 className="text-overflow m-0">Welcome!</h6>
-                </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
-                  <i className="ni ni-single-02" />
-                  <span>My profile</span>
-                </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
-                  <i className="ni ni-settings-gear-65" />
-                  <span>Settings</span>
-                </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
-                  <i className="ni ni-calendar-grid-58" />
-                  <span>Activity</span>
-                </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
-                  <i className="ni ni-support-16" />
-                  <span>Support</span>
-                </DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
-                  <i className="ni ni-user-run" />
-                  <span>Logout</span>
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
+          <div className="col-2 d-flex justify-content-end">
+            <Nav className="align-items-center d-none d-md-flex" navbar>
+              <UncontrolledDropdown nav>
+                <DropdownToggle className="pr-0" nav>
+                  <Media className="align-items-center">
+                    <span className="avatar avatar-sm rounded-circle">
+                      <img
+                        alt="..."
+                        src={require("../../assets/img/theme/team-1-800x800.jpg")}
+                      />
+                    </span>
+                    <Media className="ml-2 d-none d-lg-block">
+                      <span className="mb-0 text-sm font-weight-bold">
+                        Администратор
+                      </span>
+                    </Media>
+                  </Media>
+                </DropdownToggle>
+                <DropdownMenu className="dropdown-menu-arrow" right>
+                  <DropdownItem to="/admin/user-profile" tag={Link}>
+                    <i className="ni ni-single-02" />
+                    <span>My profile</span>
+                  </DropdownItem>
+                  <DropdownItem to="/admin/user-profile" tag={Link}>
+                    <i className="ni ni-settings-gear-65" />
+                    <span>Settings</span>
+                  </DropdownItem>
+                  <DropdownItem to="/admin/user-profile" tag={Link}>
+                    <i className="ni ni-calendar-grid-58" />
+                    <span>Activity</span>
+                  </DropdownItem>
+                  <DropdownItem to="/admin/user-profile" tag={Link}>
+                    <i className="ni ni-support-16" />
+                    <span>Support</span>
+                  </DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem
+                    href="#pablo"
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    <i className="ni ni-user-run" />
+                    <span>Logout</span>
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            </Nav>
           </div>
         </Row>
       </Container>
