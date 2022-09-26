@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getServerUrl } from "./server";
 
+console.log(getServerUrl("b2b"));
+
 export const companiesApi = createApi({
   reducerPath: "companiesApi",
   baseQuery: fetchBaseQuery({ baseUrl: getServerUrl("b2b") }),
