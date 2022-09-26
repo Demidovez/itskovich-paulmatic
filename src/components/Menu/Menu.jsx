@@ -25,23 +25,17 @@ import {
 
 import "./Menu.scss";
 
-var ps;
-
 const Sidebar = (props) => {
   const [collapseOpen, setCollapseOpen] = useState();
-  // verifies if routeName is the one active (in browser input)
-  const activeRoute = (routeName) => {
-    return props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
-  };
-  // toggles collapse between opened and closed (true/false)
+
   const toggleCollapse = () => {
     setCollapseOpen((data) => !data);
   };
-  // closes the collapse
+
   const closeCollapse = () => {
     setCollapseOpen(false);
   };
-  // creates the links that appear in the left menu / Sidebar
+
   const createLinks = (routes) => {
     return routes.map((prop, key) => {
       return (
@@ -51,9 +45,10 @@ const Sidebar = (props) => {
             tag={NavLinkRRD}
             onClick={closeCollapse}
             activeClassName="active"
-            className="pl-4 pr-4 h-100 d-flex justify-content-center align-items-center"
+            className="pl-lg-3 pl-md-0 pr-lg-3 pr-md-0 h-100 d-flex justify-content-center align-items-center align-content-center"
+            // className="h-100 d-flex justify-content-center align-items-center align-content-center"
           >
-            <i className={`${prop.icon} pr-2 ml--2`} />
+            <i className={`${prop.icon} pr-lg-2 pr-md-0 ml--2 ml-md-0 mt--1`} />
             <span className="pl-1">{prop.name}</span>
           </NavLink>
         </NavItem>
@@ -93,10 +88,13 @@ const Sidebar = (props) => {
               <span className="navbar-toggler-icon" />
             </button>
             {logo ? (
-              <NavbarBrand className="pt-0 pb-0 pl-0" {...navbarBrandProps}>
+              <NavbarBrand
+                className="pt-0 pb-0 pl-0 mr-0"
+                {...navbarBrandProps}
+              >
                 <img
                   alt={logo.imgAlt}
-                  className="navbar-brand-img logo-height"
+                  className="navbar-brand-img logo-height w-100"
                   src={logo.imgSrc}
                 />
               </NavbarBrand>
@@ -212,7 +210,46 @@ const Sidebar = (props) => {
             </Collapse>
           </div>
 
-          <div className="col-1 pr-0"></div>
+          <div className="col-1 pr-0">
+            <UncontrolledDropdown nav>
+              <DropdownToggle nav>
+                <Media className="align-items-center">
+                  <span className="avatar avatar-sm rounded-circle">
+                    <img
+                      alt="..."
+                      src={require("../../assets/img/theme/team-1-800x800.jpg")}
+                    />
+                  </span>
+                </Media>
+              </DropdownToggle>
+              <DropdownMenu className="dropdown-menu-arrow" right>
+                <DropdownItem className="noti-title" header tag="div">
+                  <h6 className="text-overflow m-0">Welcome!</h6>
+                </DropdownItem>
+                <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <i className="ni ni-single-02" />
+                  <span>My profile</span>
+                </DropdownItem>
+                <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <i className="ni ni-settings-gear-65" />
+                  <span>Settings</span>
+                </DropdownItem>
+                <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <i className="ni ni-calendar-grid-58" />
+                  <span>Activity</span>
+                </DropdownItem>
+                <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <i className="ni ni-support-16" />
+                  <span>Support</span>
+                </DropdownItem>
+                <DropdownItem divider />
+                <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
+                  <i className="ni ni-user-run" />
+                  <span>Logout</span>
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </div>
         </Row>
       </Container>
     </Navbar>

@@ -44,41 +44,35 @@ const Admin = (props) => {
   };
 
   return (
-    <>
-      <div className="">
-        <Menu
-          {...props}
-          routes={routes}
-          logo={{
-            innerLink: "/admin/index",
-            imgSrc: require("../assets/img/brand/logo.png"),
-            imgAlt: "...",
-          }}
-        />
-        <div
-          className="main-content"
-          // style={{ minHeight: "100vh" }}
-          ref={mainContent}
-        >
-          <Switch>
-            {getRoutes(routes)}
-            <Redirect from="*" to="/admin/index" />
-          </Switch>
-        </div>
-        <ToastContainer
-          theme="colored"
-          position="bottom-right"
-          hideProgressBar
-          autoClose={3000}
-          newestOnTop={false}
-          closeOnClick={false}
-          rtl={false}
-          pauseOnFocusLoss={false}
-          draggable={false}
-          pauseOnHover={false}
-        />
+    <div>
+      <Menu
+        {...props}
+        routes={routes}
+        logo={{
+          innerLink: "/admin/index",
+          imgSrc: require("../assets/img/brand/logo.png"),
+          imgAlt: "...",
+        }}
+      />
+      <div className="main-content" ref={mainContent}>
+        <Switch>
+          {getRoutes(routes)}
+          <Redirect from="*" to="/admin/index" />
+        </Switch>
       </div>
-    </>
+      <ToastContainer
+        theme="colored"
+        position="bottom-right"
+        hideProgressBar
+        autoClose={3000}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover={false}
+      />
+    </div>
   );
 };
 
