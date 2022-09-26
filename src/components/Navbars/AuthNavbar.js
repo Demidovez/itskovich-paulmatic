@@ -37,7 +37,7 @@ const AdminNavbar = () => {
           <NavbarBrand to="/" tag={Link}>
             <img
               alt="..."
-              src={require("../../assets/img/brand/logo.png")}
+              src={require("../../assets/img/brand/logo.svg").default}
               style={{ height: "80px" }}
             />
           </NavbarBrand>
@@ -51,7 +51,7 @@ const AdminNavbar = () => {
                   <Link to="/">
                     <img
                       alt="..."
-                      src={require("../../assets/img/brand/logo.png")}
+                      src={require("../../assets/img/brand/logo.svg").default}
                       style={{ height: "8.5rem" }}
                     />
                   </Link>

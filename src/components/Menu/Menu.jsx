@@ -65,7 +65,7 @@ const Menu = (props) => {
       .filter((route) => route.position === "user")
       .map((prop, key) => {
         return (
-          <DropdownItem to={prop.layout + prop.path} tag={Link}>
+          <DropdownItem to={prop.layout + prop.path} tag={Link} key={key}>
             <i className={`${prop.icon}`} />
             <span>{prop.name}</span>
           </DropdownItem>
@@ -92,8 +92,9 @@ const Menu = (props) => {
       <NavbarBrand className="pt-0 pb-0 pl-0 mr-0" {...navbarBrandProps}>
         <img
           alt={logo.imgAlt}
-          className="navbar-brand-img logo-height"
+          className="navbar-brand-img logo-height pt-3 pb-3"
           src={logo.imgSrc}
+          style={{ maxWidth: "180px" }}
         />
       </NavbarBrand>
     ) : null;
@@ -117,7 +118,9 @@ const Menu = (props) => {
           </button>
           <div className="d-none d-md-block">{renderLogo()}</div>
 
-          <div className="d-md-none d-sm-block">{renderLogo()}</div>
+          <div className="d-md-none d-sm-block align-content-center">
+            {renderLogo()}
+          </div>
           <Collapse
             navbar
             isOpen={collapseOpen}
@@ -176,7 +179,7 @@ const Menu = (props) => {
             navbar
           >
             <UncontrolledDropdown nav>
-              <DropdownToggle className="pr-0" nav>
+              <DropdownToggle className="p-0" nav>
                 <Media className="align-items-center">
                   <span className="avatar avatar-sm rounded-circle">
                     <img
