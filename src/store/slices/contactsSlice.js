@@ -24,12 +24,6 @@ export const contactsSlice = createSlice({
     searchValueContactPage: (state, action) => {
       state.searchValue = action.payload;
     },
-    // decrement: (state) => {
-    //   state.value -= 1;
-    // },
-    // incrementByAmount: (state, action) => {
-    //   state.value += action.payload;
-    // },
   },
 });
 

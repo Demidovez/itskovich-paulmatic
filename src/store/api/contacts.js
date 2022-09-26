@@ -51,6 +51,26 @@ export const contactsApi = createApi({
       },
       invalidatesTags: [{ type: "Contacts", id: "LIST" }],
     }),
+    uploadFileOfContacts: builder.mutation({
+      query: (file) => ({
+        url: "/upload",
+        method: "POST",
+        body: file,
+        headers: {
+          "caller-version-code": 1,
+          sessionToken: "user-1",
+        },
+      }),
+      transformResponse: (response) => {
+        if (response.result) {
+          console.log(response.result);
+          toast.success(`${response.result} контактов добавлено!`);
+        } else {
+          toast.error(`Ошибка!`);
+        }
+      },
+      invalidatesTags: [{ type: "Contacts", id: "LIST" }],
+    }),
     deleteContacts: builder.mutation({
       query: (ids) => ({
         url: "/delete",
@@ -82,4 +102,5 @@ export const {
   useLazyGetContactsQuery,
   useCreateOrUpdateContactMutation,
   useDeleteContactsMutation,
+  useUploadFileOfContactsMutation,
 } = contactsApi;
