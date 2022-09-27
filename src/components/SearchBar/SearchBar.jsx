@@ -1,9 +1,18 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Input } from "reactstrap";
+import { setSearchValue } from "store/slices/b2bFilterSlice";
 
-const SearchBar = ({ onSearch, search, className }) => {
+const SearchBar = ({ table, className }) => {
+  const search = useSelector((state) => state.filter.search[table]);
+  const dispatch = useDispatch();
+
   const [isTyping, setIsTyping] = useState(false);
   const [value, setValue] = useState(search || null);
+
+  useEffect(() => {
+    setValue(search);
+  }, [search]);
 
   const onChange = ({ target }) => {
     setValue(target.value);
@@ -22,6 +31,10 @@ const SearchBar = ({ onSearch, search, className }) => {
       clearTimeout(idTimer);
     };
   }, [value, isTyping]);
+
+  const onSearch = (searchStr) => {
+    dispatch(setSearchValue({ filter: table, search: searchStr }));
+  };
 
   return (
     <div

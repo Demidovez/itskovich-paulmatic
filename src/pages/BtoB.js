@@ -1,34 +1,58 @@
-import { Container, Row } from "reactstrap";
-import { Route, Switch, Redirect } from "react-router-dom";
-import B2InfoTable from "../components/B2InfoTable/B2InfoTable";
+import { Card, CardHeader, Row, Col, Container } from "reactstrap";
+import B2InfoTable from "components/B2InfoTable/B2InfoTable";
+import FilterB2B from "components/FilterB2B/FilterB2B";
 import Tabs from "../components/Tabs/Tabs";
 import { useLazyGetPersonsQuery } from "store/api/persons";
 import { useLazyGetCompaniesQuery } from "store/api/companies";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { companiesApi } from "store/api/companies";
-import { useGetCompaniesQuery } from "store/api/companies";
+import { useSelector } from "react-redux";
+import ActionTableBar from "components/ActionTableBar/ActionTableBar";
+import SearchBar from "components/SearchBar/SearchBar";
 
 const companiesFields = [
   {
     label: "",
     name: "checkbox",
+    style: {
+      width: "1%",
+      minWidth: "60px",
+      maxWidth: "60px",
+    },
   },
   {
     label: "Название",
     name: "Name",
+    style: {
+      width: "15%",
+      minWidth: "100px",
+      maxWidth: "400px",
+    },
   },
   {
     label: "Категория",
     name: "Category",
+    style: {
+      width: "15%",
+      minWidth: "100px",
+      maxWidth: "400px",
+    },
   },
   {
     label: "Город",
     name: "City",
+    style: {
+      width: "10%",
+      minWidth: "100px",
+      maxWidth: "400px",
+    },
   },
   {
     label: "Адрес",
     name: "Address",
+    style: {
+      width: "10%",
+      minWidth: "100px",
+      maxWidth: "400px",
+    },
   },
   // {
   //     label: "Страна",
@@ -37,14 +61,29 @@ const companiesFields = [
   {
     label: "Индекс",
     name: "ZipCode",
+    style: {
+      width: "8%",
+      minWidth: "100px",
+      maxWidth: "400px",
+    },
   },
   {
     label: "E-mail",
     name: "Email",
+    style: {
+      width: "10%",
+      minWidth: "100px",
+      maxWidth: "400px",
+    },
   },
   {
     label: "Телефон",
     name: "Phone",
+    style: {
+      width: "9%",
+      minWidth: "100px",
+      maxWidth: "400px",
+    },
   },
   // {
   //     label: "Регион",
@@ -53,6 +92,11 @@ const companiesFields = [
   {
     label: "Соц.сети",
     name: "Socials",
+    style: {
+      width: "17%",
+      minWidth: "100px",
+      maxWidth: "400px",
+    },
   },
   // {
   //     label: "Подкатегория",
@@ -61,6 +105,11 @@ const companiesFields = [
   {
     label: "Сайт",
     name: "Website",
+    style: {
+      width: "10%",
+      minWidth: "100px",
+      maxWidth: "400px",
+    },
   },
 ];
 
@@ -68,74 +117,135 @@ const personsFields = [
   {
     label: "",
     name: "checkbox",
+    style: {
+      width: "1%",
+      minWidth: "60px",
+      maxWidth: "60px",
+    },
   },
   {
     label: "Имя",
     name: "FullName",
+    style: {
+      width: "16%",
+      minWidth: "100px",
+      maxWidth: "400px",
+    },
   },
   {
     label: "Title",
     name: "Title",
+    style: {
+      width: "17%",
+      minWidth: "100px",
+      maxWidth: "400px",
+    },
   },
   {
     label: "Компания",
     name: "Company",
+    style: {
+      width: "17%",
+      minWidth: "100px",
+      maxWidth: "400px",
+    },
   },
   {
     label: "E-mail",
     name: "Email",
+    style: {
+      width: "16%",
+      minWidth: "100px",
+      maxWidth: "400px",
+    },
   },
   {
     label: "LinkedIn",
     name: "Linkedin",
+    style: {
+      width: "17%",
+      minWidth: "100px",
+      maxWidth: "400px",
+    },
   },
   {
     label: "Телефон",
     name: "Phone",
+    style: {
+      width: "16%",
+      minWidth: "100px",
+      maxWidth: "400px",
+    },
   },
 ];
 
 const BtoB = () => {
-  const [fetchCompanies, { data: companiesData }] = useLazyGetCompaniesQuery();
+  const [fetchCompanies, companiesData] = useLazyGetCompaniesQuery({
+    selectFromResult: ({ data }) => data,
+  });
 
   const [fetchPersons, personsData] = useLazyGetPersonsQuery({
     selectFromResult: ({ data }) => data,
   });
 
-  const { companies, persons } = useSelector((state) => state.tables.tables);
+  const tables = useSelector((state) => state.tables.tables);
   const activeTable = useSelector((state) => state.tables.activeTable);
+  const selectedIds = useSelector((state) => state.tables.selectedIds);
+
+  const onAddContact = () => {};
+  const onAddToSequence = () => {};
 
   return (
-    <>
-      <Container
-        fluid
-        className="d-flex flex-column overflow-hidden height-fill"
-      >
-        <Row>
-          <div className="col mt-3 mb-3">
-            <Tabs tabs={{ companies, persons }} activeTable={activeTable} />
-          </div>
-        </Row>
-        <Row className="flex-fill">
-          {activeTable === "companies" && Object.keys(companies).length > 0 && (
-            <B2InfoTable
-              info={companies.info}
-              data={companiesData}
-              fetchData={fetchCompanies}
-              fields={companiesFields}
+    <Container fluid className="d-flex flex-column height-fill pt-4 pb-3">
+      <Row className="h-100 flex-fill">
+        <div className="col col-9 mb-3 d-flex h-100">
+          <Card className="shadow w-100">
+            <CardHeader className="border-0">
+              <Row>
+                <Col md={6}>
+                  <Tabs tabs={tables} activeTable={activeTable} />
+                </Col>
+                <Col md={6} className="d-flex align-items-center">
+                  <ActionTableBar
+                    disabled={(selectedIds[activeTable] || []).length === 0}
+                    onAddContact={onAddContact}
+                    onAddToSequence={onAddToSequence}
+                  />
+
+                  <SearchBar table={activeTable} className="w-100" />
+                </Col>
+              </Row>
+            </CardHeader>
+            {activeTable === "companies" &&
+              Object.keys(tables[activeTable]).length > 0 && (
+                <B2InfoTable
+                  info={tables[activeTable].info}
+                  data={companiesData}
+                  fetchData={fetchCompanies}
+                  fields={companiesFields}
+                />
+              )}
+            {activeTable === "persons" &&
+              Object.keys(tables[activeTable]).length > 0 && (
+                <B2InfoTable
+                  info={tables[activeTable].info}
+                  data={personsData}
+                  fetchData={fetchPersons}
+                  fields={personsFields}
+                />
+              )}
+          </Card>
+        </div>
+        <div className="col col-3">
+          {Object.keys(tables[activeTable]).length > 0 && (
+            <FilterB2B
+              name={tables[activeTable].info.name}
+              filters={tables[activeTable].info.filters}
             />
           )}
-          {activeTable === "persons" && Object.keys(persons).length > 0 && (
-            <B2InfoTable
-              info={persons.info}
-              data={personsData}
-              fetchData={fetchPersons}
-              fields={personsFields}
-            />
-          )}
-        </Row>
-      </Container>
-    </>
+        </div>
+      </Row>
+    </Container>
   );
 };
 
