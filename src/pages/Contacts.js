@@ -18,6 +18,7 @@ import { setCurrentContactPage } from "store/slices/contactsSlice";
 import Pagination from "components/Pagination/Pagination";
 import { searchValueContactPage } from "store/slices/contactsSlice";
 import { setCache } from "store/slices/tablesSlice";
+import SearchBarContacts from "components/SearchBarContacts/SearchBarContacts";
 
 const COUNT_ON_PAGE = 100;
 
@@ -119,7 +120,10 @@ const Contacts = () => {
               <CardHeader className="border-0 ">
                 <Row>
                   <Col md={6}>
-                    <SearchBar onSearch={onSearch} search={searchValue} />
+                    <SearchBarContacts
+                      onSearch={onSearch}
+                      search={searchValue}
+                    />
                   </Col>
                   <Col
                     md={6}
