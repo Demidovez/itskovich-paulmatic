@@ -6,6 +6,7 @@ import Login from "pages/Login.js";
 import Contacts from "pages/Contacts.js";
 import BtoB from "pages/BtoB.js";
 import Icons from "pages/Icons.js";
+import Tasks from "pages/Tasks";
 
 var routes = [
   {
@@ -46,8 +47,15 @@ var routes = [
   {
     path: "/b2b",
     name: "B2B Database",
-    icon: "ni ni-bullet-list-67 text-red",
+    icon: "ni ni-archive-2 text-red",
     component: BtoB,
+    layout: "/admin",
+  },
+  {
+    path: "/tasks",
+    name: "Задачи",
+    icon: "ni ni-air-baloon text-purple",
+    component: Tasks,
     layout: "/admin",
   },
   {

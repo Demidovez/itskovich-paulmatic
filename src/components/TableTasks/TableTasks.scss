@@ -1,0 +1,46 @@
+.table-tasks-component {
+  tr {
+    cursor: pointer;
+  }
+
+  .message {
+    text-align: center;
+    margin: 30px 0;
+    font-size: 17px;
+    opacity: 0.6;
+  }
+
+  .table-cell {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    vertical-align: middle;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    font-size: 0.8125rem;
+    cursor: pointer;
+
+    &.level-0 {
+      background: #f6f9fc;
+      color: #525f7f;
+      letter-spacing: 1px;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      border-bottom: 1px solid #e9ecef;
+    }
+  }
+
+  .table-responsive {
+    height: 100%;
+
+    table tbody:nth-of-type(1) tr:nth-of-type(1) td {
+      border: none !important;
+    }
+
+    table thead th {
+      border: none !important;
+      border: none !important;
+      box-shadow: inset 0 1px 0 #e9ecef, inset 0 -1px 0 #e9ecef;
+    }
+  }
+}
