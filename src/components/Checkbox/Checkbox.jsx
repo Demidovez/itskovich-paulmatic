@@ -3,16 +3,14 @@ import "./Checkbox.scss";
 
 const { Label } = require("reactstrap");
 
-const Checkbox = ({ label, scale = 1 }) => {
-  const id = useMemo(() => new Date().getTime(), []);
-
+const Checkbox = ({ label, scale = 1, id, checked, onChange }) => {
   return (
     <div className="checkbox-component">
       <div className="pl-0 custom-control checkbox-contact custom-checkbox">
         <input
           className="custom-control-input"
-          // checked={selectedIds.includes(company.id)}
-          // onChange={() => onSelectId(company.id)}
+          checked={checked}
+          onChange={onChange}
           id={"check_" + id}
           type="checkbox"
         />

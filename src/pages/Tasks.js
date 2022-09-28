@@ -3,6 +3,7 @@ import Pagination from "components/Pagination/Pagination";
 import TableTasks from "components/TableTasks/TableTasks";
 import TaskSort from "components/TaskSort/TaskSort";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Container,
   Row,
@@ -13,8 +14,15 @@ import {
   CardBody,
   CardTitle,
 } from "reactstrap";
+import { selectAllTasks } from "store/slices/tasksSlice";
 
 const Tasks = () => {
+  const dispatch = useDispatch();
+
+  const isSelectedAll = useSelector((state) => state.tasks.isSelectedAll);
+
+  const onSelectAllTasks = () => dispatch(selectAllTasks(!isSelectedAll));
+
   return (
     <>
       <Container
@@ -150,7 +158,12 @@ const Tasks = () => {
                 md={6}
                 className="d-flex justify-content-start align-items-center"
               >
-                <Checkbox label="Все" scale={1.25} />
+                <Checkbox
+                  label="Все"
+                  scale={1.25}
+                  checked={isSelectedAll}
+                  onChange={onSelectAllTasks}
+                />
               </Col>
               <Col md={6} className="d-flex justify-content-end">
                 <div className="d-flex align-items-center">

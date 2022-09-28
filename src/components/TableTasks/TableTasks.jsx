@@ -13,6 +13,7 @@ import { useGetCompaniesState } from "store/api/companies";
 import { setCache, addSelectedId } from "store/slices/tablesSlice";
 import "./TableTasks.scss";
 import Checkbox from "components/Checkbox/Checkbox";
+import { addTasksId } from "store/slices/tasksSlice";
 
 const COUNT_ON_PAGE = 10;
 
@@ -179,6 +180,10 @@ const demo = [
 const TableTasks = ({ info, data = demo, fetchData }) => {
   const dispatch = useDispatch();
 
+  const { isSelectedAll, selectedIds } = useSelector((state) => state.tasks);
+
+  const onSelectTask = (id) => dispatch(addTasksId(id));
+
   return (
     <>
       <div className="table-tasks-component h-100 overflow-auto">
@@ -200,7 +205,14 @@ const TableTasks = ({ info, data = demo, fetchData }) => {
                           ...field.style,
                         }}
                       >
-                        <Checkbox key={field.name} />
+                        <Checkbox
+                          key={field.name}
+                          id={task.id}
+                          checked={
+                            selectedIds.includes(task.id) || isSelectedAll
+                          }
+                          onChange={() => onSelectTask(task.id)}
+                        />
                       </td>
                     );
                   } else if (field.name === "type") {
