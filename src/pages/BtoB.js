@@ -198,14 +198,14 @@ const BtoB = () => {
   return (
     <Container fluid className="d-flex flex-column height-fill pt-4 pb-3">
       <Row className="h-100 flex-fill">
-        <div className="col col-9 mb-3 d-flex h-100">
+        <div className="col col-lg-9 col-sm-12 mb-3 d-flex h-100">
           <Card className="shadow w-100">
             <CardHeader className="border-0">
               <Row>
-                <Col md={6}>
+                <Col className="col col-lg-6 col-md-12 col-sm-12">
                   <Tabs tabs={tables} activeTable={activeTable} />
                 </Col>
-                <Col md={6} className="d-flex align-items-center">
+                <Col className="col col-lg-6 col-md-12 col-sm-12 d-flex align-items-center pt-lg-0 pt-3 ">
                   <ActionTableBar
                     disabled={(selectedIds[activeTable] || []).length === 0}
                     onAddContact={onAddContact}
@@ -236,7 +236,7 @@ const BtoB = () => {
               )}
           </Card>
         </div>
-        <div className="col col-3">
+        <div className="col col-3 d-none d-md-block">
           {Object.keys(tables[activeTable]).length > 0 && (
             <FilterB2B
               name={tables[activeTable].info.name}

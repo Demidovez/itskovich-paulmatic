@@ -15,3 +15,9 @@ body {
 .logo-height {
   height: var(--height-menu);
 }
+
+@media (max-width: 900px) {
+  .height-fill {
+    height: initial;
+  }
+}
