@@ -1,35 +1,34 @@
 import { Card, CardHeader, CardFooter, Table, Label, Col } from "reactstrap";
-import FilterB2B from "../FilterB2B/FilterB2B";
-import SearchBar from "../SearchBar/SearchBar";
 import Pagination from "../Pagination/Pagination";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import HiddenTableCell from "components/HiddenTableCell/HiddenTableCell";
-import { setCurrentPage } from "store/slices/b2bFilterSlice";
-import { setSearchValue } from "store/slices/b2bFilterSlice";
-import ActionTableBar from "components/ActionTableBar/ActionTableBar";
-import { clearSelectedIds } from "store/slices/tablesSlice";
-import { useGetCompaniesState } from "store/api/companies";
-import { setCache, addSelectedId } from "store/slices/tablesSlice";
 import "./TableTasks.scss";
 import Checkbox from "components/Checkbox/Checkbox";
 import { addTasksId } from "store/slices/tasksSlice";
+import { useLazyGetTasksQuery } from "store/api/tasks";
+import TaskIcon from "components/TaskIcon/TaskIcon";
+import TaskStatus from "components/TaskStatus/TaskStatus";
+import moment from "moment";
+import "moment/locale/ru";
+import TaskStartTime from "components/TaskStartTime/TaskStartTime";
 
-const COUNT_ON_PAGE = 10;
+moment.locale("ru");
+
+const COUNT_ON_PAGE = 19;
 
 const fields = [
   {
     label: "",
     name: "checkbox",
     style: {
-      width: "5%",
+      width: "4%",
       minWidth: "0px",
       maxWidth: "500px",
     },
   },
   {
     label: "Тип",
-    name: "type",
+    name: "Type",
     style: {
       width: "4%",
       minWidth: "0px",
@@ -38,35 +37,35 @@ const fields = [
   },
   {
     label: "Время",
-    name: "time",
+    name: "StartTime",
     style: {
       fontSize: 12,
-      width: "5%",
+      width: "7%",
       minWidth: "0px",
       maxWidth: "500px",
     },
   },
   {
     label: "Задача",
-    name: "task",
+    name: "Name",
     style: {
-      width: "35%",
+      width: "30%",
       minWidth: "0px",
       maxWidth: "800px",
     },
   },
   {
     label: "Описание",
-    name: "description",
+    name: "Description",
     style: {
-      width: "36%",
+      width: "40%",
       minWidth: "0px",
       maxWidth: "800px",
     },
   },
   {
     label: "Статус",
-    name: "status",
+    name: "Status",
     style: {
       width: "14%",
       minWidth: "0px",
@@ -75,114 +74,17 @@ const fields = [
   },
 ];
 
-const demo = [
-  {
-    id: 0,
-    type: "linkedin",
-    time: "10:30",
-    task: "Посмотреть профиль LinkedIn",
-    description: "Зайти на страницу профиля и подписаться",
-    author: "Антон Ицкович",
-    status: "Завершено",
-  },
-  {
-    id: 1,
-    type: "linkedin",
-    time: "12:35",
-    task: "Посмотреть профиль LinkedIn",
-    description: "Начать диалог с пользователем по представленному алгоритму",
-    author: "Николай Демидовец",
-    status: "Срок сдачи 5 минут",
-  },
-  {
-    id: 2,
-    type: "linkedin",
-    time: "19:50",
-    task: "Посмотреть профиль LinkedIn",
-    description: "Зайти на страницу профиля и подписаться",
-    author: "Иван Иванов",
-    status: "Срок сдачи 10 минут",
-  },
-  {
-    id: 3,
-    type: "linkedin",
-    time: "19:50",
-    task: "Посмотреть профиль LinkedIn",
-    description: "Зайти на страницу профиля и подписаться",
-    author: "Иван Иванов",
-    status: "Срок сдачи 10 минут",
-  },
-  {
-    id: 4,
-    type: "linkedin",
-    time: "19:50",
-    task: "Посмотреть профиль LinkedIn",
-    description: "Зайти на страницу профиля и подписаться",
-    author: "Иван Иванов",
-    status: "Срок сдачи 10 минут",
-  },
-  {
-    id: 5,
-    type: "linkedin",
-    time: "19:50",
-    task: "Посмотреть профиль LinkedIn",
-    description: "Зайти на страницу профиля и подписаться",
-    author: "Иван Иванов",
-    status: "Срок сдачи 10 минут",
-  },
-  {
-    id: 6,
-    type: "linkedin",
-    time: "19:50",
-    task: "Посмотреть профиль LinkedIn",
-    description: "Зайти на страницу профиля и подписаться",
-    author: "Иван Иванов",
-    status: "Срок сдачи 10 минут",
-  },
-  {
-    id: 7,
-    type: "linkedin",
-    time: "19:50",
-    task: "Посмотреть профиль LinkedIn",
-    description: "Зайти на страницу профиля и подписаться",
-    author: "Иван Иванов",
-    status: "Срок сдачи 10 минут",
-  },
-  {
-    id: 8,
-    type: "linkedin",
-    time: "19:50",
-    task: "Посмотреть профиль LinkedIn",
-    description: "Зайти на страницу профиля и подписаться",
-    author: "Иван Иванов",
-    status: "Срок сдачи 10 минут",
-  },
-  {
-    id: 9,
-    type: "linkedin",
-    time: "19:50",
-    task: "Посмотреть профиль LinkedIn",
-    description: "Зайти на страницу профиля и подписаться",
-    author: "Иван Иванов",
-    status: "Срок сдачи 10 минут",
-  },
-  {
-    id: 10,
-    type: "linkedin",
-    time: "19:50",
-    task: "Посмотреть профиль LinkedIn",
-    description: "Зайти на страницу профиля и подписаться",
-    author: "Иван Иванов",
-    status: "Срок сдачи 10 минут",
-  },
-];
-
-const TableTasks = ({ info, data = demo, fetchData }) => {
+const TableTasks = ({ info, fetchData }) => {
+  const [getTasks, { data: tasks = [] }] = useLazyGetTasksQuery();
   const dispatch = useDispatch();
 
   const { isSelectedAll, selectedIds } = useSelector((state) => state.tasks);
 
   const onSelectTask = (id) => dispatch(addTasksId(id));
+
+  useEffect(() => {
+    getTasks();
+  }, []);
 
   return (
     <>
@@ -193,7 +95,7 @@ const TableTasks = ({ info, data = demo, fetchData }) => {
           style={{ tableLayout: "auto" }}
         >
           <tbody>
-            {data.map((task) => (
+            {tasks.map((task) => (
               <tr key={task.id} className="d-flex">
                 {fields.map((field) => {
                   if (field.name === "checkbox") {
@@ -215,7 +117,7 @@ const TableTasks = ({ info, data = demo, fetchData }) => {
                         />
                       </td>
                     );
-                  } else if (field.name === "type") {
+                  } else if (field.name === "StartTime") {
                     return (
                       <td
                         key={field.name}
@@ -228,14 +130,50 @@ const TableTasks = ({ info, data = demo, fetchData }) => {
                           ...field.style,
                         }}
                       >
-                        {task[field.name] === "linkedin" ? (
-                          <i className="fab fa-linkedin"></i>
-                        ) : (
-                          task[field.name]
-                        )}
+                        <TaskStartTime time={task[field.name]} />
                       </td>
                     );
-                  } else if (field.name === "task") {
+                  } else if (field.name === "Type") {
+                    return (
+                      <td
+                        key={field.name}
+                        className="p-3 d-flex align-items-center"
+                        style={{
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          fontSize: 30,
+                          fontWeight: 100,
+                          ...field.style,
+                        }}
+                      >
+                        <TaskIcon type={task[field.name]} />
+                      </td>
+                    );
+                  } else if (field.name === "Name") {
+                    return (
+                      <td
+                        key={field.name}
+                        className="p-3 pr-3 d-flex align-items-center"
+                        style={{
+                          ...field.style,
+                        }}
+                      >
+                        <div
+                          style={{
+                            overflow: "hidden",
+                            whiteSpace: "nowrap",
+                            fontSize: 15,
+                            fontWeight: 100,
+                            textOverflow: "ellipsis",
+                            width: `calc(100%)`,
+                          }}
+                        >
+                          <strong className="pr-1 ">{task[field.name]}</strong>{" "}
+                          - {task.Contact.name}
+                        </div>
+                      </td>
+                    );
+                  } else if (field.name === "Status") {
                     return (
                       <td
                         key={field.name}
@@ -248,26 +186,35 @@ const TableTasks = ({ info, data = demo, fetchData }) => {
                           ...field.style,
                         }}
                       >
-                        <strong className="pr-1 ">{task[field.name]}</strong> -{" "}
-                        {task.author}
+                        <TaskStatus
+                          status={task[field.name]}
+                          dueTime={task.DueTime}
+                          color={task.Awareness}
+                        />
                       </td>
                     );
-                  } else if (field.name === "author") {
-                    return null;
                   } else {
                     return (
                       <td
                         key={field.name}
                         className="p-3 d-flex align-items-center"
                         style={{
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          fontSize: 15,
-                          fontWeight: 100,
                           ...field.style,
+                          width: `calc(${field.style.width})`,
                         }}
                       >
-                        {task[field.name]}
+                        <div
+                          style={{
+                            overflow: "hidden",
+                            whiteSpace: "nowrap",
+                            fontSize: 15,
+                            fontWeight: 100,
+                            textOverflow: "ellipsis",
+                            width: `calc(100%)`,
+                          }}
+                        >
+                          {task[field.name]}
+                        </div>
                       </td>
                     );
                   }
@@ -277,12 +224,12 @@ const TableTasks = ({ info, data = demo, fetchData }) => {
           </tbody>
         </Table>
 
-        {data.length === 0 && <p className="message">Не найдено :(</p>}
+        {tasks.length === 0 && <p className="message">Не найдено :(</p>}
       </div>
       <CardFooter className="d-flex justify-content-between align-items-center">
         <div></div>
         <Pagination
-          allCount={data.length || 0}
+          allCount={tasks.length || 0}
           countOnPage={COUNT_ON_PAGE}
           page={0}
           moveToPage={() => {}}
