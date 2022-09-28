@@ -63,7 +63,6 @@ export const contactsApi = createApi({
       }),
       transformResponse: (response) => {
         if (response.result) {
-          console.log(response.result);
           toast.success(`${response.result} контактов добавлено!`);
         } else {
           toast.error(`Ошибка!`);

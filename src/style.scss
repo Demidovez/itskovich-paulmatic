@@ -4,6 +4,10 @@
   --height-menu: 4.5rem;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 .height-fill {
   height: calc(100vh - var(--height-menu));
 }
