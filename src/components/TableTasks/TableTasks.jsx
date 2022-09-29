@@ -39,7 +39,7 @@ const fields = [
     label: "Время",
     name: "StartTime",
     style: {
-      fontSize: 12,
+      fontSize: 14,
       width: "7%",
       minWidth: "0px",
       maxWidth: "500px",
@@ -126,7 +126,7 @@ const TableTasks = ({ info, fetchData }) => {
                           overflow: "hidden",
                           textOverflow: "ellipsis",
                           fontSize: 30,
-                          fontWeight: 100,
+                          fontWeight: 400,
                           ...field.style,
                         }}
                       >
@@ -163,7 +163,7 @@ const TableTasks = ({ info, fetchData }) => {
                             overflow: "hidden",
                             whiteSpace: "nowrap",
                             fontSize: 15,
-                            fontWeight: 100,
+                            fontWeight: 400,
                             textOverflow: "ellipsis",
                             width: `calc(100%)`,
                           }}
@@ -182,7 +182,7 @@ const TableTasks = ({ info, fetchData }) => {
                           overflow: "hidden",
                           textOverflow: "ellipsis",
                           fontSize: 15,
-                          fontWeight: 100,
+                          fontWeight: 400,
                           ...field.style,
                         }}
                       >
@@ -208,7 +208,7 @@ const TableTasks = ({ info, fetchData }) => {
                             overflow: "hidden",
                             whiteSpace: "nowrap",
                             fontSize: 15,
-                            fontWeight: 100,
+                            fontWeight: 400,
                             textOverflow: "ellipsis",
                             width: `calc(100%)`,
                           }}
