@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Card, CardHeader, Container, Row, Col, CardFooter } from "reactstrap";
-import TableContacts from "../../components/TableContacts/TableContacts";
-import FormContacts from "../../components/FormContacts/FormContacts";
-import SearchBar from "../../components/SearchBar/SearchBar";
-import UploadContacts from "../../components/UploadContacts/UploadContacts";
+import TableContacts from "components/TableContacts/TableContacts";
+import FormContacts from "components/FormContacts/FormContacts";
+import SearchBar from "components/SearchBar/SearchBar";
+import UploadContacts from "components/UploadContacts/UploadContacts";
 import {
   useLazyGetContactsQuery,
   useCreateOrUpdateContactMutation,
   useDeleteContactsMutation,
-} from "../../store/api/contacts";
+} from "../store/api/contacts";
 import { useEffect, useState } from "react";
 import ActionContactsBar from "components/ActionContactsBar/ActionContactsBar";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +18,7 @@ import { setCurrentContactPage } from "store/slices/contactsSlice";
 import Pagination from "components/Pagination/Pagination";
 import { searchValueContactPage } from "store/slices/contactsSlice";
 import { setCache } from "store/slices/tablesSlice";
+import SearchBarContacts from "components/SearchBarContacts/SearchBarContacts";
 
 const COUNT_ON_PAGE = 100;
 
@@ -104,19 +105,25 @@ const Contacts = () => {
 
   return (
     <>
-      <Container fluid className="d-flex flex-column h-100vh overflow-hidden">
+      <Container
+        fluid
+        className="d-flex flex-column overflow-hidden height-fill"
+      >
         <Row>
           <div className="col col-8 d-flex align-items-center">
             <h1 className="mt-4 mb-4 mr-3">Контакты</h1>
           </div>
         </Row>
         <Row className="flex-fill">
-          <div className="col col-9 mb-5 d-flex">
+          <div className="col col-9 mb-3 d-flex">
             <Card className="shadow flex-fill overflow-hidden">
               <CardHeader className="border-0 ">
                 <Row>
                   <Col md={6}>
-                    <SearchBar onSearch={onSearch} search={searchValue} />
+                    <SearchBarContacts
+                      onSearch={onSearch}
+                      search={searchValue}
+                    />
                   </Col>
                   <Col
                     md={6}

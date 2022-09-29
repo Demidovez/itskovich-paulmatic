@@ -9,10 +9,10 @@ import {
 const Selector = ({ data, value, onSelect, isDisabled, dependValue }) => {
   const [variants, setVariants] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isShow, setIsShow] = useState(false);
 
   const toggle = () => setDropdownOpen((prevState) => !prevState);
 
-  // TODO: Наверное плохое решение, лучше перенести в редусер
   useEffect(() => {
     if (data.Variants) {
       let variants = data.Variants;
@@ -23,15 +23,17 @@ const Selector = ({ data, value, onSelect, isDisabled, dependValue }) => {
           .map((variant) => variant.replace(/(.*);(.*)/gi, "$2"));
       }
 
-      setVariants(variants);
+      setVariants(["Все", ...variants]);
     }
   }, [data.Variants, dependValue]);
 
-  // useEffect(() => {
-  //   if (!variants.includes(value)) {
-  //     onSelect(null);
-  //   }
-  // }, [variants, value]);
+  useEffect(() => {
+    if (dropdownOpen) {
+      setTimeout(() => setIsShow(true), 0);
+    } else {
+      setIsShow(false);
+    }
+  }, [dropdownOpen]);
 
   return (
     <Dropdown
@@ -39,11 +41,15 @@ const Selector = ({ data, value, onSelect, isDisabled, dependValue }) => {
       toggle={toggle}
       direction="down"
       color="primary"
-      style={{ width: "100%", opacity: isDisabled ? 0.6 : 1 }}
+      style={{
+        width: "100%",
+        opacity: isDisabled ? 0.6 : 1,
+      }}
       disabled={isDisabled}
     >
       <DropdownToggle
         caret
+        // onClick={toggle}
         color="primary"
         style={{ width: "100%", overflow: "hidden" }}
         className="d-flex align-items-center justify-content-between"
@@ -61,12 +67,21 @@ const Selector = ({ data, value, onSelect, isDisabled, dependValue }) => {
           {value || "Все"}
         </div>
       </DropdownToggle>
+
       <DropdownMenu
-        style={{ minWidth: "100%", maxHeight: "60vh", overflow: "auto" }}
+        style={{
+          maxHeight: "200px",
+          overflow: "auto",
+          minWidth: "100%",
+          opacity: isShow ? 1 : 0,
+        }}
         right
       >
         {variants.map((variant, index) => (
-          <DropdownItem key={index} onClick={() => onSelect(variant)}>
+          <DropdownItem
+            key={index}
+            onClick={() => onSelect(variant === "Все" ? "" : variant)}
+          >
             {variant}
           </DropdownItem>
         ))}

@@ -2,15 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   selectedIds: [],
+  isSelectedAll: false,
   currentPage: 0,
-  searchValue: "",
 };
 
-export const contactsSlice = createSlice({
-  name: "contacts",
+export const tasksSlice = createSlice({
+  name: "tasks",
   initialState,
   reducers: {
-    addContactId: (state, action) => {
+    addTasksId: (state, action) => {
       state.selectedIds = state.selectedIds.includes(action.payload)
         ? state.selectedIds.filter((id) => id !== action.payload)
         : [...state.selectedIds, action.payload];
@@ -18,20 +18,24 @@ export const contactsSlice = createSlice({
     clearSelectedIds: (state, action) => {
       state.selectedIds = [];
     },
-    setCurrentContactPage: (state, action) => {
+    setCurrentTasksPage: (state, action) => {
       state.currentPage = action.payload;
     },
-    searchValueContactPage: (state, action) => {
-      state.searchValue = action.payload;
+    selectAllTasks: (state, action) => {
+      state.isSelectedAll = action.payload;
+
+      if (!action.payload) {
+        state.selectedIds = [];
+      }
     },
   },
 });
 
 export const {
-  addContactId,
+  addTasksId,
   clearSelectedIds,
-  setCurrentContactPage,
-  searchValueContactPage,
-} = contactsSlice.actions;
+  setCurrentTasksPage,
+  selectAllTasks,
+} = tasksSlice.actions;
 
-export default contactsSlice.reducer;
+export default tasksSlice.reducer;

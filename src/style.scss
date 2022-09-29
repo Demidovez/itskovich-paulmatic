@@ -1,0 +1,23 @@
+:root {
+  --toastify-color-success: var(--primary);
+  --toastify-color-error: var(--danger);
+  --height-menu: 4.5rem;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.height-fill {
+  height: calc(100vh - var(--height-menu));
+}
+
+.logo-height {
+  height: var(--height-menu);
+}
+
+@media (max-width: 900px) {
+  .height-fill {
+    height: initial;
+  }
+}

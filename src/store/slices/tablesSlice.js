@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   selectedIds: {},
-  activeTable: "companies",
+  activeTable: "persons",
   tables: {
     companies: {},
     persons: {},

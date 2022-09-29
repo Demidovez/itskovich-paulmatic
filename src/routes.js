@@ -1,11 +1,12 @@
-import Index from "views/Index.js";
-import Profile from "views/examples/Profile.js";
-import Maps from "views/examples/Maps.js";
-import Register from "views/examples/Register.js";
-import Login from "views/examples/Login.js";
-import Contacts from "views/examples/Contacts.js";
-import BtoB from "views/examples/BtoB.js";
-import Icons from "views/examples/Icons.js";
+import Index from "pages/Index.js";
+import Profile from "pages/Profile.js";
+import Maps from "pages/Maps.js";
+import Register from "pages/Register.js";
+import Login from "pages/Login.js";
+import Contacts from "pages/Contacts.js";
+import BtoB from "pages/BtoB.js";
+import Icons from "pages/Icons.js";
+import Tasks from "pages/Tasks";
 
 var routes = [
   {
@@ -46,8 +47,15 @@ var routes = [
   {
     path: "/b2b",
     name: "B2B Database",
-    icon: "ni ni-bullet-list-67 text-red",
+    icon: "ni ni-archive-2 text-red",
     component: BtoB,
+    layout: "/admin",
+  },
+  {
+    path: "/tasks",
+    name: "Задачи",
+    icon: "ni ni-air-baloon text-purple",
+    component: Tasks,
     layout: "/admin",
   },
   {
@@ -56,6 +64,7 @@ var routes = [
     icon: "ni ni-key-25 text-info",
     component: Login,
     layout: "/auth",
+    position: "user",
   },
   {
     path: "/register",
@@ -63,6 +72,7 @@ var routes = [
     icon: "ni ni-circle-08 text-pink",
     component: Register,
     layout: "/auth",
+    position: "user",
   },
 ];
 export default routes;

@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getServerUrl } from "./server";
+import { toast } from "react-toastify";
 
 export const contactsApi = createApi({
   reducerPath: "contactsApi",
@@ -39,6 +40,34 @@ export const contactsApi = createApi({
           "Content-type": "application/json",
         },
       }),
+      transformResponse: (response, _, arg) => {
+        if (response.result && response.result.id === arg.id) {
+          toast.success(`${response.result.name} обновлен!`);
+        } else if (response.result && response.result.id !== arg.id) {
+          toast.success(`${response.result.name} создан!`);
+        } else {
+          toast.error(`Ошибка!`);
+        }
+      },
+      invalidatesTags: [{ type: "Contacts", id: "LIST" }],
+    }),
+    uploadFileOfContacts: builder.mutation({
+      query: (file) => ({
+        url: "/upload",
+        method: "POST",
+        body: file,
+        headers: {
+          "caller-version-code": 1,
+          sessionToken: "user-1",
+        },
+      }),
+      transformResponse: (response) => {
+        if (response.result) {
+          toast.success(`${response.result} контактов добавлено!`);
+        } else {
+          toast.error(`Ошибка!`);
+        }
+      },
       invalidatesTags: [{ type: "Contacts", id: "LIST" }],
     }),
     deleteContacts: builder.mutation({
@@ -52,6 +81,15 @@ export const contactsApi = createApi({
           "Content-type": "application/json",
         },
       }),
+      transformResponse: (response, _, arg) => {
+        if (response.executionTimeMs && arg.length > 1) {
+          toast.success(`Контакты удалены!`);
+        } else if (response.executionTimeMs && arg.length > 0) {
+          toast.success(`Контакт удален!`);
+        } else {
+          toast.error(`Ошибка!`);
+        }
+      },
       invalidatesTags: (_, __, ids) => [
         ...ids.map((id) => ({ type: "Contacts", id })),
       ],
@@ -63,4 +101,5 @@ export const {
   useLazyGetContactsQuery,
   useCreateOrUpdateContactMutation,
   useDeleteContactsMutation,
+  useUploadFileOfContactsMutation,
 } = contactsApi;

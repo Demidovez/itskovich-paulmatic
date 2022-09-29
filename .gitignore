@@ -6,4 +6,5 @@ package-lock.json
 /.github/*
 .env
 .DS_Store
-deploy.sh
+deploy_dev.sh
+deploy_prod.sh

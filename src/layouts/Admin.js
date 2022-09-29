@@ -1,8 +1,9 @@
 import React from "react";
 import { useLocation, Route, Switch, Redirect } from "react-router-dom";
-import Sidebar from "components/Sidebar/Sidebar.js";
+import { ToastContainer } from "react-toastify";
 
 import routes from "routes.js";
+import Menu from "components/Menu/Menu";
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);
@@ -44,28 +45,33 @@ const Admin = (props) => {
 
   return (
     <>
-      <Sidebar
+      <Menu
         {...props}
         routes={routes}
         logo={{
           innerLink: "/admin/index",
-          imgSrc: require("../assets/img/brand/logo.png"),
+          imgSrc: require("../assets/img/brand/logo.svg").default,
           imgAlt: "...",
         }}
       />
       <div className="main-content" ref={mainContent}>
-        {/* <AdminNavbar
-          {...props}
-          brandText={getBrandText(props.location.pathname)}
-        /> */}
         <Switch>
           {getRoutes(routes)}
           <Redirect from="*" to="/admin/index" />
         </Switch>
-        {/* <Container fluid>
-          <AdminFooter />
-        </Container> */}
       </div>
+      <ToastContainer
+        theme="colored"
+        position="bottom-right"
+        hideProgressBar
+        autoClose={3000}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover={false}
+      />
     </>
   );
 };
