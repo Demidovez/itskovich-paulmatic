@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 
 import routes from "routes.js";
 import Menu from "components/Menu/Menu";
+import CommonThings from "components/CommonThings/CommonThings";
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);
@@ -29,18 +30,6 @@ const Admin = (props) => {
         return null;
       }
     });
-  };
-
-  const getBrandText = (path) => {
-    for (let i = 0; i < routes.length; i++) {
-      if (
-        props.location.pathname.indexOf(routes[i].layout + routes[i].path) !==
-        -1
-      ) {
-        return routes[i].name;
-      }
-    }
-    return "Brand";
   };
 
   return (
@@ -72,6 +61,7 @@ const Admin = (props) => {
         draggable={false}
         pauseOnHover={false}
       />
+      <CommonThings />
     </>
   );
 };

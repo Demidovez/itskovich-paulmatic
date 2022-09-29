@@ -17,25 +17,7 @@ export const tasksApi = createApi({
         },
       }),
       transformResponse: (response) => {
-        return (
-          response.result.map((task, i) => {
-            if (i == 3 || i == 8 || i == 1) {
-              return {
-                ...task,
-                Awareness: "#E74C3C",
-                StartTime: "2022-09-26T18:14:36.2728757+03:00",
-              };
-            } else if (i == 6 || i == 10 || i == 4) {
-              return {
-                ...task,
-                Awareness: "#27AE60",
-                DueTime: "2022-09-30T09:50:36.2728757+03:00",
-              };
-            } else {
-              return { ...task, Awareness: "#F1C40F" };
-            }
-          }) || []
-        ); // ЗАГЛУШКА!!!!!!!!!!!!!!!!!
+        return response.result || [];
       },
       providesTags: (result) =>
         result
