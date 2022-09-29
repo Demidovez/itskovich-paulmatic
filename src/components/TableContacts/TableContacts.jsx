@@ -46,7 +46,7 @@ const fields = [
     label: "Телефон",
     name: "phone",
     style: {
-      width: "10%",
+      width: "13%",
       minWidth: "100px",
       maxWidth: "400px",
     },
@@ -55,7 +55,7 @@ const fields = [
     label: "LinkedIn",
     name: "linkedin",
     style: {
-      width: "22%",
+      width: "23%",
       minWidth: "100px",
       maxWidth: "400px",
     },
@@ -64,7 +64,7 @@ const fields = [
     label: "Последовательность",
     name: "sequence",
     style: {
-      width: "15%",
+      width: "14%",
       minWidth: "100px",
       maxWidth: "400px",
     },
@@ -150,29 +150,31 @@ const TableContacts = ({
                       </a>
                     </td>
                   );
-                } else if (["email"].includes(field.name)) {
-                  return (
-                    <HiddenTableCell
-                      key={field.name}
-                      value={contact[field.name]}
-                      style={field.style}
-                    />
-                  );
+                  // } else if (["email"].includes(field.name)) {
+                  //   return (
+                  //     <HiddenTableCell
+                  //       key={field.name}
+                  //       value={contact[field.name]}
+                  //       style={field.style}
+                  //     />
+                  //   );
                 } else if (["phone"].includes(field.name)) {
                   return (
-                    <HiddenTableCell
+                    <td
                       key={field.name}
-                      value={
-                        contact[field.name] &&
+                      style={{
+                        whiteSpace: "normal",
+                        ...field.style,
+                      }}
+                    >
+                      {contact[field.name] &&
                         contact[field.name]
                           .trim()
                           .split(";")
                           .map((phone, index) => (
                             <div key={index}>{phone.trim()}</div>
-                          ))
-                      }
-                      style={field.style}
-                    />
+                          ))}
+                    </td>
                   );
                 } else if (["sequence"].includes(field.name)) {
                   return (
@@ -203,47 +205,6 @@ const TableContacts = ({
             </tr>
           ))}
         </tbody>
-        {/* <tbody>
-          {data.Items.map((contact) => (
-            <tr
-              key={contact.id}
-              onClick={() => onSelect(contact.id)}
-              className={activeContactId === contact.id ? "table-primary" : ""}
-            >
-              <td scope="row" className="p-0">
-                <div className="custom-control checkbox-contact custom-checkbox ">
-                  <input
-                    className="custom-control-input"
-                    checked={selectedIds.includes(contact.id)}
-                    onChange={() => onSelectContact(contact.id)}
-                    id={"check_" + contact.id}
-                    type="checkbox"
-                  />
-                  <Label
-                    className="custom-control-label"
-                    htmlFor={"check_" + contact.id}
-                  ></Label>
-                </div>
-              </td>
-              <td>{contact.name}</td>
-              <td>{contact.company}</td>
-              <td>{contact.email}</td>
-              <td>{contact.phone}</td>
-              <td
-                style={{
-                  maxWidth: 350,
-                  textOverflow: "ellipsis",
-                  overflow: "hidden",
-                }}
-              >
-                <a href={contact.linkedin} target="_blank">
-                  {contact.linkedin}
-                </a>
-              </td>
-              <td>Основная</td>
-            </tr>
-          ))}
-        </tbody> */}
       </Table>
       {data.TotalCpunt === 0 && (
         <p className="message">Добавьте контакты вручную или загрузите файл</p>

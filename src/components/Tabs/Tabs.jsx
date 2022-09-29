@@ -23,14 +23,14 @@ const Tabs = ({ tabs, activeTable }) => {
       Object.keys(companies).length === 0 &&
       Object.keys(persons).length === 0
     ) {
-      getCompaniesInfo();
       getPersonsInfo();
+      getCompaniesInfo();
     } else if (
       Object.keys(companies).length > 0 &&
       Object.keys(persons).length > 0
     ) {
       dispatch(
-        checkFilters({ names: [companies.info.name, persons.info.name] })
+        checkFilters({ names: [persons.info.name, companies.info.name] })
       );
     }
   }, [companies, persons]);
@@ -51,8 +51,8 @@ const Tabs = ({ tabs, activeTable }) => {
 
       dispatch(
         addTables([
-          { table: "companies", data: companies },
           { table: "persons", data: persons },
+          { table: "companies", data: companies },
         ])
       );
     }
@@ -66,32 +66,31 @@ const Tabs = ({ tabs, activeTable }) => {
     <>
       <div className="tabs-component">
         <div className="tabs">
-          {Object.keys(companies).length > 0 && (
+          {Object.keys(persons).length > 0 && (
             <Fragment>
               <input
                 type="radio"
                 id={`radio-1`}
                 name="tabs"
-                checked={activeTable === companies.info.name}
-                onChange={() => onActiveTable(companies.info.name)}
+                checked={activeTable === persons.info.name}
+                onChange={() => onActiveTable(persons.info.name)}
               />
               <label className="tab" htmlFor={`radio-1`}>
-                {companies.label}
+                {persons.label}
               </label>
             </Fragment>
           )}
-
-          {Object.keys(persons).length > 0 && (
+          {Object.keys(companies).length > 0 && (
             <Fragment>
               <input
                 type="radio"
                 id={`radio-2`}
                 name="tabs"
-                checked={activeTable === persons.info.name}
-                onChange={() => onActiveTable(persons.info.name)}
+                checked={activeTable === companies.info.name}
+                onChange={() => onActiveTable(companies.info.name)}
               />
               <label className="tab" htmlFor={`radio-2`}>
-                {persons.label}
+                {companies.label}
               </label>
             </Fragment>
           )}
