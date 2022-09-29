@@ -1,6 +1,6 @@
 import Checkbox from "components/Checkbox/Checkbox";
 import Pagination from "components/Pagination/Pagination";
-import TableTasks from "components/TableTasks/TableTasks";
+import TasksTable from "components/TasksTable/TasksTable";
 import TasksBarStatsByStatus from "components/TasksBarStatsByStatus/TasksBarStatsByStatus";
 import TasksBarStatsByType from "components/TasksBarStatsByType/TasksBarStatsByType";
 import TaskSort from "components/TaskSort/TaskSort";
@@ -66,7 +66,7 @@ const Tasks = () => {
               </Col>
             </Row>
           </CardHeader>
-          <TableTasks />
+          <TasksTable />
         </Card>
       </Container>
     </>

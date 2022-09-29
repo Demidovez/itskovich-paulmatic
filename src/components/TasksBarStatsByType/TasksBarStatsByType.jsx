@@ -14,7 +14,7 @@ const TasksBarStatsByType = () => {
   } = useSelector((state) => state.common.Tasks);
 
   return (
-    <Card className="card-stats mb-4 mb-xl-0 mr-4 shadow">
+    <Card className="card-stats mb-4 mb-xl-0 shadow">
       <CardBody className="pt-2 pb-1 ">
         <Row>
           {[...Object.values(Types)]

@@ -103,7 +103,7 @@ const Menu = (props) => {
   return (
     <Navbar
       className="fixed-left navbar-light bg-white menu-component shadow pt-0 pb-0 sticky-top"
-      style={{ zIndex: 1100 }}
+      style={{ zIndex: 1050 }}
       expand="md"
       id="sidenav-main"
     >

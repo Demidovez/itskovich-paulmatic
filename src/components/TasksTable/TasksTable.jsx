@@ -2,7 +2,7 @@ import { Card, CardHeader, CardFooter, Table, Label, Col } from "reactstrap";
 import Pagination from "../Pagination/Pagination";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import "./TableTasks.scss";
+import "./TasksTable.scss";
 import Checkbox from "components/Checkbox/Checkbox";
 import { addTasksId } from "store/slices/tasksSlice";
 import { useLazyGetTasksQuery } from "store/api/tasks";
@@ -11,6 +11,8 @@ import TaskStatus from "components/TaskStatus/TaskStatus";
 import moment from "moment";
 import "moment/locale/ru";
 import TaskStartTime from "components/TaskStartTime/TaskStartTime";
+import TasksModals from "components/TasksModals/TasksModals";
+import { useState } from "react";
 
 moment.locale("ru");
 
@@ -74,7 +76,9 @@ const fields = [
   },
 ];
 
-const TableTasks = ({ info, fetchData }) => {
+const TasksTable = ({ info, fetchData }) => {
+  const [taskToModal, setTaskToModal] = useState(null);
+
   const [getTasks, { data: tasks = [] }] = useLazyGetTasksQuery();
   const dispatch = useDispatch();
 
@@ -86,6 +90,10 @@ const TableTasks = ({ info, fetchData }) => {
     getTasks();
   }, []);
 
+  const openTast = (task) => {
+    setTaskToModal(task);
+  };
+
   return (
     <>
       <div className="table-tasks-component h-100 overflow-auto">
@@ -96,7 +104,11 @@ const TableTasks = ({ info, fetchData }) => {
         >
           <tbody>
             {tasks.map((task) => (
-              <tr key={task.id} className="d-flex">
+              <tr
+                key={task.id}
+                className="d-flex"
+                onClick={() => openTast(task)}
+              >
                 {fields.map((field) => {
                   if (field.name === "checkbox") {
                     return (
@@ -189,7 +201,7 @@ const TableTasks = ({ info, fetchData }) => {
                         <TaskStatus
                           status={task[field.name]}
                           dueTime={task.DueTime}
-                          color={task.Awareness}
+                          color={task.Alertness}
                         />
                       </td>
                     );
@@ -235,8 +247,9 @@ const TableTasks = ({ info, fetchData }) => {
           moveToPage={() => {}}
         />
       </CardFooter>
+      <TasksModals task={taskToModal} onClose={() => setTaskToModal(null)} />
     </>
   );
 };
 
-export default React.memo(TableTasks);
+export default TasksTable;
