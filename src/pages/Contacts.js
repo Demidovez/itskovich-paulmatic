@@ -3,7 +3,7 @@ import { Card, CardHeader, Container, Row, Col, CardFooter } from "reactstrap";
 import TableContacts from "components/TableContacts/TableContacts";
 import FormContacts from "components/FormContacts/FormContacts";
 import SearchBar from "components/SearchBar/SearchBar";
-import UploadContacts from "components/UploadContacts/UploadContacts";
+import CreateContactsSelector from "components/CreateContactsSelector/CreateContactsSelector";
 import {
   useLazyGetContactsQuery,
   useCreateOrUpdateContactMutation,
@@ -19,10 +19,12 @@ import Pagination from "components/Pagination/Pagination";
 import { searchValueContactPage } from "store/slices/contactsSlice";
 import { setCache } from "store/slices/tablesSlice";
 import SearchBarContacts from "components/SearchBarContacts/SearchBarContacts";
+import ModalContactForm from "components/ModalContactForm/ModalContactForm";
 
 const COUNT_ON_PAGE = 100;
 
 const Contacts = () => {
+  const [isCreateNew, setIsCreateNew] = useState(false);
   const dispatch = useDispatch();
   const { selectedIds, currentPage, searchValue } = useSelector(
     (state) => state.contacts
@@ -64,11 +66,12 @@ const Contacts = () => {
 
   const [deleteContactsByID] = useDeleteContactsMutation();
 
-  const [activeContact, setActiveContact] = useState({});
+  const [activeContact, setActiveContact] = useState(null);
   const [isShowModalDelete, setIsShowModalDelete] = useState(false);
 
   const onResetForm = () => {
-    setActiveContact({});
+    activeContact && setActiveContact(null);
+    isCreateNew && setIsCreateNew(false);
   };
 
   const onSave = (contact) => {
@@ -115,7 +118,7 @@ const Contacts = () => {
           </div>
         </Row>
         <Row className="flex-fill">
-          <div className="col col-9 mb-3 d-flex">
+          <div className="col mb-3 d-flex">
             <Card className="shadow flex-fill overflow-hidden">
               <CardHeader className="border-0 ">
                 <Row>
@@ -134,7 +137,9 @@ const Contacts = () => {
                       onDelete={() => setIsShowModalDelete(true)}
                       onAddToSequence={handleAddToSequence}
                     />
-                    <UploadContacts />
+                    <CreateContactsSelector
+                      onCreate={() => setIsCreateNew(true)}
+                    />
                   </Col>
                 </Row>
               </CardHeader>
@@ -142,7 +147,6 @@ const Contacts = () => {
                 data={contactsData || cacheTables["contacts"]}
                 onSelect={onSelectActiveContact}
                 selectedIds={selectedIds}
-                activeContactId={activeContact.id}
               />
               <CardFooter className="d-flex justify-content-between align-items-center">
                 <div></div>
@@ -160,7 +164,7 @@ const Contacts = () => {
               </CardFooter>
             </Card>
           </div>
-          <div className="col col-3">
+          {/* <div className="col col-3">
             <FormContacts
               className="sticky-top"
               style={{ top: 20 }}
@@ -169,7 +173,7 @@ const Contacts = () => {
               onSave={onSave}
               onRemove={onRemove}
             />
-          </div>
+          </div> */}
         </Row>
       </Container>
       <Modal
@@ -178,6 +182,14 @@ const Contacts = () => {
         text="Удалить выбранные контакты?"
         onAgree={handleDeleteContact}
         onCancel={() => setIsShowModalDelete(false)}
+      />
+      <ModalContactForm
+        contact={activeContact}
+        isShow={!!activeContact || isCreateNew}
+        onNew={onResetForm}
+        onSave={onSave}
+        onRemove={onRemove}
+        onClose={onResetForm}
       />
     </>
   );

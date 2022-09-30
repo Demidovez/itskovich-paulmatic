@@ -73,7 +73,6 @@ const fields = [
 
 const TableContacts = ({
   onSelect,
-  activeContactId,
   data = { Items: [], TotalCpunt: 0 },
   selectedIds,
 }) => {
@@ -105,9 +104,7 @@ const TableContacts = ({
           {data.Items.map((contact) => (
             <tr
               key={contact.id}
-              className={`${
-                activeContactId === contact.id ? "table-primary" : ""
-              } d-flex`}
+              className={`d-flex`}
               onClick={() => onSelect(contact.id)}
             >
               {fields.map((field) => {
