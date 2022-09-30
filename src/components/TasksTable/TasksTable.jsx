@@ -94,6 +94,13 @@ const TasksTable = ({ info, fetchData }) => {
     setTaskToModal(task);
   };
 
+  const onCloseModal = (task) => {
+    if (task) {
+    } else {
+      setTaskToModal(null);
+    }
+  };
+
   return (
     <>
       <div className="table-tasks-component h-100 overflow-auto">
@@ -247,7 +254,7 @@ const TasksTable = ({ info, fetchData }) => {
           moveToPage={() => {}}
         />
       </CardFooter>
-      <TasksModals task={taskToModal} onClose={() => setTaskToModal(null)} />
+      <TasksModals task={taskToModal} onClose={onCloseModal} />
     </>
   );
 };
