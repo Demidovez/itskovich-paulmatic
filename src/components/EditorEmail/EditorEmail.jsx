@@ -1,7 +1,9 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 
-const EditorEmail = ({ className, style, content }) => {
+const EditorEmail = ({ className, style, content, onChange }) => {
+  const data = useMemo(() => content, []);
+
   const editorRef = useRef(null);
 
   return (
@@ -9,7 +11,8 @@ const EditorEmail = ({ className, style, content }) => {
       <Editor
         tinymceScriptSrc={process.env.PUBLIC_URL + "/tinymce/tinymce.min.js"}
         onInit={(evt, editor) => (editorRef.current = editor)}
-        initialValue={content}
+        onEditorChange={(content) => onChange(content)}
+        initialValue={data}
         init={{
           height: "100%",
           statusbar: false,
@@ -27,7 +30,6 @@ const EditorEmail = ({ className, style, content }) => {
             "charmap",
             "anchor",
             "searchreplace",
-            // "visualblocks",
             "code",
             "fullscreen",
             "insertdatetime",
@@ -36,7 +38,7 @@ const EditorEmail = ({ className, style, content }) => {
             "preview",
           ],
           toolbar:
-            "blocks fontfamily fontsize | " +
+            "undo redo | blocks fontfamily fontsize | " +
             "bold italic forecolor | alignleft aligncenter " +
             "alignright alignjustify | bullist numlist | " +
             "removeformat forecolor backcolor | charmap",

@@ -13,6 +13,8 @@ import "moment/locale/ru";
 import TaskStartTime from "components/TaskStartTime/TaskStartTime";
 import TasksModals from "components/TasksModals/TasksModals";
 import { useState } from "react";
+import { useExecuteTaskMutation } from "store/api/tasks";
+import { useSkipTaskMutation } from "store/api/tasks";
 
 moment.locale("ru");
 
@@ -82,6 +84,9 @@ const TasksTable = ({ info, fetchData }) => {
   const [getTasks, { data: tasks = [] }] = useLazyGetTasksQuery();
   const dispatch = useDispatch();
 
+  const [executeTask] = useExecuteTaskMutation();
+  const [skipTask] = useSkipTaskMutation();
+
   const { isSelectedAll, selectedIds } = useSelector((state) => state.tasks);
 
   const onSelectTask = (id) => dispatch(addTasksId(id));
@@ -90,15 +95,28 @@ const TasksTable = ({ info, fetchData }) => {
     getTasks();
   }, []);
 
-  const openTast = (task) => {
+  const openModal = (task) => {
     setTaskToModal(task);
   };
 
-  const onCloseModal = (task) => {
+  const closeModal = () => {
+    setTaskToModal(null);
+  };
+
+  const onExecuteTask = (task) => {
     if (task) {
-    } else {
-      setTaskToModal(null);
+      executeTask(task);
     }
+
+    setTaskToModal(null);
+  };
+
+  const onSkipTask = (task) => {
+    if (task) {
+      skipTask(task);
+    }
+
+    setTaskToModal(null);
   };
 
   return (
@@ -114,7 +132,7 @@ const TasksTable = ({ info, fetchData }) => {
               <tr
                 key={task.id}
                 className="d-flex"
-                onClick={() => openTast(task)}
+                onClick={() => openModal(task)}
               >
                 {fields.map((field) => {
                   if (field.name === "checkbox") {
@@ -254,7 +272,12 @@ const TasksTable = ({ info, fetchData }) => {
           moveToPage={() => {}}
         />
       </CardFooter>
-      <TasksModals task={taskToModal} onClose={onCloseModal} />
+      <TasksModals
+        task={taskToModal}
+        onClose={closeModal}
+        onExecute={onExecuteTask}
+        onSkip={onSkipTask}
+      />
     </>
   );
 };

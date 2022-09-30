@@ -27,7 +27,41 @@ export const tasksApi = createApi({
             ]
           : [{ type: "Task", id: "LIST" }],
     }),
+    executeTask: builder.mutation({
+      query: (task) => ({
+        url: "/execute",
+        method: "POST",
+        body: task || {},
+        headers: {
+          "caller-version-code": 1,
+          sessionToken: "user-1",
+        },
+      }),
+      transformResponse: (response) => {
+        return response.result || [];
+      },
+      invalidatesTags: [{ type: "Task", id: "LIST" }],
+    }),
+    skipTask: builder.mutation({
+      query: (task) => ({
+        url: "/skip",
+        method: "POST",
+        body: task || {},
+        headers: {
+          "caller-version-code": 1,
+          sessionToken: "user-1",
+        },
+      }),
+      transformResponse: (response) => {
+        return response.result || [];
+      },
+      invalidatesTags: [{ type: "Task", id: "LIST" }],
+    }),
   }),
 });
 
-export const { useLazyGetTasksQuery } = tasksApi;
+export const {
+  useLazyGetTasksQuery,
+  useExecuteTaskMutation,
+  useSkipTaskMutation,
+} = tasksApi;

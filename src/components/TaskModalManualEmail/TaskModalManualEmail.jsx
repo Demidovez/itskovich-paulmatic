@@ -3,9 +3,11 @@ import { MdEmail, MdDateRange, MdGppGood } from "react-icons/md";
 import moment from "moment";
 import AvatarSymbols from "components/AvatarSymbols/AvatarSymbols";
 import EditorEmail from "components/EditorEmail/EditorEmail";
+import { useState } from "react";
 
-const TaskModalManualEmail = ({ task, onClose }) => {
-  // console.log(task);
+const TaskModalManualEmail = ({ task, onClose, onExecute, onSkip }) => {
+  const [currentTask, setCurrentTask] = useState(task);
+
   return (
     <Modal
       className="modal-dialog-centered mt-0 mb-0 flex-column"
@@ -25,11 +27,11 @@ const TaskModalManualEmail = ({ task, onClose }) => {
           <h4 className="modal-title w-100 pb-2 d-flex justify-content-center">
             <div className="d-flex justify-content-center align-items-center">
               <MdEmail color="#1f88ff" size="1.5rem" className="mr-1" />
-              {task.Name}
+              {currentTask.Name}
             </div>
           </h4>
           <div style={{ fontSize: "14px" }}>
-            Последовательность: {task.Sequence.Title || "Неопределено"}
+            Последовательность: {currentTask.Sequence.Title || "Неопределено"}
           </div>
         </div>
         <button
@@ -53,7 +55,7 @@ const TaskModalManualEmail = ({ task, onClose }) => {
               <div style={{ opacity: 0.6 }}>
                 <MdDateRange size="1.5rem" />
                 <span className="pl-2" style={{ fontSize: "14px" }}>
-                  {moment(task.StartTime).format("DD.MM.YYYY HH:mm")}
+                  {moment(currentTask.StartTime).format("DD.MM.YYYY HH:mm")}
                 </span>
               </div>
             </div>
@@ -73,13 +75,13 @@ const TaskModalManualEmail = ({ task, onClose }) => {
             className="col pl-5 d-flex"
             style={{ borderLeft: "1px solid #e7e7e7" }}
           >
-            <AvatarSymbols name={task.Contact.name} className="mr-3" />
+            <AvatarSymbols name={currentTask.Contact.name} className="mr-3" />
             <div>
               <div className="" style={{ fontWeight: "600" }}>
-                {task.Contact.name}
+                {currentTask.Contact.name}
               </div>
               <div style={{ opacity: 0.6, fontSize: "14px" }}>
-                {task.Contact.email}
+                {currentTask.Contact.email}
               </div>
             </div>
           </div>
@@ -89,7 +91,7 @@ const TaskModalManualEmail = ({ task, onClose }) => {
           style={{ fontSize: "18px", fontWeight: 600 }}
         >
           <MdGppGood color="green" size="1.5rem" />
-          <span className="pl-2">{task.Description}</span>
+          <span className="pl-2">{currentTask.Description}</span>
         </p>
         <div>
           <p
@@ -99,19 +101,27 @@ const TaskModalManualEmail = ({ task, onClose }) => {
             Тема письма
           </p>
           <Input
-            value={task.Subject}
-            onChange={() => {}}
+            value={currentTask.Subject}
+            onChange={(e) =>
+              setCurrentTask({ ...currentTask, Subject: e.target.value })
+            }
             style={{ color: "black" }}
           />
         </div>
-        <div className="d-flex flex-fill flex-column" style={{ height: 0 }}>
+        <div
+          className="d-flex flex-fill flex-column"
+          style={{ height: 0, minHeight: "400px" }}
+        >
           <p
             className="mb-1 mt-3"
             style={{ fontSize: "15px", fontWeight: "600" }}
           >
             Тело письма
           </p>
-          <EditorEmail content={task.Body} />
+          <EditorEmail
+            content={currentTask.Body}
+            onChange={(Body) => setCurrentTask({ ...currentTask, Body })}
+          />
         </div>
       </div>
       <div className="modal-footer pt-0">
@@ -120,11 +130,15 @@ const TaskModalManualEmail = ({ task, onClose }) => {
           outline
           data-dismiss="modal"
           type="button"
-          onClick={() => onClose()}
+          onClick={() => onSkip(currentTask)}
         >
           Пропустить
         </Button>
-        <Button color="primary" type="button" onClick={() => onClose(task)}>
+        <Button
+          color="primary"
+          type="button"
+          onClick={() => onExecute(currentTask)}
+        >
           Отправить
         </Button>
       </div>

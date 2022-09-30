@@ -1,6 +1,6 @@
 import TaskModalManualEmail from "components/TaskModalManualEmail/TaskModalManualEmail";
 
-const TasksModals = ({ task, onClose }) => {
+const TasksModals = ({ task, onClose, onExecute, onSkip }) => {
   let Modal;
 
   if (task === null) return;
@@ -13,7 +13,18 @@ const TasksModals = ({ task, onClose }) => {
       Modal = null;
   }
 
-  return <>{Modal && <Modal task={task} onClose={onClose} />}</>;
+  return (
+    <>
+      {Modal && (
+        <Modal
+          task={task}
+          onClose={onClose}
+          onExecute={onExecute}
+          onSkip={onSkip}
+        />
+      )}
+    </>
+  );
 };
 
 export default TasksModals;
