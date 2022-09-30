@@ -43,10 +43,10 @@ export const tasksApi = createApi({
       invalidatesTags: [{ type: "Task", id: "LIST" }],
     }),
     skipTask: builder.mutation({
-      query: (task) => ({
+      query: ({ id, accountId }) => ({
         url: "/skip",
         method: "POST",
-        body: task || {},
+        body: { id, accountId },
         headers: {
           "caller-version-code": 1,
           sessionToken: "user-1",
