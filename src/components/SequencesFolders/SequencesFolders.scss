@@ -1,0 +1,35 @@
+.squences-folders-component {
+  .create-folder {
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      color: var(--primary);
+    }
+  }
+
+  .folders {
+    & > div {
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+
+      &.folder:hover {
+        color: var(--primary);
+      }
+
+      & > div {
+        opacity: 0.7;
+        padding-top: 7px;
+
+        &:hover,
+        &.active {
+          color: var(--primary);
+        }
+      }
+    }
+
+    .all-sequences.active {
+      color: var(--primary);
+    }
+  }
+}

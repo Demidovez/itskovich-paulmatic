@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const {
   Dropdown,
@@ -9,6 +9,15 @@ const {
 
 const TaskSort = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isShow, setIsShow] = useState(false);
+
+  useEffect(() => {
+    if (dropdownOpen) {
+      setTimeout(() => setIsShow(true), 0);
+    } else {
+      setIsShow(false);
+    }
+  }, [dropdownOpen]);
 
   const toggle = () => setDropdownOpen((prevState) => !prevState);
 
@@ -17,7 +26,7 @@ const TaskSort = () => {
       <DropdownToggle caret color="primary" size="sm">
         За сегодня
       </DropdownToggle>
-      <DropdownMenu right>
+      <DropdownMenu right style={{ opacity: isShow ? 1 : 0 }}>
         <DropdownItem>За сегодня</DropdownItem>
         <DropdownItem>За вчера</DropdownItem>
         <DropdownItem>За месяц</DropdownItem>

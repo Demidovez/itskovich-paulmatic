@@ -7,6 +7,7 @@ import Contacts from "pages/Contacts.js";
 import BtoB from "pages/BtoB.js";
 import Icons from "pages/Icons.js";
 import Tasks from "pages/Tasks";
+import Sequences from "pages/Sequences";
 
 var routes = [
   {
@@ -58,6 +59,13 @@ var routes = [
     name: "Задачи",
     icon: "ni ni-air-baloon text-purple",
     component: Tasks,
+    layout: "/admin",
+  },
+  {
+    path: "/sequences",
+    name: "Последовательности",
+    icon: "ni ni-align-center text-green",
+    component: Sequences,
     layout: "/admin",
   },
   {
