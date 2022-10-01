@@ -12,6 +12,7 @@ const TasksModals = ({ task, onClose, onExecute, onSkip }) => {
       break;
     case "whatsapp":
     case "telegram":
+    case "linkedin":
       Modal = (props) => <TaskModalMessanger {...props} />;
       break;
     default:

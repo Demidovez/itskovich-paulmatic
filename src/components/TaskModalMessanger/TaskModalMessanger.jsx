@@ -1,5 +1,5 @@
 import { Button, Input, Modal } from "reactstrap";
-import { MdEmail, MdDateRange, MdGppGood } from "react-icons/md";
+import { MdContentCopy, MdDateRange, MdGppGood } from "react-icons/md";
 import moment from "moment";
 import AvatarSymbols from "components/AvatarSymbols/AvatarSymbols";
 import EditorEmail from "components/EditorEmail/EditorEmail";
@@ -15,6 +15,10 @@ const TaskModalMessanger = ({ task, onClose, onExecute, onSkip }) => {
   useEffect(() => {
     inputMessage && inputMessage.focus();
   }, [inputMessage]);
+
+  const saveToBuffer = () => {
+    navigator.clipboard.writeText(currentTask.Body);
+  };
 
   return (
     <Modal
@@ -106,12 +110,24 @@ const TaskModalMessanger = ({ task, onClose, onExecute, onSkip }) => {
           className="d-flex flex-fill flex-column"
           style={{ height: 0, minHeight: "200px" }}
         >
-          <p
-            className="mb-1 mt-3"
-            style={{ fontSize: "15px", fontWeight: "600" }}
-          >
-            Сообщение
-          </p>
+          <div className="d-flex justify-content-between align-items-center">
+            <p
+              className="mb-1 mt-3"
+              style={{ fontSize: "15px", fontWeight: "600" }}
+            >
+              Сообщение
+            </p>
+            <Button
+              className="btn-icon btn-3"
+              color="info"
+              type="button"
+              size="sm"
+              onClick={saveToBuffer}
+            >
+              <MdContentCopy size="1rem" />
+              <span>Скопировать</span>
+            </Button>
+          </div>
           <Input
             type="textarea"
             value={currentTask.Body}
