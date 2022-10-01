@@ -51,6 +51,25 @@ export const contactsApi = createApi({
       },
       invalidatesTags: [{ type: "Contacts", id: "LIST" }],
     }),
+    addContacts: builder.mutation({
+      query: (contacts) => ({
+        url: "/create",
+        method: "POST",
+        body: contacts,
+        headers: {
+          "caller-version-code": 1,
+          sessionToken: "user-1",
+        },
+      }),
+      transformResponse: (response) => {
+        if (response.result) {
+          toast.success(`${response.result} контактов добавлено!`);
+        } else {
+          toast.error(`Ошибка!`);
+        }
+      },
+      invalidatesTags: [{ type: "Contacts", id: "LIST" }],
+    }),
     uploadFileOfContacts: builder.mutation({
       query: (file) => ({
         url: "/upload",
@@ -102,4 +121,5 @@ export const {
   useCreateOrUpdateContactMutation,
   useDeleteContactsMutation,
   useUploadFileOfContactsMutation,
+  useAddContactsMutation,
 } = contactsApi;

@@ -7,7 +7,7 @@ import {
 } from "react-icons/im";
 import { MdEmail } from "react-icons/md";
 
-const TaskIcon = ({ type }) => {
+const TaskIcon = ({ type, className }) => {
   let Icon;
 
   switch (type) {
@@ -31,7 +31,7 @@ const TaskIcon = ({ type }) => {
   }
 
   return (
-    <div className="d-flex justify-content-center w-100">
+    <div className={`${className || "d-flex justify-content-center w-100"}`}>
       <Icon />
     </div>
   );

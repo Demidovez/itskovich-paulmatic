@@ -1,4 +1,5 @@
 import TaskModalManualEmail from "components/TaskModalManualEmail/TaskModalManualEmail";
+import TaskModalMessanger from "components/TaskModalMessanger/TaskModalMessanger";
 
 const TasksModals = ({ task, onClose, onExecute, onSkip }) => {
   let Modal;
@@ -7,7 +8,11 @@ const TasksModals = ({ task, onClose, onExecute, onSkip }) => {
 
   switch (task.Type) {
     case "manual_email":
-      Modal = TaskModalManualEmail;
+      Modal = (props) => <TaskModalManualEmail {...props} />;
+      break;
+    case "whatsapp":
+    case "telegram":
+      Modal = (props) => <TaskModalMessanger {...props} />;
       break;
     default:
       Modal = null;

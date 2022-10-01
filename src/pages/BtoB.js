@@ -7,6 +7,7 @@ import { useLazyGetCompaniesQuery } from "store/api/companies";
 import { useSelector } from "react-redux";
 import ActionTableBar from "components/ActionTableBar/ActionTableBar";
 import SearchBar from "components/SearchBar/SearchBar";
+import { useAddContactsMutation } from "store/api/contacts";
 
 const companiesFields = [
   {
@@ -188,11 +189,15 @@ const BtoB = () => {
     selectFromResult: ({ data }) => data,
   });
 
+  const [addContacts] = useAddContactsMutation();
+
   const tables = useSelector((state) => state.tables.tables);
   const activeTable = useSelector((state) => state.tables.activeTable);
   const selectedIds = useSelector((state) => state.tables.selectedIds);
 
-  const onAddContact = () => {};
+  const onAddContact = () => {
+    // addContacts()
+  };
   const onAddToSequence = () => {};
 
   return (
