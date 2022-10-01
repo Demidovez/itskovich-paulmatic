@@ -22,9 +22,12 @@ export const commonSlice = createSlice({
       state.Tasks = action.payload.Tasks;
       state.Sequences = action.payload.Sequences;
     },
+    setStatistickInfo: (state, action) => {
+      state.Tasks.Stats = action.payload;
+    },
   },
 });
 
-export const { setCommonInfo } = commonSlice.actions;
+export const { setCommonInfo, setStatistickInfo } = commonSlice.actions;
 
 export default commonSlice.reducer;

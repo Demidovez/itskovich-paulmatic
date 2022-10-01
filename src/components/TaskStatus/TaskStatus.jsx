@@ -24,7 +24,7 @@ const TaskStatus = ({ status, dueTime, color = "#525f7f" }) => {
         : moment(dueTime).format("DD.MM HH:mm");
       break;
     case "completed":
-      text = "Завершено";
+      text = "Выполнено";
       break;
     case "skipped":
       text = "Пропущено";

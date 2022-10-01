@@ -1,15 +1,10 @@
-import { Card, CardHeader, CardFooter, Table, Label, Col } from "reactstrap";
-import FilterB2B from "../FilterB2B/FilterB2B";
-import SearchBar from "../SearchBar/SearchBar";
+import { CardFooter, Table, Label } from "reactstrap";
 import Pagination from "../Pagination/Pagination";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import HiddenTableCell from "components/HiddenTableCell/HiddenTableCell";
 import { setCurrentPage } from "store/slices/b2bFilterSlice";
-import { setSearchValue } from "store/slices/b2bFilterSlice";
-import ActionTableBar from "components/ActionTableBar/ActionTableBar";
 import { clearSelectedIds } from "store/slices/tablesSlice";
-import { useGetCompaniesState } from "store/api/companies";
 import { setCache, addSelectedId } from "store/slices/tablesSlice";
 import "./B2InfoTable.scss";
 
@@ -61,16 +56,6 @@ const B2InfoTable = ({ info, data, fetchData, fields = [] }) => {
   const onSelectId = (id) => {
     dispatch(addSelectedId({ table: info.name, id }));
   };
-
-  const [tableData, setTableData] = useState(null);
-
-  // useEffect(() => {
-  //   if (data) {
-  //     setTableData(data);
-  //   } else if (cacheTables[info.name]) {
-  //     setTableData(cacheTables[info.name]);
-  //   }
-  // }, [data, cacheTables]);
 
   return (
     <>

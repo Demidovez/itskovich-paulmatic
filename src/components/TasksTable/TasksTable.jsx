@@ -15,10 +15,11 @@ import TasksModals from "components/TasksModals/TasksModals";
 import { useState } from "react";
 import { useExecuteTaskMutation } from "store/api/tasks";
 import { useSkipTaskMutation } from "store/api/tasks";
+import { setCurrentTasksPage } from "store/slices/tasksSlice";
 
 moment.locale("ru");
 
-const COUNT_ON_PAGE = 19;
+const COUNT_ON_PAGE = 10;
 
 const fields = [
   {
@@ -79,13 +80,19 @@ const fields = [
 ];
 
 const TasksTable = ({ info, fetchData }) => {
+  const currentPage = useSelector((state) => state.tasks.currentPage);
   const [taskToModal, setTaskToModal] = useState(null);
 
+  // const [fetchStatistics] = useLazyGetStatisticsOfTasksQuery();
   const [getTasks, { data: tasks = [] }] = useLazyGetTasksQuery();
   const dispatch = useDispatch();
 
-  const [executeTask] = useExecuteTaskMutation();
-  const [skipTask] = useSkipTaskMutation();
+  const [executeTask] = useExecuteTaskMutation({
+    fixedCacheKey: "execute-task",
+  });
+  const [skipTask] = useSkipTaskMutation({
+    fixedCacheKey: "skip-task",
+  });
 
   const { isSelectedAll, selectedIds } = useSelector((state) => state.tasks);
 
@@ -93,6 +100,13 @@ const TasksTable = ({ info, fetchData }) => {
 
   useEffect(() => {
     getTasks();
+
+    const intervalId = setInterval(() => {
+      console.log("request of tasks");
+      getTasks();
+    }, 30000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   const openModal = (task) => {
@@ -117,6 +131,10 @@ const TasksTable = ({ info, fetchData }) => {
     }
 
     setTaskToModal(null);
+  };
+
+  const onSetCurrentPage = (page) => {
+    dispatch(setCurrentTasksPage(page));
   };
 
   return (
@@ -268,8 +286,8 @@ const TasksTable = ({ info, fetchData }) => {
         <Pagination
           allCount={tasks.length || 0}
           countOnPage={COUNT_ON_PAGE}
-          page={0}
-          moveToPage={() => {}}
+          page={currentPage}
+          moveToPage={onSetCurrentPage}
         />
       </CardFooter>
       <TasksModals

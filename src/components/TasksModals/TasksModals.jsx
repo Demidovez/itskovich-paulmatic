@@ -1,5 +1,6 @@
 import TaskModalManualEmail from "components/TaskModalManualEmail/TaskModalManualEmail";
 import TaskModalMessanger from "components/TaskModalMessanger/TaskModalMessanger";
+import React, { useEffect } from "react";
 
 const TasksModals = ({ task, onClose, onExecute, onSkip }) => {
   let Modal;
@@ -20,17 +21,15 @@ const TasksModals = ({ task, onClose, onExecute, onSkip }) => {
   }
 
   return (
-    <>
-      {Modal && (
-        <Modal
-          task={task}
-          onClose={onClose}
-          onExecute={onExecute}
-          onSkip={onSkip}
-        />
-      )}
-    </>
+    <Modal
+      task={task}
+      onClose={onClose}
+      onExecute={onExecute}
+      onSkip={onSkip}
+    />
   );
 };
 
-export default TasksModals;
+export default React.memo(TasksModals, (prevProps, nextProps) => {
+  return prevProps.task === nextProps.task;
+});

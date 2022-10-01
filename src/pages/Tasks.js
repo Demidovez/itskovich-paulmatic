@@ -6,16 +6,7 @@ import TasksBarStatsByType from "components/TasksBarStatsByType/TasksBarStatsByT
 import TaskSort from "components/TaskSort/TaskSort";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Container,
-  Row,
-  Card,
-  CardHeader,
-  Col,
-  CardFooter,
-  CardBody,
-  CardTitle,
-} from "reactstrap";
+import { Container, Row, Card, CardHeader, Col } from "reactstrap";
 import { selectAllTasks } from "store/slices/tasksSlice";
 
 const Tasks = () => {

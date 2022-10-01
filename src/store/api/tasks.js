@@ -57,6 +57,17 @@ export const tasksApi = createApi({
       },
       invalidatesTags: [{ type: "Task", id: "LIST" }],
     }),
+    getStatisticsOfTasks: builder.query({
+      query: () => ({
+        url: "/stats",
+        method: "GET",
+        headers: {
+          "caller-version-code": 1,
+          sessionToken: "user-1",
+        },
+      }),
+      transformResponse: (response) => response.result || {},
+    }),
   }),
 });
 
@@ -64,4 +75,5 @@ export const {
   useLazyGetTasksQuery,
   useExecuteTaskMutation,
   useSkipTaskMutation,
+  useLazyGetStatisticsOfTasksQuery,
 } = tasksApi;
