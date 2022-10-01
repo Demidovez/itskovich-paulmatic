@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 
-const EditorEmail = ({ className, style, content, onChange }) => {
+const EditorEmail = ({ className, style, content, onChange, disabled }) => {
   const data = useMemo(() => content, []);
 
   const editorRef = useRef(null);
@@ -13,6 +13,7 @@ const EditorEmail = ({ className, style, content, onChange }) => {
         onInit={(evt, editor) => (editorRef.current = editor)}
         onEditorChange={(content) => onChange(content)}
         initialValue={data}
+        disabled={disabled}
         init={{
           height: "100%",
           statusbar: false,

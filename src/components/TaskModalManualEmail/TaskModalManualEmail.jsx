@@ -102,6 +102,7 @@ const TaskModalManualEmail = ({ task, onClose, onExecute, onSkip }) => {
           </p>
           <Input
             value={currentTask.Subject}
+            disabled={currentTask.Status !== "started"}
             onChange={(e) =>
               setCurrentTask({ ...currentTask, Subject: e.target.value })
             }
@@ -120,27 +121,36 @@ const TaskModalManualEmail = ({ task, onClose, onExecute, onSkip }) => {
           </p>
           <EditorEmail
             content={currentTask.Body}
+            disabled={currentTask.Status !== "started"}
             onChange={(Body) => setCurrentTask({ ...currentTask, Body })}
           />
         </div>
       </div>
       <div className="modal-footer pt-0">
-        <Button
-          color="danger"
-          outline
-          data-dismiss="modal"
-          type="button"
-          onClick={() => onSkip(currentTask)}
-        >
-          Пропустить
-        </Button>
-        <Button
-          color="primary"
-          type="button"
-          onClick={() => onExecute(currentTask)}
-        >
-          Отправить
-        </Button>
+        {currentTask.Status !== "started" ? (
+          <Button color="primary" onClick={() => onClose()}>
+            Закрыть
+          </Button>
+        ) : (
+          <>
+            <Button
+              color="danger"
+              outline
+              data-dismiss="modal"
+              type="button"
+              onClick={() => onSkip(currentTask)}
+            >
+              Пропустить
+            </Button>
+            <Button
+              color="primary"
+              type="button"
+              onClick={() => onExecute(currentTask)}
+            >
+              Отправить
+            </Button>
+          </>
+        )}
       </div>
     </Modal>
   );

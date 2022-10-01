@@ -40,7 +40,7 @@ export const tasksApi = createApi({
       transformResponse: (response) => {
         return response.result || [];
       },
-      invalidatesTags: [{ type: "Task", id: "LIST" }],
+      // invalidatesTags: [{ type: "Task", id: "LIST" }],
     }),
     skipTask: builder.mutation({
       query: ({ id, accountId }) => ({
