@@ -4,6 +4,7 @@ const initialState = {
   selectedIds: [],
   isSelectedAll: false,
   currentPage: 0,
+  cached: [],
 };
 
 export const tasksSlice = createSlice({
@@ -28,6 +29,21 @@ export const tasksSlice = createSlice({
         state.selectedIds = [];
       }
     },
+    setTasksToCache: (state, action) => {
+      state.cached = action.payload;
+    },
+    executeCachedTask: (state, action) => {
+      const executedTask = action.payload;
+      state.cached = state.cached.map((task) =>
+        task.id === executedTask.id ? executedTask : task
+      );
+    },
+    skipCachedTask: (state, action) => {
+      const skippedTask = action.payload;
+      state.cached = state.cached.map((task) =>
+        task.id === skippedTask.id ? skippedTask : task
+      );
+    },
   },
 });
 
@@ -36,6 +52,9 @@ export const {
   clearSelectedIds,
   setCurrentTasksPage,
   selectAllTasks,
+  setTasksToCache,
+  executeCachedTask,
+  skipCachedTask,
 } = tasksSlice.actions;
 
 export default tasksSlice.reducer;

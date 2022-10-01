@@ -6,11 +6,23 @@ import EditorEmail from "components/EditorEmail/EditorEmail";
 import { useEffect, useMemo, useRef, useState } from "react";
 import TaskIcon from "components/TaskIcon/TaskIcon";
 import useRefCallback from "hooks/useRefCallback";
+import { usePrompt } from "hooks/usePrompt";
 
 const TaskModalMessanger = ({ task, onClose, onExecute, onSkip }) => {
+  const [isChanged, setIsChanged] = useState(false);
   const [currentTask, setCurrentTask] = useState(task);
 
   const [inputMessage, setRefMessage] = useRefCallback();
+
+  const updateCurrentTask = (task) => {
+    setCurrentTask(task);
+    setIsChanged(true);
+  };
+
+  const onEvent = (callback, data) => {
+    callback(data);
+    setIsChanged(false);
+  };
 
   useEffect(() => {
     inputMessage && inputMessage.focus();
@@ -20,11 +32,13 @@ const TaskModalMessanger = ({ task, onClose, onExecute, onSkip }) => {
     navigator.clipboard.writeText(currentTask.Body);
   };
 
+  usePrompt(isChanged);
+
   return (
     <Modal
       className="modal-dialog-centered"
       isOpen={true}
-      toggle={() => onClose()}
+      toggle={() => onEvent(onClose)}
       style={{
         maxWidth: "800px",
         width: "90%",
@@ -49,7 +63,7 @@ const TaskModalMessanger = ({ task, onClose, onExecute, onSkip }) => {
           className="close"
           data-dismiss="modal"
           type="button"
-          onClick={() => onClose()}
+          onClick={() => onEvent(onClose)}
           style={{ position: "absolute", right: "1.25rem" }}
         >
           <span aria-hidden={true}>×</span>
@@ -123,6 +137,7 @@ const TaskModalMessanger = ({ task, onClose, onExecute, onSkip }) => {
               type="button"
               size="sm"
               onClick={saveToBuffer}
+              disabled={currentTask.Status !== "started"}
             >
               <MdContentCopy size="1rem" />
               <span>Скопировать</span>
@@ -132,8 +147,9 @@ const TaskModalMessanger = ({ task, onClose, onExecute, onSkip }) => {
             type="textarea"
             value={currentTask.Body}
             className="h-100"
+            disabled={currentTask.Status !== "started"}
             onChange={(e) =>
-              setCurrentTask({ ...currentTask, Body: e.target.value })
+              updateCurrentTask({ ...currentTask, Body: e.target.value })
             }
             innerRef={setRefMessage}
             onFocus={(event) => event.target.select()}
@@ -141,22 +157,30 @@ const TaskModalMessanger = ({ task, onClose, onExecute, onSkip }) => {
         </div>
       </div>
       <div className="modal-footer pt-0">
-        <Button
-          color="danger"
-          outline
-          data-dismiss="modal"
-          type="button"
-          onClick={() => onSkip(currentTask)}
-        >
-          Пропустить
-        </Button>
-        <Button
-          color="primary"
-          type="button"
-          onClick={() => onExecute(currentTask)}
-        >
-          Готово
-        </Button>
+        {currentTask.Status !== "started" ? (
+          <Button color="primary" onClick={() => onEvent(onClose)}>
+            Закрыть
+          </Button>
+        ) : (
+          <>
+            <Button
+              color="danger"
+              outline
+              data-dismiss="modal"
+              type="button"
+              onClick={() => onEvent(onSkip, currentTask)}
+            >
+              Пропустить
+            </Button>
+            <Button
+              color="primary"
+              type="button"
+              onClick={() => onEvent(onExecute, currentTask)}
+            >
+              Готово
+            </Button>
+          </>
+        )}
       </div>
     </Modal>
   );

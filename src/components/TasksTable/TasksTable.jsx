@@ -16,6 +16,10 @@ import { useState } from "react";
 import { useExecuteTaskMutation } from "store/api/tasks";
 import { useSkipTaskMutation } from "store/api/tasks";
 import { setCurrentTasksPage } from "store/slices/tasksSlice";
+import { setCache } from "store/slices/tablesSlice";
+import { setTasksToCache } from "store/slices/tasksSlice";
+import { executeCachedTask } from "store/slices/tasksSlice";
+import { skipCachedTask } from "store/slices/tasksSlice";
 
 moment.locale("ru");
 
@@ -80,12 +84,18 @@ const fields = [
 ];
 
 const TasksTable = ({ info, fetchData }) => {
+  const cached = useSelector((state) => state.tasks.cached);
   const currentPage = useSelector((state) => state.tasks.currentPage);
   const [taskToModal, setTaskToModal] = useState(null);
 
-  // const [fetchStatistics] = useLazyGetStatisticsOfTasksQuery();
-  const [getTasks, { data: tasks = [] }] = useLazyGetTasksQuery();
+  const [getTasks, { data: tasks, isFetching }] = useLazyGetTasksQuery();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (tasks && !isFetching) {
+      dispatch(setTasksToCache(tasks));
+    }
+  }, [isFetching, tasks]);
 
   const [executeTask] = useExecuteTaskMutation({
     fixedCacheKey: "execute-task",
@@ -120,6 +130,9 @@ const TasksTable = ({ info, fetchData }) => {
   const onExecuteTask = (task) => {
     if (task) {
       executeTask(task);
+      dispatch(
+        executeCachedTask({ ...task, Status: "completed", Alertness: "gray" })
+      );
     }
 
     setTaskToModal(null);
@@ -128,6 +141,9 @@ const TasksTable = ({ info, fetchData }) => {
   const onSkipTask = (task) => {
     if (task) {
       skipTask(task);
+      dispatch(
+        skipCachedTask({ ...task, Status: "skipped", Alertness: "gray" })
+      );
     }
 
     setTaskToModal(null);
@@ -146,7 +162,7 @@ const TasksTable = ({ info, fetchData }) => {
           style={{ tableLayout: "auto" }}
         >
           <tbody>
-            {tasks.map((task) => (
+            {(cached || tasks || []).map((task) => (
               <tr
                 key={task.id}
                 className="d-flex"
@@ -279,12 +295,14 @@ const TasksTable = ({ info, fetchData }) => {
           </tbody>
         </Table>
 
-        {tasks.length === 0 && <p className="message">Не найдено :(</p>}
+        {(cached || tasks || []).length === 0 && (
+          <p className="message">Не найдено :(</p>
+        )}
       </div>
       <CardFooter className="d-flex justify-content-between align-items-center">
         <div></div>
         <Pagination
-          allCount={tasks.length || 0}
+          allCount={(cached || tasks || []).length}
           countOnPage={COUNT_ON_PAGE}
           page={currentPage}
           moveToPage={onSetCurrentPage}

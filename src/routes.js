@@ -22,6 +22,7 @@ var routes = [
     icon: "ni ni-planet text-blue",
     component: Icons,
     layout: "/admin",
+    position: "user",
   },
   {
     path: "/maps",
@@ -29,6 +30,7 @@ var routes = [
     icon: "ni ni-pin-3 text-orange",
     component: Maps,
     layout: "/admin",
+    position: "user",
   },
   {
     path: "/user-profile",
