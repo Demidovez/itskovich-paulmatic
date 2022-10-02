@@ -1,19 +1,33 @@
-import { Button, Input, Modal } from "reactstrap";
-import { MdEmail, MdDateRange, MdGppGood } from "react-icons/md";
-import moment from "moment";
-import AvatarSymbols from "components/AvatarSymbols/AvatarSymbols";
-import EditorEmail from "components/EditorEmail/EditorEmail";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  Card,
+  Modal,
+  CardBody,
+  CardHeader,
+  Input,
+  Button,
+  Row,
+} from "reactstrap";
 
-const ModalContactForm = ({
-  contact,
-  isShow,
-  onNew,
-  onSave,
-  onRemove,
-  onClose,
-}) => {
-  // const [currentTask, setCurrentTask] = useState(task);
+const ModalContactForm = ({ contact, isShow, onSave, onRemove, onClose }) => {
+  const [currentContact, setCurrentContact] = useState(contact || {});
+
+  useEffect(() => {
+    setCurrentContact(contact || {});
+  }, [contact]);
+
+  const handleSave = () => {
+    onSave(currentContact);
+    setCurrentContact({});
+  };
+
+  const handleRemove = () => {
+    onRemove(currentContact.id);
+    setCurrentContact({});
+  };
+
+  const onInputChange = ({ target }, field) =>
+    setCurrentContact({ ...currentContact, [field]: target.value });
 
   return (
     <Modal
@@ -27,42 +41,86 @@ const ModalContactForm = ({
         padding: "0.5rem 0",
       }}
     >
-      <div className="modal-header text-center pb-2">
-        <div className="w-100">
-          <h4 className="modal-title w-100 pb-2 d-flex justify-content-center">
-            Форма
-          </h4>
-        </div>
-        <button
-          aria-label="Close"
-          className="close"
-          data-dismiss="modal"
-          type="button"
-          onClick={() => onClose()}
-          style={{ position: "absolute", right: "1.25rem" }}
-        >
-          <span aria-hidden={true}>×</span>
-        </button>
-      </div>
-      <div className="modal-body d-flex flex-column"></div>
-      <div className="modal-footer pt-0">
-        <Button
-          color="danger"
-          outline
-          data-dismiss="modal"
-          type="button"
-          // onClick={() => onSkip(currentTask)}
-        >
-          Пропустить
-        </Button>
-        <Button
-          color="primary"
-          type="button"
-          // onClick={() => onExecute(currentTask)}
-        >
-          Отправить
-        </Button>
-      </div>
+      <Card className={`shadow`} color="secondary">
+        <CardHeader className="border-0 modal-header text-center pb-3">
+          <h3 className="mb-0">{currentContact.name || "Новый контакт"}</h3>
+          <button
+            aria-label="Close"
+            className="close"
+            data-dismiss="modal"
+            type="button"
+            onClick={() => onClose()}
+            style={{ position: "absolute", right: "1.25rem" }}
+          >
+            <span aria-hidden={true}>×</span>
+          </button>
+        </CardHeader>
+        <CardBody>
+          <Input
+            className="mb-4"
+            placeholder={"Имя"}
+            value={currentContact.name || ""}
+            onChange={(e) => onInputChange(e, "name")}
+          />
+          <Input
+            className="mb-4"
+            value={currentContact.email || ""}
+            placeholder={"Email"}
+            onChange={(e) => onInputChange(e, "email")}
+          />
+          <Input
+            className="mb-4"
+            value={currentContact.phone || ""}
+            placeholder={"Телефон"}
+            onChange={(e) => onInputChange(e, "phone")}
+          />
+          <Input
+            className="mb-4"
+            value={currentContact.company || ""}
+            placeholder={"Компания"}
+            onChange={(e) => onInputChange(e, "company")}
+          />
+          <Input
+            className="mb-4"
+            placeholder={"LinkedIn"}
+            value={currentContact.linkedin || ""}
+            onChange={(e) => onInputChange(e, "linkedin")}
+          />
+          <Row>
+            <div className="col">
+              {contact ? (
+                <Button
+                  color="danger"
+                  className="w-100"
+                  outline
+                  onClick={handleRemove}
+                >
+                  Удалить
+                </Button>
+              ) : (
+                <Button
+                  color="danger"
+                  className="w-100"
+                  outline
+                  onClick={onClose}
+                >
+                  Отмена
+                </Button>
+              )}
+            </div>
+            <div className="col">
+              <Button
+                color="primary"
+                className="w-100"
+                onClick={handleSave}
+                disabled={!currentContact.name || !currentContact.email}
+              >
+                {contact ? "Сохранить" : "Создать"}
+              </Button>
+            </div>
+          </Row>
+        </CardBody>
+      </Card>
     </Modal>
   );
 };

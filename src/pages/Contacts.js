@@ -1,8 +1,6 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { Card, CardHeader, Container, Row, Col, CardFooter } from "reactstrap";
 import TableContacts from "components/TableContacts/TableContacts";
-import FormContacts from "components/FormContacts/FormContacts";
-import SearchBar from "components/SearchBar/SearchBar";
 import CreateContactsSelector from "components/CreateContactsSelector/CreateContactsSelector";
 import {
   useLazyGetContactsQuery,
@@ -164,16 +162,6 @@ const Contacts = () => {
               </CardFooter>
             </Card>
           </div>
-          {/* <div className="col col-3">
-            <FormContacts
-              className="sticky-top"
-              style={{ top: 20 }}
-              contact={activeContact}
-              onNew={onResetForm}
-              onSave={onSave}
-              onRemove={onRemove}
-            />
-          </div> */}
         </Row>
       </Container>
       <Modal
@@ -186,7 +174,6 @@ const Contacts = () => {
       <ModalContactForm
         contact={activeContact}
         isShow={!!activeContact || isCreateNew}
-        onNew={onResetForm}
         onSave={onSave}
         onRemove={onRemove}
         onClose={onResetForm}
