@@ -6,7 +6,10 @@ const { Label } = require("reactstrap");
 const Checkbox = ({ label, scale = 1, id, checked, onChange }) => {
   return (
     <div className="checkbox-component">
-      <div className="pl-0 custom-control checkbox-contact custom-checkbox">
+      <div
+        className="pl-0 custom-control checkbox-contact custom-checkbox"
+        onClick={(e) => e.stopPropagation()}
+      >
         <input
           className="custom-control-input"
           checked={checked}

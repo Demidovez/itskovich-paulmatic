@@ -118,7 +118,10 @@ const TableContacts = ({
                         ...field.style,
                       }}
                     >
-                      <div className="custom-control checkbox-contact custom-checkbox pl-0">
+                      <div
+                        className="custom-control checkbox-contact custom-checkbox pl-0"
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <input
                           className="custom-control-input"
                           checked={selectedIds.includes(contact.id)}
@@ -147,14 +150,6 @@ const TableContacts = ({
                       </a>
                     </td>
                   );
-                  // } else if (["email"].includes(field.name)) {
-                  //   return (
-                  //     <HiddenTableCell
-                  //       key={field.name}
-                  //       value={contact[field.name]}
-                  //       style={field.style}
-                  //     />
-                  //   );
                 } else if (["phone"].includes(field.name)) {
                   return (
                     <td
