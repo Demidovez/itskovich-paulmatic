@@ -13,6 +13,7 @@ import SequencesStatusesSelector from "components/SequencesStatusesSelector/Sequ
 import SequencesFolders from "components/SequencesFolders/SequencesFolders";
 import { MdOutlineSearch } from "react-icons/md";
 import SequencesTable from "components/SequencesTable/SequencesTable";
+import SequencesSearchBar from "components/SequencesSearchBar/SequencesSearchBar";
 
 const Sequences = () => {
   const dispatch = useDispatch();
@@ -63,14 +64,10 @@ const Sequences = () => {
                   />
                 </div>
 
-                <div>
+                <div className="d-flex align-items-center">
                   <SequencesSort />
                   <SequencesStatusesSelector />
-                  <MdOutlineSearch
-                    size="2rem"
-                    style={{ opacity: 0.5 }}
-                    className="ml-3"
-                  />
+                  <SequencesSearchBar />
                 </div>
               </div>
               <SequencesTable />

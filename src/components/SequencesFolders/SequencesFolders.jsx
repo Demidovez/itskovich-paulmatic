@@ -1,3 +1,4 @@
+import ModalCreateFolder from "components/ModalCreateFolder/ModalCreateFolder";
 import SequencesFoldersAccordion from "components/SequencesFoldersAccordion/SequencesFoldersAccordion";
 import { useEffect, useState } from "react";
 import {
@@ -11,11 +12,13 @@ import {
   AccordionBody,
   AccordionHeader,
   AccordionItem,
+  Modal,
 } from "reactstrap";
 import "./SequencesFolders.scss";
 
 const SequencesFolders = ({ isTest }) => {
   const [folders, setFolders] = useState([]);
+  const [isShowModalCreateFolder, setIsShowModalCreateFolder] = useState(false);
 
   useEffect(() => {
     if (isTest) {
@@ -70,33 +73,52 @@ const SequencesFolders = ({ isTest }) => {
     }
   }, [isTest]);
 
-  return (
-    <div className="squences-folders-component">
-      {folders.length === 0 && (
-        <div
-          className="d-flex flex-column align-items-center p-1"
-          style={{ opacity: 0.7 }}
-        >
-          <MdOutlineAssignment size="3rem" />
-          <p className="text-center">
-            Папки позволят Вам легко организовать последовательности
-          </p>
-          <Button className="d-flex align-items-center" color="info" outline>
-            <MdFolderOpen size="1.5rem" className="mr-1" />
-            Создать папку
-          </Button>
-        </div>
-      )}
+  const onCreateFolder = (folderName) => {
+    setIsShowModalCreateFolder(false);
+  };
 
-      {folders.length > 0 && (
-        <>
-          <div className="d-flex align-items-center justify-content-between mb-4 create-folder">
-            Папки <MdOutlineCreateNewFolder size="1.75rem" />
+  return (
+    <>
+      <div className="squences-folders-component">
+        {folders.length === 0 && (
+          <div
+            className="d-flex flex-column align-items-center p-1"
+            style={{ opacity: 0.7 }}
+          >
+            <MdOutlineAssignment size="3rem" />
+            <p className="text-center">
+              Папки позволят Вам легко организовать последовательности
+            </p>
+            <Button
+              className="d-flex align-items-center"
+              color="info"
+              outline
+              onClick={() => setIsShowModalCreateFolder(true)}
+            >
+              <MdFolderOpen size="1.5rem" className="mr-1" />
+              Создать папку
+            </Button>
           </div>
-          <SequencesFoldersAccordion folders={folders} className="folders" />
-        </>
-      )}
-    </div>
+        )}
+
+        {folders.length > 0 && (
+          <>
+            <div
+              className="d-flex align-items-center justify-content-between mb-4 create-folder"
+              onClick={() => setIsShowModalCreateFolder(true)}
+            >
+              Папки <MdOutlineCreateNewFolder size="1.75rem" />
+            </div>
+            <SequencesFoldersAccordion folders={folders} className="folders" />
+          </>
+        )}
+      </div>
+      <ModalCreateFolder
+        isShow={isShowModalCreateFolder}
+        onClose={() => setIsShowModalCreateFolder(false)}
+        onSubmit={onCreateFolder}
+      />
+    </>
   );
 };
 

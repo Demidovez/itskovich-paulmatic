@@ -16,8 +16,6 @@ import { addTasksId } from "store/slices/tasksSlice";
 import { useLazyGetTasksQuery } from "store/api/tasks";
 import TaskIcon from "components/TaskIcon/TaskIcon";
 import TaskStatus from "components/TaskStatus/TaskStatus";
-import moment from "moment";
-import "moment/locale/ru";
 import TaskStartTime from "components/TaskStartTime/TaskStartTime";
 import TasksModals from "components/TasksModals/TasksModals";
 import { useState } from "react";
@@ -28,6 +26,7 @@ import { setCache } from "store/slices/tablesSlice";
 import { setTasksToCache } from "store/slices/tasksSlice";
 import { executeCachedTask } from "store/slices/tasksSlice";
 import { skipCachedTask } from "store/slices/tasksSlice";
+import { MdPersonOutline, MdOutlineEmail } from "react-icons/md";
 
 const COUNT_ON_PAGE = 10;
 
@@ -158,10 +157,7 @@ const SequencesTable = ({ info, fetchData }) => {
           responsive
           style={{ tableLayout: "auto" }}
         >
-          <thead
-            className="sticky-top"
-            style={{ zIndex: 999, boxShadow: "none" }}
-          >
+          <thead className="sticky-top" style={{ zIndex: 999 }}>
             <tr className="d-flex">
               {fields.map((field) => (
                 <th
@@ -171,6 +167,7 @@ const SequencesTable = ({ info, fetchData }) => {
                     fontSize: "0.8rem",
                     opacity: 0.7,
                     textTransform: "capitalize",
+                    boxShadow: "none",
                   }}
                   className="pl-3"
                 >
@@ -209,7 +206,7 @@ const SequencesTable = ({ info, fetchData }) => {
                   } else if (field.name === "switch") {
                     return (
                       <td
-                        className="d-flex align-items-center"
+                        className="d-flex align-items-center pl-3"
                         key={field.name}
                         style={{
                           ...field.style,
@@ -225,10 +222,42 @@ const SequencesTable = ({ info, fetchData }) => {
                         </label>
                       </td>
                     );
+                  } else if (field.name === "people") {
+                    return (
+                      <td
+                        className="d-flex align-items-center pl-3"
+                        key={field.name}
+                        style={{
+                          ...field.style,
+                        }}
+                      >
+                        <MdPersonOutline
+                          size="1.25rem"
+                          style={{ opacity: 0.3, marginTop: "-2px" }}
+                          className="mr-1"
+                        />
+                        {sequence[field.name]}
+                      </td>
+                    );
+                  } else if (["open_rate", "reply_rate"].includes(field.name)) {
+                    return (
+                      <td
+                        className="d-flex align-items-center pl-3"
+                        key={field.name}
+                        style={{
+                          ...field.style,
+                        }}
+                      >
+                        <strong className="pr-1">
+                          {sequence[field.name]}%
+                        </strong>{" "}
+                        (0)
+                      </td>
+                    );
                   } else if (field.name === "progress") {
                     return (
                       <td
-                        className="d-flex align-items-center"
+                        className="d-flex align-items-center pl-3"
                         key={field.name}
                         style={{
                           ...field.style,
@@ -241,6 +270,23 @@ const SequencesTable = ({ info, fetchData }) => {
                             height: "8px",
                           }}
                         />
+                      </td>
+                    );
+                  } else if (field.name === "delivered") {
+                    return (
+                      <td
+                        className="d-flex align-items-center pl-3"
+                        key={field.name}
+                        style={{
+                          ...field.style,
+                        }}
+                      >
+                        <MdOutlineEmail
+                          size="1.25rem"
+                          style={{ opacity: 0.3, marginTop: "-2px" }}
+                          className="mr-1"
+                        />
+                        {sequence[field.name]}
                       </td>
                     );
                   } else {
