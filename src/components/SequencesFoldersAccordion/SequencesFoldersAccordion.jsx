@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { MdKeyboardArrowRight, MdKeyboardArrowDown } from "react-icons/md";
 import { Collapse } from "reactstrap";
 
@@ -30,7 +30,7 @@ const SequencesFoldersAccordion = ({ folders, className }) => {
         Все
       </div>
       {folders.map((folder) => (
-        <>
+        <Fragment key={folder.name}>
           <div
             onClick={() => toggle(folder.name)}
             className={`${
@@ -57,7 +57,7 @@ const SequencesFoldersAccordion = ({ folders, className }) => {
               </div>
             ))}
           </Collapse>
-        </>
+        </Fragment>
       ))}
     </div>
   );

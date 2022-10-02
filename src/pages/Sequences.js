@@ -6,7 +6,7 @@ import TasksBarStatsByType from "components/TasksBarStatsByType/TasksBarStatsByT
 import TaskSort from "components/TaskSort/TaskSort";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Container, Row, Card, CardHeader, Col } from "reactstrap";
+import { Container, Row, Card, CardHeader, Col, Button } from "reactstrap";
 import { selectAllTasks } from "store/slices/tasksSlice";
 import SequencesSort from "components/SequencesSort/SequencesSort";
 import SequencesStatusesSelector from "components/SequencesStatusesSelector/SequencesStatusesSelector";
@@ -14,10 +14,20 @@ import SequencesFolders from "components/SequencesFolders/SequencesFolders";
 import { MdOutlineSearch } from "react-icons/md";
 import SequencesTable from "components/SequencesTable/SequencesTable";
 import SequencesSearchBar from "components/SequencesSearchBar/SequencesSearchBar";
+import ModalCreateSequence from "components/ModalCreateSequence/ModalCreateSequence";
 
 const Sequences = () => {
   const dispatch = useDispatch();
-  const [isTest, setIsTest] = useState(false);
+  const [isTest, setIsTest] = useState(true);
+  const [isShowCreator, setIsShowCreator] = useState(false);
+
+  const createSequence = () => {
+    setIsShowCreator(true);
+  };
+
+  const doneCreateSequence = () => {
+    setIsShowCreator(false);
+  };
 
   return (
     <>
@@ -26,7 +36,7 @@ const Sequences = () => {
         className="d-flex flex-column overflow-hidden height-fill pb-3"
       >
         <Row className="">
-          <div className="col d-flex align-items-center">
+          <div className="col d-flex align-items-center justify-content-between">
             <h1 className="mt-4 mb-4 mr-3 d-flex align-items-center">
               Последовательности
               <div className="d-flex pt-2 pl-3">
@@ -45,6 +55,17 @@ const Sequences = () => {
                 </span>
               </div>
             </h1>
+            <Button
+              className="btn-icon btn-3"
+              color="success"
+              type="button"
+              onClick={createSequence}
+            >
+              <span className="btn-inner--icon">
+                <i className="fa fa-plus" aria-hidden="true"></i>
+              </span>
+              <span className="btn-inner--text">Создать</span>
+            </Button>
           </div>
         </Row>
 
@@ -75,6 +96,10 @@ const Sequences = () => {
           </Row>
         </Card>
       </Container>
+      <ModalCreateSequence
+        isShow={isShowCreator}
+        onClose={doneCreateSequence}
+      />
     </>
   );
 };

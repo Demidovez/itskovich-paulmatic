@@ -1,0 +1,58 @@
+.modal-create-sequence-component {
+  .sequence-name-input {
+    border-color: rgb(184, 184, 184);
+    color: rgb(53, 53, 53);
+    width: 40%;
+    min-width: 400px;
+  }
+  .page-sequence-item {
+    min-width: 160px;
+    cursor: pointer;
+
+    .page-sequence-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      margin-right: 7px;
+      background-color: rgb(194, 194, 194);
+      color: white;
+    }
+
+    & > span {
+      font-size: 13px;
+      opacity: 0.7;
+    }
+
+    &.current {
+      .page-sequence-icon {
+        background-color: var(--primary);
+      }
+
+      & > span {
+        font-size: 14px;
+        opacity: 1;
+        font-weight: 600;
+      }
+    }
+
+    &.done {
+      .page-sequence-icon {
+        background-color: var(--success);
+      }
+
+      & > span {
+        font-size: 14px;
+        opacity: 1;
+      }
+    }
+  }
+
+  .sequence-btns {
+    & > button {
+      min-width: 120px;
+    }
+  }
+}
