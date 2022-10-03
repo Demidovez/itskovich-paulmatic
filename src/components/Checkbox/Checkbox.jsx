@@ -3,12 +3,21 @@ import "./Checkbox.scss";
 
 const { Label } = require("reactstrap");
 
-const Checkbox = ({ label, scale = 1, id, checked, onChange }) => {
+const Checkbox = ({
+  label,
+  scale = 1,
+  id,
+  checked,
+  onChange,
+  className = "",
+  labelClassName = "",
+  isStopPropagation = true,
+}) => {
   return (
-    <div className="checkbox-component">
+    <div className={`checkbox-component ${className}`}>
       <div
         className="pl-0 custom-control checkbox-contact custom-checkbox"
-        onClick={(e) => e.stopPropagation()}
+        onClick={isStopPropagation ? (e) => e.stopPropagation() : null}
       >
         <input
           className="custom-control-input"
@@ -23,7 +32,9 @@ const Checkbox = ({ label, scale = 1, id, checked, onChange }) => {
           style={{ transform: `scale(${scale})` }}
         ></Label>
       </div>
-      <label htmlFor={"check_" + id}>{label || null}</label>
+      <label htmlFor={"check_" + id} className={`${labelClassName}`}>
+        {label || null}
+      </label>
     </div>
   );
 };

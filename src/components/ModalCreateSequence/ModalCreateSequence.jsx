@@ -10,6 +10,7 @@ import SequencePagePeople from "components/SequencePagePeople/SequencePagePeople
 import SequencePageSchedule from "components/SequencePageSchedule/SequencePageSchedule";
 import SequencePageLaunch from "components/SequencePageLaunch/SequencePageLaunch";
 import Dropdown from "components/Dropdown/Dropdown";
+import Checkbox from "components/Checkbox/Checkbox";
 
 const ModalCreateSequence = ({ isShow, onClose }) => {
   const [sequenceName, setSequenceName] = useState(
