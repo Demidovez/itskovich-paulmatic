@@ -3,9 +3,9 @@ import { MdEmail, MdDateRange, MdGppGood } from "react-icons/md";
 import moment from "moment";
 import AvatarSymbols from "components/AvatarSymbols/AvatarSymbols";
 import EditorEmail from "components/EditorEmail/EditorEmail";
-import { useState } from "react";
-import { Prompt } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 import { usePrompt } from "hooks/usePrompt";
+import AttachFilesBar from "components/AttachFilesBar/AttachFilesBar";
 
 const TaskModalManualEmail = ({ task, onClose, onExecute, onSkip }) => {
   const [isChanged, setIsChanged] = useState(false);
@@ -22,6 +22,8 @@ const TaskModalManualEmail = ({ task, onClose, onExecute, onSkip }) => {
   };
 
   usePrompt(isChanged);
+
+  const [attachedFiles, setAttachedFiles] = useState([]);
 
   return (
     <>
@@ -126,16 +128,29 @@ const TaskModalManualEmail = ({ task, onClose, onExecute, onSkip }) => {
             />
           </div>
           <div
-            className="d-flex flex-fill flex-column"
+            className="d-flex flex-fill flex-column mt-3"
             style={{ height: 0, minHeight: "400px" }}
           >
-            <p
-              className="mb-1 mt-3"
-              style={{ fontSize: "15px", fontWeight: "600" }}
-            >
-              Тело письма
-            </p>
+            <div className="d-flex justify-content-between  mb-1">
+              <p
+                className="m-0"
+                style={{ fontSize: "15px", fontWeight: "600" }}
+              >
+                Тело письма
+              </p>
+              <AttachFilesBar
+                onFileDeattach={(lastModified) =>
+                  setAttachedFiles((files) =>
+                    files.filter((file) => file.lastModified !== lastModified)
+                  )
+                }
+                onFileAttached={(file) =>
+                  setAttachedFiles((files) => [...files, file])
+                }
+              />
+            </div>
             <EditorEmail
+              files={attachedFiles}
               content={currentTask.Body}
               disabled={currentTask.Status !== "started"}
               onChange={(Body) => updateCurrentTask({ ...currentTask, Body })}
