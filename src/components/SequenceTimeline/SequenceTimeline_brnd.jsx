@@ -26,7 +26,11 @@ const SequenceTimeline = ({ jobs = [], onRemoveJob, setJobs }) => {
   return (
     <div className="sequence-timeline-component">
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable" direction="horizontal">
+        <Droppable
+          droppableId="droppable"
+          direction="horizontal"
+          // isDropDisabled={true}
+        >
           {(provided, snapshot) => (
             <div
               ref={provided.innerRef}
@@ -35,7 +39,12 @@ const SequenceTimeline = ({ jobs = [], onRemoveJob, setJobs }) => {
               {...provided.droppableProps}
             >
               {jobs.map((job, index) => (
-                <Draggable key={job.id} draggableId={"" + job.id} index={index}>
+                <Draggable
+                  key={job.id}
+                  draggableId={"" + job.id}
+                  index={index}
+                  // disableInteractiveElementBlocking={false}
+                >
                   {(provided, snapshot) => (
                     <div
                       className="timeline-item"

@@ -1,20 +1,24 @@
 .sequence-timeline-component {
-  //   height: 100%;
-  // width: 100%;
-  // display: flex;
-  // height: 50px;
-
   .timeline-item {
-    // height: 100%;
     background-color: var(--primary);
-    // min-width: 100px;
     margin: 0 1px;
     color: white;
     display: flex;
     align-items: center;
     position: relative;
     text-align: center;
-    // height: 100%;
+    cursor: grab;
+
+    &.resizing {
+      // opacity: 0.7;
+      background-color: #354cd1;
+      z-index: 100;
+    }
+
+    &.react-draggable-dragging {
+      z-index: 100;
+      background-color: #354cd1;
+    }
 
     .item-label {
       width: 100%;
@@ -26,6 +30,27 @@
       position: absolute;
       right: 0;
       padding: 5px;
+    }
+
+    .sequence-resizer-w,
+    .sequence-resizer-e {
+      width: 4px;
+      height: 70%;
+      border-color: #ffffff;
+      opacity: 0.5;
+      z-index: 1000;
+      position: absolute;
+      cursor: ew-resize;
+    }
+
+    .sequence-resizer-w {
+      left: 0;
+      border-right: 1px solid;
+    }
+
+    .sequence-resizer-e {
+      right: 0;
+      border-left: 1px solid;
     }
   }
 }
