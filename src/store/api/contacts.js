@@ -42,9 +42,9 @@ export const contactsApi = createApi({
       }),
       transformResponse: (response, _, arg) => {
         if (response.result && response.result.id === arg.id) {
-          toast.success(`${response.result.name} обновлен!`);
+          toast.success(`${response.result.name} обновлен`);
         } else if (response.result && response.result.id !== arg.id) {
-          toast.success(`${response.result.name} создан!`);
+          toast.success(`${response.result.name} создан`);
         } else {
           toast.error(`Ошибка!`);
         }

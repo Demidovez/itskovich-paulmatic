@@ -17,6 +17,9 @@ const TaskStatus = ({ status, dueTime, color = "#525f7f" }) => {
   let preffix = "";
 
   switch (status) {
+    case "expired":
+      text = "Просрочено"
+      break;
     case "started":
       preffix = "Срок до";
       text = isToday

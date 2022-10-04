@@ -166,7 +166,7 @@ const Contacts = () => {
       </Container>
       <Modal
         isShow={isShowModalDelete}
-        title="Вы уверены?!"
+        title="Вы уверены?"
         text="Удалить выбранные контакты?"
         onAgree={handleDeleteContact}
         onCancel={() => setIsShowModalDelete(false)}

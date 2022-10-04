@@ -240,7 +240,7 @@ const TasksTable = ({ info, fetchData }) => {
                           }}
                         >
                           <strong className="pr-1 ">{task[field.name]}</strong>{" "}
-                          - {task.Contact.name}
+                          - {task.Contact.name} - [#{task.id}]
                         </div>
                       </td>
                     );
