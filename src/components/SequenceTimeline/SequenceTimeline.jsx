@@ -17,15 +17,25 @@ const ResizeHandler = React.forwardRef(({ handleAxis, ...restProps }, ref) => {
 
 const SequenceTimeline = ({ jobs = [], onRemoveJob, setJobs }) => {
   const [layout, setLayout] = useState([
-    { i: "a", x: 0, y: 0, w: 2, h: 1, static: false },
-    { i: "b", x: 2, y: 0, w: 2, h: 1, static: false },
-    { i: "c", x: 4, y: 0, w: 2, h: 1, static: false },
-    { i: "d", x: 6, y: 0, w: 2, h: 1, static: false },
+    { i: "a", label: "00:00 - 04:00", x: 0, y: 0, w: 4, h: 1, static: false },
+    { i: "b", label: "07:00 - 11:00", x: 7, y: 0, w: 4, h: 1, static: false },
+    { i: "c", label: "18:00 - 22:00", x: 18, y: 0, w: 4, h: 1, static: false },
   ]);
 
   // useEffect(() => {
   //   setLayout(jobs.map(job => ({i:})))
   // }, [jobs]);
+
+  const correctJobs = (layout) => {
+    const correctedLayout = layout.map((job) => ({
+      ...job,
+      label: `${job.x < 10 ? "0" + job.x : job.x}:00 - ${
+        job.x + job.w < 10 ? "0" + (job.x + job.w) : job.x + job.w
+      }:00`,
+    }));
+
+    setLayout(correctedLayout);
+  };
 
   return (
     <div className="sequence-timeline-component">
@@ -34,8 +44,8 @@ const SequenceTimeline = ({ jobs = [], onRemoveJob, setJobs }) => {
         layout={layout}
         cols={24}
         rowHeight={50}
-        onDragStop={(l) => setLayout(l)}
-        onResizeStop={(l) => setLayout(l)}
+        onDrag={(l) => correctJobs(l)}
+        onResize={(l) => correctJobs(l)}
         isBounded={true}
         margin={[2, 0]}
         style={{ position: "relative" }}
@@ -45,7 +55,7 @@ const SequenceTimeline = ({ jobs = [], onRemoveJob, setJobs }) => {
       >
         {layout.map((item) => (
           <div key={item.i} className="timeline-item">
-            <span className="item-label">{item.i}</span>
+            <span className="item-label">{item.label}</span>
             <span className="remove-icon">
               <AiOutlineDelete />
             </span>
