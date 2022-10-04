@@ -99,7 +99,7 @@ const SequencePageSchedule = () => {
               />
             </div>
             <div
-              className={`d-flex justify-content-between timeline ${
+              className={`d1-flex justify1-content-between timeline ${
                 checkedDays.includes(index) ? "active" : ""
               }`}
             >
