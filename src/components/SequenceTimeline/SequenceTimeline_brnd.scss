@@ -1,0 +1,46 @@
+.sequence-timeline-component {
+  .timeline-wrapper {
+    height: 50px;
+    display: flex;
+
+    .timeline-item {
+      height: 100%;
+      background-color: var(--primary);
+      margin: 0 1px;
+      color: white;
+      display: flex;
+      align-items: center;
+      position: relative;
+      text-align: center;
+
+      .item-label {
+        width: 100%;
+      }
+
+      .remove-icon {
+        display: flex;
+        align-items: center;
+        position: absolute;
+        right: 0;
+        padding: 5px;
+      }
+
+      // .sequence-resizer-w,
+      // .sequence-resizer-e {
+      //   width: 10px;
+      //   height: 10px;
+      //   background-color: red;
+      //   z-index: 1000;
+      //   position: absolute;
+      // }
+
+      // .sequence-resizer-w {
+      //   left: 0;
+      // }
+
+      // .sequence-resizer-e {
+      //   right: 0;
+      // }
+    }
+  }
+}
