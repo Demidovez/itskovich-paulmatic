@@ -118,7 +118,11 @@ const TaskModalMessanger = ({ task, onClose, onExecute, onSkip }) => {
           style={{ fontSize: "18px", fontWeight: 600 }}
         >
           <MdGppGood color="green" size="1.5rem" />
-          <span className="pl-2">{currentTask.Description}</span>
+          <span className="pl-2">
+            <div
+              dangerouslySetInnerHTML={{ __html: currentTask.Description }}
+            />
+          </span>
         </p>
         <div
           className="d-flex flex-fill flex-column"

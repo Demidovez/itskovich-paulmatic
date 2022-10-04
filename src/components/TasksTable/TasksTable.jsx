@@ -244,6 +244,34 @@ const TasksTable = ({ info, fetchData }) => {
                         </div>
                       </td>
                     );
+                  } else if (field.name === "Description") {
+                    return (
+                      <td
+                        key={field.name}
+                        className="p-3 d-flex align-items-center"
+                        style={{
+                          ...field.style,
+                          width: `calc(${field.style.width})`,
+                        }}
+                      >
+                        <div
+                          style={{
+                            overflow: "hidden",
+                            whiteSpace: "nowrap",
+                            fontSize: 15,
+                            fontWeight: 400,
+                            textOverflow: "ellipsis",
+                            width: `calc(100%)`,
+                          }}
+                        >
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: task[field.name],
+                            }}
+                          />
+                        </div>
+                      </td>
+                    );
                   } else if (field.name === "Status") {
                     return (
                       <td
