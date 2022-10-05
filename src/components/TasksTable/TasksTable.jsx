@@ -21,6 +21,8 @@ import { setTasksToCache } from "store/slices/tasksSlice";
 import { executeCachedTask } from "store/slices/tasksSlice";
 import { skipCachedTask } from "store/slices/tasksSlice";
 import { setTasksRequestStatus } from "store/slices/tasksSlice";
+import { useReplyTaskMutation } from "store/api/tasks";
+import { replyCachedTask } from "store/slices/tasksSlice";
 
 moment.locale("ru");
 
@@ -106,6 +108,9 @@ const TasksTable = ({ info, fetchData }) => {
   const [skipTask] = useSkipTaskMutation({
     fixedCacheKey: "skip-task",
   });
+  const [replyTask] = useReplyTaskMutation({
+    fixedCacheKey: "reply-task",
+  });
 
   const { isSelectedAll, selectedIds } = useSelector((state) => state.tasks);
 
@@ -158,6 +163,19 @@ const TasksTable = ({ info, fetchData }) => {
       skipTask(task);
       dispatch(
         skipCachedTask({ ...task, Status: "skipped", Alertness: "gray" })
+      );
+    }
+
+    setTimeout(fetchTasks, 3000);
+
+    setTaskToModal(null);
+  };
+
+  const onRepliedTask = (task) => {
+    if (task) {
+      replyTask(task);
+      dispatch(
+        replyCachedTask({ ...task, Status: "replied", Alertness: "gray" })
       );
     }
 
@@ -360,6 +378,7 @@ const TasksTable = ({ info, fetchData }) => {
         onClose={closeModal}
         onExecute={onExecuteTask}
         onSkip={onSkipTask}
+        onReplied={onRepliedTask}
       />
     </>
   );

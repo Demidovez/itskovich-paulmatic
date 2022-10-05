@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLazyGetCommonInfoQuery } from "store/api/common";
 import { useLazyGetTasksQuery } from "store/api/tasks";
 import { useSkipTaskMutation } from "store/api/tasks";
+import { useReplyTaskMutation } from "store/api/tasks";
 import { useExecuteTaskMutation } from "store/api/tasks";
 import { useLazyGetStatisticsOfTasksQuery } from "store/api/tasks";
 import { setCommonInfoHtmlTemplates } from "store/slices/commonSlice";
@@ -21,6 +22,9 @@ const CommonThings = () => {
   const [, { isSuccess: isSkipedTask }] = useSkipTaskMutation({
     fixedCacheKey: "skip-task",
   });
+  const [, { isSuccess: isRepliedTask }] = useReplyTaskMutation({
+    fixedCacheKey: "reply-task",
+  });
   const [getCommonInfo, { data: commonData }] = useLazyGetCommonInfoQuery();
   const [fetchStatistics, { data: statisticsData }] =
     useLazyGetStatisticsOfTasksQuery();
@@ -36,10 +40,10 @@ const CommonThings = () => {
   }, []);
 
   useEffect(() => {
-    if (isExecutedTask || isSkipedTask || isFetchingTasks) {
+    if (isExecutedTask || isSkipedTask || isFetchingTasks || isRepliedTask) {
       fetchStatistics();
     }
-  }, [isExecutedTask, isSkipedTask, isFetchingTasks]);
+  }, [isExecutedTask, isSkipedTask, isFetchingTasks, isRepliedTask]);
 
   useEffect(() => {
     if (commonData) {

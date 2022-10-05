@@ -9,7 +9,13 @@ import AttachFilesBar from "components/AttachFilesBar/AttachFilesBar";
 import { useSelector } from "react-redux";
 import pupa from "pupa";
 
-const TaskModalManualEmail = ({ task, onClose, onExecute, onSkip }) => {
+const TaskModalManualEmail = ({
+  task,
+  onClose,
+  onExecute,
+  onSkip,
+  onReplied,
+}) => {
   const [isChanged, setIsChanged] = useState(false);
   const [currentTask, setCurrentTask] = useState(task);
 
@@ -187,9 +193,20 @@ const TaskModalManualEmail = ({ task, onClose, onExecute, onSkip }) => {
         </div>
         <div className="modal-footer pt-0">
           {currentTask.Status !== "started" ? (
-            <Button color="primary" onClick={() => onEvent(onClose)}>
-              Закрыть
-            </Button>
+            <>
+              {currentTask.Status === "completed" ? (
+                <Button
+                  color="info"
+                  outline
+                  onClick={() => onEvent(onReplied, currentTask)}
+                >
+                  Ответ получен
+                </Button>
+              ) : null}
+              <Button color="primary" onClick={() => onEvent(onClose)}>
+                Закрыть
+              </Button>
+            </>
           ) : (
             <>
               <Button

@@ -39,14 +39,20 @@ export const tasksSlice = createSlice({
     },
     executeCachedTask: (state, action) => {
       const executedTask = action.payload;
-      state.cached = state.cached.map((task) =>
+      state.cached.Items = state.cached.Items.map((task) =>
         task.id === executedTask.id ? executedTask : task
       );
     },
     skipCachedTask: (state, action) => {
       const skippedTask = action.payload;
-      state.cached = state.cached.map((task) =>
+      state.cached.Items = state.cached.Items.map((task) =>
         task.id === skippedTask.id ? skippedTask : task
+      );
+    },
+    replyCachedTask: (state, action) => {
+      const repliedTask = action.payload;
+      state.cached.Items = state.cached.Items.map((task) =>
+        task.id === repliedTask.id ? repliedTask : task
       );
     },
   },
@@ -60,6 +66,7 @@ export const {
   setTasksToCache,
   executeCachedTask,
   skipCachedTask,
+  replyCachedTask,
   setTasksRequestStatus,
 } = tasksSlice.actions;
 

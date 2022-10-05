@@ -57,7 +57,22 @@ export const tasksApi = createApi({
       transformResponse: (response) => {
         return response.result || [];
       },
-      invalidatesTags: [{ type: "Task", id: "LIST" }],
+      // invalidatesTags: [{ type: "Task", id: "LIST" }],
+    }),
+    replyTask: builder.mutation({
+      query: ({ id, accountId }) => ({
+        url: "/markReplied",
+        method: "POST",
+        body: { id, accountId },
+        headers: {
+          "caller-version-code": 1,
+          sessionToken: "user-1",
+        },
+      }),
+      transformResponse: (response) => {
+        return response.result || [];
+      },
+      // invalidatesTags: [{ type: "Task", id: "LIST" }],
     }),
     getStatisticsOfTasks: builder.query({
       query: () => ({
@@ -77,5 +92,6 @@ export const {
   useLazyGetTasksQuery,
   useExecuteTaskMutation,
   useSkipTaskMutation,
+  useReplyTaskMutation,
   useLazyGetStatisticsOfTasksQuery,
 } = tasksApi;

@@ -2,7 +2,7 @@ import TaskModalManualEmail from "components/TaskModalManualEmail/TaskModalManua
 import TaskModalMessanger from "components/TaskModalMessanger/TaskModalMessanger";
 import React, { useEffect } from "react";
 
-const TasksModals = ({ task, onClose, onExecute, onSkip }) => {
+const TasksModals = ({ task, onClose, onExecute, onSkip, onReplied }) => {
   let Modal;
 
   if (task === null) return;
@@ -26,6 +26,7 @@ const TasksModals = ({ task, onClose, onExecute, onSkip }) => {
       onClose={onClose}
       onExecute={onExecute}
       onSkip={onSkip}
+      onReplied={onReplied}
     />
   );
 };
