@@ -7,22 +7,24 @@ export const tasksApi = createApi({
   tagTypes: ["Task"],
   endpoints: (builder) => ({
     getTasks: builder.query({
-      query: (body) => ({
+      query: ({ body, params }) => ({
         url: "/search",
         method: "POST",
-        body: body || {},
+        body: body
+          ? { ...body, status: "-pending,-archived" }
+          : { status: "-pending,-archived" },
+        params,
         headers: {
           "caller-version-code": 1,
           sessionToken: "user-1",
         },
       }),
-      transformResponse: (response) => {
-        return response.result || [];
-      },
+      transformResponse: (response) =>
+        response.result || { Items: [], TotalCount: 0 },
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: "Task", id })),
+              ...result.Items.map(({ id }) => ({ type: "Task", id })),
               { type: "Task", id: "LIST" },
             ]
           : [{ type: "Task", id: "LIST" }],

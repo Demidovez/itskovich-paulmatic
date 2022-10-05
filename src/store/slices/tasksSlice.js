@@ -4,7 +4,8 @@ const initialState = {
   selectedIds: [],
   isSelectedAll: false,
   currentPage: 0,
-  cached: [],
+  cached: {},
+  isFetching: false,
 };
 
 export const tasksSlice = createSlice({
@@ -31,6 +32,10 @@ export const tasksSlice = createSlice({
     },
     setTasksToCache: (state, action) => {
       state.cached = action.payload;
+      state.isFetching = false;
+    },
+    setTasksRequestStatus: (state, action) => {
+      state.isFetching = action.payload;
     },
     executeCachedTask: (state, action) => {
       const executedTask = action.payload;
@@ -55,6 +60,7 @@ export const {
   setTasksToCache,
   executeCachedTask,
   skipCachedTask,
+  setTasksRequestStatus,
 } = tasksSlice.actions;
 
 export default tasksSlice.reducer;

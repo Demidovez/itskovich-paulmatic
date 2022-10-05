@@ -18,8 +18,20 @@ import { searchValueContactPage } from "store/slices/contactsSlice";
 import { setCache } from "store/slices/tablesSlice";
 import SearchBarContacts from "components/SearchBarContacts/SearchBarContacts";
 import ModalContactForm from "components/ModalContactForm/ModalContactForm";
+import InteractiveTour from "components/InteractiveTour/InteractiveTour";
 
 const COUNT_ON_PAGE = 100;
+
+const tourSteps = [
+  {
+    selector: ".contacts-tour",
+    content: "Страница контактов",
+  },
+  {
+    selector: ".search-tour",
+    content: "Поиск по базе",
+  },
+];
 
 const Contacts = () => {
   const [isCreateNew, setIsCreateNew] = useState(false);
@@ -112,7 +124,7 @@ const Contacts = () => {
       >
         <Row>
           <div className="col col-8 d-flex align-items-center">
-            <h1 className="mt-4 mb-4 mr-3">Контакты</h1>
+            <h1 className="mt-4 mb-4 mr-3 contacts-tour">Контакты</h1>
           </div>
         </Row>
         <Row className="flex-fill">
@@ -120,7 +132,7 @@ const Contacts = () => {
             <Card className="shadow flex-fill overflow-hidden">
               <CardHeader className="border-0 ">
                 <Row>
-                  <Col md={6}>
+                  <Col md={6} className="search-tour">
                     <SearchBarContacts
                       onSearch={onSearch}
                       search={searchValue}
@@ -178,6 +190,7 @@ const Contacts = () => {
         onRemove={onRemove}
         onClose={onResetForm}
       />
+      <InteractiveTour steps={tourSteps} name="contacts" />
     </>
   );
 };

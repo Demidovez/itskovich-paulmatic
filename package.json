@@ -46,6 +46,7 @@
     "moment": "^2.29.4",
     "nouislider": "15.2.0",
     "patch-package": "^6.4.7",
+    "pupa": "^3.1.0",
     "react": "18.2.0",
     "react-chartjs-2": "2.11.1",
     "react-copy-to-clipboard": "5.1.0",
@@ -59,6 +60,7 @@
     "react-scripts": "5.0.1",
     "react-toastify": "^9.0.8",
     "react-virtual": "^2.10.4",
+    "reactour": "^1.18.7",
     "reactstrap": "8.9.0",
     "sass": "1.54.5",
     "tinymce": "^6.2.0"

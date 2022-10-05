@@ -2,20 +2,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { convertBase64 } from "utils/utils";
 
-// if (file) {
-//   setFiles((files) => [...files, file]);
-
-//   // TODO: Запретить передавать SVG, это опасно.
-//   if (file.type.includes("image")) {
-//     convertBase64(file).then((base64) =>
-//       onImageAttached({ id: file.lastModified, data: base64 })
-//     );
-//   }
-// }
-
 const EditorEmail = ({ className, files, content, onChange, disabled }) => {
   const [addedImagesId, setAdedImagesId] = useState([]);
-  const data = useMemo(() => content, []);
+  const data = useMemo(() => content, [content]);
 
   const editorRef = useRef(null);
 
@@ -44,6 +33,7 @@ const EditorEmail = ({ className, files, content, onChange, disabled }) => {
         onInit={(evt, editor) => (editorRef.current = editor)}
         onEditorChange={(content) => onChange(content)}
         initialValue={data}
+        // value={data}
         disabled={disabled}
         init={{
           height: "100%",

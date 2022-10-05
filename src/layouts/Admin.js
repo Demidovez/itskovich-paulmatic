@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, Route, Switch, Redirect } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-
 import routes from "routes.js";
 import Menu from "components/Menu/Menu";
 import CommonThings from "components/CommonThings/CommonThings";
@@ -10,7 +9,7 @@ const Admin = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     mainContent.current.scrollTop = 0;

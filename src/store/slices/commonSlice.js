@@ -12,22 +12,38 @@ const initialState = {
     },
   },
   Sequences: {},
+  Account: {},
+  HtmlTemplates: {},
 };
 
 export const commonSlice = createSlice({
   name: "common",
   initialState,
   reducers: {
-    setCommonInfo: (state, action) => {
-      state.Tasks = action.payload.Tasks;
-      state.Sequences = action.payload.Sequences;
+    setCommonInfoTasks: (state, action) => {
+      state.Tasks = action.payload;
+    },
+    setCommonInfoSequences: (state, action) => {
+      state.Sequences = action.payload;
     },
     setStatistickInfo: (state, action) => {
       state.Tasks.Stats = action.payload;
     },
+    setCurrentUser: (state, action) => {
+      state.Account = action.payload;
+    },
+    setCommonInfoHtmlTemplates: (state, action) => {
+      state.HtmlTemplates = action.payload;
+    },
   },
 });
 
-export const { setCommonInfo, setStatistickInfo } = commonSlice.actions;
+export const {
+  setCommonInfoTasks,
+  setStatistickInfo,
+  setCommonInfoSequences,
+  setCurrentUser,
+  setCommonInfoHtmlTemplates,
+} = commonSlice.actions;
 
 export default commonSlice.reducer;

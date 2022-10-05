@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import ActionTableBar from "components/ActionTableBar/ActionTableBar";
 import SearchBar from "components/SearchBar/SearchBar";
 import { useAddContactsMutation } from "store/api/contacts";
+import InteractiveTour from "components/InteractiveTour/InteractiveTour";
 
 const companiesFields = [
   {
@@ -180,6 +181,17 @@ const personsFields = [
   },
 ];
 
+const tourSteps = [
+  {
+    selector: ".tabs-tour",
+    content: "Страница B2B",
+  },
+  {
+    selector: ".filter-tour",
+    content: "Фильтр по параметрам",
+  },
+];
+
 const BtoB = () => {
   const [fetchCompanies, companiesData] = useLazyGetCompaniesQuery({
     selectFromResult: ({ data }) => data,
@@ -208,7 +220,11 @@ const BtoB = () => {
             <CardHeader className="border-0">
               <Row>
                 <Col className="col col-lg-6 col-md-12 col-sm-12">
-                  <Tabs tabs={tables} activeTable={activeTable} />
+                  <Tabs
+                    tabs={tables}
+                    activeTable={activeTable}
+                    className="tabs-tour"
+                  />
                 </Col>
                 <Col className="col col-lg-6 col-md-12 col-sm-12 d-flex align-items-center pt-lg-0 pt-3 ">
                   <ActionTableBar
@@ -246,10 +262,12 @@ const BtoB = () => {
             <FilterB2B
               name={tables[activeTable].info.name}
               filters={tables[activeTable].info.filters}
+              className="filter-tour"
             />
           )}
         </div>
       </Row>
+      <InteractiveTour steps={tourSteps} name="btb" />
     </Container>
   );
 };

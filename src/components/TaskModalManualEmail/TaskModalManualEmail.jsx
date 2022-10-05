@@ -6,6 +6,8 @@ import EditorEmail from "components/EditorEmail/EditorEmail";
 import { useEffect, useRef, useState } from "react";
 import { usePrompt } from "hooks/usePrompt";
 import AttachFilesBar from "components/AttachFilesBar/AttachFilesBar";
+import { useSelector } from "react-redux";
+import pupa from "pupa";
 
 const TaskModalManualEmail = ({ task, onClose, onExecute, onSkip }) => {
   const [isChanged, setIsChanged] = useState(false);
@@ -24,6 +26,32 @@ const TaskModalManualEmail = ({ task, onClose, onExecute, onSkip }) => {
   usePrompt(isChanged);
 
   const [attachedFiles, setAttachedFiles] = useState([]);
+
+  const [emailBody, setEmailBody] = useState("");
+  const emailTemplates = useSelector((state) => state.common.HtmlTemplates);
+  const account = useSelector((state) => state.common.Account);
+
+  useEffect(() => {
+    const [template, key] = task.Body.split(":");
+    const emailBody =
+      template === "template" ? emailTemplates[key] || task.Body : task.Body;
+
+    const injectedEmailBody = pupa(emailBody.replaceAll("{{.", "{{"), {
+      Contact: {
+        ...Object.fromEntries(
+          Object.entries(task.Contact).map(([k, v]) => [
+            k[0].toUpperCase() + k.slice(1),
+            v,
+          ])
+        ),
+      },
+      Me: {
+        ...account,
+      },
+    });
+
+    setEmailBody(injectedEmailBody);
+  }, [task.Body, emailTemplates, account]);
 
   return (
     <>
@@ -49,7 +77,7 @@ const TaskModalManualEmail = ({ task, onClose, onExecute, onSkip }) => {
               </div>
             </h4>
             <div style={{ fontSize: "14px" }}>
-              Последовательность: {currentTask.Sequence.Title || "Неопределено"}
+              Последовательность: {currentTask.Sequence.Name || "Неопределено"}
             </div>
           </div>
           <button
@@ -151,7 +179,7 @@ const TaskModalManualEmail = ({ task, onClose, onExecute, onSkip }) => {
             </div>
             <EditorEmail
               files={attachedFiles}
-              content={currentTask.Body}
+              content={emailBody}
               disabled={currentTask.Status !== "started"}
               onChange={(Body) => updateCurrentTask({ ...currentTask, Body })}
             />

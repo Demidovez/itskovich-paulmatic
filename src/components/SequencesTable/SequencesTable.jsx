@@ -1,31 +1,7 @@
-import {
-  Card,
-  CardHeader,
-  CardFooter,
-  Table,
-  Label,
-  Col,
-  Progress,
-} from "reactstrap";
-import Pagination from "../Pagination/Pagination";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Table, Progress } from "reactstrap";
+import React from "react";
 import "./SequencesTable.scss";
 import Checkbox from "components/Checkbox/Checkbox";
-import { addTasksId } from "store/slices/tasksSlice";
-import { useLazyGetTasksQuery } from "store/api/tasks";
-import TaskIcon from "components/TaskIcon/TaskIcon";
-import TaskStatus from "components/TaskStatus/TaskStatus";
-import TaskStartTime from "components/TaskStartTime/TaskStartTime";
-import TasksModals from "components/TasksModals/TasksModals";
-import { useState } from "react";
-import { useExecuteTaskMutation } from "store/api/tasks";
-import { useSkipTaskMutation } from "store/api/tasks";
-import { setCurrentTasksPage } from "store/slices/tasksSlice";
-import { setCache } from "store/slices/tablesSlice";
-import { setTasksToCache } from "store/slices/tasksSlice";
-import { executeCachedTask } from "store/slices/tasksSlice";
-import { skipCachedTask } from "store/slices/tasksSlice";
 import { MdPersonOutline, MdOutlineEmail } from "react-icons/md";
 
 const COUNT_ON_PAGE = 10;

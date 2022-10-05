@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardFooter, Table, Label, Col } from "reactstrap";
 import Pagination from "../Pagination/Pagination";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./TasksTable.scss";
 import Checkbox from "components/Checkbox/Checkbox";
@@ -20,6 +20,7 @@ import { setCache } from "store/slices/tablesSlice";
 import { setTasksToCache } from "store/slices/tasksSlice";
 import { executeCachedTask } from "store/slices/tasksSlice";
 import { skipCachedTask } from "store/slices/tasksSlice";
+import { setTasksRequestStatus } from "store/slices/tasksSlice";
 
 moment.locale("ru");
 
@@ -88,14 +89,16 @@ const TasksTable = ({ info, fetchData }) => {
   const currentPage = useSelector((state) => state.tasks.currentPage);
   const [taskToModal, setTaskToModal] = useState(null);
 
-  const [getTasks, { data: tasks, isFetching }] = useLazyGetTasksQuery();
+  const [getTasks, { data: tasksData, isFetching }] = useLazyGetTasksQuery();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (tasks && !isFetching) {
-      dispatch(setTasksToCache(tasks));
+    if (tasksData && !isFetching) {
+      dispatch(setTasksToCache(tasksData));
+    } else {
+      dispatch(setTasksRequestStatus(isFetching));
     }
-  }, [isFetching, tasks]);
+  }, [isFetching, tasksData]);
 
   const [executeTask] = useExecuteTaskMutation({
     fixedCacheKey: "execute-task",
@@ -108,16 +111,26 @@ const TasksTable = ({ info, fetchData }) => {
 
   const onSelectTask = (id) => dispatch(addTasksId(id));
 
+  const fetchTasks = useCallback(() => {
+    getTasks({
+      params: { offset: currentPage * COUNT_ON_PAGE, count: COUNT_ON_PAGE },
+    });
+  }, [currentPage]);
+
   useEffect(() => {
-    getTasks();
+    fetchTasks();
 
     const intervalId = setInterval(() => {
       console.log("request of tasks");
-      getTasks();
-    }, 30000);
+      fetchTasks();
+    }, 30000); // TODO1: 30000
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [fetchTasks]);
+
+  useEffect(() => {
+    fetchTasks();
+  }, [currentPage]);
 
   const openModal = (task) => {
     setTaskToModal(task);
@@ -135,6 +148,8 @@ const TasksTable = ({ info, fetchData }) => {
       );
     }
 
+    setTimeout(fetchTasks, 3000);
+
     setTaskToModal(null);
   };
 
@@ -145,6 +160,8 @@ const TasksTable = ({ info, fetchData }) => {
         skipCachedTask({ ...task, Status: "skipped", Alertness: "gray" })
       );
     }
+
+    setTimeout(fetchTasks, 3000);
 
     setTaskToModal(null);
   };
@@ -162,7 +179,7 @@ const TasksTable = ({ info, fetchData }) => {
           style={{ tableLayout: "auto" }}
         >
           <tbody>
-            {(cached || tasks || []).map((task) => (
+            {((cached || tasksData || {}).Items || []).map((task) => (
               <tr
                 key={task.id}
                 className="d-flex"
@@ -323,14 +340,16 @@ const TasksTable = ({ info, fetchData }) => {
           </tbody>
         </Table>
 
-        {(cached || tasks || []).length === 0 && (
+        {((cached || tasksData || {}).Items || []).length === 0 && (
           <p className="message">Не найдено :(</p>
         )}
       </div>
       <CardFooter className="d-flex justify-content-between align-items-center">
         <div></div>
         <Pagination
-          allCount={(cached || tasks || []).length}
+          allCount={
+            tasksData ? tasksData.TotalCount : cached && cached.TotalCount
+          }
           countOnPage={COUNT_ON_PAGE}
           page={currentPage}
           moveToPage={onSetCurrentPage}

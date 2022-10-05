@@ -24,7 +24,7 @@ const Tasks = () => {
       >
         <Row className="pt-3 pb-3">
           <div className="col col-2 d-flex align-items-center">
-            <h1 className="mt-4 mb-4 mr-3">Задачи</h1>
+            <h1 className="mt-3 mb-3 mr-3">Задачи</h1>
           </div>
           <div className="col col-10 d-flex align-items-center justify-content-end">
             <TasksBarStatsByStatus />

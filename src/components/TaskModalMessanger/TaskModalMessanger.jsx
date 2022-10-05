@@ -55,7 +55,7 @@ const TaskModalMessanger = ({ task, onClose, onExecute, onSkip }) => {
             </div>
           </h4>
           <div style={{ fontSize: "14px" }}>
-            Последовательность: {currentTask.Sequence.Title || "Неопределено"}
+            Последовательность: {currentTask.Sequence.Name || "Неопределено"}
           </div>
         </div>
         <button
@@ -118,11 +118,11 @@ const TaskModalMessanger = ({ task, onClose, onExecute, onSkip }) => {
           style={{ fontSize: "18px", fontWeight: 600 }}
         >
           <MdGppGood color="green" size="1.5rem" />
-          <span className="pl-2">
-            <div
-              dangerouslySetInnerHTML={{ __html: currentTask.Description }}
-            />
-          </span>
+
+          <span
+            className="pl-2"
+            dangerouslySetInnerHTML={{ __html: currentTask.Description }}
+          />
         </p>
         <div
           className="d-flex flex-fill flex-column"

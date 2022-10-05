@@ -1,5 +1,6 @@
 .sequence-timeline-component {
-  .target {
+  .timeline-item {
+    background-color: var(--red);
     position: absolute;
     width: 100px;
     height: 50px;

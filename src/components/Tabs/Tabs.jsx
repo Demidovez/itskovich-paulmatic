@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { addTables } from "store/slices/tablesSlice";
 import { setActiveTable } from "store/slices/tablesSlice";
 
-const Tabs = ({ tabs, activeTable }) => {
+const Tabs = ({ tabs, activeTable, className }) => {
   const { companies, persons } = tabs;
 
   const [getCompaniesInfo, { data: companiesInfo }] =
@@ -65,7 +65,7 @@ const Tabs = ({ tabs, activeTable }) => {
   return (
     <>
       <div className="tabs-component">
-        <div className="tabs">
+        <div className={`${className} tabs`}>
           {Object.keys(persons).length > 0 && (
             <Fragment>
               <input

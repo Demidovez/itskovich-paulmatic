@@ -52,7 +52,7 @@ const SequenceTimeline = ({ jobs = [], onRemoveJob, setJobs }) => {
       {layout.map((item) => (
         <Fragment key={item.i}>
           <div
-            className="target timeline-item"
+            className="timeline-item"
             // style={{ width: 150, height: 50 }}
           >
             <span className="item-label">{item.label}</span>
@@ -61,7 +61,7 @@ const SequenceTimeline = ({ jobs = [], onRemoveJob, setJobs }) => {
             </span>
           </div>
           <Moveable
-            target={document.querySelector(".target")}
+            target={document.querySelector(".timeline-item")}
             resizable={true}
             keepRatio={false}
             throttleResize={1}

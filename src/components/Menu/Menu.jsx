@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { NavLink as NavLinkRRD, Link } from "react-router-dom";
 import {
   Collapse,
@@ -27,6 +28,8 @@ import "./Menu.scss";
 
 const Menu = (props) => {
   const [collapseOpen, setCollapseOpen] = useState();
+
+  const account = useSelector((state) => state.common.Account);
 
   const toggleCollapse = () => {
     setCollapseOpen((data) => !data);
@@ -189,7 +192,7 @@ const Menu = (props) => {
                   </span>
                   <Media className="ml-2 d-none d-lg-block">
                     <span className="mb-0 text-sm font-weight-bold">
-                      Администратор
+                      {account.fullName || "User"}
                     </span>
                   </Media>
                 </Media>
@@ -199,6 +202,14 @@ const Menu = (props) => {
                 right
                 style={{ minWidth: "12rem" }}
               >
+                <DropdownItem
+                  onClick={() => {
+                    localStorage.removeItem("tours");
+                  }}
+                >
+                  <i className="ni ni-spaceship" />
+                  <span>Восстановить туры</span>
+                </DropdownItem>
                 <DropdownItem to="/admin/user-profile" tag={Link}>
                   <i className="ni ni-single-02" />
                   <span>My profile</span>
