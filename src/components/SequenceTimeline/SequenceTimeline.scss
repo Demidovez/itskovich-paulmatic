@@ -1,57 +1,83 @@
 .sequence-timeline-component {
-  .timeline-item {
-    background-color: var(--primary);
-    margin: 0 1px;
-    color: white;
-    display: flex;
-    align-items: center;
-    position: relative;
+  .target {
+    position: absolute;
+    width: 100px;
+    height: 50px;
+    top: 0;
+    left: 0;
     text-align: center;
-    cursor: grab;
-
-    &.resizing {
-      // opacity: 0.7;
-      background-color: #354cd1;
-      z-index: 100;
-    }
-
-    &.react-draggable-dragging {
-      z-index: 100;
-      background-color: #354cd1;
-    }
-
-    .item-label {
-      width: 100%;
-      font-size: 12px;
-    }
-
-    .remove-icon {
-      display: flex;
-      align-items: center;
-      position: absolute;
-      right: 0;
-      padding: 10px;
-    }
-
-    .sequence-resizer-w,
-    .sequence-resizer-e {
-      width: 4px;
-      height: 70%;
-      border-color: #ffffff;
-      opacity: 0.5;
-      z-index: 1000;
-      position: absolute;
-      cursor: ew-resize;
-    }
-
-    .sequence-resizer-w {
-      left: 0;
-      border-right: 1px solid;
-    }
-
-    .sequence-resizer-e {
-      right: 0;
-      border-left: 1px solid;
-    }
+    background: #ee8;
+    color: #333;
+    font-weight: bold;
+    border: 1px solid #333;
+    box-sizing: border-box;
   }
+  // .react-grid-item.react-grid-placeholder {
+  //   background-color: var(--red);
+  //   opacity: 0;
+  // }
+
+  // .timeline-item {
+  //   background-color: var(--primary);
+  //   margin: 0 1px;
+  //   color: white;
+  //   display: flex;
+  //   align-items: center;
+  //   position: relative;
+  //   text-align: center;
+  //   cursor: grab;
+
+  //   &.resizing {
+  //     opacity: 0.7;
+  //     // background-color: #354cd1;
+  //     z-index: 100;
+  //   }
+
+  //   &.react-draggable-dragging {
+  //     z-index: 100;
+  //     opacity: 0.7;
+  //     // background-color: #354cd1;
+  //   }
+
+  //   .item-label {
+  //     width: 100%;
+  //     font-size: 12px;
+  //   }
+
+  //   .remove-icon {
+  //     display: flex;
+  //     align-items: center;
+  //     position: absolute;
+  //     right: 0;
+  //     padding: 10px;
+  //   }
+
+  //   .sequence-resizer-w,
+  //   .sequence-resizer-e {
+  //     width: 4px;
+  //     height: 70%;
+  //     border-color: #ffffff;
+  //     opacity: 0.5;
+  //     z-index: 1000;
+  //     position: absolute;
+  //     cursor: ew-resize;
+  //     transform: none !important;
+  //     top: inherit !important;
+  //     margin: inherit !important;
+
+  //     &::after {
+  //       display: none;
+  //     }
+  //   }
+
+  //   .sequence-resizer-w {
+  //     left: 0;
+  //     border-right: 1px solid;
+  //   }
+
+  //   .sequence-resizer-e {
+  //     right: 0;
+  //     border-left: 1px solid;
+  //   }
+  // }
 }
