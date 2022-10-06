@@ -130,8 +130,27 @@ const TaskModalMessanger = ({
             dangerouslySetInnerHTML={{ __html: currentTask.Description }}
           />
         </p>
+        {currentTask.Type === "linkedin" &&
+        currentTask.Action === "cold_msg" ? (
+          <div className="mb-2">
+            <p
+              className="mb-1 mt-1"
+              style={{ fontSize: "15px", fontWeight: "600" }}
+            >
+              Тема сообщения
+            </p>
+            <Input
+              value={currentTask.Subject}
+              disabled={currentTask.Status !== "started"}
+              onChange={(e) =>
+                updateCurrentTask({ ...currentTask, Subject: e.target.value })
+              }
+              style={{ color: "black" }}
+            />
+          </div>
+        ) : null}
         <div
-          className="d-flex flex-fill flex-column"
+          className="d-flex flex-fill flex-column "
           style={{ height: 0, minHeight: "200px" }}
         >
           <div className="d-flex justify-content-between align-items-center">

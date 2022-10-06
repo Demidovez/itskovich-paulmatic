@@ -1,16 +1,29 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
 
-const TaskStatus = ({ status, dueTime, color = "#525f7f" }) => {
+const TaskStatus = ({ status, dueTime, color = "#525f7f", refetch }) => {
   const [isToday, setIsToday] = useState(false);
 
   useEffect(() => {
     const today = moment().endOf("day");
-    const yesterday = moment().add(-1, "day").endOf("day");
 
     if (moment(dueTime) < today) {
       setIsToday(true);
     }
+
+    const deltaTime = moment(dueTime).diff(moment());
+
+    let timer;
+
+    if (deltaTime >= 0) {
+      timer = setTimeout(() => {
+        refetch();
+      }, deltaTime);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [dueTime]);
 
   let text;
@@ -18,13 +31,13 @@ const TaskStatus = ({ status, dueTime, color = "#525f7f" }) => {
 
   switch (status) {
     case "archived":
-      text = "В архиве"
-      break
+      text = "В архиве";
+      break;
     case "expired":
-      text = "Просрочено"
-      break
+      text = "Просрочено";
+      break;
     case "replied":
-      text = "Ответ получен"
+      text = "Ответ получен";
       break;
     case "started":
       preffix = "Срок до";

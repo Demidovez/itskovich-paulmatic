@@ -89,6 +89,7 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
             items={["Металлургия", "Другое"]}
             className="ml-3"
             outline={true}
+            defaultValue="Папка"
           />
         </div>
         <button

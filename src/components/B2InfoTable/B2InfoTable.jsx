@@ -194,7 +194,7 @@ const B2InfoTable = ({ info, data, fetchData, fields = [] }) => {
           </tbody>
         </Table>
 
-        {((data || cacheTables[info.name] || {}).Items || []).length === 0 && (
+        {((data || cacheTables[info.name] || {}).Items || {}).length === 0 && (
           <p className="message">Не найдено :(</p>
         )}
       </div>

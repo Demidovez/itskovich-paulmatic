@@ -10,12 +10,21 @@ import Tasks from "pages/Tasks";
 import Sequences from "pages/Sequences";
 
 var routes = [
+  // {
+  //   path: "/index",
+  //   name: "Dashboard",
+  //   icon: "ni ni-tv-2 text-primary",
+  //   component: Index,
+  //   layout: "/admin",
+  //   position: "user",
+  // },
   {
-    path: "/index",
+    path: "/dashboard",
     name: "Dashboard",
     icon: "ni ni-tv-2 text-primary",
     component: Index,
     layout: "/admin",
+    position: "user",
   },
   {
     path: "/icons",
@@ -39,9 +48,11 @@ var routes = [
     icon: "ni ni-single-02 text-yellow",
     component: Profile,
     layout: "/admin",
+    position: "user",
   },
   {
-    path: "/contacts",
+    path: "/index",
+    // path: "/contacts",
     name: "Контакты",
     icon: "ni ni-bullet-list-67 text-red",
     component: Contacts,

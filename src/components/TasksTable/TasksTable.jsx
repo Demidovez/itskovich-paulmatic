@@ -86,7 +86,7 @@ const fields = [
   },
 ];
 
-const TasksTable = ({ info, fetchData }) => {
+const TasksTable = () => {
   const cached = useSelector((state) => state.tasks.cached);
   const currentPage = useSelector((state) => state.tasks.currentPage);
   const [taskToModal, setTaskToModal] = useState(null);
@@ -324,6 +324,7 @@ const TasksTable = ({ info, fetchData }) => {
                           status={task[field.name]}
                           dueTime={task.DueTime}
                           color={task.Alertness}
+                          refetch={fetchTasks}
                         />
                       </td>
                     );

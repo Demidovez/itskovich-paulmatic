@@ -4,11 +4,13 @@ import b2bFilterReducer from "./slices/b2bFilterSlice";
 import tablesReducer from "./slices/tablesSlice";
 import tasksReducer from "./slices/tasksSlice";
 import commonReducer from "./slices/commonSlice";
+import sequencesReducer from "./slices/sequencesSlice";
 import { contactsApi } from "./api/contacts";
 import { personsApi } from "./api/persons";
 import { companiesApi } from "./api/companies";
 import { tasksApi } from "./api/tasks";
 import { commonApi } from "./api/common";
+import { sequencesApi } from "./api/sequences";
 
 export const store = configureStore({
   reducer: {
@@ -17,11 +19,13 @@ export const store = configureStore({
     tables: tablesReducer,
     tasks: tasksReducer,
     common: commonReducer,
+    sequences: sequencesReducer,
     [contactsApi.reducerPath]: contactsApi.reducer,
     [personsApi.reducerPath]: personsApi.reducer,
     [companiesApi.reducerPath]: companiesApi.reducer,
     [tasksApi.reducerPath]: tasksApi.reducer,
     [commonApi.reducerPath]: commonApi.reducer,
+    [sequencesApi.reducerPath]: sequencesApi.reducer,
   },
   middleware: (getDefaultMiddleware) => [
     ...getDefaultMiddleware(),
@@ -30,5 +34,6 @@ export const store = configureStore({
     companiesApi.middleware,
     tasksApi.middleware,
     commonApi.middleware,
+    sequencesApi.middleware,
   ],
 });

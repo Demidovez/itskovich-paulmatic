@@ -8,12 +8,16 @@ import {
 
 const DropdownCustom = ({
   items,
+  fieldOfItem = "",
   isDisabled = false,
   color = "primary",
   className = "",
   outline = false,
+  classNameButton = "",
+  defaultValue = "",
+  onSelect = () => {},
 }) => {
-  const [value, setValue] = useState("Папка");
+  const [value, setValue] = useState();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isShow, setIsShow] = useState(false);
 
@@ -26,6 +30,10 @@ const DropdownCustom = ({
       setIsShow(false);
     }
   }, [dropdownOpen]);
+
+  useEffect(() => {
+    value && onSelect(value);
+  }, [value]);
 
   return (
     <Dropdown
@@ -44,9 +52,9 @@ const DropdownCustom = ({
         outline={outline}
         color={color}
         style={{ overflow: "hidden" }}
-        className="d-flex align-items-center justify-content-between"
+        className={`d-flex align-items-center justify-content-between ${classNameButton}`}
       >
-        {value}
+        {(value && (fieldOfItem ? value[fieldOfItem] : value)) || defaultValue}
       </DropdownToggle>
 
       <DropdownMenu
@@ -60,7 +68,7 @@ const DropdownCustom = ({
       >
         {items.map((item, index) => (
           <DropdownItem key={index} onClick={() => setValue(item)}>
-            {item}
+            {fieldOfItem ? item[fieldOfItem] : item}
           </DropdownItem>
         ))}
       </DropdownMenu>

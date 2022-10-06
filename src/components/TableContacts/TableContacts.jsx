@@ -71,11 +71,7 @@ const fields = [
   },
 ];
 
-const TableContacts = ({
-  onSelect,
-  data = { Items: [], TotalCpunt: 0 },
-  selectedIds,
-}) => {
+const TableContacts = ({ onSelect, data = { Items: [] }, selectedIds }) => {
   const dispatch = useDispatch();
 
   const onSelectContact = (id) => {
@@ -198,7 +194,7 @@ const TableContacts = ({
           ))}
         </tbody>
       </Table>
-      {data.TotalCpunt === 0 && (
+      {data.TotalCount === 0 && (
         <p className="message">Добавьте контакты вручную или загрузите файл</p>
       )}
     </div>

@@ -15,11 +15,16 @@ import { MdOutlineSearch } from "react-icons/md";
 import SequencesTable from "components/SequencesTable/SequencesTable";
 import SequencesSearchBar from "components/SequencesSearchBar/SequencesSearchBar";
 import ModalCreateSequence from "components/ModalCreateSequence/ModalCreateSequence";
+import { selectAllSequences } from "store/slices/sequencesSlice";
 
 const Sequences = () => {
   const dispatch = useDispatch();
-  const [isTest, setIsTest] = useState(true);
+  const [isTest, setIsTest] = useState(false);
   const [isShowCreator, setIsShowCreator] = useState(false);
+
+  const isSelectedAll = useSelector((state) => state.sequences.isSelectedAll);
+
+  const setAllSequences = () => dispatch(selectAllSequences(!isSelectedAll));
 
   const createSequence = () => {
     setIsShowCreator(true);
@@ -39,21 +44,6 @@ const Sequences = () => {
           <div className="col d-flex align-items-center justify-content-between">
             <h1 className="mt-4 mb-4 mr-3 d-flex align-items-center">
               Последовательности
-              <div className="d-flex pt-2 pl-3">
-                <label className="custom-toggle">
-                  <input
-                    type="checkbox"
-                    checked={isTest}
-                    onChange={() => setIsTest(!isTest)}
-                  />
-                  <span className="custom-toggle-slider rounded-circle" />
-                </label>
-                <span
-                  style={{ fontSize: "12px", padding: "3px 5px", opacity: 0.7 }}
-                >
-                  [тест]
-                </span>
-              </div>
             </h1>
             <Button
               className="btn-icon btn-3"
@@ -70,18 +60,18 @@ const Sequences = () => {
         </Row>
 
         <Card className="shadow flex-fill overflow-hidden">
-          <Row className="p-4">
+          <Row className="p-4 flex-fill">
             <div className="col col-2">
               <SequencesFolders isTest={isTest} />
             </div>
-            <div className="col col-10 pl-5">
+            <div className="col col-10 pl-0 pr-0 d-flex flex-column">
               <div className="d-flex align-items-center justify-content-between">
                 <div className="ml-4">
                   <Checkbox
                     label="Все"
                     scale={1.25}
-                    // checked={isSelectedAll}
-                    // onChange={onSelectAllTasks}
+                    checked={isSelectedAll}
+                    onChange={setAllSequences}
                   />
                 </div>
 

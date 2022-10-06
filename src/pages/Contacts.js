@@ -19,13 +19,15 @@ import { setCache } from "store/slices/tablesSlice";
 import SearchBarContacts from "components/SearchBarContacts/SearchBarContacts";
 import ModalContactForm from "components/ModalContactForm/ModalContactForm";
 import InteractiveTour from "components/InteractiveTour/InteractiveTour";
+import ModalAddToSequence from "components/ModalAddToSequence/ModalAddToSequence";
 
 const COUNT_ON_PAGE = 100;
 
 const tourSteps = [
   {
     selector: "#nav_item_contacts",
-    content: "На этой странице находятся все Ваши контакты. Контактам можно рассылать автоматические и/или мануальные письма, писать в месенджеры и т.д.",
+    content:
+      "На этой странице находятся все Ваши контакты. Контактам можно рассылать автоматические и/или мануальные письма, писать в месенджеры и т.д.",
   },
   {
     selector: "#createContactToggler",
@@ -33,11 +35,13 @@ const tourSteps = [
   },
   {
     selector: "#contactActionsToggler",
-    content: "Добавляйте выделенные галочками контакты в автоматизированные последовательности",
+    content:
+      "Добавляйте выделенные галочками контакты в автоматизированные последовательности",
   },
   {
     selector: ".search-tour",
-    content: "Ищите контакты по имени, должности, комании или другим параметрам",
+    content:
+      "Ищите контакты по имени, должности, комании или другим параметрам",
   },
 ];
 
@@ -86,6 +90,8 @@ const Contacts = () => {
 
   const [activeContact, setActiveContact] = useState(null);
   const [isShowModalDelete, setIsShowModalDelete] = useState(false);
+  const [isShowModalAddToSequence, setIsShowModalAddToSequence] =
+    useState(false);
 
   const onResetForm = () => {
     activeContact && setActiveContact(null);
@@ -111,8 +117,6 @@ const Contacts = () => {
     onSetCurrentPage(0);
   };
 
-  const handleAddToSequence = () => {};
-
   const handleDeleteContact = () => {
     setIsShowModalDelete(false);
     deleteContactsByID(selectedIds);
@@ -130,12 +134,7 @@ const Contacts = () => {
         fluid
         className="d-flex flex-column overflow-hidden height-fill"
       >
-        <Row>
-          <div className="col col-8 d-flex align-items-center">
-            <h1 className="mt-4 mb-4 mr-3 contacts-tour">Контакты</h1>
-          </div>
-        </Row>
-        <Row className="flex-fill">
+        <Row className="flex-fill pt-4">
           <div className="col mb-3 d-flex">
             <Card className="shadow flex-fill overflow-hidden">
               <CardHeader className="border-0 ">
@@ -153,7 +152,7 @@ const Contacts = () => {
                     <ActionContactsBar
                       disabled={selectedIds.length === 0}
                       onDelete={() => setIsShowModalDelete(true)}
-                      onAddToSequence={handleAddToSequence}
+                      onAddToSequence={() => setIsShowModalAddToSequence(true)}
                     />
                     <CreateContactsSelector
                       onCreate={() => setIsCreateNew(true)}
@@ -197,6 +196,12 @@ const Contacts = () => {
         onSave={onSave}
         onRemove={onRemove}
         onClose={onResetForm}
+      />
+      <ModalAddToSequence
+        ids={selectedIds}
+        isShow={isShowModalAddToSequence}
+        clearSelectedIds={() => dispatch(clearSelectedIds())}
+        onCancel={() => setIsShowModalAddToSequence(false)}
       />
       <InteractiveTour steps={tourSteps} name="contacts" />
     </>

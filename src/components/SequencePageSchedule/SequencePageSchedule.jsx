@@ -73,11 +73,16 @@ const SequencePageSchedule = () => {
       <div className="header-schedule">
         <div className="d-flex">
           <div style={{ width: 200 }}></div>
-          <div className="flex-fill d-flex justify-content-between">
+          <div
+            className="flex-fill d-flex justify-content-between"
+            style={{ margin: "0 -11px" }}
+          >
             {Array(25)
               .fill()
               .map((_, i) => (
-                <div key={i}>{i}</div>
+                <div key={i} style={{ width: 22, textAlign: "center" }}>
+                  {i}
+                </div>
               ))}
           </div>
           <div style={{ width: 100 }}></div>
