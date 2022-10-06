@@ -1,4 +1,8 @@
 .sequence-timeline-component {
+  // display: flex;
+  height: 50px;
+  position: relative;
+
   .timeline-item {
     height: 100%;
     background-color: var(--primary);
@@ -6,24 +10,27 @@
     color: white;
     display: flex;
     align-items: center;
-    position: relative;
+    box-sizing: border-box;
+    position: absolute;
     text-align: center;
     cursor: grab;
 
     &.resizing {
-      // opacity: 0.7;
-      background-color: #354cd1;
+      opacity: 0.7;
+      // background-color: #354cd1;
       z-index: 100;
     }
 
     &.react-draggable-dragging {
       z-index: 100;
-      background-color: #354cd1;
+      opacity: 0.7;
+      // background-color: #354cd1;
     }
 
     .item-label {
       width: 100%;
       font-size: 12px;
+      user-select: none;
     }
 
     .remove-icon {
@@ -34,25 +41,45 @@
       padding: 10px;
     }
 
-    .sequence-resizer-w,
-    .sequence-resizer-e {
+    &::before,
+    &::after {
+      content: "";
       width: 4px;
       height: 70%;
       border-color: #ffffff;
       opacity: 0.5;
       z-index: 1000;
       position: absolute;
-      cursor: ew-resize;
+      transform: none !important;
+      top: inherit !important;
+      margin: inherit !important;
     }
 
-    .sequence-resizer-w {
+    &::before {
       left: 0;
       border-right: 1px solid;
     }
 
-    .sequence-resizer-e {
+    &::after {
       right: 0;
       border-left: 1px solid;
+    }
+
+    & + .moveable {
+      opacity: 0;
+
+      .moveable-line,
+      .moveable-control {
+        height: 5px;
+        transform-origin: 0 0;
+        top: 2px;
+        cursor: ew-resize;
+      }
+
+      .moveable-direction[data-line-index*="render-line-0"],
+      .moveable-direction[data-line-index*="render-line-2"] {
+        display: none;
+      }
     }
   }
 }

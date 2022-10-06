@@ -55,8 +55,7 @@ const SequencePageSchedule = () => {
         ...(jobs[day] || []),
         {
           id: new Date().getTime(),
-          content: new Date().getTime().toString().slice(-2),
-          width: 100,
+          width: 200,
         },
       ],
     }));
