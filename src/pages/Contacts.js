@@ -24,12 +24,20 @@ const COUNT_ON_PAGE = 100;
 
 const tourSteps = [
   {
-    selector: ".contacts-tour",
-    content: "Страница контактов",
+    selector: "#nav_item_contacts",
+    content: "На этой странице находятся все Ваши контакты. Контактам можно рассылать автоматические и/или мануальные письма, писать в месенджеры и т.д.",
+  },
+  {
+    selector: "#createContactToggler",
+    content: "Добавляйте контакты вручную, или загрузить их из файла CSV",
+  },
+  {
+    selector: "#contactActionsToggler",
+    content: "Добавляйте выделенные галочками контакты в автоматизированные последовательности",
   },
   {
     selector: ".search-tour",
-    content: "Поиск по базе",
+    content: "Ищите контакты по имени, должности, комании или другим параметрам",
   },
 ];
 

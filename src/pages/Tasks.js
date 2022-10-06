@@ -8,6 +8,14 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Row, Card, CardHeader, Col } from "reactstrap";
 import { selectAllTasks } from "store/slices/tasksSlice";
+import InteractiveTour from "../components/InteractiveTour/InteractiveTour";
+
+const tourSteps = [
+  {
+    selector: "#nav_item_tasks",
+    content: "На этой странице вы можете выполнять задачи, чтобы продвигать неавтоматические шаги последовательности",
+  }
+];
 
 const Tasks = () => {
   const dispatch = useDispatch();
@@ -59,6 +67,7 @@ const Tasks = () => {
           </CardHeader>
           <TasksTable />
         </Card>
+        <InteractiveTour steps={tourSteps} name="tasks" />
       </Container>
     </>
   );

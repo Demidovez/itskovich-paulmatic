@@ -11,8 +11,8 @@ export const tasksApi = createApi({
         url: "/search",
         method: "POST",
         body: body
-          ? { ...body, status: "-pending,-archived" }
-          : { status: "-pending,-archived" },
+          ? { ...body, Status: "-pending,-archived", Type: "-auto_email" }
+          : { Status: "-pending,-archived", Type: "-auto_email" },
         params,
         headers: {
           "caller-version-code": 1,

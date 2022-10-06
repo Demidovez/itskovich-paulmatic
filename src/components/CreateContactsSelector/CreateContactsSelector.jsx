@@ -49,7 +49,7 @@ const CreateContactsSelector = ({ onCreate }) => {
         onChange={onInputFile}
       />
       <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-        <DropdownToggle caret color="primary">
+        <DropdownToggle caret color="primary" id="createContactToggler">
           Создать
         </DropdownToggle>
         <DropdownMenu right style={{ opacity: isShow ? 1 : 0 }}>

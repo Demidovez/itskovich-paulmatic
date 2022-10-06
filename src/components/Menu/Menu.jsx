@@ -44,7 +44,7 @@ const Menu = (props) => {
       .filter((route) => route.position !== "user")
       .map((prop, key) => {
         return (
-          <NavItem key={key}>
+          <NavItem key={key} id={"nav_item_"+prop.path.substring(1)}>
             <NavLink
               to={prop.layout + prop.path}
               tag={NavLinkRRD}

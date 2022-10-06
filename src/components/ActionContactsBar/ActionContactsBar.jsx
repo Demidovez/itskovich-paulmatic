@@ -31,6 +31,7 @@ const ActionContactsBar = ({ onDelete, onAddToSequence, disabled }) => {
       >
         <DropdownToggle
           caret
+          id="contactActionsToggler"
           className="btn btn-outline-primary"
           disabled={disabled}
         >
