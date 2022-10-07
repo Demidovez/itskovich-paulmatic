@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { Button, Modal } from "reactstrap";
 import { useLazyAddContactsToSequenceQuery } from "store/api/sequences";
 import { useGetSequencesQuery } from "store/api/sequences";
-import { useLazyGetSequencesQuery } from "store/api/sequences";
+import { BsCheckCircleFill, BsCircle } from "react-icons/bs";
+import "./ModalAddToSequence.scss";
 
 const ModalAddToSequence = ({ isShow, ids, onCancel, clearSelectedIds }) => {
   const [sendToSequence] = useLazyAddContactsToSequenceQuery();
@@ -23,7 +24,7 @@ const ModalAddToSequence = ({ isShow, ids, onCancel, clearSelectedIds }) => {
 
   return (
     <Modal
-      className="modal-dialog-centered"
+      className="modal-dialog-centered modal-add-to-sequence-component"
       isOpen={isShow}
       toggle={() => onCancel()}
     >
@@ -41,14 +42,21 @@ const ModalAddToSequence = ({ isShow, ids, onCancel, clearSelectedIds }) => {
           <span aria-hidden={true}>×</span>
         </button>
       </div>
-      <div className="modal-body d-flex flex-column">
-        <DropdownCustom
-          items={(data || {}).Items || []}
-          fieldOfItem="Name"
-          classNameButton="w-100"
-          defaultValue="Выберите последовательность"
-          onSelect={setSelectedSequence}
-        />
+      <div className="modal-body d-flex flex-column p-0">
+        {((data || {}).Items || []).map((item) => (
+          <div
+            key={item.id}
+            className={`sequence-name d-flex align-items-center`}
+            onClick={() => setSelectedSequence(item)}
+          >
+            {item.Name === selectedSequence.Name ? (
+              <BsCheckCircleFill color="#5e72e4" size="1.2rem" />
+            ) : (
+              <BsCircle color="#b8b8b8" size="1.2rem" />
+            )}
+            <span className="ml-2">{item.Name}</span>
+          </div>
+        ))}
       </div>
       <div className="modal-footer">
         <Button

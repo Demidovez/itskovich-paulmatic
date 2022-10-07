@@ -15,11 +15,7 @@ const SequenceTimelineItem = ({ item, container, onResize }) => {
   }, [item.id]);
 
   return (
-    // <div className="sequence-timeline-item-component">
     <>
-      {/* {lines.map((_, i) => (
-        <div key={i} className="line"></div>
-      ))} */}
       <div
         className={`timeline-item item-${item.i}`}
         style={{ width: item.w * (900 / 48) }}
@@ -39,13 +35,13 @@ const SequenceTimelineItem = ({ item, container, onResize }) => {
         edge={true}
         origin={false}
         pinchable={false}
-        snappable={true}
-        snapThreshold={900 / 48}
-        verticalGuidelines={[
-          ...Array(96)
-            .fill()
-            .map((_, i) => (-48 + i) * (900 / 48)),
-        ]}
+        // snappable={true}
+        // snapThreshold={900 / 48}
+        // verticalGuidelines={[
+        //   ...Array(96)
+        //     .fill()
+        //     .map((_, i) => (-48 + i) * (900 / 48)),
+        // ]}
         useResizeObserver={true}
         onResize={(e) => {
           const beforeTranslate = e.drag.beforeTranslate;
@@ -55,10 +51,14 @@ const SequenceTimelineItem = ({ item, container, onResize }) => {
           const { x: elemX, width: elemWidth } =
             e.target.getBoundingClientRect();
 
-          if (
-            elemX >= parentX + 900 / 48 &&
-            elemX + elemWidth <= parentX + parentWidth - 900 / 48
-          ) {
+          console.log({
+            elemX,
+            elemWidth,
+            parentX,
+            parentWidth,
+          });
+
+          if (elemX >= parentX && elemX + elemWidth <= parentX + parentWidth) {
             e.target.style.width = `${e.width}px`;
             e.target.style.transform = `translate(${beforeTranslate[0]}px, 0)`;
           }

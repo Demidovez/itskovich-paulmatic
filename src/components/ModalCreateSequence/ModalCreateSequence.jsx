@@ -62,7 +62,7 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
 
   return (
     <Modal
-      className="modal-dialog-centered modal-create-sequence-component mt-0 mb-0 flex-column"
+      className="modal-dialog-centered modal-create-sequence-component mt-0 mb-0 flex-column height-fill"
       contentClassName="h-100 flex-fill"
       isOpen={isShow}
       toggle={() => onClose()}
@@ -74,7 +74,7 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
         padding: "2.5rem 0",
       }}
     >
-      <div className="modal-header text-center pb-2">
+      <div className="modal-header text-center pb-0 ">
         <div className="w-100 d-flex align-items-center">
           <h4 className="modal-title d-flex pr-3">
             Создать последовательность
@@ -103,10 +103,8 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
           <span aria-hidden={true}>×</span>
         </button>
       </div>
-      <div className="modal-body d-flex flex-column">
-        {pages[currentIndexPage].component()}
-      </div>
-      <div className="modal-footer pt-0 d-flex justify-content-between">
+      {pages[currentIndexPage].component()}
+      <div className="modal-footer d-flex justify-content-between">
         <div className="d-flex">
           {pages.map((page, index) => (
             <div

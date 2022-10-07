@@ -1,5 +1,9 @@
 const SequencePageSettings = () => {
-  return <div>Здесь будет настройка</div>;
+  return (
+    <div className="modal-body d-flex flex-column overflow-hidden">
+      <div className="">Здесь будет настройка</div>
+    </div>
+  );
 };
 
 export default SequencePageSettings;

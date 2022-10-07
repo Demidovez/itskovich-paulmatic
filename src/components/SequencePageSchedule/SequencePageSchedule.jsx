@@ -69,7 +69,7 @@ const SequencePageSchedule = () => {
   };
 
   return (
-    <div className="sequence-page-schedule-component ml--4 mr--4">
+    <div className="sequence-page-schedule-component modal-body d-flex flex-column overflow-hidden ml--4 mr--4">
       <div className="header-schedule">
         <div className="d-flex">
           <div style={{ width: 200 }}></div>
