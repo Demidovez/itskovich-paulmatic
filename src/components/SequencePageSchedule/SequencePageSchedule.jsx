@@ -55,7 +55,6 @@ const SequencePageSchedule = () => {
         ...(jobs[day] || []),
         {
           id: new Date().getTime(),
-          width: 200,
         },
       ],
     }));
@@ -107,15 +106,13 @@ const SequencePageSchedule = () => {
                 checkedDays.includes(index) ? "active" : ""
               }`}
             >
-              {index === 0 && (
-                <SequenceTimeline
-                  jobs={jobs[day.name]}
-                  setJobs={(editedJobs) =>
-                    setJobs({ ...jobs, [day.name]: editedJobs })
-                  }
-                  onRemoveJob={(id) => removeJob(day.name, id)}
-                />
-              )}
+              <SequenceTimeline
+                jobs={jobs[day.name] || []}
+                setJobs={(editedJobs) =>
+                  setJobs({ ...jobs, [day.name]: editedJobs })
+                }
+                onRemoveJob={(id) => removeJob(day.name, id)}
+              />
             </div>
             <div
               style={{ width: 100 }}

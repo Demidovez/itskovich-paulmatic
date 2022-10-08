@@ -1,44 +1,83 @@
 import "./SequenceTimeline.scss";
-import { AiOutlineDelete } from "react-icons/ai";
-import GridLayout, { WidthProvider } from "react-grid-layout";
 import React, { useEffect, useRef, useState } from "react";
 import SequenceTimelineItem from "components/SequenceTimelineItem/SequenceTimelineItem";
 
-const ReactGridLayout = WidthProvider(GridLayout);
-
-const SequenceTimeline = ({ jobs = [], onRemoveJob, setJobs }) => {
+const SequenceTimeline = ({ jobs, onRemoveJob, setJobs }) => {
   const containerRef = useRef(null);
-  const [lines, setLines] = useState([...Array(48).fill()]);
-  const [layout, setLayout] = useState([
-    {
-      i: "a",
-      label: "00:00 - 04:00",
-      x: 0,
-      y: 0,
-      w: 8,
-      h: 1,
-    },
-    {
-      i: "b",
-      label: "07:00 - 11:00",
-      x: 14,
-      y: 0,
-      w: 8,
-      h: 1,
-    },
-    {
-      i: "c",
-      label: "18:00 - 22:00",
-      x: 32,
-      y: 0,
-      w: 8,
-      h: 1,
-    },
-  ]);
+  const [dirtyAreas, setDirtyAreas] = useState([]);
+  const [layout, setLayout] = useState([]);
 
-  // useEffect(() => {
-  //   setLayout(jobs.map(job => ({i:})))
-  // }, [jobs]);
+  useEffect(() => {
+    // Находим новый item в массиве, которого еще нет в лайауте
+    const newJob = jobs.find((job) => !layout.some((l) => l.id === job.id));
+
+    if (newJob) {
+      setLayout((unSortedlayout) => {
+        // Сортируем лайаут по возрастанию, так как items могли переместиться
+        const layout = [...unSortedlayout].sort((a, b) => a.x - b.x);
+
+        // Находим пустые зоны для потенциального размещения нового item
+        let emptyAreas = layout.map((item, index) => {
+          return [
+            item.x + item.w,
+            // Если проверяемы айтом последний, то края пустой зоны будет краем все таймлайна
+            index + 1 === layout.length ? 48 : layout[index + 1].x,
+          ];
+        });
+
+        // Проверка айтома была по правую сторону. Отдельно нужно проверить левую сторону первого пункта, если она вообще есть
+        if (layout[0] && layout[0].x !== 0) {
+          emptyAreas = [[0, layout[0].x], ...emptyAreas];
+        } else if (layout.length === 0) {
+          // Если айтомов вообще нету, то по факту у нас одна большая пустая зона, ограниченная размерами таймлайна
+          emptyAreas = [[0, 48]];
+        }
+
+        // Если айтомы стоят вплотную друг к другу, то пустая зона между ними имеет размеры, например, [12,12]. Туда мы ничего не вставим. Такие зоны отфильтровываем
+        emptyAreas = emptyAreas.filter((area) => area[0] !== area[1]);
+
+        // Если пустых зон нету, то и лайоут мы не может увеличить
+        if (emptyAreas.length === 0) {
+          return layout;
+        } else {
+          // Находим удобные зоны, начиная от 4х пунктов
+          const foundedEmptyArea =
+            emptyAreas.find((area) => area[1] - area[0] >= 4) ||
+            emptyAreas.find((area) => area[1] - area[0] >= 3) ||
+            emptyAreas.find((area) => area[1] - area[0] >= 2) ||
+            emptyAreas.find((area) => area[1] - area[0] >= 1);
+
+          // Определяем начальную позицию и ее длину, для будущего размещения
+          const [x, w] = [
+            foundedEmptyArea[0],
+            foundedEmptyArea[1] - foundedEmptyArea[0] >= 4
+              ? 4
+              : foundedEmptyArea[1] - foundedEmptyArea[0],
+          ];
+
+          return [
+            ...layout,
+            {
+              ...newJob,
+              x,
+              w,
+              label: `${x < 10 ? "0" + x : x}:00 - ${
+                x + w < 10 ? "0" + (x + w) : x + w
+              }:00`,
+            },
+          ];
+        }
+      });
+    }
+  }, [jobs.length]);
+
+  useEffect(() => {
+    const areas = layout.map((item) => [item.x, item.x + item.w]);
+
+    setDirtyAreas(areas);
+
+    setJobs(layout);
+  }, [JSON.stringify(layout)]);
 
   const correctJobs = (layout) => {
     const correctedLayout = layout.map((job) => ({
@@ -52,42 +91,31 @@ const SequenceTimeline = ({ jobs = [], onRemoveJob, setJobs }) => {
   };
 
   return (
-    <div className="sequence-timeline-component" ref={containerRef}>
-      <ReactGridLayout
-        className="layout"
-        layout={layout}
-        cols={48}
-        rowHeight={50}
-        isResizable={false}
-        // isDraggable={false}
-        onDrag={(l) => correctJobs(l)}
-        isBounded={true}
-        margin={[0, 0]}
-        style={{ position: "relative" }}
-        preventCollision={true}
-      >
-        {/* {lines.map((_, i) => (
-          <div key={i} className="line"></div>
-        ))} */}
-        {layout.map((item) => (
-          <div key={item.i}>
-            <SequenceTimelineItem
-              item={item}
-              container={containerRef}
-              onResize={(width, translate) => {
-                correctJobs(
-                  layout.map((l) =>
-                    l.i === item.i
-                      ? { ...l, w: Math.round(width / (900 / 48)) }
-                      : l
-                  )
-                );
-                console.log(width, Math.round(width / (900 / 48)));
-              }}
-            />
-          </div>
-        ))}
-      </ReactGridLayout>
+    <div
+      className="sequence-timeline-component"
+      ref={containerRef}
+      style={{ width: 900 }}
+    >
+      {layout.map((item) => (
+        <SequenceTimelineItem
+          item={item}
+          key={item.id}
+          container={containerRef}
+          dirtyAreas={dirtyAreas}
+          onRemoveJob={onRemoveJob}
+          onResize={(w, x) => {
+            correctJobs(
+              layout.map((l) => {
+                if (l.id === item.id) {
+                  return { ...l, w, x };
+                } else {
+                  return l;
+                }
+              })
+            );
+          }}
+        />
+      ))}
     </div>
   );
 };
