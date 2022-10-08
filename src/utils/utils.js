@@ -24,3 +24,17 @@ export const convertBase64 = (file) => {
     };
   });
 };
+
+export const generateTimeLabel = (startMinutes, endMinutes) => {
+  let startH = Math.floor(startMinutes / 60);
+  let startMin = startMinutes % 60;
+  startH = startH < 10 ? "0" + startH : startH;
+  startMin = startMin < 10 ? "0" + startMin : startMin;
+
+  let endH = Math.floor(endMinutes / 60);
+  let endMin = endMinutes % 60;
+  endH = endH < 10 ? "0" + endH : endH;
+  endMin = endMin < 10 ? "0" + endMin : endMin;
+
+  return startH + ":" + startMin + " - " + endH + ":" + endMin;
+};

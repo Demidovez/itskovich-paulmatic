@@ -12,6 +12,8 @@
     align-items: center;
     text-align: center;
     cursor: grab;
+    border-left: 1px solid rgb(243, 243, 243);
+    border-right: 1px solid rgb(243, 243, 243);
 
     &.resizing,
     &.dragging {

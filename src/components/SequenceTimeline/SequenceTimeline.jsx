@@ -2,7 +2,7 @@ import "./SequenceTimeline.scss";
 import React, { useEffect, useRef, useState } from "react";
 import SequenceTimelineItem from "components/SequenceTimelineItem/SequenceTimelineItem";
 
-const SequenceTimeline = ({ jobs, onRemoveJob, setJobs }) => {
+const SequenceTimeline = ({ jobs, onRemoveJob, setJobs, onFullTimeline }) => {
   const containerRef = useRef(null);
   const [dirtyAreas, setDirtyAreas] = useState([]);
   const [layout, setLayout] = useState([]);
@@ -40,8 +40,12 @@ const SequenceTimeline = ({ jobs, onRemoveJob, setJobs }) => {
         if (emptyAreas.length === 0) {
           return layout;
         } else {
-          // Находим удобные зоны, начиная от 4х пунктов
+          // Находим удобные зоны, начиная от 8х пунктов, TODO: поправить
           const foundedEmptyArea =
+            emptyAreas.find((area) => area[1] - area[0] >= 8) ||
+            emptyAreas.find((area) => area[1] - area[0] >= 7) ||
+            emptyAreas.find((area) => area[1] - area[0] >= 6) ||
+            emptyAreas.find((area) => area[1] - area[0] >= 5) ||
             emptyAreas.find((area) => area[1] - area[0] >= 4) ||
             emptyAreas.find((area) => area[1] - area[0] >= 3) ||
             emptyAreas.find((area) => area[1] - area[0] >= 2) ||
@@ -50,8 +54,8 @@ const SequenceTimeline = ({ jobs, onRemoveJob, setJobs }) => {
           // Определяем начальную позицию и ее длину, для будущего размещения
           const [x, w] = [
             foundedEmptyArea[0],
-            foundedEmptyArea[1] - foundedEmptyArea[0] >= 4
-              ? 4
+            foundedEmptyArea[1] - foundedEmptyArea[0] >= 8
+              ? 8
               : foundedEmptyArea[1] - foundedEmptyArea[0],
           ];
 
@@ -61,11 +65,18 @@ const SequenceTimeline = ({ jobs, onRemoveJob, setJobs }) => {
               ...newJob,
               x,
               w,
-              label: `${x < 10 ? "0" + x : x}:00 - ${
-                x + w < 10 ? "0" + (x + w) : x + w
-              }:00`,
             },
           ];
+        }
+      });
+    } else {
+      setLayout((layout) => {
+        if (layout.length > jobs.length) {
+          const ids = jobs.map(({ id }) => id);
+
+          return layout.filter((l) => ids.includes(l.id));
+        } else {
+          return layout;
         }
       });
     }
@@ -77,18 +88,12 @@ const SequenceTimeline = ({ jobs, onRemoveJob, setJobs }) => {
     setDirtyAreas(areas);
 
     setJobs(layout);
+
+    const isFull =
+      areas.reduce((acc, area) => (acc += area[1] - area[0]), 0) === 48;
+
+    onFullTimeline(isFull);
   }, [JSON.stringify(layout)]);
-
-  const correctJobs = (layout) => {
-    const correctedLayout = layout.map((job) => ({
-      ...job,
-      label: `${job.x < 10 ? "0" + job.x : job.x}:00 - ${
-        job.x + job.w < 10 ? "0" + (job.x + job.w) : job.x + job.w
-      }:00`,
-    }));
-
-    setLayout(correctedLayout);
-  };
 
   return (
     <div
@@ -104,7 +109,7 @@ const SequenceTimeline = ({ jobs, onRemoveJob, setJobs }) => {
           dirtyAreas={dirtyAreas}
           onRemoveJob={onRemoveJob}
           onResize={(w, x) => {
-            correctJobs(
+            setLayout(
               layout.map((l) => {
                 if (l.id === item.id) {
                   return { ...l, w, x };

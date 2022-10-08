@@ -1,11 +1,23 @@
 import { AiOutlineDelete } from "react-icons/ai";
 import React, { useEffect, useRef, useState } from "react";
 import Moveable from "react-moveable";
-import "./SequenceTimelineItem.scss";
+import { MdMoreHoriz } from "react-icons/md";
+import { generateTimeLabel } from "utils/utils";
+import {
+  PopoverBody,
+  UncontrolledPopover,
+  UncontrolledTooltip,
+} from "reactstrap";
 
 const STEP = 900 / 48;
 
-const SequenceTimelineItem = ({ item, container, onResize, dirtyAreas }) => {
+const SequenceTimelineItem = ({
+  item,
+  container,
+  onResize,
+  dirtyAreas,
+  onRemoveJob,
+}) => {
   const [isDraging, setIsDraging] = useState(false);
   const [size, setSize] = useState({ w: item.w, x: item.x });
   const [bounds, setBounds] = useState({
@@ -45,16 +57,30 @@ const SequenceTimelineItem = ({ item, container, onResize, dirtyAreas }) => {
       <div
         className={`timeline-item item-${item.id} ${
           isDraging ? "dragging" : ""
-        }`}
+        } d-flex justify-content-center`}
         style={{
           width: item.w * STEP,
+          minWidth: STEP,
           transform: `translate(${item.x * STEP}px, 0)`,
         }}
+        id={`popover_${item.id}`}
       >
-        <span className="item-label">{item.label}</span>
-        <span className="remove-icon">
-          <AiOutlineDelete />
-        </span>
+        {size.w <= 6 ? (
+          <MdMoreHoriz size="2rem" />
+        ) : (
+          <>
+            <span className="item-label">
+              {generateTimeLabel(size.x * 30, (size.x + size.w) * 30)}
+            </span>
+            <span
+              className="remove-icon"
+              onClick={() => onRemoveJob(item.id)}
+              style={{ cursor: "pointer" }}
+            >
+              <AiOutlineDelete />
+            </span>
+          </>
+        )}
       </div>
       <Moveable
         target={target}
@@ -129,6 +155,31 @@ const SequenceTimelineItem = ({ item, container, onResize, dirtyAreas }) => {
           onResize(size.w, size.x);
         }}
       />
+      {size.w <= 6 && !isDraging && (
+        <UncontrolledPopover
+          // delay={100}
+          trigger="hover"
+          placement="top"
+          fade
+          target={`popover_${item.id}`}
+          className="popover-timeline"
+        >
+          <PopoverBody>
+            <div className="d-flex align-items-center">
+              <span className="item-label">
+                {generateTimeLabel(size.x * 30, (size.x + size.w) * 30)}
+              </span>
+              <span
+                className="remove-icon ml-2"
+                style={{ marginTop: -3, cursor: "pointer" }}
+                onClick={() => onRemoveJob(item.id)}
+              >
+                <AiOutlineDelete color="red" />
+              </span>
+            </div>
+          </PopoverBody>
+        </UncontrolledPopover>
+      )}
     </>
   );
 };

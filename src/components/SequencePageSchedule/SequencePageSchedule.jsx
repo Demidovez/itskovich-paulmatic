@@ -39,6 +39,7 @@ const days = [
 const SequencePageSchedule = () => {
   const [checkedDays, setCheckedDays] = useState([]);
   const [jobs, setJobs] = useState({});
+  const [isFullTimeline, setIsFullTimeline] = useState({});
 
   const addCheckedDay = (index) => {
     setCheckedDays((checkedDays) =>
@@ -112,6 +113,9 @@ const SequencePageSchedule = () => {
                   setJobs({ ...jobs, [day.name]: editedJobs })
                 }
                 onRemoveJob={(id) => removeJob(day.name, id)}
+                onFullTimeline={(isFull) =>
+                  setIsFullTimeline({ ...isFullTimeline, [day.name]: isFull })
+                }
               />
             </div>
             <div
@@ -124,7 +128,9 @@ const SequencePageSchedule = () => {
                 className="p-1 d-flex align-items-center justify-content-center"
                 style={{ borderRadius: "50%", width: 30, height: 30 }}
                 onClick={() => addJob(day.name)}
-                disabled={!checkedDays.includes(index)}
+                disabled={
+                  !checkedDays.includes(index) || isFullTimeline[day.name]
+                }
               >
                 <GrAdd />
               </Button>
