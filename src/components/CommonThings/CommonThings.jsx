@@ -59,6 +59,27 @@ const CommonThings = () => {
         toast.success(`${notification.Message}`);
       });
     }
+
+    const interval = setInterval(() => {
+      [
+        {
+          Subject: "Последовательность финишировала",
+          Message: "Тестовая 1 финишировала для контакта Дмитрий Попов",
+          Alertness: "gray",
+        },
+        {
+          Subject: "Финишировала",
+          Message: "Металлургия финишировала для контакта",
+          Alertness: "green",
+        },
+      ].map((notification) => {
+        toast.success(`${notification.Message}`);
+      });
+    }, 5000);
+
+    return () => {
+      clearInterval(interval);
+    };
   }, [JSON.stringify(notifications)]);
 
   useEffect(() => {

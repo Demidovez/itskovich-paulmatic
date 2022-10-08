@@ -7,7 +7,7 @@ export const notificationsApi = createApi({
   endpoints: (builder) => ({
     getNotifications: builder.query({
       query: () => ({
-        url: "/",
+        url: "",
         method: "GET",
         headers: {
           "caller-version-code": 1,
