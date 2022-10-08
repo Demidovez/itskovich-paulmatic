@@ -5,7 +5,7 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import { FiEdit3, FiPlusSquare } from "react-icons/fi";
 import "./SequencePageSteps.scss";
 
-const SequencePageSteps = () => {
+const SequencePageSteps = ({ onChange }) => {
   const [steps, setSteps] = useState([
     {
       id: 0,
@@ -45,6 +45,7 @@ const SequencePageSteps = () => {
   ]);
 
   const addStep = () => {
+    onChange();
     setSteps([
       ...steps,
       {

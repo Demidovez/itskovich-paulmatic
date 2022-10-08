@@ -173,6 +173,7 @@ const TaskModalManualEmail = ({
                 Тело письма
               </p>
               <AttachFilesBar
+                disabled={currentTask.Status !== "started"}
                 onFileDeattach={(lastModified) =>
                   setAttachedFiles((files) =>
                     files.filter((file) => file.lastModified !== lastModified)
@@ -187,7 +188,10 @@ const TaskModalManualEmail = ({
               files={attachedFiles}
               content={emailBody}
               disabled={currentTask.Status !== "started"}
-              onChange={(Body) => updateCurrentTask({ ...currentTask, Body })}
+              onChange={(Body) =>
+                currentTask.Status === "started" &&
+                updateCurrentTask({ ...currentTask, Body })
+              }
             />
           </div>
         </div>

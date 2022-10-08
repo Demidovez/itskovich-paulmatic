@@ -11,8 +11,12 @@ import SequencePageSchedule from "components/SequencePageSchedule/SequencePageSc
 import SequencePageLaunch from "components/SequencePageLaunch/SequencePageLaunch";
 import Dropdown from "components/Dropdown/Dropdown";
 import Checkbox from "components/Checkbox/Checkbox";
+import { usePrompt } from "hooks/usePrompt";
 
 const ModalCreateSequence = ({ isShow, onClose }) => {
+  const [isChanged, setIsChanged] = useState(false);
+  usePrompt(isChanged);
+
   const [sequenceName, setSequenceName] = useState(
     "Последовательность №" + (Math.floor(Math.random() * 100000) + 10000)
   );
@@ -23,31 +27,41 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
       name: "steps",
       title: "Шаги",
       isDone: false,
-      component: () => <SequencePageSteps />,
+      component: () => (
+        <SequencePageSteps onChange={() => setIsChanged(true)} />
+      ),
     },
     {
       name: "settings",
       title: "Настройки",
       isDone: false,
-      component: () => <SequencePageSettings />,
+      component: () => (
+        <SequencePageSettings onChange={() => setIsChanged(true)} />
+      ),
     },
     {
       name: "people",
       title: "Люди",
       isDone: false,
-      component: () => <SequencePagePeople />,
+      component: () => (
+        <SequencePagePeople onChange={() => setIsChanged(true)} />
+      ),
     },
     {
       name: "schedule",
       title: "Расписание",
       isDone: false,
-      component: () => <SequencePageSchedule />,
+      component: () => (
+        <SequencePageSchedule onChange={() => setIsChanged(true)} />
+      ),
     },
     {
       name: "launch",
       title: "Запуск",
       isDone: false,
-      component: () => <SequencePageLaunch />,
+      component: () => (
+        <SequencePageLaunch onChange={() => setIsChanged(true)} />
+      ),
     },
   ]);
 
@@ -60,12 +74,38 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
     );
   };
 
+  const editSequenceName = (name) => {
+    setIsChanged(true);
+    setSequenceName(name);
+  };
+
+  const onSubmit = () => {
+    setIsChanged(false);
+    onClose();
+  };
+
+  const handleClose = () => {
+    // isChanged && alert("sdasd");
+    if (isChanged) {
+      var answer = window.confirm("Вы уверены, что хотите закрыть?");
+
+      if (answer) {
+        setIsChanged(false);
+        onClose();
+      } else {
+        //some code
+      }
+    } else {
+      onClose();
+    }
+  };
+
   return (
     <Modal
       className="modal-dialog-centered modal-create-sequence-component mt-0 mb-0 flex-column height-fill"
       contentClassName="h-100 flex-fill"
       isOpen={isShow}
-      toggle={() => onClose()}
+      toggle={() => handleClose()}
       style={{
         maxWidth: "1200px",
         width: "90%",
@@ -82,7 +122,7 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
           <Input
             type="text"
             value={sequenceName}
-            onChange={(e) => setSequenceName(e.target.value)}
+            onChange={(e) => editSequenceName(e.target.value)}
             className="sequence-name-input"
           />
           <Dropdown
@@ -97,7 +137,7 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
           className="close"
           data-dismiss="modal"
           type="button"
-          onClick={() => onClose()}
+          onClick={() => handleClose()}
           style={{ position: "absolute", right: "1.25rem" }}
         >
           <span aria-hidden={true}>×</span>
@@ -127,7 +167,7 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
             outline
             data-dismiss="modal"
             type="button"
-            onClick={() => onClose()}
+            onClick={() => handleClose()}
           >
             Отмена
           </Button>
@@ -136,7 +176,7 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
               Дальше
             </Button>
           ) : (
-            <Button color="primary" type="button" onClick={() => onClose()}>
+            <Button color="primary" type="button" onClick={() => onSubmit()}>
               Создать
             </Button>
           )}

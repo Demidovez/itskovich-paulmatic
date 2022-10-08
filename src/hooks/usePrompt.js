@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 
 export const usePrompt = (
   when,
-  message = "Are you sure you want to quit without saving your changes?"
+  message = "Вы уверены, что хотите завершить работу?"
 ) => {
   const history = useHistory();
 

@@ -36,12 +36,13 @@ const days = [
   },
 ];
 
-const SequencePageSchedule = () => {
+const SequencePageSchedule = ({ onChange }) => {
   const [checkedDays, setCheckedDays] = useState([]);
   const [jobs, setJobs] = useState({});
   const [isFullTimeline, setIsFullTimeline] = useState({});
 
   const addCheckedDay = (index) => {
+    onChange();
     setCheckedDays((checkedDays) =>
       checkedDays.includes(index)
         ? checkedDays.filter((day) => day !== index)
@@ -50,6 +51,7 @@ const SequencePageSchedule = () => {
   };
 
   const addJob = (day) => {
+    onChange();
     setJobs((jobs) => ({
       ...jobs,
       [day]: [
@@ -62,6 +64,7 @@ const SequencePageSchedule = () => {
   };
 
   const removeJob = (day, id) => {
+    onChange();
     setJobs((jobs) => ({
       ...jobs,
       [day]: jobs[day].filter((job) => job.id !== id),

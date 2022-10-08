@@ -3,7 +3,7 @@ import { Badge, Button } from "reactstrap";
 import { TbPaperclip } from "react-icons/tb";
 import "./AttachFilesBar.scss";
 
-const AttachFilesBar = ({ onFileAttached, onFileDeattach }) => {
+const AttachFilesBar = ({ onFileAttached, onFileDeattach, disabled }) => {
   const [files, setFiles] = useState([]);
   const inputFile = useRef(null);
 
@@ -47,6 +47,7 @@ const AttachFilesBar = ({ onFileAttached, onFileDeattach }) => {
           type="button"
           size="sm"
           onClick={onUploadFile}
+          disabled={disabled}
         >
           <TbPaperclip size="1rem" />
           <span className="">Прикрепить</span>

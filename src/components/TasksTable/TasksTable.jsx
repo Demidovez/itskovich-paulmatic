@@ -191,176 +191,178 @@ const TasksTable = () => {
   return (
     <>
       <div className="table-tasks-component h-100 overflow-auto">
-        <Table
-          className="align-items-center table-hover fixed-header"
-          responsive
-          style={{ tableLayout: "auto" }}
-        >
-          <tbody>
-            {((cached || tasksData || {}).Items || []).map((task) => (
-              <tr
-                key={task.id}
-                className="d-flex"
-                onClick={() => openModal(task)}
-              >
-                {fields.map((field) => {
-                  if (field.name === "checkbox") {
-                    return (
-                      <td
-                        className="p-0 pl-4 d-flex align-items-center"
-                        key={field.name}
-                        style={{
-                          ...field.style,
-                        }}
-                      >
-                        <Checkbox
+        {((cached || tasksData || {}).Items || []).length === 0 ? (
+          <p className="message">Не найдено :(</p>
+        ) : (
+          <Table
+            className="align-items-center table-hover fixed-header"
+            responsive
+            style={{ tableLayout: "auto" }}
+          >
+            <tbody>
+              {((cached || tasksData || {}).Items || []).map((task) => (
+                <tr
+                  key={task.id}
+                  className="d-flex"
+                  onClick={() => openModal(task)}
+                >
+                  {fields.map((field) => {
+                    if (field.name === "checkbox") {
+                      return (
+                        <td
+                          className="p-0 pl-4 d-flex align-items-center"
                           key={field.name}
-                          id={task.id}
-                          checked={
-                            selectedIds.includes(task.id) || isSelectedAll
-                          }
-                          onChange={() => onSelectTask(task.id)}
-                        />
-                      </td>
-                    );
-                  } else if (field.name === "StartTime") {
-                    return (
-                      <td
-                        key={field.name}
-                        className="p-3 d-flex align-items-center"
-                        style={{
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          fontSize: 30,
-                          fontWeight: 400,
-                          ...field.style,
-                        }}
-                      >
-                        <TaskStartTime time={task[field.name]} />
-                      </td>
-                    );
-                  } else if (field.name === "Type") {
-                    return (
-                      <td
-                        key={field.name}
-                        className="p-3 d-flex align-items-center"
-                        style={{
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          fontSize: 30,
-                          fontWeight: 100,
-                          ...field.style,
-                        }}
-                      >
-                        <TaskIcon type={task[field.name]} />
-                      </td>
-                    );
-                  } else if (field.name === "Name") {
-                    return (
-                      <td
-                        key={field.name}
-                        className="p-3 pr-3 d-flex align-items-center"
-                        style={{
-                          ...field.style,
-                        }}
-                      >
-                        <div
                           style={{
-                            overflow: "hidden",
-                            whiteSpace: "nowrap",
-                            fontSize: 15,
-                            fontWeight: 400,
-                            textOverflow: "ellipsis",
-                            width: `calc(100%)`,
+                            ...field.style,
                           }}
                         >
-                          <strong className="pr-1 ">{task[field.name]}</strong>{" "}
-                          - {task.Contact.name} - [#{task.id}]
-                        </div>
-                      </td>
-                    );
-                  } else if (field.name === "Description") {
-                    return (
-                      <td
-                        key={field.name}
-                        className="p-3 d-flex align-items-center"
-                        style={{
-                          ...field.style,
-                          width: `calc(${field.style.width})`,
-                        }}
-                      >
-                        <div
+                          <Checkbox
+                            key={field.name}
+                            id={task.id}
+                            checked={
+                              selectedIds.includes(task.id) || isSelectedAll
+                            }
+                            onChange={() => onSelectTask(task.id)}
+                          />
+                        </td>
+                      );
+                    } else if (field.name === "StartTime") {
+                      return (
+                        <td
+                          key={field.name}
+                          className="p-3 d-flex align-items-center"
                           style={{
                             overflow: "hidden",
-                            whiteSpace: "nowrap",
-                            fontSize: 15,
-                            fontWeight: 400,
                             textOverflow: "ellipsis",
-                            width: `calc(100%)`,
+                            fontSize: 30,
+                            fontWeight: 400,
+                            ...field.style,
+                          }}
+                        >
+                          <TaskStartTime time={task[field.name]} />
+                        </td>
+                      );
+                    } else if (field.name === "Type") {
+                      return (
+                        <td
+                          key={field.name}
+                          className="p-3 d-flex align-items-center"
+                          style={{
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            fontSize: 30,
+                            fontWeight: 100,
+                            ...field.style,
+                          }}
+                        >
+                          <TaskIcon type={task[field.name]} />
+                        </td>
+                      );
+                    } else if (field.name === "Name") {
+                      return (
+                        <td
+                          key={field.name}
+                          className="p-3 pr-3 d-flex align-items-center"
+                          style={{
+                            ...field.style,
                           }}
                         >
                           <div
-                            dangerouslySetInnerHTML={{
-                              __html: task[field.name],
+                            style={{
+                              overflow: "hidden",
+                              whiteSpace: "nowrap",
+                              fontSize: 15,
+                              fontWeight: 400,
+                              textOverflow: "ellipsis",
+                              width: `calc(100%)`,
                             }}
-                          />
-                        </div>
-                      </td>
-                    );
-                  } else if (field.name === "Status") {
-                    return (
-                      <td
-                        key={field.name}
-                        className="p-3 d-flex align-items-center"
-                        style={{
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          fontSize: 15,
-                          fontWeight: 400,
-                          ...field.style,
-                        }}
-                      >
-                        <TaskStatus
-                          status={task[field.name]}
-                          dueTime={task.DueTime}
-                          color={task.Alertness}
-                          refetch={fetchTasks}
-                        />
-                      </td>
-                    );
-                  } else {
-                    return (
-                      <td
-                        key={field.name}
-                        className="p-3 d-flex align-items-center"
-                        style={{
-                          ...field.style,
-                          width: `calc(${field.style.width})`,
-                        }}
-                      >
-                        <div
+                          >
+                            <strong className="pr-1 ">
+                              {task[field.name]}
+                            </strong>{" "}
+                            - {task.Contact.name} - [#{task.id}]
+                          </div>
+                        </td>
+                      );
+                    } else if (field.name === "Description") {
+                      return (
+                        <td
+                          key={field.name}
+                          className="p-3 d-flex align-items-center"
                           style={{
-                            overflow: "hidden",
-                            whiteSpace: "nowrap",
-                            fontSize: 15,
-                            fontWeight: 400,
-                            textOverflow: "ellipsis",
-                            width: `calc(100%)`,
+                            ...field.style,
+                            width: `calc(${field.style.width})`,
                           }}
                         >
-                          {task[field.name]}
-                        </div>
-                      </td>
-                    );
-                  }
-                })}
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-
-        {((cached || tasksData || {}).Items || []).length === 0 && (
-          <p className="message">Не найдено :(</p>
+                          <div
+                            style={{
+                              overflow: "hidden",
+                              whiteSpace: "nowrap",
+                              fontSize: 15,
+                              fontWeight: 400,
+                              textOverflow: "ellipsis",
+                              width: `calc(100%)`,
+                            }}
+                          >
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: task[field.name],
+                              }}
+                            />
+                          </div>
+                        </td>
+                      );
+                    } else if (field.name === "Status") {
+                      return (
+                        <td
+                          key={field.name}
+                          className="p-3 d-flex align-items-center"
+                          style={{
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            fontSize: 15,
+                            fontWeight: 400,
+                            ...field.style,
+                          }}
+                        >
+                          <TaskStatus
+                            status={task[field.name]}
+                            dueTime={task.DueTime}
+                            color={task.Alertness}
+                            refetch={fetchTasks}
+                          />
+                        </td>
+                      );
+                    } else {
+                      return (
+                        <td
+                          key={field.name}
+                          className="p-3 d-flex align-items-center"
+                          style={{
+                            ...field.style,
+                            width: `calc(${field.style.width})`,
+                          }}
+                        >
+                          <div
+                            style={{
+                              overflow: "hidden",
+                              whiteSpace: "nowrap",
+                              fontSize: 15,
+                              fontWeight: 400,
+                              textOverflow: "ellipsis",
+                              width: `calc(100%)`,
+                            }}
+                          >
+                            {task[field.name]}
+                          </div>
+                        </td>
+                      );
+                    }
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </Table>
         )}
       </div>
       <CardFooter className="d-flex justify-content-between align-items-center">
