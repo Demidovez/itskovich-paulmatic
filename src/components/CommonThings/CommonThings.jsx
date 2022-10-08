@@ -12,6 +12,7 @@ import { setCurrentUser } from "store/slices/commonSlice";
 import { setStatistickInfo } from "store/slices/commonSlice";
 import { setCommonInfoTasks } from "store/slices/commonSlice";
 import { toast } from "react-toastify";
+import { MdClose } from "react-icons/md";
 
 const CommonThings = () => {
   const dispatch = useDispatch();
@@ -56,30 +57,35 @@ const CommonThings = () => {
   useEffect(() => {
     if (notifications) {
       notifications.forEach((notification) => {
-        toast.success(`${notification.Message}`);
+        toast(
+          () => (
+            <div
+              style={{
+                backgroundColor: notification.Alertness || "var(--primary)",
+                padding: 15,
+              }}
+            >
+              <div
+                style={{
+                  color: "white",
+                  fontSize: 14,
+                  paddingBottom: 10,
+                  fontWeight: 600,
+                }}
+              >
+                {notification.Subject}
+              </div>
+              <div style={{ color: "white", fontSize: 13 }}>
+                {notification.Message}
+              </div>
+            </div>
+          ),
+          {
+            className: "notification",
+          }
+        );
       });
     }
-
-    // const interval = setInterval(() => {
-    //   [
-    //     {
-    //       Subject: "Последовательность финишировала",
-    //       Message: "Тестовая 1 финишировала для контакта Дмитрий Попов",
-    //       Alertness: "gray",
-    //     },
-    //     {
-    //       Subject: "Финишировала",
-    //       Message: "Металлургия финишировала для контакта",
-    //       Alertness: "green",
-    //     },
-    //   ].map((notification) => {
-    //     toast.success(`${notification.Message}`);
-    //   });
-    // }, 5000);
-
-    // return () => {
-    //   clearInterval(interval);
-    // };
   }, [JSON.stringify(notifications)]);
 
   useEffect(() => {
