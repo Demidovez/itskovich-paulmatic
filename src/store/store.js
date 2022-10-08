@@ -11,6 +11,7 @@ import { companiesApi } from "./api/companies";
 import { tasksApi } from "./api/tasks";
 import { commonApi } from "./api/common";
 import { sequencesApi } from "./api/sequences";
+import { notificationsApi } from "./api/notifications";
 
 export const store = configureStore({
   reducer: {
@@ -26,6 +27,7 @@ export const store = configureStore({
     [tasksApi.reducerPath]: tasksApi.reducer,
     [commonApi.reducerPath]: commonApi.reducer,
     [sequencesApi.reducerPath]: sequencesApi.reducer,
+    [notificationsApi.reducerPath]: notificationsApi.reducer,
   },
   middleware: (getDefaultMiddleware) => [
     ...getDefaultMiddleware(),
@@ -35,5 +37,6 @@ export const store = configureStore({
     tasksApi.middleware,
     commonApi.middleware,
     sequencesApi.middleware,
+    notificationsApi.middleware,
   ],
 });

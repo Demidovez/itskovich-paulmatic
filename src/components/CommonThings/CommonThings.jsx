@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLazyGetCommonInfoQuery } from "store/api/common";
+import { useLazyGetNotificationsQuery } from "store/api/notifications";
 import { useLazyGetTasksQuery } from "store/api/tasks";
 import { useSkipTaskMutation } from "store/api/tasks";
 import { useReplyTaskMutation } from "store/api/tasks";
@@ -10,6 +11,7 @@ import { setCommonInfoHtmlTemplates } from "store/slices/commonSlice";
 import { setCurrentUser } from "store/slices/commonSlice";
 import { setStatistickInfo } from "store/slices/commonSlice";
 import { setCommonInfoTasks } from "store/slices/commonSlice";
+import { toast } from "react-toastify";
 
 const CommonThings = () => {
   const dispatch = useDispatch();
@@ -25,6 +27,8 @@ const CommonThings = () => {
   const [, { isSuccess: isRepliedTask }] = useReplyTaskMutation({
     fixedCacheKey: "reply-task",
   });
+  const [getNotifications, { data: notifications }] =
+    useLazyGetNotificationsQuery();
   const [getCommonInfo, { data: commonData }] = useLazyGetCommonInfoQuery();
   const [fetchStatistics, { data: statisticsData }] =
     useLazyGetStatisticsOfTasksQuery();
@@ -37,7 +41,25 @@ const CommonThings = () => {
     if (Account) {
       dispatch(setCurrentUser(JSON.parse(Account)));
     }
+
+    getNotifications();
+
+    const interval = setInterval(() => {
+      console.log("checking of notifications");
+
+      getNotifications();
+    }, 15000);
+
+    return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (notifications) {
+      notifications.forEach((notification) => {
+        toast.success(`${notification.Message}`);
+      });
+    }
+  }, [JSON.stringify(notifications)]);
 
   useEffect(() => {
     if (isExecutedTask || isSkipedTask || isFetchingTasks || isRepliedTask) {
