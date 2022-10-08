@@ -31,6 +31,22 @@ const TaskModalManualEmail = ({
 
   usePrompt(isChanged);
 
+  const handleClose = () => {
+    // isChanged && alert("sdasd");
+    if (isChanged) {
+      var answer = window.confirm("Вы уверены, что хотите закрыть?");
+
+      if (answer) {
+        setIsChanged(false);
+        onClose();
+      } else {
+        //some code
+      }
+    } else {
+      onClose();
+    }
+  };
+
   const [attachedFiles, setAttachedFiles] = useState([]);
 
   const [emailBody, setEmailBody] = useState("");
@@ -65,7 +81,7 @@ const TaskModalManualEmail = ({
         className="modal-dialog-centered mt-0 mb-0 flex-column"
         contentClassName="h-100 flex-fill"
         isOpen={true}
-        toggle={() => onClose(onClose)}
+        toggle={() => handleClose()}
         style={{
           maxWidth: "1000px",
           width: "90%",
@@ -91,7 +107,7 @@ const TaskModalManualEmail = ({
             className="close"
             data-dismiss="modal"
             type="button"
-            onClick={() => onEvent(onClose)}
+            onClick={() => handleClose()}
             style={{ position: "absolute", right: "1.25rem" }}
           >
             <span aria-hidden={true}>×</span>
@@ -207,7 +223,7 @@ const TaskModalManualEmail = ({
                   Ответ получен
                 </Button>
               ) : null}
-              <Button color="primary" onClick={() => onEvent(onClose)}>
+              <Button color="primary" onClick={() => handleClose()}>
                 Закрыть
               </Button>
             </>
