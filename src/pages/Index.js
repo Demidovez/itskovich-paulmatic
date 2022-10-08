@@ -41,7 +41,7 @@ const Index = (props) => {
   return (
     <>
       <Header />
-      <Container className="mt--7" fluid>
+      <Container className="mt-5 mb-6" fluid>
         <Row>
           <Col className="mb-5 mb-xl-0" xl="8">
             <Card className="bg-gradient-default shadow">
@@ -124,7 +124,7 @@ const Index = (props) => {
               <CardHeader className="border-0">
                 <Row className="align-items-center">
                   <div className="col">
-                    <h3 className="mb-0">Page visits</h3>
+                    <h3 className="mb-0">Последовательности</h3>
                   </div>
                   <div className="col text-right">
                     <Button
@@ -141,51 +141,60 @@ const Index = (props) => {
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
-                    <th scope="col">Page name</th>
-                    <th scope="col">Visitors</th>
-                    <th scope="col">Unique users</th>
+                    <th scope="col">Название</th>
+                    <th scope="col">Люди</th>
+                    <th scope="col">Ответивших</th>
                     <th scope="col">Bounce rate</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <th scope="row">/argon/</th>
-                    <td>4,569</td>
-                    <td>340</td>
+                    <th scope="row">Строительные компании</th>
+                    <td>10</td>
+                    <td>7</td>
                     <td>
                       <i className="fas fa-arrow-up text-success mr-3" /> 46,53%
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">/argon/index.html</th>
-                    <td>3,985</td>
-                    <td>319</td>
+                    <th scope="row">Все виды</th>
+                    <td>8</td>
+                    <td>8</td>
                     <td>
                       <i className="fas fa-arrow-down text-warning mr-3" />{" "}
                       46,53%
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">/argon/charts.html</th>
-                    <td>3,513</td>
-                    <td>294</td>
+                    <th scope="row">Туристические агенства</th>
+                    <td>15</td>
+                    <td>12</td>
                     <td>
                       <i className="fas fa-arrow-down text-warning mr-3" />{" "}
                       36,49%
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">/argon/tables.html</th>
-                    <td>2,050</td>
-                    <td>147</td>
+                    <th scope="row">Государственные компании</th>
+                    <td>13</td>
+                    <td>9</td>
                     <td>
                       <i className="fas fa-arrow-up text-success mr-3" /> 50,87%
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">/argon/profile.html</th>
-                    <td>1,795</td>
-                    <td>190</td>
+                    <th scope="row">IT</th>
+                    <td>19</td>
+                    <td>16</td>
+                    <td>
+                      <i className="fas fa-arrow-down text-danger mr-3" />{" "}
+                      46,53%
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Частные фирмы</th>
+                    <td>11</td>
+                    <td>10</td>
                     <td>
                       <i className="fas fa-arrow-down text-danger mr-3" />{" "}
                       46,53%
@@ -200,7 +209,7 @@ const Index = (props) => {
               <CardHeader className="border-0">
                 <Row className="align-items-center">
                   <div className="col">
-                    <h3 className="mb-0">Social traffic</h3>
+                    <h3 className="mb-0">Типы взаимодействий</h3>
                   </div>
                   <div className="col text-right">
                     <Button
@@ -224,7 +233,7 @@ const Index = (props) => {
                 </thead>
                 <tbody>
                   <tr>
-                    <th scope="row">Facebook</th>
+                    <th scope="row">Мануальная почта</th>
                     <td>1,480</td>
                     <td>
                       <div className="d-flex align-items-center">
@@ -240,7 +249,7 @@ const Index = (props) => {
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">Facebook</th>
+                    <th scope="row">Автоматическая почта</th>
                     <td>5,480</td>
                     <td>
                       <div className="d-flex align-items-center">
@@ -256,7 +265,7 @@ const Index = (props) => {
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">Google</th>
+                    <th scope="row">Звонки</th>
                     <td>4,807</td>
                     <td>
                       <div className="d-flex align-items-center">
@@ -268,7 +277,7 @@ const Index = (props) => {
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">Instagram</th>
+                    <th scope="row">Whatsapp</th>
                     <td>3,678</td>
                     <td>
                       <div className="d-flex align-items-center">
@@ -284,7 +293,7 @@ const Index = (props) => {
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">twitter</th>
+                    <th scope="row">Telegram</th>
                     <td>2,645</td>
                     <td>
                       <div className="d-flex align-items-center">
@@ -295,6 +304,18 @@ const Index = (props) => {
                             value="30"
                             barClassName="bg-gradient-warning"
                           />
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">LinkedIn</th>
+                    <td>4,807</td>
+                    <td>
+                      <div className="d-flex align-items-center">
+                        <span className="mr-2">80%</span>
+                        <div>
+                          <Progress max="100" value="80" />
                         </div>
                       </div>
                     </td>
