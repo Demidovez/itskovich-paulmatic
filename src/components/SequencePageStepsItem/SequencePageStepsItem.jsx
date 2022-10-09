@@ -10,8 +10,9 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import { FiEdit3, FiPlusSquare } from "react-icons/fi";
 import { Tooltip } from "reactstrap";
 import SequencePageStepsModalDelay from "components/SequencePageStepsModalDelay/SequencePageStepsModalDelay";
+import moment from "moment";
 
-const SequencePageStepsItem = ({ step, onChange }) => {
+const SequencePageStepsItem = ({ step, onChange, dayOfStart }) => {
   const [isShowModalDelay, setIsShowModalDelay] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const toggleTooltip = () => setTooltipOpen(!tooltipOpen);
@@ -30,7 +31,7 @@ const SequencePageStepsItem = ({ step, onChange }) => {
       </div>
       <div className="w-100 pb-4">
         <span className="step-label">
-          Шаг {step.step + 1} - День {step.day + 1}{" "}
+          Шаг {step.step + 1} - День {step.day.diff(dayOfStart, "days") + 1}
           <MdExpandMore
             size="1.5rem"
             className="mt--1"
@@ -67,12 +68,6 @@ const SequencePageStepsItem = ({ step, onChange }) => {
             <FiPlusSquare size="1.2rem" />
           </div>
         </div>
-        {step.isVariants && (
-          <div className="add-variant d-flex align-items-center pl-3">
-            <MdOutlineNoteAdd />
-            <span>Добавить вариант</span>
-          </div>
-        )}
       </div>
       <SequencePageStepsModalDelay
         isShow={isShowModalDelay}

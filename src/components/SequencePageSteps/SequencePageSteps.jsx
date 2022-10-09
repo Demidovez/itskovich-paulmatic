@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { MdExpandMore, MdMail, MdOutlineNoteAdd, MdAdd } from "react-icons/md";
 import { BsLinkedin } from "react-icons/bs";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import { FiEdit3, FiPlusSquare } from "react-icons/fi";
+import moment from "moment";
 import "./SequencePageSteps.scss";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import SequencePageStepsItem from "components/SequencePageStepsItem/SequencePageStepsItem";
@@ -18,60 +18,102 @@ const reorder = (list, startIndex, endIndex) => {
 const SequencePageSteps = ({ onChange }) => {
   const [steps, setSteps] = useState([
     {
-      id: 0,
+      id: new Date().getTime(),
       type: "linkedin",
       step: 0,
-      day: 0,
+      day: moment().startOf("day").add(0, "days"),
+      level: "",
+      name: "Написать сообщение",
+      description: "Сообщение в LinkedIn профиль",
+      isNoReply: false,
+      delay: {
+        days: 0,
+        hours: 0,
+        minutes: 0,
+      },
+    },
+    {
+      id: new Date().getTime(),
+      type: "mail",
+      step: 1,
+      day: moment().startOf("day").add(1, "days"),
+      level: "",
+      name: "Отправить письмо",
+      description: "Простой просмотр LinkedIn профиля",
+      isNoReply: false,
+      delay: {
+        days: 0,
+        hours: 0,
+        minutes: 0,
+      },
+    },
+    {
+      id: new Date().getTime(),
+      type: "linkedin",
+      step: 2,
+      day: moment().startOf("day").add(2, "days"),
       level: "",
       name: "Просмотр профиля",
       description: "Простой просмотр LinkedIn профиля",
       isNoReply: false,
-      isVariants: false,
-      delay: 0,
+      delay: {
+        days: 0,
+        hours: 0,
+        minutes: 0,
+      },
     },
     {
-      id: 1,
-      type: "carbage",
-      step: 1,
-      day: 0,
-      level: "A",
-      name: "{{Sender.Company}}<>{{Company}}",
-      description:
-        "Привет {{FirstName}}, я обратился к тебе потому что заметил та твоем профиле кое-что",
+      id: new Date().getTime(),
+      type: "linkedin",
+      step: 3,
+      day: moment().startOf("day").add(3, "days"),
+      level: "",
+      name: "Просмотр профиля",
+      description: "Простой просмотр LinkedIn профиля",
       isNoReply: false,
-      isVariants: true,
-      delay: 0,
-    },
-    {
-      id: 2,
-      type: "mail",
-      step: 2,
-      day: 4,
-      level: "A",
-      name: "",
-      description:
-        "Привет {{FirstName}}, причина почему {{Company}} в моем поле зрения это что {{Sender.Company}}",
-      isNoReply: true,
-      isVariants: true,
-      delay: 0,
+      delay: {
+        days: 0,
+        hours: 0,
+        minutes: 0,
+      },
     },
   ]);
 
   const addStep = () => {
     onChange();
+    const lastStep = steps.length
+      ? steps[steps.length - 1]
+      : {
+          day: moment().startOf("day"),
+          step: 0,
+          delay: {
+            days: 0,
+            hours: 0,
+            minutes: 0,
+          },
+        };
+
     setSteps([
       ...steps,
       {
-        id: steps.length,
+        id: new Date().getTime(),
         type: "linkedin",
-        step: steps.length,
-        day: steps[steps.length - 1].day + steps[steps.length - 1].delay,
+        step: lastStep.step + 1,
+        day: Object.values(lastStep.delay).some((val) => val > 0)
+          ? moment(lastStep.day)
+              .add(lastStep.delay.days, "days")
+              .add(lastStep.delay.hours, "hours")
+              .add(lastStep.delay.minutes, "minutes")
+          : moment(lastStep.day).add(1, "days"),
         level: "",
         name: "Просмотр профиля",
         description: "Простой просмотр LinkedIn профиля",
         isNoReply: false,
-        isVariants: false,
-        delay: 0,
+        delay: {
+          days: 0,
+          hours: 0,
+          minutes: 0,
+        },
       },
     ]);
   };
@@ -87,9 +129,29 @@ const SequencePageSteps = ({ onChange }) => {
   };
 
   const updateStep = (editedStep) => {
-    setSteps(
-      steps.map((step) => (step.id === updateStep.id ? editedStep : step))
+    const editedSteps = steps.map((step) =>
+      step.id === editedStep.id ? editedStep : step
     );
+
+    let currentDay = editedSteps[0].day;
+
+    const updatedSteps = editedSteps.map((step, i) => {
+      if (i === 0) return step;
+
+      currentDay = Object.values(step.delay).some((val) => val > 0)
+        ? moment(currentDay)
+            .add(step.delay.days, "days")
+            .add(step.delay.hours, "hours")
+            .add(step.delay.minutes, "minutes")
+        : moment(currentDay).add(1, "days");
+
+      return {
+        ...step,
+        day: currentDay,
+      };
+    });
+
+    setSteps(updatedSteps);
   };
 
   return (
@@ -100,43 +162,48 @@ const SequencePageSteps = ({ onChange }) => {
         </div>
       </div>
       <div className="overflow-hidden h-100 dragcontext">
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="droppable">
-            {(provided) => (
-              <div ref={provided.innerRef} className="h-100">
-                <div className="overflow-auto h-100 pl-3 pr-3">
-                  {steps.map((step, index) => (
-                    <Draggable
-                      key={step.id}
-                      draggableId={"" + step.id}
-                      index={index}
-                    >
-                      {(provided, snapshot) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={{
-                            ...provided.draggableProps.style,
-                          }}
-                          className={`pt-2 pl-2 pr-2 pb-2 draggable-step ${
-                            snapshot.isDragging ? "dragging" : ""
-                          }`}
-                        >
-                          <SequencePageStepsItem
-                            step={step}
-                            onChange={updateStep}
-                          />
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
+        {steps.length > 0 ? (
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="droppable">
+              {(provided) => (
+                <div ref={provided.innerRef} className="h-100">
+                  <div className="overflow-auto h-100 pl-3 pr-3">
+                    {steps.map((step, index) => (
+                      <Draggable
+                        key={step.id}
+                        draggableId={"" + step.id}
+                        index={index}
+                      >
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={{
+                              ...provided.draggableProps.style,
+                            }}
+                            className={`pt-2 pl-2 pr-2 pb-2 draggable-step ${
+                              snapshot.isDragging ? "dragging" : ""
+                            }`}
+                          >
+                            <SequencePageStepsItem
+                              step={step}
+                              onChange={updateStep}
+                              dayOfStart={steps[0].day}
+                            />
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
                 </div>
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+              )}
+            </Droppable>
+          </DragDropContext>
+        ) : (
+          "Добавить шаг"
+        )}
       </div>
     </div>
   );

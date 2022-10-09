@@ -45,8 +45,11 @@ export const sequencesApi = createApi({
         if ((response.result || {}).error) {
           toast.error(`Ошибка!`);
         } else {
+          // toast.success(
+          //   `${arg.ids.length} контакта(ов) добавлено в «${arg.sequence.Name}»!`
+          // );
           toast.success(
-            `${arg.ids.length} контакта(ов) добавлено в «${arg.sequence.Name}»!`
+            `Перейдите на страницу «Задачи» для коммуникации с клиентом`
           );
         }
       },

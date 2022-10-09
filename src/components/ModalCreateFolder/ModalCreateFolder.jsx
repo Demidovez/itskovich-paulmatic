@@ -1,8 +1,4 @@
 import { Button, Input, Modal } from "reactstrap";
-import { MdEmail, MdDateRange, MdGppGood } from "react-icons/md";
-import moment from "moment";
-import AvatarSymbols from "components/AvatarSymbols/AvatarSymbols";
-import EditorEmail from "components/EditorEmail/EditorEmail";
 import { useEffect, useState } from "react";
 
 const ModalCreateFolder = ({ isShow, onClose, onSubmit }) => {
