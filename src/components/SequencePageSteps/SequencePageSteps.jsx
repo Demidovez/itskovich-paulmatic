@@ -33,7 +33,7 @@ const SequencePageSteps = ({ onChange }) => {
       },
     },
     {
-      id: new Date().getTime(),
+      id: new Date().getTime() + 1,
       type: "mail",
       step: 1,
       day: moment().startOf("day").add(1, "days"),
@@ -48,7 +48,7 @@ const SequencePageSteps = ({ onChange }) => {
       },
     },
     {
-      id: new Date().getTime(),
+      id: new Date().getTime() + 2,
       type: "linkedin",
       step: 2,
       day: moment().startOf("day").add(2, "days"),
@@ -63,7 +63,7 @@ const SequencePageSteps = ({ onChange }) => {
       },
     },
     {
-      id: new Date().getTime(),
+      id: new Date().getTime() + 3,
       type: "linkedin",
       step: 3,
       day: moment().startOf("day").add(3, "days"),
@@ -125,17 +125,13 @@ const SequencePageSteps = ({ onChange }) => {
 
     const items = reorder(steps, result.source.index, result.destination.index);
 
-    setSteps(items.map((item, i) => ({ ...item, step: i })));
+    updateSteps(items.map((item, i) => ({ ...item, step: i })));
   };
 
-  const updateStep = (editedStep) => {
-    const editedSteps = steps.map((step) =>
-      step.id === editedStep.id ? editedStep : step
-    );
+  const updateSteps = (steps) => {
+    let currentDay = steps[0].day;
 
-    let currentDay = editedSteps[0].day;
-
-    const updatedSteps = editedSteps.map((step, i) => {
+    const updatedSteps = steps.map((step, i) => {
       if (i === 0) return step;
 
       currentDay = Object.values(step.delay).some((val) => val > 0)
@@ -152,6 +148,14 @@ const SequencePageSteps = ({ onChange }) => {
     });
 
     setSteps(updatedSteps);
+  };
+
+  const updateStep = (editedStep) => {
+    const editedSteps = steps.map((step) =>
+      step.id === editedStep.id ? editedStep : step
+    );
+
+    updateSteps(editedSteps);
   };
 
   return (
