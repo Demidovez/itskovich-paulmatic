@@ -97,7 +97,7 @@ const CommonThings = () => {
   useEffect(() => {
     if (commonData) {
       dispatch(setCommonInfoTasks(commonData.Tasks));
-      dispatch(setCommonInfoHtmlTemplates(commonData.HtmlTemplates));
+      dispatch(setCommonInfoHtmlTemplates(commonData.Templates));
       commonData.Account && saveUserToLocalStorage(commonData.Account);
       if (commonData.Account) {
         dispatch(setCurrentUser(commonData.Account));

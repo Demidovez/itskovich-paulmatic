@@ -3,7 +3,7 @@ import { MdEmail, MdDateRange, MdGppGood } from "react-icons/md";
 import moment from "moment";
 import AvatarSymbols from "components/AvatarSymbols/AvatarSymbols";
 import EditorEmail from "components/EditorEmail/EditorEmail";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { usePrompt } from "hooks/usePrompt";
 import AttachFilesBar from "components/AttachFilesBar/AttachFilesBar";
 import { useSelector } from "react-redux";
@@ -25,14 +25,18 @@ const TaskModalManualEmail = ({
   };
 
   const onEvent = (callback, data) => {
-    callback(data);
+    if (data.task) {
+      callback(data.task, data.toastMessage);
+    } else {
+      callback(data);
+    }
+
     setIsChanged(false);
   };
 
   usePrompt(isChanged);
 
   const handleClose = () => {
-    // isChanged && alert("sdasd");
     if (isChanged) {
       var answer = window.confirm("Вы уверены, что хотите закрыть?");
 
@@ -50,7 +54,7 @@ const TaskModalManualEmail = ({
   const [attachedFiles, setAttachedFiles] = useState([]);
 
   const [emailBody, setEmailBody] = useState("");
-  const emailTemplates = useSelector((state) => state.common.HtmlTemplates);
+  const emailTemplates = useSelector((state) => state.common.Templates.Cache);
   const account = useSelector((state) => state.common.Account);
 
   useEffect(() => {
@@ -74,6 +78,26 @@ const TaskModalManualEmail = ({
 
     setEmailBody(injectedEmailBody);
   }, [task.Body, emailTemplates, account]);
+
+  const onKeyDown = useCallback(
+    (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.which === 13) {
+        onEvent(onExecute, {
+          task: currentTask,
+          toastMessage: "Письмо отправлено!",
+        });
+      }
+    },
+    [onExecute, JSON.stringify(currentTask)]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [onKeyDown]);
 
   return (
     <>
@@ -241,7 +265,12 @@ const TaskModalManualEmail = ({
               <Button
                 color="primary"
                 type="button"
-                onClick={() => onEvent(onExecute, currentTask)}
+                onClick={() =>
+                  onEvent(onExecute, {
+                    task: currentTask,
+                    toastMessage: "Письмо отправлено!",
+                  })
+                }
               >
                 Отправить
               </Button>

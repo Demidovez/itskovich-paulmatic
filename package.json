@@ -48,6 +48,7 @@
     "patch-package": "^6.4.7",
     "pupa": "^3.1.0",
     "react": "18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-chartjs-2": "2.11.1",
     "react-copy-to-clipboard": "5.1.0",
     "react-datetime": "3.1.1",

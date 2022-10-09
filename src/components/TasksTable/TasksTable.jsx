@@ -23,6 +23,7 @@ import { skipCachedTask } from "store/slices/tasksSlice";
 import { setTasksRequestStatus } from "store/slices/tasksSlice";
 import { useReplyTaskMutation } from "store/api/tasks";
 import { replyCachedTask } from "store/slices/tasksSlice";
+import { toast } from "react-toastify";
 
 moment.locale("ru");
 
@@ -145,12 +146,16 @@ const TasksTable = () => {
     setTaskToModal(null);
   };
 
-  const onExecuteTask = (task) => {
+  const onExecuteTask = (task, toastMessage) => {
     if (task) {
       executeTask(task);
       dispatch(
         executeCachedTask({ ...task, Status: "completed", Alertness: "gray" })
       );
+    }
+
+    if (toastMessage) {
+      toast.success(toastMessage);
     }
 
     setTimeout(fetchTasks, 3000);

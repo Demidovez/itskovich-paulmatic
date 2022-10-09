@@ -13,7 +13,14 @@ const initialState = {
   },
   Sequences: {},
   Account: {},
-  HtmlTemplates: {},
+  Templates: {
+    Cache: {},
+    Compiler: {
+      Variables: [],
+      StubContact: {},
+    },
+    Marketplace: {},
+  },
 };
 
 export const commonSlice = createSlice({
@@ -33,7 +40,7 @@ export const commonSlice = createSlice({
       state.Account = action.payload;
     },
     setCommonInfoHtmlTemplates: (state, action) => {
-      state.HtmlTemplates = action.payload;
+      state.Templates = action.payload;
     },
   },
 });

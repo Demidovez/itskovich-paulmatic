@@ -4,6 +4,16 @@ import { BsLinkedin } from "react-icons/bs";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { FiEdit3, FiPlusSquare } from "react-icons/fi";
 import "./SequencePageSteps.scss";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import SequencePageStepsItem from "components/SequencePageStepsItem/SequencePageStepsItem";
+
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};
 
 const SequencePageSteps = ({ onChange }) => {
   const [steps, setSteps] = useState([
@@ -17,6 +27,7 @@ const SequencePageSteps = ({ onChange }) => {
       description: "Простой просмотр LinkedIn профиля",
       isNoReply: false,
       isVariants: false,
+      delay: 0,
     },
     {
       id: 1,
@@ -29,6 +40,7 @@ const SequencePageSteps = ({ onChange }) => {
         "Привет {{FirstName}}, я обратился к тебе потому что заметил та твоем профиле кое-что",
       isNoReply: false,
       isVariants: true,
+      delay: 0,
     },
     {
       id: 2,
@@ -41,6 +53,7 @@ const SequencePageSteps = ({ onChange }) => {
         "Привет {{FirstName}}, причина почему {{Company}} в моем поле зрения это что {{Sender.Company}}",
       isNoReply: true,
       isVariants: true,
+      delay: 0,
     },
   ]);
 
@@ -49,17 +62,34 @@ const SequencePageSteps = ({ onChange }) => {
     setSteps([
       ...steps,
       {
-        id: 0,
+        id: steps.length,
         type: "linkedin",
-        step: 0,
-        day: 0,
+        step: steps.length,
+        day: steps[steps.length - 1].day + steps[steps.length - 1].delay,
         level: "",
         name: "Просмотр профиля",
         description: "Простой просмотр LinkedIn профиля",
         isNoReply: false,
         isVariants: false,
+        delay: 0,
       },
     ]);
+  };
+
+  const onDragEnd = (result) => {
+    if (!result.destination) {
+      return;
+    }
+
+    const items = reorder(steps, result.source.index, result.destination.index);
+
+    setSteps(items.map((item, i) => ({ ...item, step: i })));
+  };
+
+  const updateStep = (editedStep) => {
+    setSteps(
+      steps.map((step) => (step.id === updateStep.id ? editedStep : step))
+    );
   };
 
   return (
@@ -69,55 +99,44 @@ const SequencePageSteps = ({ onChange }) => {
           <MdAdd size="1.6rem" />
         </div>
       </div>
-      <div className="p-4 overflow-auto">
-        {steps.map((step) => (
-          <div key={step.id} className="d-flex sequence-step">
-            <div className="d-flex flex-column pl-0 pr-3 align-items-center">
-              <div className="mb-2">
-                {step.type === "linkedin" ? (
-                  <BsLinkedin color="#037794" size="1.5rem" />
-                ) : null}
-                {step.type === "carbage" ? (
-                  <RiDeleteBin5Line size="1.5rem" />
-                ) : null}
-                {step.type === "mail" ? (
-                  <MdMail color="brown" size="1.5rem" />
-                ) : null}
-              </div>
-              <div className="flex-fill vertical-line" />
-            </div>
-            <div className="w-100 pb-4">
-              <span className="step-label">
-                Шаг {step.step + 1} - День {step.day + 1}{" "}
-                <MdExpandMore size="1.5rem" className="mt--1" />
-              </span>
-              <div className="row sequence-desc  ml-0 mr-0 mt-2 mb-2">
-                <div className="col col-4 d-flex">
-                  <div style={{ width: 50 }}>{step.level}</div>
-                  <div style={{ fontWeight: 600, fontSize: 14 }}>
-                    {step.name}
-                  </div>
-                </div>
-                <div
-                  className="col col-7 description"
-                  style={{ opacity: 0.7, fontSize: 14 }}
-                >
-                  {step.description}
-                </div>
-                <div className="col col-1 sequence-desc-controls d-flex">
-                  <FiEdit3 size="1.2rem" />
-                  <FiPlusSquare size="1.2rem" />
+      <div className="overflow-hidden h-100 dragcontext">
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="droppable">
+            {(provided) => (
+              <div ref={provided.innerRef} className="h-100">
+                <div className="overflow-auto h-100 pl-3 pr-3">
+                  {steps.map((step, index) => (
+                    <Draggable
+                      key={step.id}
+                      draggableId={"" + step.id}
+                      index={index}
+                    >
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={{
+                            ...provided.draggableProps.style,
+                          }}
+                          className={`pt-2 pl-2 pr-2 pb-2 draggable-step ${
+                            snapshot.isDragging ? "dragging" : ""
+                          }`}
+                        >
+                          <SequencePageStepsItem
+                            step={step}
+                            onChange={updateStep}
+                          />
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
                 </div>
               </div>
-              {step.isVariants && (
-                <div className="add-variant d-flex align-items-center pl-3">
-                  <MdOutlineNoteAdd />
-                  <span>Добавить вариант</span>
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
+            )}
+          </Droppable>
+        </DragDropContext>
       </div>
     </div>
   );
