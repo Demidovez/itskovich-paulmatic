@@ -5,8 +5,12 @@
     width: 40%;
     min-width: 400px;
   }
+
+  .modal-content {
+    overflow: auto;
+  }
   .page-sequence-item {
-    min-width: 160px;
+    // min-width: 160px;
     cursor: pointer;
 
     .page-sequence-icon {

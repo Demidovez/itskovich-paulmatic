@@ -8,6 +8,7 @@ import {
   UncontrolledPopover,
   UncontrolledTooltip,
 } from "reactstrap";
+import SequencePageScheduleModalTime from "components/SequencePageScheduleModalTime/SequencePageScheduleModalTime";
 
 const STEP = 900 / 48;
 
@@ -17,7 +18,9 @@ const SequenceTimelineItem = ({
   onResize,
   dirtyAreas,
   onRemoveJob,
+  disabled,
 }) => {
+  const [isShowModalTime, setIsShowModalTime] = useState(false);
   const [isDraging, setIsDraging] = useState(false);
   const [size, setSize] = useState({ w: item.w, x: item.x });
   const [bounds, setBounds] = useState({
@@ -52,29 +55,41 @@ const SequenceTimelineItem = ({
     setSize({ w: item.w, x: item.x });
   }, [JSON.stringify(dirtyAreas), item.x, item.w]);
 
+  const onDoubleClick = (e) => {
+    if (e.detail === 2) {
+      setIsShowModalTime(true);
+    }
+  };
+
   return (
     <>
       <div
         className={`timeline-item item-${item.id} ${
           isDraging ? "dragging" : ""
-        } d-flex justify-content-center`}
+        } d-flex justify-content-center ${size.w <= 7 ? "small-size" : ""}`}
         style={{
           width: item.w * STEP,
           minWidth: STEP,
           transform: `translate(${item.x * STEP}px, 0)`,
         }}
         id={`popover_${item.id}`}
+        onClick={onDoubleClick}
       >
-        {size.w <= 6 ? (
+        {size.w <= 4 ? (
           <MdMoreHoriz size="2rem" />
         ) : (
           <>
-            <span className="item-label">
-              {generateTimeLabel(size.x * 30, (size.x + size.w) * 30)}
+            <span className={`item-label ${size.w <= 5 ? "short" : ""}`}>
+              {size.w <= 5
+                ? generateTimeLabel(
+                    size.x * 30,
+                    (size.x + size.w) * 30
+                  ).replace(" - ", " ")
+                : generateTimeLabel(size.x * 30, (size.x + size.w) * 30)}
             </span>
             <span
               className="remove-icon"
-              onClick={() => onRemoveJob(item.id)}
+              onClick={() => !disabled && onRemoveJob(item.id)}
               style={{ cursor: "pointer" }}
             >
               <AiOutlineDelete />
@@ -84,8 +99,8 @@ const SequenceTimelineItem = ({
       </div>
       <Moveable
         target={target}
-        resizable={true}
-        draggable={true}
+        resizable={!disabled}
+        draggable={!disabled}
         className="moveable"
         renderDirections={null}
         edge={true}
@@ -155,7 +170,7 @@ const SequenceTimelineItem = ({
           onResize(size.w, size.x);
         }}
       />
-      {size.w <= 6 && !isDraging && (
+      {size.w <= 4 && !isDraging && (
         <UncontrolledPopover
           // delay={100}
           trigger="hover"
@@ -180,6 +195,17 @@ const SequenceTimelineItem = ({
           </PopoverBody>
         </UncontrolledPopover>
       )}
+      <SequencePageScheduleModalTime
+        isShow={isShowModalTime}
+        onClose={() => setIsShowModalTime(false)}
+        onSubmit={(period) =>
+          false && setSize({ x: period.start, w: period.end })
+        }
+        value={{
+          start: size.x * 30,
+          end: (size.x + size.w) * 30,
+        }}
+      />
     </>
   );
 };

@@ -88,7 +88,7 @@ const ModalContactForm = ({ contact, isShow, onSave, onRemove, onClose }) => {
           />
           <Row>
             <div className="col">
-              {contact ? (
+              {contact && onRemove ? (
                 <Button
                   color="danger"
                   className="w-100"

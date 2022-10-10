@@ -1,11 +1,11 @@
 import HiddenTableCell from "components/HiddenTableCell/HiddenTableCell";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Label, Table } from "reactstrap";
 import { addContactId } from "store/slices/contactsSlice";
 import "./TableContacts.scss";
 
-const fields = [
+const DEFAULT_FIELDS = [
   {
     label: "",
     name: "checkbox",
@@ -71,12 +71,39 @@ const fields = [
   },
 ];
 
-const TableContacts = ({ onSelect, data = { Items: [] }, selectedIds }) => {
+const TableContacts = ({
+  onSelect,
+  data = { Items: [] },
+  selectedIds,
+  columns,
+}) => {
+  const [fields, setFields] = useState([]);
+
   const dispatch = useDispatch();
 
   const onSelectContact = (id) => {
     dispatch(addContactId(id));
   };
+
+  useEffect(() => {
+    if (columns) {
+      setFields(
+        DEFAULT_FIELDS.map((field) => {
+          const userField = columns.find(
+            (column) => column.name === field.name
+          );
+
+          if (userField) {
+            return userField;
+          } else {
+            return field;
+          }
+        }).filter((field) => field.isDisabled !== true)
+      );
+    } else {
+      setFields(DEFAULT_FIELDS.filter((field) => field.isDisabled !== true));
+    }
+  }, [columns]);
 
   return (
     <div

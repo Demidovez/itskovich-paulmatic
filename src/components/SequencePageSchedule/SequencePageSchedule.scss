@@ -15,9 +15,10 @@
       min-height: 50px;
       overflow: hidden;
       flex: 1;
+      opacity: 0.6;
 
       &.active {
-        background: rgb(228, 228, 228);
+        opacity: 1;
       }
     }
   }

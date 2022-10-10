@@ -2,7 +2,13 @@ import "./SequenceTimeline.scss";
 import React, { useEffect, useRef, useState } from "react";
 import SequenceTimelineItem from "components/SequenceTimelineItem/SequenceTimelineItem";
 
-const SequenceTimeline = ({ jobs, onRemoveJob, setJobs, onFullTimeline }) => {
+const SequenceTimeline = ({
+  jobs,
+  onRemoveJob,
+  setJobs,
+  onFullTimeline,
+  disabled,
+}) => {
   const containerRef = useRef(null);
   const [dirtyAreas, setDirtyAreas] = useState([]);
   const [layout, setLayout] = useState([]);
@@ -20,7 +26,7 @@ const SequenceTimeline = ({ jobs, onRemoveJob, setJobs, onFullTimeline }) => {
         let emptyAreas = layout.map((item, index) => {
           return [
             item.x + item.w,
-            // Если проверяемы айтом последний, то края пустой зоны будет краем все таймлайна
+            // Если проверяемый айтом последний, то края пустой зоны будет краем все таймлайна
             index + 1 === layout.length ? 48 : layout[index + 1].x,
           ];
         });
@@ -40,24 +46,40 @@ const SequenceTimeline = ({ jobs, onRemoveJob, setJobs, onFullTimeline }) => {
         if (emptyAreas.length === 0) {
           return layout;
         } else {
-          // Находим удобные зоны, начиная от 8х пунктов, TODO: поправить
-          const foundedEmptyArea =
-            emptyAreas.find((area) => area[1] - area[0] >= 8) ||
-            emptyAreas.find((area) => area[1] - area[0] >= 7) ||
-            emptyAreas.find((area) => area[1] - area[0] >= 6) ||
-            emptyAreas.find((area) => area[1] - area[0] >= 5) ||
-            emptyAreas.find((area) => area[1] - area[0] >= 4) ||
-            emptyAreas.find((area) => area[1] - area[0] >= 3) ||
-            emptyAreas.find((area) => area[1] - area[0] >= 2) ||
-            emptyAreas.find((area) => area[1] - area[0] >= 1);
-
-          // Определяем начальную позицию и ее длину, для будущего размещения
-          const [x, w] = [
-            foundedEmptyArea[0],
-            foundedEmptyArea[1] - foundedEmptyArea[0] >= 8
-              ? 8
-              : foundedEmptyArea[1] - foundedEmptyArea[0],
+          const recommendPositions = [
+            ...Array(48 - 32)
+              .fill()
+              .map((_, i) => 32 + i),
+            ...Array(32)
+              .fill()
+              .map((_, i) => 31 - i),
           ];
+
+          let foundedEmptyArea;
+          let x;
+          let w;
+
+          for (let i = 6; i > 0 && !foundedEmptyArea; i--) {
+            const isFoundPosition = recommendPositions.some((goodX) => {
+              foundedEmptyArea = emptyAreas.find(
+                (area) =>
+                  goodX >= area[0] &&
+                  goodX + i <= area[1] &&
+                  area[1] - area[0] >= i
+              );
+
+              if (foundedEmptyArea) {
+                x = goodX;
+                w = i;
+              }
+
+              return !!foundedEmptyArea;
+            });
+
+            if (isFoundPosition) {
+              break;
+            }
+          }
 
           return [
             ...layout,
@@ -103,6 +125,7 @@ const SequenceTimeline = ({ jobs, onRemoveJob, setJobs, onFullTimeline }) => {
     >
       {layout.map((item) => (
         <SequenceTimelineItem
+          disabled={disabled}
           item={item}
           key={item.id}
           container={containerRef}

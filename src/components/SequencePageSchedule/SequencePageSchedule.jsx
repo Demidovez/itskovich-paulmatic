@@ -50,7 +50,7 @@ const SequencePageSchedule = ({ onChange }) => {
     );
   };
 
-  const addJob = (day) => {
+  const addJob = (day, indexTimeline) => {
     onChange();
     setJobs((jobs) => ({
       ...jobs,
@@ -61,6 +61,10 @@ const SequencePageSchedule = ({ onChange }) => {
         },
       ],
     }));
+
+    if (!checkedDays.includes(indexTimeline)) {
+      setCheckedDays([...checkedDays, indexTimeline]);
+    }
   };
 
   const removeJob = (day, id) => {
@@ -72,18 +76,18 @@ const SequencePageSchedule = ({ onChange }) => {
   };
 
   return (
-    <div className="sequence-page-schedule-component modal-body d-flex flex-column overflow-hidden ml--4 mr--4">
+    <div className="sequence-page-schedule-component modal-body d-flex flex-column overflow-auto ml--0 mr--0 pl-0 pr-0">
       <div className="header-schedule">
         <div className="d-flex">
-          <div style={{ width: 200 }}></div>
+          <div style={{ width: 180 }}></div>
           <div
             className="flex-fill d-flex justify-content-between"
-            style={{ margin: "0 -11px" }}
+            style={{ width: 924, maxWidth: 924, margin: "0 -12px" }}
           >
             {Array(25)
               .fill()
               .map((_, i) => (
-                <div key={i} style={{ width: 22, textAlign: "center" }}>
+                <div key={i} style={{ width: 24, textAlign: "center" }}>
                   {i}
                 </div>
               ))}
@@ -91,10 +95,10 @@ const SequencePageSchedule = ({ onChange }) => {
           <div style={{ width: 100 }}></div>
         </div>
       </div>
-      <div className="body-schedule">
+      <div className="body-schedule overflow1-auto">
         {days.map((day, index) => (
           <div className="row-schedule" key={day.name}>
-            <div style={{ width: 200 }} onClick={() => addCheckedDay(index)}>
+            <div style={{ width: 180 }} onClick={() => addCheckedDay(index)}>
               <Checkbox
                 id={index}
                 checked={checkedDays.includes(index)}
@@ -106,11 +110,13 @@ const SequencePageSchedule = ({ onChange }) => {
               />
             </div>
             <div
-              className={`d1-flex justify1-content-between timeline ${
+              className={`timeline  ${
                 checkedDays.includes(index) ? "active" : ""
               }`}
+              style={{ width: 900, maxWidth: 900, minWidth: 900 }}
             >
               <SequenceTimeline
+                disabled={!checkedDays.includes(index)}
                 jobs={jobs[day.name] || []}
                 setJobs={(editedJobs) =>
                   setJobs({ ...jobs, [day.name]: editedJobs })
@@ -130,10 +136,8 @@ const SequencePageSchedule = ({ onChange }) => {
                 type="button"
                 className="p-1 d-flex align-items-center justify-content-center"
                 style={{ borderRadius: "50%", width: 30, height: 30 }}
-                onClick={() => addJob(day.name)}
-                disabled={
-                  !checkedDays.includes(index) || isFullTimeline[day.name]
-                }
+                onClick={() => addJob(day.name, index)}
+                disabled={isFullTimeline[day.name]}
               >
                 <GrAdd />
               </Button>

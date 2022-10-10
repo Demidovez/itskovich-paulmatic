@@ -85,7 +85,6 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
   };
 
   const handleClose = () => {
-    // isChanged && alert("sdasd");
     if (isChanged) {
       var answer = window.confirm("Вы уверены, что хотите закрыть?");
 
@@ -145,7 +144,7 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
       </div>
       {pages[currentIndexPage].component()}
       <div className="modal-footer d-flex justify-content-between">
-        <div className="d-flex">
+        <div className="d-flex justify-content-between flex-fill">
           {pages.map((page, index) => (
             <div
               key={page.name}
@@ -161,7 +160,7 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
             </div>
           ))}
         </div>
-        <div className="sequence-btns">
+        <div className="sequence-btns ml-7">
           <Button
             color="danger"
             outline

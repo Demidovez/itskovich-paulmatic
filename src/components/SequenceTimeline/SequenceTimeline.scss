@@ -37,6 +37,24 @@
       right: 0;
       padding: 10px;
     }
+
+    &.small-size {
+      text-align: left;
+      .item-label {
+        width: auto;
+        padding: 0 5px;
+
+        &.short {
+          padding: 0 10px;
+          max-width: 50px;
+        }
+      }
+
+      .remove-icon {
+        position: static;
+        padding: 0;
+      }
+    }
   }
 
   .moveable-line {
