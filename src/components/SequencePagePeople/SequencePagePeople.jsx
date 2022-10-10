@@ -17,6 +17,7 @@ import InteractiveTour from "components/InteractiveTour/InteractiveTour";
 import ModalAddToSequence from "components/ModalAddToSequence/ModalAddToSequence";
 import { useLazyGetContactsQuery } from "store/api/contacts";
 import { useCreateOrUpdateContactMutation } from "store/api/contacts";
+import { saveContactIdsSequence } from "store/slices/sequenceMasterSlice";
 
 const columns = [
   {
@@ -48,6 +49,10 @@ const SequencePagePeople = () => {
   const { selectedIds, currentPage, searchValue } = useSelector(
     (state) => state.contacts
   );
+
+  useEffect(() => {
+    dispatch(saveContactIdsSequence(selectedIds || []));
+  }, [(selectedIds || []).toString()]);
 
   const cacheTables = useSelector((state) => state.tables.cache);
 

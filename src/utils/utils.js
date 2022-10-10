@@ -25,7 +25,11 @@ export const convertBase64 = (file) => {
   });
 };
 
-export const generateTimeLabel = (startMinutes, endMinutes) => {
+export const generateTimeLabel = (
+  startMinutes,
+  endMinutes,
+  isShort = false
+) => {
   let startH = Math.floor(startMinutes / 60);
   let startMin = startMinutes % 60;
   startH = startH < 10 ? "0" + startH : startH;
@@ -36,5 +40,5 @@ export const generateTimeLabel = (startMinutes, endMinutes) => {
   endH = endH < 10 ? "0" + endH : endH;
   endMin = endMin < 10 ? "0" + endMin : endMin;
 
-  return startH + ":" + startMin + " - " + endH + ":" + endMin;
+  return `${startH}:${startMin}${isShort ? "-" : " - "}${endH}:${endMin}`;
 };

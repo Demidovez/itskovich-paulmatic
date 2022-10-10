@@ -6,6 +6,8 @@ import moment from "moment";
 import "./SequencePageSteps.scss";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import SequencePageStepsItem from "components/SequencePageStepsItem/SequencePageStepsItem";
+import { useDispatch } from "react-redux";
+import { saveStepsSequence } from "store/slices/sequenceMasterSlice";
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -16,6 +18,8 @@ const reorder = (list, startIndex, endIndex) => {
 };
 
 const SequencePageSteps = ({ onChange }) => {
+  const dispatch = useDispatch();
+
   const [steps, setSteps] = useState([
     {
       id: new Date().getTime(),
@@ -25,6 +29,8 @@ const SequencePageSteps = ({ onChange }) => {
       level: "",
       name: "Написать сообщение",
       description: "Сообщение в LinkedIn профиль",
+      body: "<body>Привет, {{.Contact.Name}}!</body>",
+      subject: "Наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
       isNoReply: false,
       delay: {
         days: 0,
@@ -40,6 +46,9 @@ const SequencePageSteps = ({ onChange }) => {
       level: "",
       name: "Отправить письмо",
       description: "Простой просмотр LinkedIn профиля",
+      body: "<body>Hi, {{.Contact.Name}}!</body>",
+      subject:
+        "Здравствуйте, наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
       isNoReply: false,
       delay: {
         days: 0,
@@ -55,6 +64,9 @@ const SequencePageSteps = ({ onChange }) => {
       level: "",
       name: "Просмотр профиля",
       description: "Простой просмотр LinkedIn профиля",
+      body: "<body>Aloha, {{.Contact.Name}}!</body>",
+      subject:
+        "Добрый день, наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
       isNoReply: false,
       delay: {
         days: 0,
@@ -70,6 +82,9 @@ const SequencePageSteps = ({ onChange }) => {
       level: "",
       name: "Просмотр профиля",
       description: "Простой просмотр LinkedIn профиля",
+      body: "<body>Приветствую, {{.Contact.Name}}!</body>",
+      subject:
+        "Доброе утро, наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
       isNoReply: false,
       delay: {
         days: 0,
@@ -78,6 +93,18 @@ const SequencePageSteps = ({ onChange }) => {
       },
     },
   ]);
+
+  useEffect(() => {
+    dispatch(
+      saveStepsSequence(
+        steps.map((step) => ({
+          Delay: 9999999999,
+          Body: step.body,
+          Subject: step.subject,
+        }))
+      )
+    );
+  }, [JSON.stringify(steps)]);
 
   const addStep = () => {
     onChange();
@@ -108,6 +135,9 @@ const SequencePageSteps = ({ onChange }) => {
         level: "",
         name: "Просмотр профиля",
         description: "Простой просмотр LinkedIn профиля",
+        body: "<body>Привет, {{.Contact.Name}}!</body>",
+        subject:
+          "Доброе время суток, наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
         isNoReply: false,
         delay: {
           days: 0,

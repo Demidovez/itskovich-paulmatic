@@ -1,8 +1,11 @@
 import Checkbox from "components/Checkbox/Checkbox";
 import SequenceTimeline from "components/SequenceTimeline/SequenceTimeline";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GrAdd } from "react-icons/gr";
+import { useDispatch } from "react-redux";
 import { Button } from "reactstrap";
+import { saveScheduleSequence } from "store/slices/sequenceMasterSlice";
+import { generateTimeLabel } from "utils/utils";
 import "./SequencePageSchedule.scss";
 
 const days = [
@@ -37,9 +40,22 @@ const days = [
 ];
 
 const SequencePageSchedule = ({ onChange }) => {
+  const dispatch = useDispatch();
   const [checkedDays, setCheckedDays] = useState([]);
   const [jobs, setJobs] = useState({});
   const [isFullTimeline, setIsFullTimeline] = useState({});
+
+  useEffect(() => {
+    dispatch(
+      saveScheduleSequence(
+        Object.values(jobs).map((job) =>
+          job.map((item) =>
+            generateTimeLabel(item.x * 30, (item.x + item.w) * 30, true)
+          )
+        )
+      )
+    );
+  }, [JSON.stringify(jobs)]);
 
   const addCheckedDay = (index) => {
     onChange();
