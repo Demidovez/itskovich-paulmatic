@@ -24,12 +24,21 @@ const SequencePageStepsModalDelay = ({
   const [minutes, setMinutes] = useState(0);
 
   useEffect(() => {
-    const duration = moment.duration(value * 1000);
+    const duration = moment.duration(
+      moment()
+        .startOf("day")
+        .add(value, "seconds")
+        .diff(moment().startOf("day"))
+    );
 
-    setDays(duration.asDays());
-    setHours(duration.hours());
-    setMinutes(duration.minutes());
-  }, [value]);
+    const days = duration.asDays();
+    const hours = duration.hours();
+    const minutes = duration.minutes();
+
+    setDays(Math.floor(days));
+    setHours(hours);
+    setMinutes(minutes);
+  }, [value, isShow]);
 
   const handleSubmit = () => {
     onSubmit(days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60);
@@ -81,7 +90,7 @@ const SequencePageStepsModalDelay = ({
                       id="input-city"
                       placeholder={0}
                       value={days}
-                      onChange={(e) => setDays(+e.target.value)}
+                      onChange={(e) => setDays(e.target.value)}
                       type="number"
                       min={0}
                       max={99}
