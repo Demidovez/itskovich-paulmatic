@@ -12,14 +12,19 @@ import SequencePageLaunch from "components/SequencePageLaunch/SequencePageLaunch
 import Dropdown from "components/Dropdown/Dropdown";
 import Checkbox from "components/Checkbox/Checkbox";
 import { usePrompt } from "hooks/usePrompt";
+import { useSelector } from "react-redux";
+import { saveFolderIdSequence } from "store/slices/sequenceMasterSlice";
+import { useDispatch } from "react-redux";
+import { saveNameSequence } from "store/slices/sequenceMasterSlice";
 
 const ModalCreateSequence = ({ isShow, onClose }) => {
+  const dispatch = useDispatch();
+  const sequenceResultData = useSelector((state) => state.sequenceMaster.data);
+  const sequenceName = useSelector((state) => state.sequenceMaster.data.Name);
+
   const [isChanged, setIsChanged] = useState(false);
   usePrompt(isChanged);
 
-  const [sequenceName, setSequenceName] = useState(
-    "Последовательность №" + (Math.floor(Math.random() * 100000) + 10000)
-  );
   const [currentIndexPage, setCurrentIndexPage] = useState(0);
 
   const [pages, setPages] = useState([
@@ -76,12 +81,7 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
 
   const editSequenceName = (name) => {
     setIsChanged(true);
-    setSequenceName(name);
-  };
-
-  const onSubmit = () => {
-    setIsChanged(false);
-    onClose();
+    dispatch(saveNameSequence(name));
   };
 
   const handleClose = () => {
@@ -97,6 +97,12 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
     } else {
       onClose();
     }
+  };
+
+  const onSubmit = () => {
+    console.log(sequenceResultData);
+    setIsChanged(false);
+    onClose();
   };
 
   return (
@@ -120,6 +126,7 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
           </h4>
           <Input
             type="text"
+            placeholder="Введите имя последовательности..."
             value={sequenceName}
             onChange={(e) => editSequenceName(e.target.value)}
             className="sequence-name-input"
