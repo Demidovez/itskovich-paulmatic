@@ -12,7 +12,7 @@ import { Tooltip } from "reactstrap";
 import SequencePageStepsModalDelay from "components/SequencePageStepsModalDelay/SequencePageStepsModalDelay";
 import moment from "moment";
 
-const SequencePageStepsItem = ({ step, onChange, dayOfStart }) => {
+const SequencePageStepsItem = ({ step, onChange, delay }) => {
   const [isShowModalDelay, setIsShowModalDelay] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const toggleTooltip = () => setTooltipOpen(!tooltipOpen);
@@ -31,13 +31,25 @@ const SequencePageStepsItem = ({ step, onChange, dayOfStart }) => {
       </div>
       <div className="w-100 pb-4">
         <span className="step-label">
-          Шаг {step.step + 1} - День {step.day.diff(dayOfStart, "days") + 1}
-          <MdExpandMore
-            size="1.5rem"
-            className="mt--1"
-            onClick={() => setIsShowModalDelay(true)}
-            style={{ cursor: "pointer" }}
-          />
+          Шаг {step.step + 1} - День{" "}
+          {moment()
+            .startOf("day")
+            .add(delay, "seconds")
+            .diff(moment().startOf("day"), "days") + 1}
+          {step.step > 0 ? (
+            <MdExpandMore
+              size="1.5rem"
+              className="mt--1"
+              onClick={() => setIsShowModalDelay(true)}
+              style={{ cursor: "pointer" }}
+            />
+          ) : (
+            <MdExpandMore
+              size="1.5rem"
+              className="mt--1"
+              style={{ opacity: 0 }}
+            />
+          )}
           <MdOutlineDragIndicator
             size="1.5rem"
             className="ml-3 mt--1"

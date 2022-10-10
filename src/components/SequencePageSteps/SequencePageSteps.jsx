@@ -25,24 +25,18 @@ const SequencePageSteps = ({ onChange }) => {
       id: new Date().getTime(),
       type: "linkedin",
       step: 0,
-      day: moment().startOf("day").add(0, "days"),
       level: "",
       name: "Написать сообщение",
       description: "Сообщение в LinkedIn профиль",
       body: "<body>Привет, {{.Contact.Name}}!</body>",
       subject: "Наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
       isNoReply: false,
-      delay: {
-        days: 0,
-        hours: 0,
-        minutes: 0,
-      },
+      delay: 86400,
     },
     {
       id: new Date().getTime() + 1,
       type: "mail",
       step: 1,
-      day: moment().startOf("day").add(1, "days"),
       level: "",
       name: "Отправить письмо",
       description: "Простой просмотр LinkedIn профиля",
@@ -50,17 +44,12 @@ const SequencePageSteps = ({ onChange }) => {
       subject:
         "Здравствуйте, наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
       isNoReply: false,
-      delay: {
-        days: 0,
-        hours: 0,
-        minutes: 0,
-      },
+      delay: 86400,
     },
     {
       id: new Date().getTime() + 2,
       type: "linkedin",
       step: 2,
-      day: moment().startOf("day").add(2, "days"),
       level: "",
       name: "Просмотр профиля",
       description: "Простой просмотр LinkedIn профиля",
@@ -68,17 +57,12 @@ const SequencePageSteps = ({ onChange }) => {
       subject:
         "Добрый день, наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
       isNoReply: false,
-      delay: {
-        days: 0,
-        hours: 0,
-        minutes: 0,
-      },
+      delay: 86400,
     },
     {
       id: new Date().getTime() + 3,
       type: "linkedin",
       step: 3,
-      day: moment().startOf("day").add(3, "days"),
       level: "",
       name: "Просмотр профиля",
       description: "Простой просмотр LinkedIn профиля",
@@ -86,11 +70,7 @@ const SequencePageSteps = ({ onChange }) => {
       subject:
         "Доброе утро, наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
       isNoReply: false,
-      delay: {
-        days: 0,
-        hours: 0,
-        minutes: 0,
-      },
+      delay: 86400,
     },
   ]);
 
@@ -98,7 +78,7 @@ const SequencePageSteps = ({ onChange }) => {
     dispatch(
       saveStepsSequence(
         steps.map((step) => ({
-          Delay: 9999999999,
+          Delay: step.delay,
           Body: step.body,
           Subject: step.subject,
         }))
@@ -108,30 +88,13 @@ const SequencePageSteps = ({ onChange }) => {
 
   const addStep = () => {
     onChange();
-    const lastStep = steps.length
-      ? steps[steps.length - 1]
-      : {
-          day: moment().startOf("day"),
-          step: 0,
-          delay: {
-            days: 0,
-            hours: 0,
-            minutes: 0,
-          },
-        };
 
     setSteps([
       ...steps,
       {
         id: new Date().getTime(),
         type: "linkedin",
-        step: lastStep.step + 1,
-        day: Object.values(lastStep.delay).some((val) => val > 0)
-          ? moment(lastStep.day)
-              .add(lastStep.delay.days, "days")
-              .add(lastStep.delay.hours, "hours")
-              .add(lastStep.delay.minutes, "minutes")
-          : moment(lastStep.day).add(1, "days"),
+        step: steps.length,
         level: "",
         name: "Просмотр профиля",
         description: "Простой просмотр LinkedIn профиля",
@@ -139,11 +102,7 @@ const SequencePageSteps = ({ onChange }) => {
         subject:
           "Доброе время суток, наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
         isNoReply: false,
-        delay: {
-          days: 0,
-          hours: 0,
-          minutes: 0,
-        },
+        delay: 86400,
       },
     ]);
   };
@@ -155,29 +114,7 @@ const SequencePageSteps = ({ onChange }) => {
 
     const items = reorder(steps, result.source.index, result.destination.index);
 
-    updateSteps(items.map((item, i) => ({ ...item, step: i })));
-  };
-
-  const updateSteps = (steps) => {
-    let currentDay = steps[0].day;
-
-    const updatedSteps = steps.map((step, i) => {
-      if (i === 0) return step;
-
-      currentDay = Object.values(step.delay).some((val) => val > 0)
-        ? moment(currentDay)
-            .add(step.delay.days, "days")
-            .add(step.delay.hours, "hours")
-            .add(step.delay.minutes, "minutes")
-        : moment(currentDay).add(1, "days");
-
-      return {
-        ...step,
-        day: currentDay,
-      };
-    });
-
-    setSteps(updatedSteps);
+    setSteps(items.map((item, i) => ({ ...item, step: i })));
   };
 
   const updateStep = (editedStep) => {
@@ -185,7 +122,7 @@ const SequencePageSteps = ({ onChange }) => {
       step.id === editedStep.id ? editedStep : step
     );
 
-    updateSteps(editedSteps);
+    setSteps(editedSteps);
   };
 
   return (
@@ -223,7 +160,9 @@ const SequencePageSteps = ({ onChange }) => {
                             <SequencePageStepsItem
                               step={step}
                               onChange={updateStep}
-                              dayOfStart={steps[0].day}
+                              delay={steps
+                                .slice(1, index + 1)
+                                .reduce((acc, step) => (acc += step.delay), 0)}
                             />
                           </div>
                         )}

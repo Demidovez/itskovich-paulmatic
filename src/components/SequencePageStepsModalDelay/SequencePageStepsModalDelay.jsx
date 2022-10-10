@@ -11,6 +11,7 @@ import {
   Row,
 } from "reactstrap";
 import { useEffect, useState } from "react";
+import moment from "moment";
 
 const SequencePageStepsModalDelay = ({
   isShow,
@@ -18,14 +19,20 @@ const SequencePageStepsModalDelay = ({
   onSubmit,
   value = 0,
 }) => {
-  const [delay, setDelay] = useState(value);
+  const [days, setDays] = useState(0);
+  const [hours, setHours] = useState(0);
+  const [minutes, setMinutes] = useState(0);
 
   useEffect(() => {
-    setDelay(value);
-  }, [JSON.stringify(value)]);
+    const duration = moment.duration(value * 1000);
+
+    setDays(duration.asDays());
+    setHours(duration.hours());
+    setMinutes(duration.minutes());
+  }, [value]);
 
   const handleSubmit = () => {
-    onSubmit(delay);
+    onSubmit(days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60);
     onClose();
   };
 
@@ -73,12 +80,11 @@ const SequencePageStepsModalDelay = ({
                       className="form-control-alternative"
                       id="input-city"
                       placeholder={0}
-                      value={delay.days}
-                      onChange={(e) =>
-                        setDelay({ ...delay, days: +e.target.value })
-                      }
+                      value={days}
+                      onChange={(e) => setDays(+e.target.value)}
                       type="number"
                       min={0}
+                      max={99}
                     />
                   </FormGroup>
                 </Col>
@@ -94,11 +100,10 @@ const SequencePageStepsModalDelay = ({
                       className="form-control-alternative"
                       id="input-country"
                       placeholder={0}
-                      value={delay.hours}
-                      onChange={(e) =>
-                        setDelay({ ...delay, hours: +e.target.value })
-                      }
+                      value={hours}
+                      onChange={(e) => setHours(+e.target.value)}
                       type="number"
+                      max={23}
                       min={0}
                     />
                   </FormGroup>
@@ -115,11 +120,10 @@ const SequencePageStepsModalDelay = ({
                       className="form-control-alternative"
                       id="input-postal-code"
                       placeholder={0}
-                      value={delay.minutes}
-                      onChange={(e) =>
-                        setDelay({ ...delay, minutes: +e.target.value })
-                      }
+                      value={minutes}
+                      onChange={(e) => setMinutes(+e.target.value)}
                       type="number"
+                      max={59}
                       min={0}
                     />
                   </FormGroup>
