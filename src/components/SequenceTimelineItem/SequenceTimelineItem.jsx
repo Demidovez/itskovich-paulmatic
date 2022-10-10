@@ -198,12 +198,10 @@ const SequenceTimelineItem = ({
       <SequencePageScheduleModalTime
         isShow={isShowModalTime}
         onClose={() => setIsShowModalTime(false)}
-        onSubmit={(period) =>
-          false && setSize({ x: period.start, w: period.end })
-        }
+        onSubmit={(size) => setSize(size)}
         value={{
-          start: size.x * 30,
-          end: (size.x + size.w) * 30,
+          start: size.x,
+          end: size.x + size.w,
         }}
       />
     </>
