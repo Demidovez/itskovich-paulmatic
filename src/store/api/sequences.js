@@ -54,6 +54,55 @@ export const sequencesApi = createApi({
         }
       },
     }),
+    stopSequences: builder.query({
+      query: (sequenceIds) => ({
+        url: "/stop",
+        method: "GET",
+        params: {
+          sequenceId: sequenceIds.join(),
+        },
+        headers: {
+          "caller-version-code": 1,
+          sessionToken: "user-1",
+        },
+      }),
+    }),
+    startSequences: builder.query({
+      query: (sequenceIds) => ({
+        url: "/start",
+        method: "GET",
+        params: {
+          sequenceId: sequenceIds.join(),
+        },
+        headers: {
+          "caller-version-code": 1,
+          sessionToken: "user-1",
+        },
+      }),
+    }),
+    deleteSequences: builder.query({
+      query: (sequenceIds) => ({
+        url: "/delete",
+        method: "GET",
+        params: {
+          sequenceId: sequenceIds.join(),
+        },
+        headers: {
+          "caller-version-code": 1,
+          sessionToken: "user-1",
+        },
+      }),
+      transformResponse: (response, _, arg) => {
+        if ((response.result || {}).error) {
+          toast.error(`Ошибка!`);
+        } else {
+          // toast.success(
+          //   `${arg.ids.length} контакта(ов) добавлено в «${arg.sequence.Name}»!`
+          // );
+          toast.success(`Последовательность удалена!`);
+        }
+      },
+    }),
   }),
 });
 
@@ -61,4 +110,7 @@ export const {
   useLazyGetSequencesQuery,
   useGetSequencesQuery,
   useLazyAddContactsToSequenceQuery,
+  useLazyStartSequencesQuery,
+  useLazyStopSequencesQuery,
+  useLazyDeleteSequencesQuery,
 } = sequencesApi;

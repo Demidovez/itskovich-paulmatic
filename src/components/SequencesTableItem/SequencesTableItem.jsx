@@ -2,13 +2,24 @@ import { Progress } from "reactstrap";
 import React, { useState } from "react";
 import Checkbox from "components/Checkbox/Checkbox";
 import { MdPersonOutline, MdOutlineEmail } from "react-icons/md";
+import { useLazyStartSequencesQuery } from "store/api/sequences";
+import { useLazyStopSequencesQuery } from "store/api/sequences";
 
 const SequencesTableItem = ({ sequence, fields, isSelect, onSelect }) => {
   const [isStopped, setIsStopped] = useState(sequence.Stopped);
   const [sequenceToModal, setSequenceToModal] = useState(null);
 
+  const [startSequences] = useLazyStartSequencesQuery();
+  const [stopSequences] = useLazyStopSequencesQuery();
+
   const onStopped = () => {
     setIsStopped(!isStopped);
+
+    if (isStopped) {
+      startSequences([sequence.id]);
+    } else {
+      stopSequences([sequence.id]);
+    }
   };
 
   const openModal = (task) => {

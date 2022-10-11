@@ -20,6 +20,7 @@ import {
   clearSelectedIds,
 } from "store/slices/sequencesSlice";
 import ActionSequencesBar from "components/ActionSequencesBar/ActionSequencesBar";
+import { useLazyDeleteSequencesQuery } from "store/api/sequences";
 
 const Sequences = () => {
   const dispatch = useDispatch();
@@ -40,9 +41,13 @@ const Sequences = () => {
     setIsShowCreator(false);
   };
 
+  const [deleteSequences] = useLazyDeleteSequencesQuery();
+
   const onDeleteSequences = () => {
     isSelectedAll && setAllSequences();
     selectedIds.length && dispatch(clearSelectedIds());
+
+    deleteSequences(selectedIds);
   };
 
   return (
