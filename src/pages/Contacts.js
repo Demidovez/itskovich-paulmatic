@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import ActionContactsBar from "components/ActionContactsBar/ActionContactsBar";
 import { useDispatch, useSelector } from "react-redux";
 import { clearSelectedIds } from "store/slices/contactsSlice";
-import Modal from "components/Modal/Modal";
+import ModalYouSure from "components/ModalYouSure/ModalYouSure";
 import { setCurrentContactPage } from "store/slices/contactsSlice";
 import Pagination from "components/Pagination/Pagination";
 import { searchValueContactPage } from "store/slices/contactsSlice";
@@ -186,7 +186,7 @@ const Contacts = () => {
           </div>
         </Row>
       </Container>
-      <Modal
+      <ModalYouSure
         isShow={isShowModalDelete}
         title="Вы уверены?"
         text="Удалить выбранные контакты?"

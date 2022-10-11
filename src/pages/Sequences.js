@@ -15,14 +15,20 @@ import { MdOutlineSearch } from "react-icons/md";
 import SequencesTable from "components/SequencesTable/SequencesTable";
 import SequencesSearchBar from "components/SequencesSearchBar/SequencesSearchBar";
 import ModalCreateSequence from "components/ModalCreateSequence/ModalCreateSequence";
-import { selectAllSequences } from "store/slices/sequencesSlice";
+import {
+  selectAllSequences,
+  clearSelectedIds,
+} from "store/slices/sequencesSlice";
+import ActionSequencesBar from "components/ActionSequencesBar/ActionSequencesBar";
 
 const Sequences = () => {
   const dispatch = useDispatch();
   const [isTest, setIsTest] = useState(false);
   const [isShowCreator, setIsShowCreator] = useState(false);
 
-  const isSelectedAll = useSelector((state) => state.sequences.isSelectedAll);
+  const { isSelectedAll, selectedIds } = useSelector(
+    (state) => state.sequences
+  );
 
   const setAllSequences = () => dispatch(selectAllSequences(!isSelectedAll));
 
@@ -32,6 +38,11 @@ const Sequences = () => {
 
   const doneCreateSequence = () => {
     setIsShowCreator(false);
+  };
+
+  const onDeleteSequences = () => {
+    isSelectedAll && setAllSequences();
+    selectedIds.length && dispatch(clearSelectedIds());
   };
 
   return (
@@ -76,12 +87,21 @@ const Sequences = () => {
                 </div>
 
                 <div className="d-flex align-items-center">
+                  <ActionSequencesBar
+                    onDelete={onDeleteSequences}
+                    disabled={
+                      !isSelectedAll && (selectedIds || []).length === 0
+                    }
+                  />
                   <SequencesSort />
                   <SequencesStatusesSelector />
                   <SequencesSearchBar />
                 </div>
               </div>
-              <SequencesTable />
+              <SequencesTable
+                isSelectedAll={isSelectedAll}
+                selectedIds={selectedIds}
+              />
             </div>
           </Row>
         </Card>

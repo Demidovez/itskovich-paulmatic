@@ -1,6 +1,6 @@
 import { Button, Modal } from "reactstrap";
 
-const ModalCustom = ({ isShow, title, text, onAgree, onCancel }) => {
+const ModalYouSure = ({ isShow, title, text, onAgree, onCancel }) => {
   return (
     <Modal className="modal-dialog-centered" isOpen={isShow}>
       <div className="modal-header">
@@ -35,4 +35,4 @@ const ModalCustom = ({ isShow, title, text, onAgree, onCancel }) => {
   );
 };
 
-export default ModalCustom;
+export default ModalYouSure;

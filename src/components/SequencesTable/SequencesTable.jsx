@@ -1,8 +1,6 @@
-import { Table, Progress, CardFooter } from "reactstrap";
+import { Table, CardFooter } from "reactstrap";
 import React, { useCallback, useEffect, useState } from "react";
 import "./SequencesTable.scss";
-import Checkbox from "components/Checkbox/Checkbox";
-import { MdPersonOutline, MdOutlineEmail } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { useLazyGetSequencesQuery } from "store/api/sequences";
 import { setSequencesToCache } from "store/slices/sequencesSlice";
@@ -10,6 +8,7 @@ import { setSequencesRequestStatus } from "store/slices/sequencesSlice";
 import { addSequenceId } from "store/slices/sequencesSlice";
 import { setCurrentSequencesPage } from "store/slices/sequencesSlice";
 import Pagination from "components/Pagination/Pagination";
+import SequencesTableItem from "components/SequencesTableItem/SequencesTableItem";
 
 const COUNT_ON_PAGE = 100;
 
@@ -25,7 +24,7 @@ const fields = [
   },
   {
     label: "",
-    name: "switch",
+    name: "Stopped",
     style: {
       width: "6%",
       minWidth: "60px",
@@ -115,10 +114,9 @@ const fields = [
   },
 ];
 
-const SequencesTable = () => {
+const SequencesTable = ({ isSelectedAll, selectedIds }) => {
   const cached = useSelector((state) => state.sequences.cached);
   const currentPage = useSelector((state) => state.sequences.currentPage);
-  const [sequenceToModal, setSequenceToModal] = useState(null);
 
   const [getSequences, { data: sequencesData, isFetching }] =
     useLazyGetSequencesQuery();
@@ -131,10 +129,6 @@ const SequencesTable = () => {
       dispatch(setSequencesRequestStatus(isFetching));
     }
   }, [isFetching, sequencesData]);
-
-  const { isSelectedAll, selectedIds } = useSelector(
-    (state) => state.sequences
-  );
 
   const onSelectSequence = (id) => dispatch(addSequenceId(id));
 
@@ -158,14 +152,6 @@ const SequencesTable = () => {
   useEffect(() => {
     fetchSequences();
   }, [currentPage]);
-
-  const openModal = (task) => {
-    setSequenceToModal(task);
-  };
-
-  const closeModal = () => {
-    setSequenceToModal(null);
-  };
 
   const onSetCurrentPage = (page) => {
     dispatch(setCurrentSequencesPage(page));
@@ -209,175 +195,13 @@ const SequencesTable = () => {
             </thead>
             <tbody>
               {((cached || sequencesData || {}).Items || []).map((sequence) => (
-                <tr
+                <SequencesTableItem
+                  sequence={sequence}
+                  fields={fields}
+                  isSelect={selectedIds.includes(sequence.id) || isSelectedAll}
+                  onSelect={() => onSelectSequence(sequence.id)}
                   key={sequence.id}
-                  className="d-flex"
-                  onClick={() => openModal(sequence)}
-                >
-                  {fields.map((field) => {
-                    if (field.name === "checkbox") {
-                      return (
-                        <td
-                          className="d-flex align-items-center"
-                          key={field.name}
-                          style={{
-                            ...field.style,
-                          }}
-                        >
-                          <Checkbox
-                            key={field.name}
-                            id={sequence.id}
-                            checked={
-                              selectedIds.includes(sequence.id) || isSelectedAll
-                            }
-                            onChange={() => onSelectSequence(sequence.id)}
-                          />
-                        </td>
-                      );
-                    } else if (field.name === "switch") {
-                      return (
-                        <td
-                          className="d-flex align-items-center pl-1 pr-1"
-                          key={field.name}
-                          style={{
-                            ...field.style,
-                          }}
-                        >
-                          <label
-                            className="custom-toggle m-0"
-                            style={{ transform: "scale(0.8)" }}
-                          >
-                            <input
-                              type="checkbox"
-                              // checked={sequence[field.name]}
-                              // onChange={() => !sequence[field.name]}
-                            />
-                            <span className="custom-toggle-slider rounded-circle" />
-                          </label>
-                        </td>
-                      );
-                    } else if (field.name === "Description") {
-                      return (
-                        <td
-                          key={field.name}
-                          className="p-3 d-flex align-items-center"
-                          style={{
-                            ...field.style,
-                            width: `calc(${field.style.width})`,
-                          }}
-                        >
-                          <div
-                            style={{
-                              overflow: "hidden",
-                              whiteSpace: "nowrap",
-                              fontSize: 14,
-                              fontWeight: 100,
-                              textOverflow: "ellipsis",
-                              width: `calc(100%)`,
-                            }}
-                          >
-                            {sequence[field.name]}
-                          </div>
-                        </td>
-                      );
-                    } else if (field.name === "People") {
-                      return (
-                        <td
-                          className="d-flex align-items-center pl-3"
-                          key={field.name}
-                          style={{
-                            ...field.style,
-                          }}
-                        >
-                          <div>
-                            <MdPersonOutline
-                              size="1.25rem"
-                              style={{ opacity: 0.3, marginTop: "-2px" }}
-                              className="mr-1"
-                            />
-                          </div>
-                          {sequence[field.name]}
-                        </td>
-                      );
-                    } else if (
-                      ["Open_rate", "Reply_rate"].includes(field.name)
-                    ) {
-                      return (
-                        <td
-                          className="d-flex align-items-center pl-3"
-                          key={field.name}
-                          style={{
-                            ...field.style,
-                          }}
-                        >
-                          <strong className="pr-1">
-                            {sequence[field.name]}%
-                          </strong>{" "}
-                          (0)
-                        </td>
-                      );
-                    } else if (field.name === "Progress") {
-                      return (
-                        <td
-                          className="d-flex align-items-center pl-3"
-                          key={field.name}
-                          style={{
-                            ...field.style,
-                          }}
-                        >
-                          <Progress
-                            max="1"
-                            value={sequence[field.name]}
-                            style={{
-                              height: "8px",
-                            }}
-                          />
-                        </td>
-                      );
-                    } else if (field.name === "Delivered") {
-                      return (
-                        <td
-                          className="d-flex align-items-center pl-3"
-                          key={field.name}
-                          style={{
-                            ...field.style,
-                          }}
-                        >
-                          <MdOutlineEmail
-                            size="1.25rem"
-                            style={{ opacity: 0.3, marginTop: "-2px" }}
-                            className="mr-1"
-                          />
-                          {sequence[field.name]}
-                        </td>
-                      );
-                    } else {
-                      return (
-                        <td
-                          key={field.name}
-                          className="p-3 d-flex align-items-center"
-                          style={{
-                            ...field.style,
-                            width: `calc(${field.style.width})`,
-                          }}
-                        >
-                          <div
-                            style={{
-                              overflow: "hidden",
-                              whiteSpace: "nowrap",
-                              fontSize: 15,
-                              fontWeight: 400,
-                              textOverflow: "ellipsis",
-                              width: `calc(100%)`,
-                            }}
-                          >
-                            {sequence[field.name]}
-                          </div>
-                        </td>
-                      );
-                    }
-                  })}
-                </tr>
+                />
               ))}
             </tbody>
           </Table>
