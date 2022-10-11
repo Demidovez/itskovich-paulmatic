@@ -59,7 +59,7 @@ export const sequencesApi = createApi({
         url: "/stop",
         method: "GET",
         params: {
-          sequenceId: sequenceIds.join(),
+          sequenceIds: sequenceIds.join(),
         },
         headers: {
           "caller-version-code": 1,
@@ -72,7 +72,7 @@ export const sequencesApi = createApi({
         url: "/start",
         method: "GET",
         params: {
-          sequenceId: sequenceIds.join(),
+          sequenceIds: sequenceIds.join(),
         },
         headers: {
           "caller-version-code": 1,
@@ -85,7 +85,7 @@ export const sequencesApi = createApi({
         url: "/delete",
         method: "GET",
         params: {
-          sequenceId: sequenceIds.join(),
+          sequenceIds: sequenceIds.join(),
         },
         headers: {
           "caller-version-code": 1,

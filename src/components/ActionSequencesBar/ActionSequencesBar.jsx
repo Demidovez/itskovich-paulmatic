@@ -53,7 +53,7 @@ const ActionSequencesBar = ({ onDelete, disabled }) => {
       <ModalYouSure
         isShow={isAskSure}
         title={"Удалить последовательность"}
-        text={"Вы уверены, что хотите остановить и удалить последовательность?"}
+        text={"Вы действительно хотите удалить выбранные последовательности?"}
         onAgree={onDeleteSubmit}
         onCancel={() => {
           setDropdownOpen(false);

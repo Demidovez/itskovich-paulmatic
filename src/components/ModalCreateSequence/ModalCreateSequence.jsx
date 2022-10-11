@@ -1,7 +1,5 @@
 import { Button, Input, Modal } from "reactstrap";
-import { MdDone, MdCached, MdGppGood } from "react-icons/md";
-import AvatarSymbols from "components/AvatarSymbols/AvatarSymbols";
-import EditorEmail from "components/EditorEmail/EditorEmail";
+import { MdDone } from "react-icons/md";
 import { useState } from "react";
 import "./ModalCreateSequence.scss";
 import SequencePageSteps from "components/SequencePageSteps/SequencePageSteps";
@@ -10,10 +8,8 @@ import SequencePagePeople from "components/SequencePagePeople/SequencePagePeople
 import SequencePageSchedule from "components/SequencePageSchedule/SequencePageSchedule";
 import SequencePageLaunch from "components/SequencePageLaunch/SequencePageLaunch";
 import Dropdown from "components/Dropdown/Dropdown";
-import Checkbox from "components/Checkbox/Checkbox";
 import { usePrompt } from "hooks/usePrompt";
 import { useSelector } from "react-redux";
-import { saveFolderIdSequence } from "store/slices/sequenceMasterSlice";
 import { useDispatch } from "react-redux";
 import { saveNameSequence } from "store/slices/sequenceMasterSlice";
 

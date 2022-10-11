@@ -3,7 +3,7 @@ import { MdEmail, MdDateRange, MdGppGood } from "react-icons/md";
 import moment from "moment";
 import AvatarSymbols from "components/AvatarSymbols/AvatarSymbols";
 import EditorEmail from "components/EditorEmail/EditorEmail";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { usePrompt } from "hooks/usePrompt";
 import AttachFilesBar from "components/AttachFilesBar/AttachFilesBar";
 import { useSelector } from "react-redux";

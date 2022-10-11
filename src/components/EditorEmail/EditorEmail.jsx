@@ -2,7 +2,16 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { convertBase64 } from "utils/utils";
 
-const EditorEmail = ({ className, files, content, onChange, disabled }) => {
+const EditorEmail = ({
+  className,
+  files = [],
+  content,
+  onChange = () => {},
+  style = "",
+  disabled = false,
+  visibleToolbar = true,
+  insertedVariable = "",
+}) => {
   const [addedImagesId, setAdedImagesId] = useState([]);
   const data = useMemo(() => content, [content]);
 
@@ -21,6 +30,15 @@ const EditorEmail = ({ className, files, content, onChange, disabled }) => {
       }
     });
   }, [files.length]);
+
+  useEffect(() => {
+    insertedVariable &&
+      editorRef.current.execCommand(
+        "mceInsertContent",
+        false,
+        `{{${insertedVariable}}}`
+      );
+  }, [insertedVariable]);
 
   const insertImageToEditor = (imageBase64) => {
     editorRef.current.execCommand("InsertImage", false, imageBase64);
@@ -59,13 +77,13 @@ const EditorEmail = ({ className, files, content, onChange, disabled }) => {
             "table",
             "preview",
           ],
-          toolbar:
-            "undo redo blocks fontfamily fontsize " +
-            "bold italic alignleft aligncenter " +
-            "alignright alignjustify bullist numlist | forecolor " +
-            "removeformat backcolor ",
-          content_style:
-            "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+          toolbar: visibleToolbar
+            ? "undo redo | blocks fontfamily fontsize | " +
+              "bold italic | alignleft aligncenter | " +
+              "alignright alignjustify | bullist numlist | forecolor " +
+              "removeformat backcolor "
+            : false,
+          content_style: `body { font-family:Helvetica,Arial,sans-serif; font-size:14px } ${style}`,
         }}
       />
     </>

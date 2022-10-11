@@ -11,11 +11,19 @@ import { FiEdit3, FiPlusSquare } from "react-icons/fi";
 import { Tooltip } from "reactstrap";
 import SequencePageStepsModalDelay from "components/SequencePageStepsModalDelay/SequencePageStepsModalDelay";
 import moment from "moment";
+import TaskEditorModal from "components/TaskEditorModal/TaskEditorModal";
 
 const SequencePageStepsItem = ({ step, onChange, delay }) => {
+  const [isShowModalEditor, setIsShowModalEditor] = useState(false);
   const [isShowModalDelay, setIsShowModalDelay] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const toggleTooltip = () => setTooltipOpen(!tooltipOpen);
+
+  const onDoubleClick = (e) => {
+    if (e.detail === 2) {
+      setIsShowModalEditor(true);
+    }
+  };
 
   return (
     <div className="d-flex sequence-step">
@@ -64,7 +72,10 @@ const SequencePageStepsItem = ({ step, onChange, delay }) => {
             Перетащить
           </Tooltip>
         </span>
-        <div className="row sequence-desc  ml-0 mr-0 mt-2 mb-2">
+        <div
+          className="row sequence-desc  ml-0 mr-0 mt-2 mb-2"
+          onClick={onDoubleClick}
+        >
           <div className="col col-4 d-flex">
             <div style={{ width: 50 }}>{step.level}</div>
             <div style={{ fontWeight: 600, fontSize: 14 }}>{step.name}</div>
@@ -76,7 +87,11 @@ const SequencePageStepsItem = ({ step, onChange, delay }) => {
             {step.description}
           </div>
           <div className="col col-1 sequence-desc-controls d-flex">
-            <FiEdit3 size="1.2rem" className="mr-2" />
+            <FiEdit3
+              size="1.2rem"
+              className="mr-2"
+              onClick={() => setIsShowModalEditor(true)}
+            />
             <FiPlusSquare size="1.2rem" />
           </div>
         </div>
@@ -86,6 +101,11 @@ const SequencePageStepsItem = ({ step, onChange, delay }) => {
         onClose={() => setIsShowModalDelay(false)}
         onSubmit={(delay) => onChange({ ...step, delay })}
         value={step.delay}
+      />
+      <TaskEditorModal
+        task={step}
+        isShow={isShowModalEditor}
+        onClose={() => setIsShowModalEditor(false)}
       />
     </div>
   );
