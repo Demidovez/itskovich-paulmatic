@@ -34,7 +34,7 @@ export const sequencesApi = createApi({
         method: "GET",
         params: {
           contactIds: ids.join(),
-          sequenceId: sequence.id,
+          sequenceId: sequence,
         },
         headers: {
           "caller-version-code": 1,

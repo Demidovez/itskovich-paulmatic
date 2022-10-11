@@ -6,16 +6,21 @@ import { useGetSequencesQuery } from "store/api/sequences";
 import { BsCheckCircleFill, BsCircle } from "react-icons/bs";
 import "./ModalAddToSequence.scss";
 
-const ModalAddToSequence = ({ isShow, ids, onCancel, clearSelectedIds }) => {
-  const [sendToSequence] = useLazyAddContactsToSequenceQuery();
+const ModalAddToSequence = ({
+  isShow,
+  onCancel,
+  clearSelectedIds,
+  onSubmit,
+}) => {
   const [selectedSequence, setSelectedSequence] = useState({});
 
   const { data } = useGetSequencesQuery({ body: {} });
 
   const addToSequance = () => {
+    onSubmit(selectedSequence.id);
     onCancel();
+
     clearSelectedIds();
-    sendToSequence({ sequence: selectedSequence, ids });
   };
 
   useEffect(() => {

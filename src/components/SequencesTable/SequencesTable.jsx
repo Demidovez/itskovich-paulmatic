@@ -289,11 +289,13 @@ const SequencesTable = () => {
                             ...field.style,
                           }}
                         >
-                          <MdPersonOutline
-                            size="1.25rem"
-                            style={{ opacity: 0.3, marginTop: "-2px" }}
-                            className="mr-1"
-                          />
+                          <div>
+                            <MdPersonOutline
+                              size="1.25rem"
+                              style={{ opacity: 0.3, marginTop: "-2px" }}
+                              className="mr-1"
+                            />
+                          </div>
                           {sequence[field.name]}
                         </td>
                       );

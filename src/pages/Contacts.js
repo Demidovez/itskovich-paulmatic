@@ -20,6 +20,7 @@ import SearchBarContacts from "components/SearchBarContacts/SearchBarContacts";
 import ModalContactForm from "components/ModalContactForm/ModalContactForm";
 import InteractiveTour from "components/InteractiveTour/InteractiveTour";
 import ModalAddToSequence from "components/ModalAddToSequence/ModalAddToSequence";
+import { useLazyAddContactsToSequenceQuery } from "store/api/sequences";
 
 const COUNT_ON_PAGE = 100;
 
@@ -128,6 +129,8 @@ const Contacts = () => {
     dispatch(setCurrentContactPage(page));
   };
 
+  const [sendToSequence] = useLazyAddContactsToSequenceQuery();
+
   return (
     <>
       <Container
@@ -198,9 +201,14 @@ const Contacts = () => {
         onClose={onResetForm}
       />
       <ModalAddToSequence
-        ids={selectedIds}
         isShow={isShowModalAddToSequence}
         clearSelectedIds={() => dispatch(clearSelectedIds())}
+        onSubmit={(sequence) =>
+          sendToSequence({
+            ids: selectedIds,
+            sequence,
+          })
+        }
         onCancel={() => setIsShowModalAddToSequence(false)}
       />
       <InteractiveTour steps={tourSteps} name="contacts" />

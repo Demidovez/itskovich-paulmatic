@@ -9,6 +9,12 @@ import ActionTableBar from "components/ActionTableBar/ActionTableBar";
 import SearchBar from "components/SearchBar/SearchBar";
 import { useAddContactsMutation } from "store/api/contacts";
 import InteractiveTour from "components/InteractiveTour/InteractiveTour";
+import { useLazyAddToContactsQuery } from "store/api/persons";
+import { clearSelectedIds } from "store/slices/tablesSlice";
+import { useDispatch } from "react-redux";
+import { useLazyAddToSequenceQuery } from "store/api/persons";
+import ModalAddToSequence from "components/ModalAddToSequence/ModalAddToSequence";
+import { useState } from "react";
 
 const companiesFields = [
   {
@@ -184,10 +190,13 @@ const personsFields = [
 const tourSteps = [
   {
     selector: "#nav_item_b2b",
-    content: "На этой странице находятся топ-менеджмент компаний. У Вас есть возможность получить доступ к почте, LinkedIn и номеру телефона. Количество получения контактной информации ограниченно.",
-  },{
+    content:
+      "На этой странице находятся топ-менеджмент компаний. У Вас есть возможность получить доступ к почте, LinkedIn и номеру телефона. Количество получения контактной информации ограниченно.",
+  },
+  {
     selector: ".tabs-tour",
-    content: "Переключайте вкладки, чтобы добавлять контакты из разных категорий",
+    content:
+      "Переключайте вкладки, чтобы добавлять контакты из разных категорий",
   },
   {
     selector: ".filter-tour",
@@ -195,11 +204,13 @@ const tourSteps = [
   },
   {
     selector: "#b2bActionsToggler",
-    content: "Добавляйте выделенных людей в контакты или последовательности. Количество добавлений ограниченно.",
+    content:
+      "Добавляйте выделенных людей в контакты или последовательности. Количество добавлений ограниченно.",
   },
 ];
 
 const BtoB = () => {
+  const dispatch = useDispatch();
   const [fetchCompanies, companiesData] = useLazyGetCompaniesQuery({
     selectFromResult: ({ data }) => data,
   });
@@ -208,16 +219,23 @@ const BtoB = () => {
     selectFromResult: ({ data }) => data,
   });
 
-  const [addContacts] = useAddContactsMutation();
+  const [addToContacts] = useLazyAddToContactsQuery();
+  const [addToSequence] = useLazyAddToSequenceQuery();
 
   const tables = useSelector((state) => state.tables.tables);
   const activeTable = useSelector((state) => state.tables.activeTable);
   const selectedIds = useSelector((state) => state.tables.selectedIds);
 
+  const [isShowModalAddToSequence, setIsShowModalAddToSequence] =
+    useState(false);
+
   const onAddContact = () => {
-    // addContacts()
+    addToContacts(selectedIds[activeTable]);
+    dispatch(clearSelectedIds(activeTable));
   };
-  const onAddToSequence = () => {};
+  const onAddToSequence = () => {
+    setIsShowModalAddToSequence(true);
+  };
 
   return (
     <Container fluid className="d-flex flex-column height-fill pt-4 pb-3">
@@ -275,6 +293,17 @@ const BtoB = () => {
         </div>
       </Row>
       <InteractiveTour steps={tourSteps} name="btb" />
+      <ModalAddToSequence
+        isShow={isShowModalAddToSequence}
+        onSubmit={(sequenceId) =>
+          addToSequence({
+            entityIds: selectedIds[activeTable],
+            sequenceId,
+          })
+        }
+        clearSelectedIds={() => dispatch(clearSelectedIds(activeTable))}
+        onCancel={() => setIsShowModalAddToSequence(false)}
+      />
     </Container>
   );
 };
