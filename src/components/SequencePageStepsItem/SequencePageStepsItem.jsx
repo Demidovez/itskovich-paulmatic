@@ -12,11 +12,19 @@ import { Tooltip } from "reactstrap";
 import SequencePageStepsModalDelay from "components/SequencePageStepsModalDelay/SequencePageStepsModalDelay";
 import moment from "moment";
 import TaskEditorModal from "components/TaskEditorModal/TaskEditorModal";
+import ModalYouSure from "components/ModalYouSure/ModalYouSure";
 
-const SequencePageStepsItem = ({ step, onChange, delay, openModal }) => {
+const SequencePageStepsItem = ({
+  step,
+  onChange,
+  delay,
+  openModal,
+  onDelete,
+}) => {
   const [isShowModalDelay, setIsShowModalDelay] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const toggleTooltip = () => setTooltipOpen(!tooltipOpen);
+  const [isAskSure, setIsAskSure] = useState(false);
 
   const onDoubleClick = (e) => {
     if (e.detail === 2) {
@@ -27,12 +35,21 @@ const SequencePageStepsItem = ({ step, onChange, delay, openModal }) => {
   return (
     <div className="d-flex sequence-step">
       <div className="d-flex flex-column pl-0 pr-3 align-items-center">
-        <div className="mb-2">
-          {step.type === "linkedin" ? (
-            <BsLinkedin color="#037794" size="1.5rem" />
-          ) : null}
-          {step.type === "carbage" ? <RiDeleteBin5Line size="1.5rem" /> : null}
-          {step.type === "mail" ? <MdMail color="brown" size="1.5rem" /> : null}
+        <div className="sequence-icons">
+          <div className="type-icon">
+            {step.type === "linkedin" ? (
+              <BsLinkedin color="#037794" size="1.5rem" />
+            ) : null}
+            {step.type === "carbage" ? (
+              <RiDeleteBin5Line size="1.5rem" />
+            ) : null}
+            {step.type === "mail" ? (
+              <MdMail color="brown" size="1.5rem" />
+            ) : null}
+          </div>
+          <div className="delete-icon" onClick={() => setIsAskSure(true)}>
+            <RiDeleteBin5Line size="1.5rem" color="#d30101" />
+          </div>
         </div>
         <div className="flex-fill vertical-line" />
       </div>
@@ -99,6 +116,15 @@ const SequencePageStepsItem = ({ step, onChange, delay, openModal }) => {
         onClose={() => setIsShowModalDelay(false)}
         onSubmit={(delay) => onChange({ ...step, delay })}
         value={step.delay}
+      />
+      <ModalYouSure
+        isShow={isAskSure}
+        title={"Удалить шаг последовательности"}
+        text={"Вы действительно хотите удалить этот шаг?"}
+        onAgree={onDelete}
+        onCancel={() => {
+          setIsAskSure(false);
+        }}
       />
     </div>
   );

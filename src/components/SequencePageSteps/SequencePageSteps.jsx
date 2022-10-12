@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { saveStepsSequence } from "store/slices/sequenceMasterSlice";
 import { Button } from "reactstrap";
 import TaskEditorModal from "components/TaskEditorModal/TaskEditorModal";
+import ModalYouSure from "components/ModalYouSure/ModalYouSure";
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -99,6 +100,7 @@ const SequencePageSteps = ({ onChange }) => {
         ...steps,
         {
           ...step,
+          type: "linkedin", ////////////////////////// delete
           id: new Date().getTime(),
           step: steps.length,
           name: "Просмотр профиля",
@@ -125,6 +127,10 @@ const SequencePageSteps = ({ onChange }) => {
     );
 
     setSteps(editedSteps);
+  };
+
+  const onDelete = (id) => {
+    setSteps((steps) => steps.filter((step) => step.id !== id));
   };
 
   return (
@@ -164,6 +170,7 @@ const SequencePageSteps = ({ onChange }) => {
                             <SequencePageStepsItem
                               step={step}
                               onChange={updateStep}
+                              onDelete={() => onDelete(step.id)}
                               openModal={() =>
                                 setDataForModalEditor({
                                   mode: "edit",

@@ -215,7 +215,7 @@ const TaskEditorModal = ({
                       <Input
                         type="textarea"
                         placeholder="Сообщение..."
-                        className="pl-3 h-100 border-0"
+                        className="pl-3 h-100 border-0 task-editor-textarea"
                         onChange={(e) => setBody(e.target.value)}
 
                         // value={value || ""}

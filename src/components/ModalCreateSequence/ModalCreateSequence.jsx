@@ -1,5 +1,5 @@
 import { Button, Input, Modal } from "reactstrap";
-import { MdDone } from "react-icons/md";
+
 import { useState } from "react";
 import "./ModalCreateSequence.scss";
 import SequencePageSteps from "components/SequencePageSteps/SequencePageSteps";
@@ -12,6 +12,7 @@ import { usePrompt } from "hooks/usePrompt";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { saveNameSequence } from "store/slices/sequenceMasterSlice";
+import PaginationCreateSequence from "components/PaginationCreateSequence/PaginationCreateSequence";
 
 const ModalCreateSequence = ({ isShow, onClose }) => {
   const dispatch = useDispatch();
@@ -146,39 +147,41 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
         </button>
       </div>
       {pages[currentIndexPage].component()}
-      <div className="modal-footer d-flex justify-content-between">
-        <div className="d-flex justify-content-between flex-fill">
-          {pages.map((page, index) => (
-            <div
-              key={page.name}
-              className={`d-flex align-items-center page-sequence-item ${
-                index === currentIndexPage ? "current" : ""
-              } ${page.isDone ? "done" : ""}`}
-              onClick={() => setCurrentIndexPage(index)}
-            >
-              <div className={`page-sequence-icon`}>
-                <MdDone />
-              </div>
-              <span>{page.title}</span>
-            </div>
-          ))}
+      <div className="modal-footer d-flex justify-content-between p-0">
+        <div className="d-flex flex-fill h-100 m-0 ml-4">
+          <PaginationCreateSequence
+            pages={pages}
+            currentIndex={currentIndexPage}
+            setCurrentIndex={setCurrentIndexPage}
+          />
         </div>
-        <div className="sequence-btns ml-7">
+        <div className="sequence-btns ml-7 mt-2 mb-2 mr-4">
           <Button
             color="danger"
             outline
             data-dismiss="modal"
             type="button"
             onClick={() => handleClose()}
+            size="sm"
           >
             Отмена
           </Button>
           {currentIndexPage < pages.length - 1 ? (
-            <Button color="primary" type="button" onClick={() => nextPage()}>
+            <Button
+              color="primary"
+              type="button"
+              onClick={() => nextPage()}
+              size="sm"
+            >
               Дальше
             </Button>
           ) : (
-            <Button color="primary" type="button" onClick={() => onSubmit()}>
+            <Button
+              color="primary"
+              type="button"
+              onClick={() => onSubmit()}
+              size="sm"
+            >
               Создать
             </Button>
           )}

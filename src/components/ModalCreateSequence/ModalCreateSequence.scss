@@ -9,8 +9,8 @@
   .modal-content {
     overflow: auto;
   }
+
   .page-sequence-item {
-    // min-width: 160px;
     cursor: pointer;
 
     .page-sequence-icon {
@@ -30,25 +30,22 @@
       opacity: 0.7;
     }
 
-    &.current {
-      .page-sequence-icon {
-        background-color: var(--primary);
-      }
-
-      & > span {
-        font-size: 14px;
-        opacity: 1;
-        font-weight: 600;
-      }
-    }
-
     &.done {
       .page-sequence-icon {
         background-color: var(--success);
       }
 
       & > span {
-        font-size: 14px;
+        opacity: 1;
+      }
+    }
+
+    &.current {
+      .page-sequence-icon {
+        background-color: var(--primary);
+      }
+
+      & > span {
         opacity: 1;
       }
     }
@@ -56,7 +53,67 @@
 
   .sequence-btns {
     & > button {
-      min-width: 120px;
+      min-width: 100px;
+    }
+  }
+
+  .modal-footer {
+    border-top: 1px solid rgb(225, 225, 225);
+    padding: 0;
+    overflow: hidden;
+
+    .page-sequence-item {
+      height: 100%;
+      position: relative;
+      padding-left: 20px;
+
+      .page-sequence-arrow {
+        cursor: pointer;
+        height: 60px;
+        position: absolute;
+        left: -10px;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        width: 40px;
+
+        &-top,
+        &-bottom {
+          background-color: rgb(225, 225, 225);
+          height: 1px;
+          left: -1px;
+          position: absolute;
+          top: 50%;
+          width: 100%;
+
+          &:after {
+            background-color: #fff;
+            content: "";
+            height: 100%;
+            position: absolute;
+            top: 0;
+          }
+        }
+
+        &-top {
+          transform: rotate(65deg);
+          transform-origin: bottom right;
+
+          &:after {
+            left: 100%;
+            right: 0;
+          }
+        }
+
+        &-bottom {
+          transform: rotate(-65deg);
+          transform-origin: top right;
+
+          &:after {
+            left: 0;
+            right: 100%;
+          }
+        }
+      }
     }
   }
 }
