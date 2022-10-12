@@ -148,7 +148,7 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
       </div>
       {pages[currentIndexPage].component()}
       <div className="modal-footer d-flex justify-content-between p-0">
-        <div className="d-flex flex-fill h-100 m-0 ml-4">
+        <div className="d-flex flex-fill h-100 m-0 ml-4 overflow-hidden">
           <PaginationCreateSequence
             pages={pages}
             currentIndex={currentIndexPage}

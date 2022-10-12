@@ -25,49 +25,49 @@ const SequencePageSteps = ({ onChange }) => {
   const [dataForModalEditor, setDataForModalEditor] = useState({});
 
   const [steps, setSteps] = useState([
-    // {
-    //   id: new Date().getTime(),
-    //   type: "linkedin",
-    //   step: 0,
-    //   name: "Написать сообщение",
-    //   description: "Сообщение в LinkedIn профиль",
-    //   body: "<body>Привет, {{.Contact.Name}}!</body>",
-    //   subject: "Наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
-    //   delay: 86400,
-    // },
-    // {
-    //   id: new Date().getTime() + 1,
-    //   type: "mail",
-    //   step: 1,
-    //   name: "Отправить письмо",
-    //   description: "Простой просмотр LinkedIn профиля",
-    //   body: "<body>Hi, {{.Contact.Name}}!</body>",
-    //   subject:
-    //     "Здравствуйте, наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
-    //   delay: 86400,
-    // },
-    // {
-    //   id: new Date().getTime() + 2,
-    //   type: "linkedin",
-    //   step: 2,
-    //   name: "Просмотр профиля",
-    //   description: "Простой просмотр LinkedIn профиля",
-    //   body: "<body>Aloha, {{.Contact.Name}}!</body>",
-    //   subject:
-    //     "Добрый день, наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
-    //   delay: 86400,
-    // },
-    // {
-    //   id: new Date().getTime() + 3,
-    //   type: "linkedin",
-    //   step: 3,
-    //   name: "Просмотр профиля",
-    //   description: "Простой просмотр LinkedIn профиля",
-    //   body: "<body>Приветствую, {{.Contact.Name}}!</body>",
-    //   subject:
-    //     "Доброе утро, наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
-    //   delay: 86400,
-    // },
+    {
+      id: new Date().getTime(),
+      Type: "linkedin",
+      step: 0,
+      Name: "Написать сообщение",
+      Description: "Сообщение в LinkedIn профиль",
+      Body: "<body>Привет, {{.Contact.Name}}!</body>",
+      Subject: "Наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
+      delay: 86400,
+    },
+    {
+      id: new Date().getTime() + 1,
+      Type: "mail",
+      step: 1,
+      Name: "Отправить письмо",
+      Description: "Простой просмотр LinkedIn профиля",
+      Body: "<body>Hi, {{.Contact.Name}}!</body>",
+      Subject:
+        "Здравствуйте, наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
+      delay: 86400,
+    },
+    {
+      id: new Date().getTime() + 2,
+      Type: "linkedin",
+      step: 2,
+      Name: "Просмотр профиля",
+      Description: "Простой просмотр LinkedIn профиля",
+      Body: "<body>Aloha, {{.Contact.Name}}!</body>",
+      Subject:
+        "Добрый день, наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
+      delay: 86400,
+    },
+    {
+      id: new Date().getTime() + 3,
+      Type: "linkedin",
+      step: 3,
+      Name: "Просмотр профиля",
+      Description: "Простой просмотр LinkedIn профиля",
+      Body: "<body>Приветствую, {{.Contact.Name}}!</body>",
+      Subject:
+        "Доброе утро, наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
+      delay: 86400,
+    },
   ]);
 
   useEffect(() => {
@@ -100,10 +100,8 @@ const SequencePageSteps = ({ onChange }) => {
         ...steps,
         {
           ...step,
-          type: "linkedin", ////////////////////////// delete
           id: new Date().getTime(),
           step: steps.length,
-          name: "Просмотр профиля",
           description: "Простой просмотр LinkedIn профиля",
           delay: 86400,
         },

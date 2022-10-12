@@ -10,18 +10,12 @@ export const tasksApi = createApi({
       query: ({ body, params }) => ({
         url: "/search",
         method: "POST",
-        body: body
-          ? {
-              ...body,
-              Status: "-pending,-archived",
-              Type: "-auto_email",
-              Invisible: true,
-            }
-          : {
-              Status: "-pending,-archived",
-              Type: "-auto_email",
-              Invisible: true,
-            },
+        body: {
+          ...(body || {}),
+          Status: "-pending,-archived",
+          Type: "-auto_email",
+          Invisible: true,
+        },
         params,
         headers: {
           "caller-version-code": 1,

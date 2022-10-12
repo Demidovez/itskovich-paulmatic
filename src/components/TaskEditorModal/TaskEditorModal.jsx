@@ -1,19 +1,15 @@
 import { Button, Input, Modal } from "reactstrap";
-import { MdEmail, MdDateRange, MdGppGood } from "react-icons/md";
-import moment from "moment";
-import AvatarSymbols from "components/AvatarSymbols/AvatarSymbols";
 import EditorEmail from "components/EditorEmail/EditorEmail";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePrompt } from "hooks/usePrompt";
-import AttachFilesBar from "components/AttachFilesBar/AttachFilesBar";
 import { useSelector } from "react-redux";
-import pupa from "pupa";
+
 import "./TaskEditorModal.scss";
 import TaskTypes from "components/TaskTypes/TaskTypes";
-import DropdownCustom from "components/Dropdown/Dropdown";
 import DropdownWithIcon from "components/DropdownWithIcon/DropdownWithIcon";
 import { BiCodeCurly } from "react-icons/bi";
 import { TbTemplate } from "react-icons/tb";
+import PreviewViewer from "components/PreviewViewer/PreviewViewer";
 
 const TaskEditorModal = ({
   isShow,
@@ -31,10 +27,13 @@ const TaskEditorModal = ({
   const [variablesList, setVariablesList] = useState([]);
   const [tamplatesList, setTamplatesList] = useState([]);
   const [activeTemplate, setActiveTemplate] = useState("");
-  const [body, setBody] = useState("");
   const [selectedVariable, setSelectedVariable] = useState("");
 
   usePrompt(isChanged);
+
+  useEffect(() => {
+    setCurrentTask(task || {});
+  }, [task, isShow]);
 
   const handleClose = () => {
     if (isChanged) {
@@ -63,17 +62,33 @@ const TaskEditorModal = ({
   }, [JSON.stringify(dirtyTypes)]);
 
   useEffect(() => {
-    types.length && setCurrentType(types[0]);
-  }, [types.length > 0]);
+    if (types.length) {
+      setCurrentType(types[0]);
+      setCurrentTask((task) => ({
+        ...task,
+        Type: types[0].Creds.Name,
+        Name: types[0].Actions[0].Title,
+      }));
+    }
+  }, [types.length > 0, isShow]);
 
   useEffect(() => {
     setVariablesList(
       Variables.map((variable) => ({
         name: variable.Name,
-        label: `{{${variable.Name}}} - ${variable.Description}`,
+        label: `${variable.Name} - ${variable.Description}`,
       }))
     );
   }, [Variables.length]);
+
+  useEffect(() => {
+    currentType &&
+      setCurrentTask((task) => ({
+        ...task,
+        Type: currentType.Creds.Name,
+        Name: currentType.Actions[0].Title,
+      }));
+  }, [JSON.stringify(currentType)]);
 
   useEffect(() => {
     templates &&
@@ -84,6 +99,17 @@ const TaskEditorModal = ({
         }))
       );
   }, [templates]);
+
+  const toggleType = (type) => {
+    setCurrentType(type);
+    setCurrentTask({
+      ...currentTask,
+      Subject: "",
+      Body: "",
+    });
+  };
+
+  // console.log(currentType);
 
   return (
     <>
@@ -123,7 +149,7 @@ const TaskEditorModal = ({
               <TaskTypes
                 types={types}
                 current={currentType}
-                setCurrent={(type) => setCurrentType(type)}
+                setCurrent={toggleType}
               />
               <h3 className="mt-3 mb-3">
                 {currentType
@@ -131,26 +157,34 @@ const TaskEditorModal = ({
                   : "Тип задачи не выбран!"}
               </h3>
               <div className="task-editor-wrapper flex-fill d-flex flex-column">
-                {["manual_email", "linkedin"].includes(currentType) && (
+                {["manual_email", "linkedin"].includes(
+                  currentType && currentType.Creds.Name
+                ) && (
                   <div className="editor-label editor-subject">
                     <span>Тема</span>
                     <Input
                       type="text"
                       placeholder="Тема письма..."
                       className="editor-subject-input"
-                      // value={value || ""}
-                      // onChange={onChange}
+                      value={currentTask.Subject || ""}
+                      onChange={(e) =>
+                        setCurrentTask({
+                          ...currentTask,
+                          Subject: e.target.value,
+                        })
+                      }
                     />
                     <div>
                       <span style={{ fontSize: 16 }}>{"{ }"}</span>
-                      {currentType === "manual_email" && (
-                        <>
-                          <span onClick={() => setIsHasCC(!isHasCC)}>CC</span>
-                          <span onClick={() => setIsHasBCC(!isHasBCC)}>
-                            BCC
-                          </span>
-                        </>
-                      )}
+                      {currentType &&
+                        currentType.Creds.Name === "manual_email" && (
+                          <>
+                            <span onClick={() => setIsHasCC(!isHasCC)}>CC</span>
+                            <span onClick={() => setIsHasBCC(!isHasBCC)}>
+                              BCC
+                            </span>
+                          </>
+                        )}
                     </div>
                   </div>
                 )}
@@ -181,16 +215,19 @@ const TaskEditorModal = ({
                 )}
                 <div className="task-editor flex-fill d-flex flex-column pl-0 pr-0 pb-0">
                   <div className="mb-0 mt-1 pl-3" style={{ zIndex: 100 }}>
-                    {currentType === "manual_email" && (
-                      <DropdownWithIcon
-                        label="Шаблон"
-                        icon={() => <TbTemplate size="1.1rem" />}
-                        size="sm"
-                        className="editor-btn mr-2"
-                        items={tamplatesList.map((template) => template.name)}
-                        onSelect={(name) => setActiveTemplate(templates[name])}
-                      />
-                    )}
+                    {currentType &&
+                      currentType.Creds.Name === "manual_email" && (
+                        <DropdownWithIcon
+                          label="Шаблон"
+                          icon={() => <TbTemplate size="1.1rem" />}
+                          size="sm"
+                          className="editor-btn mr-2"
+                          items={tamplatesList.map((template) => template.name)}
+                          onSelect={(name) =>
+                            setActiveTemplate(templates[name])
+                          }
+                        />
+                      )}
                     <DropdownWithIcon
                       label="Переменные"
                       icon={() => <BiCodeCurly size="1.1rem" />}
@@ -203,11 +240,14 @@ const TaskEditorModal = ({
                     />
                   </div>
                   <div className="flex-fill">
-                    {currentType === "manual_email" ? (
+                    {currentType &&
+                    currentType.Creds.Name === "manual_email" ? (
                       <EditorEmail
                         content={activeTemplate}
                         style="body {margin: 0px; padding: 0 10px}"
-                        onChange={(Body) => setBody(Body)}
+                        onChange={(Body) =>
+                          setCurrentTask((task) => ({ ...task, Body }))
+                        }
                         insertedVariable={selectedVariable}
                         toolbar="undo redo bold italic alignleft aligncenter alignright alignjustify bullist numlist fontsize forecolor backcolor | blocks fontfamily removeformat "
                       />
@@ -216,10 +256,13 @@ const TaskEditorModal = ({
                         type="textarea"
                         placeholder="Сообщение..."
                         className="pl-3 h-100 border-0 task-editor-textarea"
-                        onChange={(e) => setBody(e.target.value)}
-
-                        // value={value || ""}
-                        // onChange={onChange}
+                        onChange={(e) =>
+                          setCurrentTask((task) => ({
+                            ...task,
+                            Body: e.target.value,
+                          }))
+                        }
+                        value={currentTask.Body || ""}
                       />
                     )}
                   </div>
@@ -230,31 +273,10 @@ const TaskEditorModal = ({
               <div className="task-preview h-100 p-0">
                 <div className="task-preview-label">предпросмотр</div>
                 <div className="h-100">
-                  <EditorEmail
-                    content={
-                      '<head><meta name="viewport" content="width=400, initial-scale=1.0"></head>' +
-                      pupa(body.replaceAll("{{.", "{{"), {
-                        Contact: {
-                          ...Object.fromEntries(
-                            Object.entries(StubContact).map(([k, v]) => [
-                              k[0].toUpperCase() + k.slice(1),
-                              v,
-                            ])
-                          ),
-                        },
-                        Me: {
-                          ...Object.fromEntries(
-                            Object.entries(Account).map(([k, v]) => [
-                              k[0].toUpperCase() + k.slice(1),
-                              v,
-                            ])
-                          ),
-                        },
-                      })
-                    }
-                    style="body {margin: 0px; padding: 0 10px}"
-                    disabled={true}
-                    visibleToolbar={false}
+                  <PreviewViewer
+                    body={currentTask.Body}
+                    stubContact={StubContact}
+                    account={Account}
                   />
                 </div>
               </div>

@@ -1,6 +1,6 @@
 const serverUrls = {
   remote: {
-    http: "http://45.156.119.155:3002",
+    http: "http://82.146.41.108:3002",
     https: window.location.origin + "/api",
   },
   local: {

@@ -10,13 +10,12 @@ const PaginationCreateSequence = ({ pages, currentIndex, setCurrentIndex }) => {
             index === currentIndex ? "current" : ""
           } ${page.isDone ? "done" : ""}`}
           onClick={() => setCurrentIndex(index)}
-          s
           //   style={{ background: index % 2 ? "red" : "green" }}
         >
           {index > 0 ? (
-            <div class="page-sequence-arrow">
-              <div class="page-sequence-arrow-top"></div>
-              <div class="page-sequence-arrow-bottom"></div>
+            <div className="page-sequence-arrow">
+              <div className="page-sequence-arrow-top"></div>
+              <div className="page-sequence-arrow-bottom"></div>
             </div>
           ) : null}
           <div className={`page-sequence-icon`}>

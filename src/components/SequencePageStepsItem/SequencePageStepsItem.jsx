@@ -13,6 +13,7 @@ import SequencePageStepsModalDelay from "components/SequencePageStepsModalDelay/
 import moment from "moment";
 import TaskEditorModal from "components/TaskEditorModal/TaskEditorModal";
 import ModalYouSure from "components/ModalYouSure/ModalYouSure";
+import TypeIcon from "components/TypeIcon/TypeIcon";
 
 const SequencePageStepsItem = ({
   step,
@@ -36,17 +37,12 @@ const SequencePageStepsItem = ({
     <div className="d-flex sequence-step">
       <div className="d-flex flex-column pl-0 pr-3 align-items-center">
         <div className="sequence-icons">
-          <div className="type-icon">
-            {step.type === "linkedin" ? (
-              <BsLinkedin color="#037794" size="1.5rem" />
-            ) : null}
-            {step.type === "carbage" ? (
-              <RiDeleteBin5Line size="1.5rem" />
-            ) : null}
-            {step.type === "mail" ? (
-              <MdMail color="brown" size="1.5rem" />
-            ) : null}
-          </div>
+          <TypeIcon
+            type={step.Type}
+            size="1.5rem"
+            className="type-icon"
+            inverse={true}
+          />
           <div className="delete-icon" onClick={() => setIsAskSure(true)}>
             <RiDeleteBin5Line size="1.5rem" color="#d30101" />
           </div>
@@ -93,13 +89,15 @@ const SequencePageStepsItem = ({
           onClick={onDoubleClick}
         >
           <div className="col col-4 d-flex">
-            <div style={{ fontWeight: 600, fontSize: 14 }}>{step.name}</div>
+            <div style={{ fontWeight: 600, fontSize: 14 }} className="subject">
+              {step.Subject || step.Name}
+            </div>
           </div>
           <div
             className="col col-7 description"
             style={{ opacity: 0.7, fontSize: 14 }}
           >
-            {step.description}
+            {step.Body || step.Description}
           </div>
           <div className="col col-1 sequence-desc-controls d-flex">
             <FiEdit3
