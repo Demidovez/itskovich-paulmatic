@@ -9,6 +9,10 @@
     padding-right: 30px;
     display: flex;
     justify-content: end;
+    position: sticky;
+    top: 0;
+    background: white;
+
     & > div {
       display: flex;
       justify-content: center;

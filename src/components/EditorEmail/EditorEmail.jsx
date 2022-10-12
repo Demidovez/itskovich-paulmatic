@@ -11,6 +11,7 @@ const EditorEmail = ({
   disabled = false,
   visibleToolbar = true,
   insertedVariable = "",
+  toolbar = "",
 }) => {
   const [addedImagesId, setAdedImagesId] = useState([]);
   const data = useMemo(() => content, [content]);
@@ -78,10 +79,11 @@ const EditorEmail = ({
             "preview",
           ],
           toolbar: visibleToolbar
-            ? "undo redo | blocks fontfamily fontsize | " +
-              "bold italic | alignleft aligncenter | " +
-              "alignright alignjustify | bullist numlist | forecolor " +
-              "removeformat backcolor "
+            ? toolbar ||
+              "undo redo | blocks fontfamily fontsize | " +
+                "bold italic | alignleft aligncenter | " +
+                "alignright alignjustify | bullist numlist | forecolor " +
+                "removeformat backcolor "
             : false,
           content_style: `body { font-family:Helvetica,Arial,sans-serif; font-size:14px } ${style}`,
         }}

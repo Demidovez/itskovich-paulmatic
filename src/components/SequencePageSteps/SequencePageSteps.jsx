@@ -8,6 +8,8 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import SequencePageStepsItem from "components/SequencePageStepsItem/SequencePageStepsItem";
 import { useDispatch } from "react-redux";
 import { saveStepsSequence } from "store/slices/sequenceMasterSlice";
+import { Button } from "reactstrap";
+import TaskEditorModal from "components/TaskEditorModal/TaskEditorModal";
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -19,59 +21,52 @@ const reorder = (list, startIndex, endIndex) => {
 
 const SequencePageSteps = ({ onChange }) => {
   const dispatch = useDispatch();
+  const [dataForModalEditor, setDataForModalEditor] = useState({});
 
   const [steps, setSteps] = useState([
-    {
-      id: new Date().getTime(),
-      type: "linkedin",
-      step: 0,
-      level: "",
-      name: "Написать сообщение",
-      description: "Сообщение в LinkedIn профиль",
-      body: "<body>Привет, {{.Contact.Name}}!</body>",
-      subject: "Наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
-      isNoReply: false,
-      delay: 86400,
-    },
-    {
-      id: new Date().getTime() + 1,
-      type: "mail",
-      step: 1,
-      level: "",
-      name: "Отправить письмо",
-      description: "Простой просмотр LinkedIn профиля",
-      body: "<body>Hi, {{.Contact.Name}}!</body>",
-      subject:
-        "Здравствуйте, наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
-      isNoReply: false,
-      delay: 86400,
-    },
-    {
-      id: new Date().getTime() + 2,
-      type: "linkedin",
-      step: 2,
-      level: "",
-      name: "Просмотр профиля",
-      description: "Простой просмотр LinkedIn профиля",
-      body: "<body>Aloha, {{.Contact.Name}}!</body>",
-      subject:
-        "Добрый день, наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
-      isNoReply: false,
-      delay: 86400,
-    },
-    {
-      id: new Date().getTime() + 3,
-      type: "linkedin",
-      step: 3,
-      level: "",
-      name: "Просмотр профиля",
-      description: "Простой просмотр LinkedIn профиля",
-      body: "<body>Приветствую, {{.Contact.Name}}!</body>",
-      subject:
-        "Доброе утро, наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
-      isNoReply: false,
-      delay: 86400,
-    },
+    // {
+    //   id: new Date().getTime(),
+    //   type: "linkedin",
+    //   step: 0,
+    //   name: "Написать сообщение",
+    //   description: "Сообщение в LinkedIn профиль",
+    //   body: "<body>Привет, {{.Contact.Name}}!</body>",
+    //   subject: "Наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
+    //   delay: 86400,
+    // },
+    // {
+    //   id: new Date().getTime() + 1,
+    //   type: "mail",
+    //   step: 1,
+    //   name: "Отправить письмо",
+    //   description: "Простой просмотр LinkedIn профиля",
+    //   body: "<body>Hi, {{.Contact.Name}}!</body>",
+    //   subject:
+    //     "Здравствуйте, наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
+    //   delay: 86400,
+    // },
+    // {
+    //   id: new Date().getTime() + 2,
+    //   type: "linkedin",
+    //   step: 2,
+    //   name: "Просмотр профиля",
+    //   description: "Простой просмотр LinkedIn профиля",
+    //   body: "<body>Aloha, {{.Contact.Name}}!</body>",
+    //   subject:
+    //     "Добрый день, наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
+    //   delay: 86400,
+    // },
+    // {
+    //   id: new Date().getTime() + 3,
+    //   type: "linkedin",
+    //   step: 3,
+    //   name: "Просмотр профиля",
+    //   description: "Простой просмотр LinkedIn профиля",
+    //   body: "<body>Приветствую, {{.Contact.Name}}!</body>",
+    //   subject:
+    //     "Доброе утро, наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
+    //   delay: 86400,
+    // },
   ]);
 
   useEffect(() => {
@@ -87,24 +82,31 @@ const SequencePageSteps = ({ onChange }) => {
   }, [JSON.stringify(steps)]);
 
   const addStep = () => {
+    setDataForModalEditor({
+      mode: "create",
+    });
+  };
+
+  const createOrUpdateStep = (step) => {
     onChange();
 
-    setSteps([
-      ...steps,
-      {
-        id: new Date().getTime(),
-        type: "linkedin",
-        step: steps.length,
-        level: "",
-        name: "Просмотр профиля",
-        description: "Простой просмотр LinkedIn профиля",
-        body: "<body>Привет, {{.Contact.Name}}!</body>",
-        subject:
-          "Доброе время суток, наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
-        isNoReply: false,
-        delay: 86400,
-      },
-    ]);
+    if (step.id) {
+      setSteps((steps) =>
+        steps.map((oldStep) => (oldStep.id === step.id ? step : oldStep))
+      );
+    } else {
+      setSteps([
+        ...steps,
+        {
+          ...step,
+          id: new Date().getTime(),
+          step: steps.length,
+          name: "Просмотр профиля",
+          description: "Простой просмотр LinkedIn профиля",
+          delay: 86400,
+        },
+      ]);
+    }
   };
 
   const onDragEnd = (result) => {
@@ -126,18 +128,20 @@ const SequencePageSteps = ({ onChange }) => {
   };
 
   return (
-    <div className="sequence-page-steps-component modal-body d-flex flex-column overflow-hidden p-0">
+    <div className="sequence-page-steps-component modal-body d-flex flex-column overflow-auto p-0">
       <div className="add-step">
-        <div onClick={addStep}>
-          <MdAdd size="1.6rem" />
-        </div>
+        {steps.length ? (
+          <div onClick={addStep}>
+            <MdAdd size="1.6rem" />
+          </div>
+        ) : null}
       </div>
-      <div className="overflow-hidden h-100 dragcontext">
+      <div className="h-100 dragcontext">
         {steps.length > 0 ? (
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="droppable">
               {(provided) => (
-                <div ref={provided.innerRef} className="h-100">
+                <div ref={provided.innerRef} className="">
                   <div className="overflow-auto h-100 pl-3 pr-3">
                     {steps.map((step, index) => (
                       <Draggable
@@ -160,6 +164,12 @@ const SequencePageSteps = ({ onChange }) => {
                             <SequencePageStepsItem
                               step={step}
                               onChange={updateStep}
+                              openModal={() =>
+                                setDataForModalEditor({
+                                  mode: "edit",
+                                  stepId: step.id,
+                                })
+                              }
                               delay={steps
                                 .slice(1, index + 1)
                                 .reduce((acc, step) => (acc += step.delay), 0)}
@@ -175,9 +185,21 @@ const SequencePageSteps = ({ onChange }) => {
             </Droppable>
           </DragDropContext>
         ) : (
-          "Добавить шаг"
+          <div className="d-flex flex-column align-items-center pt-7">
+            <p>Здесь Вы можете создать шаги последовательности</p>
+            <Button color="primary" outline type="button" onClick={addStep}>
+              Создать шаг
+            </Button>
+          </div>
         )}
       </div>
+      <TaskEditorModal
+        task={steps.find((step) => step.id === dataForModalEditor.stepId)}
+        mode={dataForModalEditor.mode}
+        isShow={!!dataForModalEditor.mode}
+        onClose={() => setDataForModalEditor({})}
+        onSubmit={(step) => createOrUpdateStep(step)}
+      />
     </div>
   );
 };

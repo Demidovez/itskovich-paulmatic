@@ -12,9 +12,17 @@ import "./TaskEditorModal.scss";
 import TaskTypes from "components/TaskTypes/TaskTypes";
 import DropdownCustom from "components/Dropdown/Dropdown";
 import DropdownWithIcon from "components/DropdownWithIcon/DropdownWithIcon";
-import { MdSort } from "react-icons/md";
+import { BiCodeCurly } from "react-icons/bi";
+import { TbTemplate } from "react-icons/tb";
 
-const TaskEditorModal = ({ isShow, onClose, task }) => {
+const TaskEditorModal = ({
+  isShow,
+  onClose,
+  task,
+  mode = "create",
+  onSubmit,
+}) => {
+  const [currentTask, setCurrentTask] = useState(task || {});
   const [isHasCC, setIsHasCC] = useState(false);
   const [isHasBCC, setIsHasBCC] = useState(false);
   const [types, setTypes] = useState([]);
@@ -25,8 +33,6 @@ const TaskEditorModal = ({ isShow, onClose, task }) => {
   const [activeTemplate, setActiveTemplate] = useState("");
   const [body, setBody] = useState("");
   const [selectedVariable, setSelectedVariable] = useState("");
-
-  // console.log(task);
 
   usePrompt(isChanged);
 
@@ -96,7 +102,9 @@ const TaskEditorModal = ({ isShow, onClose, task }) => {
       >
         <div className="modal-header text-center pb-2">
           <div className="w-100">
-            <h4 className="modal-title w-100 pb-2 d-flex">Создание задачи</h4>
+            <h4 className="modal-title w-100 pb-2 d-flex">
+              {mode === "create" ? "Создание задачи" : "Изменение задачи"}
+            </h4>
           </div>
           <button
             aria-label="Close"
@@ -109,7 +117,7 @@ const TaskEditorModal = ({ isShow, onClose, task }) => {
             <span aria-hidden={true}>×</span>
           </button>
         </div>
-        <div className="modal-body d-flex flex-column pt-2">
+        <div className="modal-body d-flex flex-column pt-2 ">
           <div className="row flex-fill">
             <div className="col col-7 d-flex flex-column">
               <TaskTypes
@@ -117,27 +125,36 @@ const TaskEditorModal = ({ isShow, onClose, task }) => {
                 current={currentType}
                 setCurrent={(type) => setCurrentType(type)}
               />
-              <h3 className="mt-2">
+              <h3 className="mt-3 mb-3">
                 {currentType
                   ? currentType.Actions[0].Title
                   : "Тип задачи не выбран!"}
               </h3>
               <div className="task-editor-wrapper flex-fill d-flex flex-column">
-                <div className="editor-label editor-subject">
-                  <span>Тема</span>
-                  <Input
-                    type="text"
-                    placeholder="Тема письма..."
-                    className="editor-subject-input"
-                    // value={value || ""}
-                    // onChange={onChange}
-                  />
-                  <div>
-                    <span style={{ fontSize: 16 }}>{"{ }"}</span>
-                    <span onClick={() => setIsHasCC(!isHasCC)}>CC</span>
-                    <span onClick={() => setIsHasBCC(!isHasBCC)}>BCC</span>
+                {["manual_email", "linkedin"].includes(currentType) && (
+                  <div className="editor-label editor-subject">
+                    <span>Тема</span>
+                    <Input
+                      type="text"
+                      placeholder="Тема письма..."
+                      className="editor-subject-input"
+                      // value={value || ""}
+                      // onChange={onChange}
+                    />
+                    <div>
+                      <span style={{ fontSize: 16 }}>{"{ }"}</span>
+                      {currentType === "manual_email" && (
+                        <>
+                          <span onClick={() => setIsHasCC(!isHasCC)}>CC</span>
+                          <span onClick={() => setIsHasBCC(!isHasBCC)}>
+                            BCC
+                          </span>
+                        </>
+                      )}
+                    </div>
                   </div>
-                </div>
+                )}
+
                 {isHasCC && (
                   <div className="editor-label">
                     <span>СС</span>
@@ -164,17 +181,19 @@ const TaskEditorModal = ({ isShow, onClose, task }) => {
                 )}
                 <div className="task-editor flex-fill d-flex flex-column pl-0 pr-0 pb-0">
                   <div className="mb-0 mt-1 pl-3" style={{ zIndex: 100 }}>
-                    <DropdownWithIcon
-                      label="Шаблон"
-                      icon={() => <MdSort size="1.5rem" />}
-                      size="sm"
-                      className="editor-btn mr-2"
-                      items={tamplatesList.map((template) => template.name)}
-                      onSelect={(name) => setActiveTemplate(templates[name])}
-                    />
+                    {currentType === "manual_email" && (
+                      <DropdownWithIcon
+                        label="Шаблон"
+                        icon={() => <TbTemplate size="1.1rem" />}
+                        size="sm"
+                        className="editor-btn mr-2"
+                        items={tamplatesList.map((template) => template.name)}
+                        onSelect={(name) => setActiveTemplate(templates[name])}
+                      />
+                    )}
                     <DropdownWithIcon
                       label="Переменные"
-                      icon={() => <MdSort size="1.5rem" />}
+                      icon={() => <BiCodeCurly size="1.1rem" />}
                       className="editor-btn"
                       size="sm"
                       items={variablesList}
@@ -184,12 +203,25 @@ const TaskEditorModal = ({ isShow, onClose, task }) => {
                     />
                   </div>
                   <div className="flex-fill">
-                    <EditorEmail
-                      content={activeTemplate}
-                      style="body {margin: 0px}"
-                      onChange={(Body) => setBody(Body)}
-                      insertedVariable={selectedVariable}
-                    />
+                    {currentType === "manual_email" ? (
+                      <EditorEmail
+                        content={activeTemplate}
+                        style="body {margin: 0px; padding: 0 10px}"
+                        onChange={(Body) => setBody(Body)}
+                        insertedVariable={selectedVariable}
+                        toolbar="undo redo bold italic alignleft aligncenter alignright alignjustify bullist numlist fontsize forecolor backcolor | blocks fontfamily removeformat "
+                      />
+                    ) : (
+                      <Input
+                        type="textarea"
+                        placeholder="Сообщение..."
+                        className="pl-3 h-100 border-0"
+                        onChange={(e) => setBody(e.target.value)}
+
+                        // value={value || ""}
+                        // onChange={onChange}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
@@ -220,7 +252,7 @@ const TaskEditorModal = ({ isShow, onClose, task }) => {
                         },
                       })
                     }
-                    style="body {margin: 0px;}"
+                    style="body {margin: 0px; padding: 0 10px}"
                     disabled={true}
                     visibleToolbar={false}
                   />
@@ -239,8 +271,15 @@ const TaskEditorModal = ({ isShow, onClose, task }) => {
           >
             Отмена
           </Button>
-          <Button color="primary" type="button" onClick={() => handleClose()}>
-            Сохранить
+          <Button
+            color="primary"
+            type="button"
+            onClick={() => {
+              onSubmit(currentTask);
+              handleClose();
+            }}
+          >
+            {mode === "create" ? "Создать" : "Сохранить"}
           </Button>
         </div>
       </Modal>

@@ -13,15 +13,14 @@ import SequencePageStepsModalDelay from "components/SequencePageStepsModalDelay/
 import moment from "moment";
 import TaskEditorModal from "components/TaskEditorModal/TaskEditorModal";
 
-const SequencePageStepsItem = ({ step, onChange, delay }) => {
-  const [isShowModalEditor, setIsShowModalEditor] = useState(false);
+const SequencePageStepsItem = ({ step, onChange, delay, openModal }) => {
   const [isShowModalDelay, setIsShowModalDelay] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const toggleTooltip = () => setTooltipOpen(!tooltipOpen);
 
   const onDoubleClick = (e) => {
     if (e.detail === 2) {
-      setIsShowModalEditor(true);
+      openModal();
     }
   };
 
@@ -77,7 +76,6 @@ const SequencePageStepsItem = ({ step, onChange, delay }) => {
           onClick={onDoubleClick}
         >
           <div className="col col-4 d-flex">
-            <div style={{ width: 50 }}>{step.level}</div>
             <div style={{ fontWeight: 600, fontSize: 14 }}>{step.name}</div>
           </div>
           <div
@@ -90,7 +88,7 @@ const SequencePageStepsItem = ({ step, onChange, delay }) => {
             <FiEdit3
               size="1.2rem"
               className="mr-2"
-              onClick={() => setIsShowModalEditor(true)}
+              onClick={() => openModal()}
             />
             <FiPlusSquare size="1.2rem" />
           </div>
@@ -101,11 +99,6 @@ const SequencePageStepsItem = ({ step, onChange, delay }) => {
         onClose={() => setIsShowModalDelay(false)}
         onSubmit={(delay) => onChange({ ...step, delay })}
         value={step.delay}
-      />
-      <TaskEditorModal
-        task={step}
-        isShow={isShowModalEditor}
-        onClose={() => setIsShowModalEditor(false)}
       />
     </div>
   );
