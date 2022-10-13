@@ -21,6 +21,7 @@ const initialState = {
     },
     Marketplace: {},
   },
+  Folders: [],
 };
 
 export const commonSlice = createSlice({
@@ -42,6 +43,9 @@ export const commonSlice = createSlice({
     setCommonInfoHtmlTemplates: (state, action) => {
       state.Templates = action.payload;
     },
+    setFolders: (state, action) => {
+      state.Folders = action.payload;
+    },
   },
 });
 
@@ -51,6 +55,7 @@ export const {
   setCommonInfoSequences,
   setCurrentUser,
   setCommonInfoHtmlTemplates,
+  setFolders,
 } = commonSlice.actions;
 
 export default commonSlice.reducer;

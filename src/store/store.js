@@ -13,6 +13,7 @@ import { tasksApi } from "./api/tasks";
 import { commonApi } from "./api/common";
 import { sequencesApi } from "./api/sequences";
 import { notificationsApi } from "./api/notifications";
+import { foldersApi } from "./api/folders";
 
 export const store = configureStore({
   reducer: {
@@ -30,6 +31,7 @@ export const store = configureStore({
     [commonApi.reducerPath]: commonApi.reducer,
     [sequencesApi.reducerPath]: sequencesApi.reducer,
     [notificationsApi.reducerPath]: notificationsApi.reducer,
+    [foldersApi.reducerPath]: foldersApi.reducer,
   },
   middleware: (getDefaultMiddleware) => [
     ...getDefaultMiddleware(),
@@ -40,5 +42,6 @@ export const store = configureStore({
     commonApi.middleware,
     sequencesApi.middleware,
     notificationsApi.middleware,
+    foldersApi.middleware,
   ],
 });

@@ -1,18 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLazyGetCommonInfoQuery } from "store/api/common";
 import { useLazyGetNotificationsQuery } from "store/api/notifications";
-import { useLazyGetTasksQuery } from "store/api/tasks";
-import { useSkipTaskMutation } from "store/api/tasks";
-import { useReplyTaskMutation } from "store/api/tasks";
-import { useExecuteTaskMutation } from "store/api/tasks";
-import { useLazyGetStatisticsOfTasksQuery } from "store/api/tasks";
-import { setCommonInfoHtmlTemplates } from "store/slices/commonSlice";
-import { setCurrentUser } from "store/slices/commonSlice";
-import { setStatistickInfo } from "store/slices/commonSlice";
-import { setCommonInfoTasks } from "store/slices/commonSlice";
+import {
+  useSkipTaskMutation,
+  useReplyTaskMutation,
+  useExecuteTaskMutation,
+  useLazyGetStatisticsOfTasksQuery,
+} from "store/api/tasks";
+import {
+  setCommonInfoHtmlTemplates,
+  setFolders,
+  setCurrentUser,
+  setStatistickInfo,
+  setCommonInfoTasks,
+} from "store/slices/commonSlice";
 import { toast } from "react-toastify";
-import { MdClose } from "react-icons/md";
 
 const CommonThings = () => {
   const dispatch = useDispatch();
@@ -98,6 +101,7 @@ const CommonThings = () => {
     if (commonData) {
       dispatch(setCommonInfoTasks(commonData.Tasks));
       dispatch(setCommonInfoHtmlTemplates(commonData.Templates));
+      dispatch(setFolders(commonData.Folders));
       commonData.Account && saveUserToLocalStorage(commonData.Account);
       if (commonData.Account) {
         dispatch(setCurrentUser(commonData.Account));

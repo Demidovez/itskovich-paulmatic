@@ -1,17 +1,14 @@
 import { Button, Input, Modal } from "reactstrap";
 import { useEffect, useState } from "react";
+import "./ModalCreateFolder.scss";
 
-const ModalCreateFolder = ({ isShow, onClose, onSubmit }) => {
+const ModalCreateFolder = ({ isShow, onClose, onSubmit, folder, onDelete }) => {
   // const [currentTask, setCurrentTask] = useState(task);
-  const [folderName, setFolderName] = useState("");
-
-  useEffect(() => {
-    isShow && setFolderName("");
-  }, [isShow]);
+  const [folderName, setFolderName] = useState(folder.Name);
 
   return (
     <Modal
-      className="modal-dialog-centered"
+      className="modal-create-folder modal-dialog-centered"
       isOpen={isShow}
       toggle={onClose}
       style={{
@@ -23,8 +20,8 @@ const ModalCreateFolder = ({ isShow, onClose, onSubmit }) => {
     >
       <div className="modal-header text-center pb-2">
         <div className="w-100">
-          <h4 className="modal-title w-100 pb-2 d-flex justify-content-center">
-            Создать новую папку
+          <h4 className="modal-title w-100 pb-2 d-flex">
+            {folder.id ? "Изменить папку" : "Создать новую папку"}
           </h4>
         </div>
         <button
@@ -47,23 +44,30 @@ const ModalCreateFolder = ({ isShow, onClose, onSubmit }) => {
           onChange={(e) => setFolderName(e.target.value)}
         />
       </div>
-      <div className="modal-footer pt-0">
-        <Button
-          color="danger"
-          outline
-          data-dismiss="modal"
-          type="button"
-          onClick={onClose}
-        >
-          Отмена
-        </Button>
-        <Button
-          color="primary"
-          type="button"
-          onClick={() => onSubmit(folderName)}
-        >
-          Создать
-        </Button>
+      <div className="modal-footer pt-0 justify-content-between">
+        {folder.id ? (
+          <div onClick={onDelete} className="delete-folder">
+            удалить
+          </div>
+        ) : null}
+        <div>
+          <Button
+            color="danger"
+            outline
+            data-dismiss="modal"
+            type="button"
+            onClick={onClose}
+          >
+            Отмена
+          </Button>
+          <Button
+            color="primary"
+            type="button"
+            onClick={() => onSubmit({ ...folder, Name: folderName })}
+          >
+            {folder.id ? "Изменить" : "Создать"}
+          </Button>
+        </div>
       </div>
     </Modal>
   );

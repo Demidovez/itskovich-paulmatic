@@ -13,8 +13,25 @@
       cursor: pointer;
       transition: all 0.2s ease-in-out;
 
+      &.folder {
+        .folder-name {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+
+        .edit-folder {
+          opacity: 0;
+          transition: all 0.3s;
+        }
+      }
+
       &.folder:hover {
         color: var(--primary);
+
+        .edit-folder {
+          opacity: 1;
+        }
       }
 
       & > div {

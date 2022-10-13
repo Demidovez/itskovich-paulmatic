@@ -1,0 +1,12 @@
+.modal-create-folder {
+  .delete-folder {
+    cursor: pointer;
+    color: var(--orange);
+    transition: all 0.3s;
+    border-bottom: 1px solid transparent;
+
+    &:hover {
+      border-bottom-color: var(--orange);
+    }
+  }
+}

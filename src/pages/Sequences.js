@@ -24,7 +24,6 @@ import { useLazyDeleteSequencesQuery } from "store/api/sequences";
 
 const Sequences = () => {
   const dispatch = useDispatch();
-  const [isTest, setIsTest] = useState(false);
   const [isShowCreator, setIsShowCreator] = useState(false);
 
   const { isSelectedAll, selectedIds } = useSelector(
@@ -78,7 +77,7 @@ const Sequences = () => {
         <Card className="shadow flex-fill overflow-hidden">
           <Row className="p-4 flex-fill">
             <div className="col col-2">
-              <SequencesFolders isTest={isTest} />
+              <SequencesFolders />
             </div>
             <div className="col col-10 pl-0 pr-0 d-flex flex-column">
               <div className="d-flex align-items-center justify-content-between">

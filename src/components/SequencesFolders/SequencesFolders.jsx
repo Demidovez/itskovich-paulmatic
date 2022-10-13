@@ -6,81 +6,56 @@ import {
   MdFolderOpen,
   MdOutlineCreateNewFolder,
 } from "react-icons/md";
-import {
-  Button,
-  Accordion,
-  AccordionBody,
-  AccordionHeader,
-  AccordionItem,
-  Modal,
-} from "reactstrap";
+import { Button } from "reactstrap";
+import { useDeleteFoldersMutation } from "store/api/folders";
+import { useCreateOrUpdateFolderMutation } from "store/api/folders";
+import { useGetFoldersQuery } from "store/api/folders";
 import "./SequencesFolders.scss";
 
-const SequencesFolders = ({ isTest }) => {
+const SequencesFolders = () => {
   const [folders, setFolders] = useState([]);
-  const [isShowModalCreateFolder, setIsShowModalCreateFolder] = useState(false);
+  const { data: foldersList, idFetching, isLoading } = useGetFoldersQuery();
+  const [createOrUpdateFolder] = useCreateOrUpdateFolderMutation();
+  const [deleteFolders] = useDeleteFoldersMutation();
+
+  const [folderForModal, setFolderForModal] = useState(null);
+
+  const onCreateOrUpdateFolder = (folder) => {
+    setFolderForModal(null);
+    createOrUpdateFolder(folder);
+    if (folder.id) {
+      setFolders((folders) =>
+        folders.map((oldFolder) =>
+          oldFolder.id === folder.id ? folder : oldFolder
+        )
+      );
+    } else {
+      setFolders((folders) => [{ ...folder, id: 99999 }, ...folders]);
+    }
+  };
 
   useEffect(() => {
-    if (isTest) {
-      setFolders([
-        {
-          name: "metal",
-          label: "Металлургия",
-          sequences: [
-            {
-              name: "sequence_1",
-              label: "Последовательность 1",
-            },
-            {
-              name: "sequence_2",
-              label: "Последовательность 2",
-            },
-            {
-              name: "sequence_3",
-              label: "Последовательность 3",
-            },
-            {
-              name: "sequence_4",
-              label: "Последовательность 4",
-            },
-          ],
-        },
-        {
-          name: "another",
-          label: "Другое",
-          sequences: [
-            {
-              name: "sequence_11",
-              label: "Другое 1",
-            },
-            {
-              name: "sequence_22",
-              label: "Другое 2",
-            },
-            {
-              name: "sequence_33",
-              label: "Другое 3",
-            },
-            {
-              name: "sequence_44",
-              label: "Другое 4",
-            },
-          ],
-        },
-      ]);
-    } else {
-      setFolders([]);
-    }
-  }, [isTest]);
+    foldersList && setFolders(foldersList);
+  }, [JSON.stringify(foldersList)]);
 
-  const onCreateFolder = (folderName) => {
-    setIsShowModalCreateFolder(false);
+  const onEditFolder = (folder) => {
+    setFolderForModal(folder);
+  };
+
+  const onDeleteFolder = () => {
+    deleteFolders([folderForModal.id]);
+
+    setFolders((folders) =>
+      folders.filter((folder) => folder.id !== folderForModal.id)
+    );
+
+    setFolderForModal(null);
   };
 
   return (
     <>
       <div className="squences-folders-component">
-        {folders.length === 0 && (
+        {folders && folders.length === 0 && (
           <div
             className="d-flex flex-column align-items-center p-1"
             style={{ opacity: 0.7 }}
@@ -93,7 +68,7 @@ const SequencesFolders = ({ isTest }) => {
               className="d-flex align-items-center"
               color="info"
               outline
-              onClick={() => setIsShowModalCreateFolder(true)}
+              onClick={() => setFolderForModal({})}
             >
               <MdFolderOpen size="1.5rem" className="mr-1" />
               Создать папку
@@ -101,23 +76,31 @@ const SequencesFolders = ({ isTest }) => {
           </div>
         )}
 
-        {folders.length > 0 && (
+        {folders && folders.length > 0 && (
           <>
             <div
               className="d-flex align-items-center justify-content-between mb-4 create-folder"
-              onClick={() => setIsShowModalCreateFolder(true)}
+              onClick={() => setFolderForModal({})}
             >
               Папки <MdOutlineCreateNewFolder size="1.75rem" />
             </div>
-            <SequencesFoldersAccordion folders={folders} className="folders" />
+            <SequencesFoldersAccordion
+              folders={folders}
+              className="folders"
+              onEdit={onEditFolder}
+            />
           </>
         )}
       </div>
-      <ModalCreateFolder
-        isShow={isShowModalCreateFolder}
-        onClose={() => setIsShowModalCreateFolder(false)}
-        onSubmit={onCreateFolder}
-      />
+      {folderForModal !== null && (
+        <ModalCreateFolder
+          isShow={true}
+          folder={folderForModal}
+          onDelete={onDeleteFolder}
+          onClose={() => setFolderForModal(null)}
+          onSubmit={onCreateOrUpdateFolder}
+        />
+      )}
     </>
   );
 };

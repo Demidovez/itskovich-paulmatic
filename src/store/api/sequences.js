@@ -54,7 +54,7 @@ export const sequencesApi = createApi({
         }
       },
     }),
-    stopSequences: builder.query({
+    stopSequences: builder.mutation({
       query: (sequenceIds) => ({
         url: "/stop",
         method: "GET",
@@ -66,8 +66,9 @@ export const sequencesApi = createApi({
           sessionToken: "user-1",
         },
       }),
+      invalidatesTags: [{ type: "Sequence", id: "LIST" }],
     }),
-    startSequences: builder.query({
+    startSequences: builder.mutation({
       query: (sequenceIds) => ({
         url: "/start",
         method: "GET",
@@ -79,6 +80,7 @@ export const sequencesApi = createApi({
           sessionToken: "user-1",
         },
       }),
+      invalidatesTags: [{ type: "Sequence", id: "LIST" }],
     }),
     deleteSequences: builder.query({
       query: (sequenceIds) => ({
@@ -110,7 +112,7 @@ export const {
   useLazyGetSequencesQuery,
   useGetSequencesQuery,
   useLazyAddContactsToSequenceQuery,
-  useLazyStartSequencesQuery,
-  useLazyStopSequencesQuery,
+  useStopSequencesMutation,
+  useStartSequencesMutation,
   useLazyDeleteSequencesQuery,
 } = sequencesApi;
