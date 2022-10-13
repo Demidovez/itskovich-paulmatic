@@ -111,7 +111,7 @@ const SequencePageSchedule = ({ onChange }) => {
           <div style={{ width: 100 }}></div>
         </div>
       </div>
-      <div className="body-schedule overflow1-auto">
+      <div className="body-schedule">
         {days.map((day, index) => (
           <div className="row-schedule" key={day.name}>
             <div style={{ width: 180 }} onClick={() => addCheckedDay(index)}>

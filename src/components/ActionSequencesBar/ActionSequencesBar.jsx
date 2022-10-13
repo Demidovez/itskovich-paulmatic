@@ -34,7 +34,7 @@ const ActionSequencesBar = ({ onDelete, disabled }) => {
       isOpen={dropdownOpen}
       toggle={toggle}
       disabled={disabled}
-      className="mr-3"
+      className="mr-0"
     >
       <DropdownToggle
         color="primary"

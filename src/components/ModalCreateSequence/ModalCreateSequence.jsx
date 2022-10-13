@@ -1,6 +1,6 @@
 import { Button, Input, Modal } from "reactstrap";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./ModalCreateSequence.scss";
 import SequencePageSteps from "components/SequencePageSteps/SequencePageSteps";
 import SequencePageSettings from "components/SequencePageSettings/SequencePageSettings";
@@ -24,6 +24,7 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
 
   const [currentIndexPage, setCurrentIndexPage] = useState(0);
 
+  // TODO: Заменить на pagesData
   const [pages, setPages] = useState([
     {
       name: "steps",
@@ -66,6 +67,17 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
       ),
     },
   ]);
+
+  const pagesData = useSelector((state) => state.sequenceMaster.pages);
+  const [isDone, setIsDone] = useState(false);
+
+  useEffect(() => {
+    const isDone = !Object.values(pagesData).some(
+      (page) => page.isDone === false
+    );
+
+    setIsDone(isDone);
+  }, [JSON.stringify(pagesData)]);
 
   const nextPage = () => {
     setCurrentIndexPage((prev) => prev + 1);
@@ -181,6 +193,7 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
               type="button"
               onClick={() => onSubmit()}
               size="sm"
+              disabled={!isDone}
             >
               Создать
             </Button>

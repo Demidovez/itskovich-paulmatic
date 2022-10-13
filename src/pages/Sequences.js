@@ -97,8 +97,8 @@ const Sequences = () => {
                       !isSelectedAll && (selectedIds || []).length === 0
                     }
                   />
-                  <SequencesSort />
-                  <SequencesStatusesSelector />
+                  {/* <SequencesSort />
+                  <SequencesStatusesSelector /> */}
                   <SequencesSearchBar />
                 </div>
               </div>

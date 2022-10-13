@@ -6,6 +6,7 @@ const initialState = {
   currentPage: 0,
   cached: {},
   isFetching: false,
+  selectedFolderId: 0,
 };
 
 export const sequencesSlice = createSlice({
@@ -37,6 +38,9 @@ export const sequencesSlice = createSlice({
     setSequencesRequestStatus: (state, action) => {
       state.isFetching = action.payload;
     },
+    selectFolder: (state, action) => {
+      state.selectedFolderId = action.payload;
+    },
   },
 });
 
@@ -47,6 +51,7 @@ export const {
   selectAllSequences,
   setSequencesRequestStatus,
   setSequencesToCache,
+  selectFolder,
 } = sequencesSlice.actions;
 
 export default sequencesSlice.reducer;

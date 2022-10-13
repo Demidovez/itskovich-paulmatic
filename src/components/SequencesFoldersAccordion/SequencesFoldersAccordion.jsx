@@ -4,31 +4,26 @@ import {
   MdKeyboardArrowDown,
   MdOutlineEdit,
 } from "react-icons/md";
+import { useSelector } from "react-redux";
 import { Collapse } from "reactstrap";
 
-const SequencesFoldersAccordion = ({ folders = [], className, onEdit }) => {
-  const [activeFolder, setActiveFolder] = useState("");
+const SequencesFoldersAccordion = ({
+  folders = [],
+  className,
+  onEdit,
+  onSelect,
+}) => {
+  const selectedFolderId = useSelector(
+    (state) => state.sequences.selectedFolderId
+  );
   const [activeSequence, setActiveSequence] = useState("");
-
-  const toggle = (id) => {
-    if (activeFolder === id) {
-      setActiveFolder("");
-    } else {
-      setActiveFolder(id);
-    }
-  };
-
-  const selectAll = () => {
-    setActiveFolder("");
-    setActiveSequence("");
-  };
 
   return (
     <div className={className}>
       <div
-        onClick={selectAll}
+        onClick={() => onSelect(0)}
         className={`${
-          !activeSequence ? "active" : ""
+          selectedFolderId === 0 ? "active" : ""
         } pt-1 folder all-sequences`}
       >
         Все
@@ -36,9 +31,9 @@ const SequencesFoldersAccordion = ({ folders = [], className, onEdit }) => {
       {folders.map((folder) => (
         <Fragment key={folder.id}>
           <div
-            onClick={() => toggle(folder.id)}
+            onClick={() => onSelect(folder.id)}
             className={`${
-              activeFolder === folder.id ? "active" : ""
+              selectedFolderId === folder.id ? "active" : ""
             } pt-2 folder d-flex align-items-center justify-content-between`}
           >
             <span className="folder-name">{folder.Name}</span>
@@ -50,14 +45,14 @@ const SequencesFoldersAccordion = ({ folders = [], className, onEdit }) => {
               />
             </span>
             {(folder.sequences || []).length > 0 ? (
-              activeFolder === folder.id ? (
+              selectedFolderId === folder.id ? (
                 <MdKeyboardArrowDown size="1.4rem" style={{ opacity: 0.7 }} />
               ) : (
                 <MdKeyboardArrowRight size="1.4rem" style={{ opacity: 0.7 }} />
               )
             ) : null}
           </div>
-          <Collapse isOpen={activeFolder === folder.id}>
+          <Collapse isOpen={selectedFolderId === folder.id}>
             {(folder.sequences || []).map((sequence) => (
               <div
                 key={sequence.name}

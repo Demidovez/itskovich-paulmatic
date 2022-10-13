@@ -83,30 +83,6 @@ const SequencesTableItem = ({ sequence, fields, isSelect, onSelect }) => {
                 </label>
               </td>
             );
-          } else if (field.name === "Description") {
-            return (
-              <td
-                key={field.name}
-                className="p-3 d-flex align-items-center"
-                style={{
-                  ...field.style,
-                  width: `calc(${field.style.width})`,
-                }}
-              >
-                <div
-                  style={{
-                    overflow: "hidden",
-                    whiteSpace: "nowrap",
-                    fontSize: 14,
-                    fontWeight: 100,
-                    textOverflow: "ellipsis",
-                    width: `calc(100%)`,
-                  }}
-                >
-                  {sequence[field.name]}
-                </div>
-              </td>
-            );
           } else if (field.name === "People") {
             return (
               <td
@@ -126,7 +102,7 @@ const SequencesTableItem = ({ sequence, fields, isSelect, onSelect }) => {
                 {sequence[field.name]}
               </td>
             );
-          } else if (["Open_rate", "Reply_rate"].includes(field.name)) {
+          } else if (["OpenRate", "BounceRate"].includes(field.name)) {
             return (
               <td
                 className="d-flex align-items-center pl-3"
@@ -136,6 +112,18 @@ const SequencesTableItem = ({ sequence, fields, isSelect, onSelect }) => {
                 }}
               >
                 <strong className="pr-1">{sequence[field.name]}%</strong> (0)
+              </td>
+            );
+          } else if (field.name === "ReplyRate") {
+            return (
+              <td
+                className="d-flex align-items-center pl-3"
+                key={field.name}
+                style={{
+                  ...field.style,
+                }}
+              >
+                <strong className="pr-1">{sequence[field.name] * 100}%</strong>
               </td>
             );
           } else if (field.name === "Progress") {
@@ -156,7 +144,7 @@ const SequencesTableItem = ({ sequence, fields, isSelect, onSelect }) => {
                 />
               </td>
             );
-          } else if (field.name === "Delivered") {
+          } else if (field.name === "EmailSendingCount") {
             return (
               <td
                 className="d-flex align-items-center pl-3"
@@ -167,7 +155,7 @@ const SequencesTableItem = ({ sequence, fields, isSelect, onSelect }) => {
               >
                 <MdOutlineEmail
                   size="1.25rem"
-                  style={{ opacity: 0.3, marginTop: "-2px" }}
+                  style={{ opacity: 0.3 }}
                   className="mr-1"
                 />
                 {sequence[field.name]}

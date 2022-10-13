@@ -41,37 +41,46 @@ const fields = [
     },
   },
   {
-    label: "Описание",
-    name: "Description",
-    style: {
-      width: "40%",
-      minWidth: "0px",
-      maxWidth: "800px",
-    },
-  },
-  {
     label: "Люди",
     name: "People",
     style: {
-      width: "5%",
+      width: "7%",
       minWidth: "0px",
       maxWidth: "800px",
     },
   },
   {
     label: "Open rate",
-    name: "Open_rate",
+    name: "OpenRate",
     style: {
-      width: "9%",
+      width: "12%",
       minWidth: "0px",
       maxWidth: "800px",
     },
   },
   {
     label: "Reply rate",
-    name: "Reply_rate",
+    name: "ReplyRate",
     style: {
-      width: "9%",
+      width: "12%",
+      minWidth: "0px",
+      maxWidth: "400px",
+    },
+  },
+  {
+    label: "Bounce Rate",
+    name: "BounceRate",
+    style: {
+      width: "12%",
+      minWidth: "0px",
+      maxWidth: "400px",
+    },
+  },
+  {
+    label: "Отправлено",
+    name: "EmailSendingCount",
+    style: {
+      width: "12%",
       minWidth: "0px",
       maxWidth: "400px",
     },
@@ -80,34 +89,7 @@ const fields = [
     label: "Прогресс",
     name: "Progress",
     style: {
-      width: "10%",
-      minWidth: "0px",
-      maxWidth: "400px",
-    },
-  },
-  {
-    label: "Model",
-    name: "Model",
-    style: {
-      width: "6%",
-      minWidth: "0px",
-      maxWidth: "400px",
-    },
-  },
-  {
-    label: "Process",
-    name: "Process",
-    style: {
-      width: "6%",
-      minWidth: "0px",
-      maxWidth: "400px",
-    },
-  },
-  {
-    label: "Отправлено",
-    name: "Delivered",
-    style: {
-      width: "10%",
+      width: "12%",
       minWidth: "0px",
       maxWidth: "400px",
     },
@@ -115,6 +97,9 @@ const fields = [
 ];
 
 const SequencesTable = ({ isSelectedAll, selectedIds }) => {
+  const selectedFolderId = useSelector(
+    (state) => state.sequences.selectedFolderId
+  );
   const cached = useSelector((state) => state.sequences.cached);
   const currentPage = useSelector((state) => state.sequences.currentPage);
 
@@ -135,8 +120,11 @@ const SequencesTable = ({ isSelectedAll, selectedIds }) => {
   const fetchSequences = useCallback(() => {
     getSequences({
       params: { offset: currentPage * COUNT_ON_PAGE, count: COUNT_ON_PAGE },
+      body: {
+        FolderID: selectedFolderId,
+      },
     });
-  }, [currentPage]);
+  }, [currentPage, selectedFolderId]);
 
   useEffect(() => {
     fetchSequences();

@@ -6,13 +6,16 @@ import {
   MdFolderOpen,
   MdOutlineCreateNewFolder,
 } from "react-icons/md";
+import { useDispatch } from "react-redux";
 import { Button } from "reactstrap";
 import { useDeleteFoldersMutation } from "store/api/folders";
 import { useCreateOrUpdateFolderMutation } from "store/api/folders";
 import { useGetFoldersQuery } from "store/api/folders";
+import { selectFolder } from "store/slices/sequencesSlice";
 import "./SequencesFolders.scss";
 
 const SequencesFolders = () => {
+  const dispatch = useDispatch();
   const [folders, setFolders] = useState([]);
   const { data: foldersList, idFetching, isLoading } = useGetFoldersQuery();
   const [createOrUpdateFolder] = useCreateOrUpdateFolderMutation();
@@ -52,6 +55,10 @@ const SequencesFolders = () => {
     setFolderForModal(null);
   };
 
+  const onSelectFolder = (id) => {
+    dispatch(selectFolder(id));
+  };
+
   return (
     <>
       <div className="squences-folders-component">
@@ -88,6 +95,7 @@ const SequencesFolders = () => {
               folders={folders}
               className="folders"
               onEdit={onEditFolder}
+              onSelect={onSelectFolder}
             />
           </>
         )}
