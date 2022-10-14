@@ -9,6 +9,7 @@ import { addSequenceId } from "store/slices/sequencesSlice";
 import { setCurrentSequencesPage } from "store/slices/sequencesSlice";
 import Pagination from "components/Pagination/Pagination";
 import SequencesTableItem from "components/SequencesTableItem/SequencesTableItem";
+import { setLoaderStatus } from "store/slices/commonSlice";
 
 const COUNT_ON_PAGE = 100;
 
@@ -97,15 +98,29 @@ const fields = [
 ];
 
 const SequencesTable = ({ isSelectedAll, selectedIds }) => {
+  const dispatch = useDispatch();
   const selectedFolderId = useSelector(
     (state) => state.sequences.selectedFolderId
   );
   const cached = useSelector((state) => state.sequences.cached);
   const currentPage = useSelector((state) => state.sequences.currentPage);
 
-  const [getSequences, { data: sequencesData, isFetching }] =
+  const [getSequences, { data: sequencesData, isFetching, isLoading }] =
     useLazyGetSequencesQuery();
-  const dispatch = useDispatch();
+  const isLoadingSequences = useSelector(
+    (state) => state.common.loader.pages.sequences.isLoadingSequences
+  );
+
+  useEffect(() => {
+    isLoadingSequences &&
+      dispatch(
+        setLoaderStatus({
+          page: "sequences",
+          part: "isLoadingSequences",
+          value: isLoading,
+        })
+      );
+  }, [isLoading, isLoadingSequences]);
 
   useEffect(() => {
     if (sequencesData && !isFetching) {

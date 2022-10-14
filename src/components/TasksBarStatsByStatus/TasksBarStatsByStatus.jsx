@@ -1,3 +1,4 @@
+import React from "react";
 import { useSelector } from "react-redux";
 import { Row, Card, Col, CardBody, CardTitle } from "reactstrap";
 
@@ -6,6 +7,7 @@ const labels = {
   skipped: "Пропущенных",
   started: "Начатых",
   expired: "Просроченных",
+  bounced: "Bounced",
 };
 
 const TasksBarStatsByStatus = () => {
@@ -34,4 +36,4 @@ const TasksBarStatsByStatus = () => {
   );
 };
 
-export default TasksBarStatsByStatus;
+export default React.memo(TasksBarStatsByStatus);

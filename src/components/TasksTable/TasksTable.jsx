@@ -24,6 +24,7 @@ import { setTasksRequestStatus } from "store/slices/tasksSlice";
 import { useReplyTaskMutation } from "store/api/tasks";
 import { replyCachedTask } from "store/slices/tasksSlice";
 import { toast } from "react-toastify";
+import { setLoaderStatus } from "store/slices/commonSlice";
 
 moment.locale("ru");
 
@@ -88,12 +89,27 @@ const fields = [
 ];
 
 const TasksTable = () => {
+  const dispatch = useDispatch();
   const cached = useSelector((state) => state.tasks.cached);
   const currentPage = useSelector((state) => state.tasks.currentPage);
   const [taskToModal, setTaskToModal] = useState(null);
 
-  const [getTasks, { data: tasksData, isFetching }] = useLazyGetTasksQuery();
-  const dispatch = useDispatch();
+  const [getTasks, { data: tasksData, isFetching, isLoading }] =
+    useLazyGetTasksQuery();
+  const isLoadingTasks = useSelector(
+    (state) => state.common.loader.pages.tasks.isLoadingTasks
+  );
+
+  useEffect(() => {
+    isLoadingTasks &&
+      dispatch(
+        setLoaderStatus({
+          page: "tasks",
+          part: "isLoadingTasks",
+          value: isLoading,
+        })
+      );
+  }, [isLoading, isLoadingTasks]);
 
   useEffect(() => {
     if (tasksData && !isFetching) {

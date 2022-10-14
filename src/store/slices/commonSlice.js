@@ -2,6 +2,25 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   interval: 15,
+  loader: {
+    pages: {
+      sequences: {
+        isLoadingFolders: true,
+        isLoadingSequences: true,
+      },
+      tasks: {
+        isLoadingStatistics: true,
+        isLoadingTasks: true,
+      },
+      contacts: {
+        isLoadingContacts: true,
+      },
+      b2b: {
+        isLoadingPeople: true,
+        isLoadingCompanies: true,
+      },
+    },
+  },
   Tasks: {
     Statuses: [],
     Types: {},
@@ -28,8 +47,16 @@ export const commonSlice = createSlice({
   name: "common",
   initialState,
   reducers: {
+    setLoaderStatus: (state, action) => {
+      const page = action.payload.page;
+      const part = action.payload.part;
+      const isLoading = action.payload.value;
+
+      state.loader.pages[page][part] = isLoading;
+    },
     setCommonInfoTasks: (state, action) => {
       state.Tasks = action.payload;
+      state.loader.pages.tasks.isLoadingStatistics = false;
     },
     setCommonInfoSequences: (state, action) => {
       state.Sequences = action.payload;
@@ -50,6 +77,7 @@ export const commonSlice = createSlice({
 });
 
 export const {
+  setLoaderStatus,
   setCommonInfoTasks,
   setStatistickInfo,
   setCommonInfoSequences,

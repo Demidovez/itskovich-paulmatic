@@ -6,11 +6,13 @@ import {
   MdFolderOpen,
   MdOutlineCreateNewFolder,
 } from "react-icons/md";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Button } from "reactstrap";
 import { useDeleteFoldersMutation } from "store/api/folders";
 import { useCreateOrUpdateFolderMutation } from "store/api/folders";
 import { useGetFoldersQuery } from "store/api/folders";
+import { setLoaderStatus } from "store/slices/commonSlice";
 import { selectFolder } from "store/slices/sequencesSlice";
 import "./SequencesFolders.scss";
 
@@ -18,10 +20,24 @@ const SequencesFolders = () => {
   const dispatch = useDispatch();
   const [folders, setFolders] = useState([]);
   const { data: foldersList, idFetching, isLoading } = useGetFoldersQuery();
+  const isLoadingFolders = useSelector(
+    (state) => state.common.loader.pages.sequences.isLoadingFolders
+  );
   const [createOrUpdateFolder] = useCreateOrUpdateFolderMutation();
   const [deleteFolders] = useDeleteFoldersMutation();
 
   const [folderForModal, setFolderForModal] = useState(null);
+
+  useEffect(() => {
+    isLoadingFolders &&
+      dispatch(
+        setLoaderStatus({
+          page: "sequences",
+          part: "isLoadingFolders",
+          value: isLoading,
+        })
+      );
+  }, [isLoading, isLoadingFolders]);
 
   const onCreateOrUpdateFolder = (folder) => {
     setFolderForModal(null);

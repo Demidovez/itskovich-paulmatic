@@ -16,6 +16,7 @@ import {
   setCommonInfoTasks,
 } from "store/slices/commonSlice";
 import { toast } from "react-toastify";
+import { setLoaderStatus } from "store/slices/commonSlice";
 
 const CommonThings = () => {
   const dispatch = useDispatch();
@@ -34,8 +35,12 @@ const CommonThings = () => {
   const [getNotifications, { data: notifications }] =
     useLazyGetNotificationsQuery();
   const [getCommonInfo, { data: commonData }] = useLazyGetCommonInfoQuery();
-  const [fetchStatistics, { data: statisticsData }] =
+  const [fetchStatistics, { data: statisticsData, isLoading }] =
     useLazyGetStatisticsOfTasksQuery();
+
+  useEffect(() => {
+    statisticsData && dispatch(setStatistickInfo(statisticsData));
+  }, [statisticsData]);
 
   useEffect(() => {
     getCommonInfo();
@@ -108,10 +113,6 @@ const CommonThings = () => {
       }
     }
   }, [commonData]);
-
-  useEffect(() => {
-    statisticsData && dispatch(setStatistickInfo(statisticsData));
-  }, [statisticsData]);
 
   const saveUserToLocalStorage = (Account) => {
     localStorage.setItem("Account", JSON.stringify(Account));

@@ -7,10 +7,19 @@ import { setCurrentPage } from "store/slices/b2bFilterSlice";
 import { clearSelectedIds } from "store/slices/tablesSlice";
 import { setCache, addSelectedId } from "store/slices/tablesSlice";
 import "./B2InfoTable.scss";
+import { setLoaderStatus } from "store/slices/commonSlice";
 
 const COUNT_ON_PAGE = 100;
 
-const B2InfoTable = ({ info, data, fetchData, fields = [] }) => {
+const B2InfoTable = ({
+  info,
+  data,
+  fetchData,
+  fields = [],
+  isLoading = false,
+  isLoaded = true,
+  loadingLabel,
+}) => {
   const filterState = useSelector((state) => state.filter[info.name]);
   const currentPage = useSelector(
     (state) => state.filter.currentPage[info.name] || 0
@@ -57,9 +66,23 @@ const B2InfoTable = ({ info, data, fetchData, fields = [] }) => {
     dispatch(addSelectedId({ table: info.name, id }));
   };
 
+  useEffect(() => {
+    !isLoaded &&
+      dispatch(
+        setLoaderStatus({
+          page: "b2b",
+          part: loadingLabel,
+          value: !!data,
+        })
+      );
+  }, [data, isLoaded]);
+
   return (
     <>
-      <div className="b2-info-table-component h-100 overflow-auto">
+      <div
+        className="b2-info-table-component h-100 overflow-auto"
+        style={{ display: isLoading ? "none" : "block" }}
+      >
         <Table
           className="align-items-center table-hover fixed-header"
           responsive
@@ -198,7 +221,11 @@ const B2InfoTable = ({ info, data, fetchData, fields = [] }) => {
           <p className="message">Не найдено :(</p>
         )}
       </div>
-      <CardFooter className="d-flex justify-content-between align-items-center">
+      <CardFooter
+        className={`${
+          isLoading ? "d-none" : "d-flex"
+        } justify-content-between align-items-center`}
+      >
         <div></div>
         <Pagination
           allCount={(data || cacheTables[info.name] || {}).TotalCount || 0}

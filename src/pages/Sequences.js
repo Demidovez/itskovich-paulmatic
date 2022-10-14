@@ -4,7 +4,7 @@ import TasksTable from "components/TasksTable/TasksTable";
 import TasksBarStatsByStatus from "components/TasksBarStatsByStatus/TasksBarStatsByStatus";
 import TasksBarStatsByType from "components/TasksBarStatsByType/TasksBarStatsByType";
 import TaskSort from "components/TaskSort/TaskSort";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Row, Card, CardHeader, Col, Button } from "reactstrap";
 import { selectAllTasks } from "store/slices/tasksSlice";
@@ -21,6 +21,8 @@ import {
 } from "store/slices/sequencesSlice";
 import ActionSequencesBar from "components/ActionSequencesBar/ActionSequencesBar";
 import { useLazyDeleteSequencesQuery } from "store/api/sequences";
+import Loader from "components/Loader/Loader";
+import useLoader from "hooks/useLoader";
 
 const Sequences = () => {
   const dispatch = useDispatch();
@@ -49,6 +51,12 @@ const Sequences = () => {
     deleteSequences(selectedIds);
   };
 
+  const { isLoadingFolders, isLoadingSequences } = useSelector(
+    (state) => state.common.loader.pages.sequences
+  );
+
+  const [isShowLoader] = useLoader(isLoadingFolders || isLoadingSequences);
+
   return (
     <>
       <Container
@@ -75,7 +83,11 @@ const Sequences = () => {
         </Row>
 
         <Card className="shadow flex-fill overflow-hidden">
-          <Row className="p-4 flex-fill">
+          {isShowLoader ? <Loader className="mt-7" /> : null}
+          <Row
+            className="p-4 flex-fill"
+            style={{ display: isShowLoader ? "none" : "flex" }}
+          >
             <div className="col col-2">
               <SequencesFolders />
             </div>
@@ -98,7 +110,7 @@ const Sequences = () => {
                     }
                   />
                   {/* <SequencesSort />
-                  <SequencesStatusesSelector /> */}
+    <SequencesStatusesSelector /> */}
                   <SequencesSearchBar />
                 </div>
               </div>

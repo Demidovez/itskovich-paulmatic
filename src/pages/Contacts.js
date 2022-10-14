@@ -21,6 +21,9 @@ import ModalContactForm from "components/ModalContactForm/ModalContactForm";
 import InteractiveTour from "components/InteractiveTour/InteractiveTour";
 import ModalAddToSequence from "components/ModalAddToSequence/ModalAddToSequence";
 import { useLazyAddContactsToSequenceQuery } from "store/api/sequences";
+import { setLoaderStatus } from "store/slices/commonSlice";
+import Loader from "components/Loader/Loader";
+import useLoader from "hooks/useLoader";
 
 const COUNT_ON_PAGE = 100;
 
@@ -55,14 +58,28 @@ const Contacts = () => {
 
   const cacheTables = useSelector((state) => state.tables.cache);
 
-  const [searchContacts, contactsData] = useLazyGetContactsQuery({
-    selectFromResult: ({ data }) => data,
-  });
+  const [searchContacts, { data: contactsData, isLoading }] =
+    useLazyGetContactsQuery();
 
   useEffect(() => {
     contactsData &&
       dispatch(setCache({ table: "contacts", data: contactsData }));
   }, [contactsData]);
+
+  const isLoadingContacts = useSelector(
+    (state) => state.common.loader.pages.contacts.isLoadingContacts
+  );
+
+  useEffect(() => {
+    isLoadingContacts &&
+      dispatch(
+        setLoaderStatus({
+          page: "contacts",
+          part: "isLoadingContacts",
+          value: isLoading,
+        })
+      );
+  }, [isLoading, isLoadingContacts]);
 
   useEffect(() => {
     searchContacts({
@@ -131,13 +148,19 @@ const Contacts = () => {
 
   const [sendToSequence] = useLazyAddContactsToSequenceQuery();
 
+  const [isShowLoader] = useLoader(isLoadingContacts);
+
   return (
     <>
       <Container
         fluid
         className="d-flex flex-column overflow-hidden height-fill"
       >
-        <Row className="flex-fill pt-4">
+        {isShowLoader ? <Loader className="mt-7" /> : null}
+        <Row
+          className="flex-fill pt-4"
+          style={{ display: isShowLoader ? "none" : "flex" }}
+        >
           <div className="col mb-3 d-flex">
             <Card className="shadow flex-fill overflow-hidden">
               <CardHeader className="border-0 ">

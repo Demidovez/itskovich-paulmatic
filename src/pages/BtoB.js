@@ -14,7 +14,10 @@ import { clearSelectedIds } from "store/slices/tablesSlice";
 import { useDispatch } from "react-redux";
 import { useLazyAddToSequenceQuery } from "store/api/persons";
 import ModalAddToSequence from "components/ModalAddToSequence/ModalAddToSequence";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useLoader from "hooks/useLoader";
+import Loader from "components/Loader/Loader";
+import { setLoaderStatus } from "store/slices/commonSlice";
 
 const companiesFields = [
   {
@@ -211,13 +214,9 @@ const tourSteps = [
 
 const BtoB = () => {
   const dispatch = useDispatch();
-  const [fetchCompanies, companiesData] = useLazyGetCompaniesQuery({
-    selectFromResult: ({ data }) => data,
-  });
+  const [fetchCompanies, { data: companiesData }] = useLazyGetCompaniesQuery();
 
-  const [fetchPersons, personsData] = useLazyGetPersonsQuery({
-    selectFromResult: ({ data }) => data,
-  });
+  const [fetchPersons, { data: personsData }] = useLazyGetPersonsQuery();
 
   const [addToContacts] = useLazyAddToContactsQuery();
   const [addToSequence] = useLazyAddToSequenceQuery();
@@ -236,6 +235,13 @@ const BtoB = () => {
   const onAddToSequence = () => {
     setIsShowModalAddToSequence(true);
   };
+
+  const { isLoadingPeople, isLoadingCompanies } = useSelector(
+    (state) => state.common.loader.pages.b2b
+  );
+
+  const [isShowLoaderPeople] = useLoader(isLoadingPeople, 1000);
+  const [isShowLoaderCompanies] = useLoader(isLoadingCompanies, 1000);
 
   return (
     <Container fluid className="d-flex flex-column height-fill pt-4 pb-3">
@@ -264,21 +270,33 @@ const BtoB = () => {
             </CardHeader>
             {activeTable === "companies" &&
               Object.keys(tables[activeTable]).length > 0 && (
-                <B2InfoTable
-                  info={tables[activeTable].info}
-                  data={companiesData}
-                  fetchData={fetchCompanies}
-                  fields={companiesFields}
-                />
+                <>
+                  {isShowLoaderCompanies ? <Loader className="mt-7" /> : null}
+                  <B2InfoTable
+                    info={tables[activeTable].info}
+                    data={companiesData}
+                    fetchData={fetchCompanies}
+                    fields={companiesFields}
+                    isLoading={isShowLoaderCompanies}
+                    isLoaded={!isLoadingCompanies}
+                    loadingLabel="isLoadingCompanies"
+                  />
+                </>
               )}
             {activeTable === "persons" &&
               Object.keys(tables[activeTable]).length > 0 && (
-                <B2InfoTable
-                  info={tables[activeTable].info}
-                  data={personsData}
-                  fetchData={fetchPersons}
-                  fields={personsFields}
-                />
+                <>
+                  {isShowLoaderPeople ? <Loader className="mt-7" /> : null}
+                  <B2InfoTable
+                    info={tables[activeTable].info}
+                    data={personsData}
+                    fetchData={fetchPersons}
+                    fields={personsFields}
+                    isLoading={isShowLoaderPeople}
+                    isLoaded={!isLoadingPeople}
+                    loadingLabel="isLoadingPeople"
+                  />
+                </>
               )}
           </Card>
         </div>
