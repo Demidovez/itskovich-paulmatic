@@ -1,6 +1,6 @@
 import { Button, Input, Modal } from "reactstrap";
 import EditorEmail from "components/EditorEmail/EditorEmail";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePrompt } from "hooks/usePrompt";
 import { useSelector } from "react-redux";
 
@@ -10,15 +10,10 @@ import DropdownWithIcon from "components/DropdownWithIcon/DropdownWithIcon";
 import { BiCodeCurly } from "react-icons/bi";
 import { TbTemplate } from "react-icons/tb";
 import PreviewViewer from "components/PreviewViewer/PreviewViewer";
+import DropdownIcon from "components/DropdownIcon/DropdownIcon";
 
-const TaskEditorModal = ({
-  isShow,
-  onClose,
-  task,
-  mode = "create",
-  onSubmit,
-}) => {
-  const [currentTask, setCurrentTask] = useState(task || {});
+const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
+  const [currentTask, setCurrentTask] = useState(task);
   const [isHasCC, setIsHasCC] = useState(false);
   const [isHasBCC, setIsHasBCC] = useState(false);
   const [types, setTypes] = useState([]);
@@ -28,12 +23,12 @@ const TaskEditorModal = ({
   const [tamplatesList, setTamplatesList] = useState([]);
   const [activeTemplate, setActiveTemplate] = useState("");
   const [selectedVariable, setSelectedVariable] = useState("");
+  const [selectedSubjectVariable, setSelectedSubjectVariable] = useState("");
+
+  const subjectRef = useRef(null);
+  const bodyTextareaRef = useRef(null);
 
   usePrompt(isChanged);
-
-  useEffect(() => {
-    setCurrentTask(task || {});
-  }, [task, isShow]);
 
   const handleClose = () => {
     if (isChanged) {
@@ -51,6 +46,10 @@ const TaskEditorModal = ({
   };
 
   const dirtyTypes = useSelector((state) => state.common.Tasks.Types);
+  useEffect(() => {
+    setTypes([...Object.values(dirtyTypes)].sort((a, b) => a.Order - b.Order));
+  }, [JSON.stringify(dirtyTypes)]);
+
   const { Variables, StubContact } = useSelector(
     (state) => state.common.Templates.Compiler
   );
@@ -58,19 +57,10 @@ const TaskEditorModal = ({
   const Account = useSelector((state) => state.common.Account);
 
   useEffect(() => {
-    setTypes([...Object.values(dirtyTypes)].sort((a, b) => a.Order - b.Order));
-  }, [JSON.stringify(dirtyTypes)]);
-
-  useEffect(() => {
     if (types.length) {
       setCurrentType(types[0]);
-      setCurrentTask((task) => ({
-        ...task,
-        Type: types[0].Creds.Name,
-        Name: types[0].Actions[0].Title,
-      }));
     }
-  }, [types.length > 0, isShow]);
+  }, [types.length]);
 
   useEffect(() => {
     setVariablesList(
@@ -82,15 +72,6 @@ const TaskEditorModal = ({
   }, [Variables.length]);
 
   useEffect(() => {
-    currentType &&
-      setCurrentTask((task) => ({
-        ...task,
-        Type: currentType.Creds.Name,
-        Name: currentType.Actions[0].Title,
-      }));
-  }, [JSON.stringify(currentType)]);
-
-  useEffect(() => {
     templates &&
       setTamplatesList(
         Object.entries(templates).map((template) => ({
@@ -100,6 +81,15 @@ const TaskEditorModal = ({
       );
   }, [templates]);
 
+  useEffect(() => {
+    currentType &&
+      setCurrentTask((task) => ({
+        ...task,
+        Type: currentType.Creds.Name,
+        Name: currentType.Actions[0].Title,
+      }));
+  }, [JSON.stringify(currentType)]);
+
   const toggleType = (type) => {
     setCurrentType(type);
     setCurrentTask({
@@ -107,16 +97,77 @@ const TaskEditorModal = ({
       Subject: "",
       Body: "",
     });
+    setSelectedVariable("");
+    setSelectedSubjectVariable("");
   };
 
-  // console.log(currentType);
+  useEffect(() => {
+    if (selectedSubjectVariable && subjectRef.current) {
+      const cursorPosition = subjectRef.current.selectionStart;
+      const textBeforeCursorPosition = subjectRef.current.value.substring(
+        0,
+        cursorPosition
+      );
+      const textAfterCursorPosition = subjectRef.current.value.substring(
+        cursorPosition,
+        subjectRef.current.value.length
+      );
+      subjectRef.current.value = `${textBeforeCursorPosition}{{${selectedSubjectVariable}}}${textAfterCursorPosition}`;
+
+      subjectRef.current.focus();
+      subjectRef.current.selectionStart =
+        cursorPosition + selectedSubjectVariable.length + 4;
+      subjectRef.current.selectionEnd =
+        cursorPosition + selectedSubjectVariable.length + 4;
+
+      setCurrentTask((currentTask) => ({
+        ...currentTask,
+        Subject: subjectRef.current.value,
+      }));
+      setSelectedSubjectVariable("");
+    }
+  }, [selectedSubjectVariable, subjectRef.current]);
+
+  useEffect(() => {
+    if (
+      currentType &&
+      currentType.Creds.Name !== "manual_email" &&
+      selectedVariable &&
+      bodyTextareaRef.current
+    ) {
+      const cursorPosition = bodyTextareaRef.current.selectionStart;
+      const textBeforeCursorPosition = bodyTextareaRef.current.value.substring(
+        0,
+        cursorPosition
+      );
+      const textAfterCursorPosition = bodyTextareaRef.current.value.substring(
+        cursorPosition,
+        bodyTextareaRef.current.value.length
+      );
+      bodyTextareaRef.current.value = `${textBeforeCursorPosition}{{${selectedVariable}}}${textAfterCursorPosition}`;
+
+      bodyTextareaRef.current.focus();
+      bodyTextareaRef.current.selectionStart =
+        cursorPosition + selectedVariable.length + 4;
+      bodyTextareaRef.current.selectionEnd =
+        cursorPosition + selectedVariable.length + 4;
+
+      setCurrentTask((currentTask) => ({
+        ...currentTask,
+        Body: bodyTextareaRef.current.value,
+      }));
+      setSelectedVariable("");
+    }
+  }, [selectedVariable, bodyTextareaRef.current, currentType]);
+
+  // console.log(currentTask);
 
   return (
     <>
       <Modal
         className="modal-dialog-centered mt-0 mb-0 flex-column task-editor-modal-component"
         contentClassName="h-100 flex-fill"
-        isOpen={isShow}
+        isOpen={true}
         toggle={() => handleClose()}
         style={{
           maxWidth: "1400px",
@@ -163,6 +214,7 @@ const TaskEditorModal = ({
                   <div className="editor-label editor-subject">
                     <span>Тема</span>
                     <Input
+                      innerRef={subjectRef}
                       type="text"
                       placeholder="Тема письма..."
                       className="editor-subject-input"
@@ -175,7 +227,13 @@ const TaskEditorModal = ({
                       }
                     />
                     <div>
-                      <span style={{ fontSize: 16 }}>{"{ }"}</span>
+                      {/* <span style={{ fontSize: 16 }}>{"{ }"}</span> */}
+                      <DropdownIcon
+                        items={variablesList}
+                        onSelect={(variable) =>
+                          setSelectedSubjectVariable(variable.name)
+                        }
+                      />
                       {currentType &&
                         currentType.Creds.Name === "manual_email" && (
                           <>
@@ -196,8 +254,6 @@ const TaskEditorModal = ({
                       type="text"
                       placeholder="Добавить в копию..."
                       className="editor-subject-input"
-                      // value={value || ""}
-                      // onChange={onChange}
                     />
                   </div>
                 )}
@@ -208,8 +264,6 @@ const TaskEditorModal = ({
                       type="text"
                       placeholder="Добавить в скрытую копию..."
                       className="editor-subject-input"
-                      // value={value || ""}
-                      // onChange={onChange}
                     />
                   </div>
                 )}
@@ -249,10 +303,12 @@ const TaskEditorModal = ({
                           setCurrentTask((task) => ({ ...task, Body }))
                         }
                         insertedVariable={selectedVariable}
+                        placeholder="Введите тело письма..."
                         toolbar="undo redo bold italic alignleft aligncenter alignright alignjustify bullist numlist fontsize forecolor backcolor | blocks fontfamily removeformat "
                       />
                     ) : (
                       <Input
+                        innerRef={bodyTextareaRef}
                         type="textarea"
                         placeholder="Сообщение..."
                         className="pl-3 h-100 border-0 task-editor-textarea"

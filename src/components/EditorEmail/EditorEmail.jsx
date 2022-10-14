@@ -12,6 +12,7 @@ const EditorEmail = ({
   visibleToolbar = true,
   insertedVariable = "",
   toolbar = "",
+  placeholder,
 }) => {
   const [addedImagesId, setAdedImagesId] = useState([]);
   const data = useMemo(() => content, [content]);
@@ -62,6 +63,7 @@ const EditorEmail = ({
           language_url: process.env.PUBLIC_URL + "/tinymce/langs/ru.js",
           visual: false,
           menubar: false,
+          placeholder: placeholder ? `${placeholder}` : "",
           plugins: [
             "advlist",
             "autolink",
@@ -85,7 +87,17 @@ const EditorEmail = ({
                 "alignright alignjustify | bullist numlist | forecolor " +
                 "removeformat backcolor "
             : false,
-          content_style: `body { font-family:Helvetica,Arial,sans-serif; font-size:14px } ${style}`,
+          content_style: `
+            body { font-family:Helvetica,Arial,sans-serif; font-size:14px } 
+            
+            .mce-content-body:not([dir="rtl"])[data-mce-placeholder]:not(.mce-visualblocks)::before {
+                left: 10px;
+                opacity: 0.5;
+                font-size: 16px;
+            } 
+            
+            ${style}
+          `,
         }}
       />
     </>

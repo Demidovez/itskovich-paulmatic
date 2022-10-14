@@ -85,27 +85,27 @@ const SequencePageStepsItem = ({
           </Tooltip>
         </span>
         <div
-          className="row sequence-desc  ml-0 mr-0 mt-2 mb-2"
+          className="sequence-desc ml-0 mr-0 mt-2 mb-2 d-flex"
           onClick={onDoubleClick}
         >
-          <div className="col col-4 d-flex">
+          <div className="d-flex" style={{ width: 450 }}>
             <div style={{ fontWeight: 600, fontSize: 14 }} className="subject">
               {step.Subject || step.Name}
             </div>
           </div>
           <div
-            className="col col-7 description"
-            style={{ opacity: 0.7, fontSize: 14 }}
+            className="pl-4"
+            style={{ opacity: 0.7, fontSize: 14, width: 100, flex: 1 }}
           >
-            {step.Body || step.Description}
+            <div className="description">{step.Body || step.Description}</div>
           </div>
-          <div className="col col-1 sequence-desc-controls d-flex">
+          <div className="col1 col1-1 sequence-desc-controls d-flex">
             <FiEdit3
               size="1.2rem"
               className="mr-2"
               onClick={() => openModal()}
             />
-            <FiPlusSquare size="1.2rem" />
+            {/* <FiPlusSquare size="1.2rem" /> */}
           </div>
         </div>
       </div>

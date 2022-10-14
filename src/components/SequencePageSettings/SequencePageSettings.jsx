@@ -1,8 +1,12 @@
-const SequencePageSettings = () => {
+const SequencePageSettings = ({ isShow }) => {
   return (
-    <div className="modal-body d-flex flex-column overflow-hidden">
-      <div className="">Здесь будет настройка</div>
-    </div>
+    <>
+      {isShow ? (
+        <div className="modal-body d-flex flex-column overflow-hidden">
+          <div className="">Здесь будет настройка</div>
+        </div>
+      ) : null}
+    </>
   );
 };
 

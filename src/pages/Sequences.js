@@ -110,10 +110,7 @@ const Sequences = () => {
           </Row>
         </Card>
       </Container>
-      <ModalCreateSequence
-        isShow={isShowCreator}
-        onClose={doneCreateSequence}
-      />
+      {isShowCreator && <ModalCreateSequence onClose={doneCreateSequence} />}
     </>
   );
 };

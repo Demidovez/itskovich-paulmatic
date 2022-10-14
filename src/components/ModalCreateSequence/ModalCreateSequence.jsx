@@ -13,11 +13,23 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { saveNameSequence } from "store/slices/sequenceMasterSlice";
 import PaginationCreateSequence from "components/PaginationCreateSequence/PaginationCreateSequence";
+import { useGetFoldersQuery } from "store/api/folders";
+import { saveFolderIdSequence } from "store/slices/sequenceMasterSlice";
 
-const ModalCreateSequence = ({ isShow, onClose }) => {
+const ModalCreateSequence = ({ onClose }) => {
   const dispatch = useDispatch();
   const sequenceResultData = useSelector((state) => state.sequenceMaster.data);
   const sequenceName = useSelector((state) => state.sequenceMaster.data.Name);
+
+  const activeFolderId = useSelector(
+    (state) => state.sequences.selectedFolderId
+  );
+
+  useEffect(() => {
+    dispatch(saveFolderIdSequence(activeFolderId));
+  }, [activeFolderId]);
+
+  const { data: foldersList } = useGetFoldersQuery();
 
   const [isChanged, setIsChanged] = useState(false);
   usePrompt(isChanged);
@@ -30,41 +42,26 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
       name: "steps",
       title: "Шаги",
       isDone: false,
-      component: () => (
-        <SequencePageSteps onChange={() => setIsChanged(true)} />
-      ),
     },
     {
       name: "settings",
       title: "Настройки",
       isDone: false,
-      component: () => (
-        <SequencePageSettings onChange={() => setIsChanged(true)} />
-      ),
     },
     {
       name: "people",
       title: "Люди",
       isDone: false,
-      component: () => (
-        <SequencePagePeople onChange={() => setIsChanged(true)} />
-      ),
     },
     {
       name: "schedule",
       title: "Расписание",
       isDone: false,
-      component: () => (
-        <SequencePageSchedule onChange={() => setIsChanged(true)} />
-      ),
     },
     {
       name: "launch",
       title: "Запуск",
       isDone: false,
-      component: () => (
-        <SequencePageLaunch onChange={() => setIsChanged(true)} />
-      ),
     },
   ]);
 
@@ -118,7 +115,7 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
     <Modal
       className="modal-dialog-centered modal-create-sequence-component mt-0 mb-0 flex-column height-fill"
       contentClassName="h-100 flex-fill"
-      isOpen={isShow}
+      isOpen={true}
       toggle={() => handleClose()}
       style={{
         maxWidth: "1200px",
@@ -141,10 +138,19 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
             className="sequence-name-input"
           />
           <Dropdown
-            items={["Металлургия", "Другое"]}
+            items={[{ id: 0, Name: "Все" }, ...(foldersList || [])]}
+            fieldOfItem="Name"
             className="ml-3"
             outline={true}
-            defaultValue="Папка"
+            defaultValue={
+              activeFolderId === 0
+                ? "Все"
+                : (foldersList || []).find(
+                    (folder) => folder.id === activeFolderId
+                  ).Name
+            }
+            isDisabled={(foldersList || []).length === 0}
+            onSelect={(folder) => dispatch(saveFolderIdSequence(folder.id))}
           />
         </div>
         <button
@@ -158,7 +164,26 @@ const ModalCreateSequence = ({ isShow, onClose }) => {
           <span aria-hidden={true}>×</span>
         </button>
       </div>
-      {pages[currentIndexPage].component()}
+      <SequencePageSteps
+        isShow={currentIndexPage === 0}
+        onChange={() => setIsChanged(true)}
+      />
+      <SequencePageSettings
+        isShow={currentIndexPage === 1}
+        onChange={() => setIsChanged(true)}
+      />
+      <SequencePagePeople
+        isShow={currentIndexPage === 2}
+        onChange={() => setIsChanged(true)}
+      />
+      <SequencePageSchedule
+        isShow={currentIndexPage === 3}
+        onChange={() => setIsChanged(true)}
+      />
+      <SequencePageLaunch
+        isShow={currentIndexPage === 4}
+        onChange={() => setIsChanged(true)}
+      />
       <div className="modal-footer d-flex justify-content-between p-0">
         <div className="d-flex flex-fill h-100 m-0 ml-4 overflow-hidden">
           <PaginationCreateSequence

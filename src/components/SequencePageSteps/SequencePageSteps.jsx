@@ -20,7 +20,7 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
-const SequencePageSteps = ({ onChange }) => {
+const SequencePageSteps = ({ isShow, onChange }) => {
   const dispatch = useDispatch();
   const [dataForModalEditor, setDataForModalEditor] = useState({});
 
@@ -37,7 +37,7 @@ const SequencePageSteps = ({ onChange }) => {
     },
     {
       id: new Date().getTime() + 1,
-      Type: "mail",
+      Type: "manual_email",
       step: 1,
       Name: "Отправить письмо",
       Description: "Простой просмотр LinkedIn профиля",
@@ -75,8 +75,9 @@ const SequencePageSteps = ({ onChange }) => {
       saveStepsSequence(
         steps.map((step) => ({
           Delay: step.delay,
-          Body: step.body,
-          Subject: step.subject,
+          Body: step.Body,
+          Subject: step.Subject,
+          Type: step.Type,
         }))
       )
     );
@@ -132,80 +133,91 @@ const SequencePageSteps = ({ onChange }) => {
   };
 
   return (
-    <div className="sequence-page-steps-component modal-body d-flex flex-column overflow-auto p-0">
-      <div className="add-step">
-        {steps.length ? (
-          <div onClick={addStep}>
-            <MdAdd size="1.6rem" />
+    <>
+      {isShow ? (
+        <div className="sequence-page-steps-component modal-body d-flex flex-column overflow-auto p-0">
+          <div className="add-step">
+            {steps.length ? (
+              <div onClick={addStep}>
+                <MdAdd size="1.6rem" />
+              </div>
+            ) : null}
           </div>
-        ) : null}
-      </div>
-      <div className="h-100 dragcontext">
-        {steps.length > 0 ? (
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="droppable">
-              {(provided) => (
-                <div ref={provided.innerRef} className="">
-                  <div className="overflow-auto h-100 pl-3 pr-3">
-                    {steps.map((step, index) => (
-                      <Draggable
-                        key={step.id}
-                        draggableId={"" + step.id}
-                        index={index}
-                      >
-                        {(provided, snapshot) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            style={{
-                              ...provided.draggableProps.style,
-                            }}
-                            className={`pt-2 pl-2 pr-2 pb-2 draggable-step ${
-                              snapshot.isDragging ? "dragging" : ""
-                            }`}
+          <div className="h-100 dragcontext">
+            {steps.length > 0 ? (
+              <DragDropContext onDragEnd={onDragEnd}>
+                <Droppable droppableId="droppable">
+                  {(provided) => (
+                    <div ref={provided.innerRef} className="">
+                      <div className="overflow-auto h-100 pl-3 pr-3">
+                        {steps.map((step, index) => (
+                          <Draggable
+                            key={step.id}
+                            draggableId={"" + step.id}
+                            index={index}
                           >
-                            <SequencePageStepsItem
-                              step={step}
-                              onChange={updateStep}
-                              onDelete={() => onDelete(step.id)}
-                              openModal={() =>
-                                setDataForModalEditor({
-                                  mode: "edit",
-                                  stepId: step.id,
-                                })
-                              }
-                              delay={steps
-                                .slice(1, index + 1)
-                                .reduce((acc, step) => (acc += step.delay), 0)}
-                            />
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </div>
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
-        ) : (
-          <div className="d-flex flex-column align-items-center pt-7">
-            <p>Здесь Вы можете создать шаги последовательности</p>
-            <Button color="primary" outline type="button" onClick={addStep}>
-              Создать шаг
-            </Button>
+                            {(provided, snapshot) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                style={{
+                                  ...provided.draggableProps.style,
+                                }}
+                                className={`pt-2 pl-2 pr-2 pb-2 draggable-step ${
+                                  snapshot.isDragging ? "dragging" : ""
+                                }`}
+                              >
+                                <SequencePageStepsItem
+                                  step={step}
+                                  onChange={updateStep}
+                                  onDelete={() => onDelete(step.id)}
+                                  openModal={() =>
+                                    setDataForModalEditor({
+                                      mode: "edit",
+                                      stepId: step.id,
+                                    })
+                                  }
+                                  delay={steps
+                                    .slice(1, index + 1)
+                                    .reduce(
+                                      (acc, step) => (acc += step.delay),
+                                      0
+                                    )}
+                                />
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
+                        {provided.placeholder}
+                      </div>
+                    </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
+            ) : (
+              <div className="d-flex flex-column align-items-center pt-7">
+                <p>Здесь Вы можете создать шаги последовательности</p>
+                <Button color="primary" outline type="button" onClick={addStep}>
+                  Создать шаг
+                </Button>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-      <TaskEditorModal
-        task={steps.find((step) => step.id === dataForModalEditor.stepId)}
-        mode={dataForModalEditor.mode}
-        isShow={!!dataForModalEditor.mode}
-        onClose={() => setDataForModalEditor({})}
-        onSubmit={(step) => createOrUpdateStep(step)}
-      />
-    </div>
+          {dataForModalEditor.mode && (
+            <TaskEditorModal
+              task={
+                steps.find((step) => step.id === dataForModalEditor.stepId) ||
+                {}
+              }
+              mode={dataForModalEditor.mode}
+              onClose={() => setDataForModalEditor({})}
+              onSubmit={(step) => createOrUpdateStep(step)}
+            />
+          )}
+        </div>
+      ) : null}
+    </>
   );
 };
 

@@ -43,7 +43,7 @@ const columns = [
 
 const COUNT_ON_PAGE = 100;
 
-const SequencePagePeople = () => {
+const SequencePagePeople = ({ isShow }) => {
   const [isCreateNew, setIsCreateNew] = useState(false);
   const dispatch = useDispatch();
   const { selectedIds, currentPage, searchValue } = useSelector(
@@ -114,55 +114,62 @@ const SequencePagePeople = () => {
   };
 
   return (
-    <div className="modal-body d-flex flex-column overflow-hidden p-0 mt-3">
-      <Row className="flex-fill p-0">
-        <div className="col mb-0 d-flex">
-          <Card className="shadow1 flex-fill overflow-hidden border-0">
-            <CardHeader className="border-0 ">
-              <Row>
-                <Col md={6} className="search-tour">
-                  <SearchBarContacts onSearch={onSearch} search={searchValue} />
-                </Col>
-                <Col
-                  md={6}
-                  className="d-flex justify-content-end align-items-center"
-                >
-                  <CreateContactsSelector
-                    onCreate={() => setIsCreateNew(true)}
+    <>
+      {isShow ? (
+        <div className="modal-body d-flex flex-column overflow-hidden p-0 mt-3">
+          <Row className="flex-fill p-0">
+            <div className="col mb-0 d-flex">
+              <Card className="shadow1 flex-fill overflow-hidden border-0">
+                <CardHeader className="border-0 ">
+                  <Row>
+                    <Col md={6} className="search-tour">
+                      <SearchBarContacts
+                        onSearch={onSearch}
+                        search={searchValue}
+                      />
+                    </Col>
+                    <Col
+                      md={6}
+                      className="d-flex justify-content-end align-items-center"
+                    >
+                      <CreateContactsSelector
+                        onCreate={() => setIsCreateNew(true)}
+                      />
+                    </Col>
+                  </Row>
+                </CardHeader>
+                <TableContacts
+                  data={contactsData || cacheTables["contacts"]}
+                  onSelect={() => {}}
+                  selectedIds={selectedIds}
+                  columns={columns}
+                />
+                <CardFooter className="d-flex justify-content-between align-items-center">
+                  <div></div>
+                  <Pagination
+                    allCount={
+                      contactsData
+                        ? contactsData.TotalCount
+                        : cacheTables["contacts"] &&
+                          cacheTables["contacts"].TotalCount
+                    }
+                    countOnPage={COUNT_ON_PAGE}
+                    page={currentPage}
+                    moveToPage={onSetCurrentPage}
                   />
-                </Col>
-              </Row>
-            </CardHeader>
-            <TableContacts
-              data={contactsData || cacheTables["contacts"]}
-              onSelect={() => {}}
-              selectedIds={selectedIds}
-              columns={columns}
-            />
-            <CardFooter className="d-flex justify-content-between align-items-center">
-              <div></div>
-              <Pagination
-                allCount={
-                  contactsData
-                    ? contactsData.TotalCount
-                    : cacheTables["contacts"] &&
-                      cacheTables["contacts"].TotalCount
-                }
-                countOnPage={COUNT_ON_PAGE}
-                page={currentPage}
-                moveToPage={onSetCurrentPage}
-              />
-            </CardFooter>
-          </Card>
-        </div>
-      </Row>
+                </CardFooter>
+              </Card>
+            </div>
+          </Row>
 
-      <ModalContactForm
-        isShow={isCreateNew}
-        onSave={onSave}
-        onClose={onResetForm}
-      />
-    </div>
+          <ModalContactForm
+            isShow={isCreateNew}
+            onSave={onSave}
+            onClose={onResetForm}
+          />
+        </div>
+      ) : null}
+    </>
   );
 };
 

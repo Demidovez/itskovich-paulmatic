@@ -33,6 +33,7 @@ const DropdownCustom = ({
 
   useEffect(() => {
     value && onSelect(value);
+    console.log(value);
   }, [value]);
 
   return (

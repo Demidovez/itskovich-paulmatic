@@ -15,11 +15,17 @@
     .editor-subject {
       justify-content: space-between;
 
+      & > div {
+        display: flex;
+      }
+
       & > div > span {
         cursor: pointer;
         padding: 0 5px;
         transition: all 0.3s;
         white-space: nowrap;
+        display: flex;
+        align-items: center;
 
         &:hover {
           color: black;

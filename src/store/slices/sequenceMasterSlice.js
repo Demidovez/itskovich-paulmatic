@@ -51,7 +51,9 @@ export const sequenceMasterSlice = createSlice({
     },
     saveScheduleSequence: (state, action) => {
       state.data.Model.Schedule = action.payload;
-      state.pages.Schedule.isDone = state.data.Model.Schedule.length > 0;
+      state.pages.Schedule.isDone = state.data.Model.Schedule.some(
+        (day) => day.length > 0
+      );
     },
     saveSettingsSequence: (state, action) => {
       state.data.Model.Settings = action.payload;
