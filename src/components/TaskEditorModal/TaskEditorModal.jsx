@@ -81,19 +81,20 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
       );
   }, [templates]);
 
-  useEffect(() => {
-    currentType &&
-      setCurrentTask((task) => ({
-        ...task,
-        Type: currentType.Creds.Name,
-        Name: currentType.Actions[0].Title,
-      }));
-  }, [JSON.stringify(currentType)]);
+  // useEffect(() => {
+  //   currentType &&
+  //     setCurrentTask((task) => ({
+  //       ...task,
+  //       Type: currentType.Creds.Name,
+  //       Name: currentType.Actions[0].Title,
+  //     }));
+  // }, [JSON.stringify(currentType)]);
 
   const toggleType = (type) => {
     setCurrentType(type);
     setCurrentTask({
       ...currentTask,
+      ...type,
       Subject: "",
       Body: "",
     });
@@ -131,7 +132,7 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
   useEffect(() => {
     if (
       currentType &&
-      currentType.Creds.Name !== "manual_email" &&
+      currentType.Type !== "manual_email" &&
       selectedVariable &&
       bodyTextareaRef.current
     ) {
@@ -202,14 +203,10 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
                 current={currentType}
                 setCurrent={toggleType}
               />
-              <h3 className="mt-3 mb-3">
-                {currentType
-                  ? currentType.Actions[0].Title
-                  : "Тип задачи не выбран!"}
-              </h3>
+
               <div className="task-editor-wrapper flex-fill d-flex flex-column">
                 {["manual_email", "linkedin"].includes(
-                  currentType && currentType.Creds.Name
+                  currentType && currentType.Type
                 ) && (
                   <div className="editor-label editor-subject">
                     <span>Тема</span>
@@ -234,15 +231,14 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
                           setSelectedSubjectVariable(variable.name)
                         }
                       />
-                      {currentType &&
-                        currentType.Creds.Name === "manual_email" && (
-                          <>
-                            <span onClick={() => setIsHasCC(!isHasCC)}>CC</span>
-                            <span onClick={() => setIsHasBCC(!isHasBCC)}>
-                              BCC
-                            </span>
-                          </>
-                        )}
+                      {currentType && currentType.Type === "manual_email" && (
+                        <>
+                          <span onClick={() => setIsHasCC(!isHasCC)}>CC</span>
+                          <span onClick={() => setIsHasBCC(!isHasBCC)}>
+                            BCC
+                          </span>
+                        </>
+                      )}
                     </div>
                   </div>
                 )}
@@ -269,19 +265,16 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
                 )}
                 <div className="task-editor flex-fill d-flex flex-column pl-0 pr-0 pb-0">
                   <div className="mb-0 mt-1 pl-3" style={{ zIndex: 100 }}>
-                    {currentType &&
-                      currentType.Creds.Name === "manual_email" && (
-                        <DropdownWithIcon
-                          label="Шаблон"
-                          icon={() => <TbTemplate size="1.1rem" />}
-                          size="sm"
-                          className="editor-btn mr-2"
-                          items={tamplatesList.map((template) => template.name)}
-                          onSelect={(name) =>
-                            setActiveTemplate(templates[name])
-                          }
-                        />
-                      )}
+                    {currentType && currentType.Type === "manual_email" && (
+                      <DropdownWithIcon
+                        label="Шаблон"
+                        icon={() => <TbTemplate size="1.1rem" />}
+                        size="sm"
+                        className="editor-btn mr-2"
+                        items={tamplatesList.map((template) => template.name)}
+                        onSelect={(name) => setActiveTemplate(templates[name])}
+                      />
+                    )}
                     <DropdownWithIcon
                       label="Переменные"
                       icon={() => <BiCodeCurly size="1.1rem" />}
@@ -294,8 +287,7 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
                     />
                   </div>
                   <div className="flex-fill">
-                    {currentType &&
-                    currentType.Creds.Name === "manual_email" ? (
+                    {currentType && currentType.Type === "manual_email" ? (
                       <EditorEmail
                         content={activeTemplate}
                         style="body {margin: 0px; padding: 0 10px}"
@@ -330,6 +322,7 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
                 <div className="task-preview-label">предпросмотр</div>
                 <div className="h-100">
                   <PreviewViewer
+                    subject={currentTask.Subject}
                     body={currentTask.Body}
                     stubContact={StubContact}
                     account={Account}

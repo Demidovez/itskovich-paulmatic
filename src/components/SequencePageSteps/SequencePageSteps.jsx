@@ -29,8 +29,7 @@ const SequencePageSteps = ({ isShow, onChange }) => {
       id: new Date().getTime(),
       Type: "linkedin",
       step: 0,
-      Name: "Написать сообщение",
-      Description: "Сообщение в LinkedIn профиль",
+      Action: "cold_msg",
       Body: "<body>Привет, {{.Contact.Name}}!</body>",
       Subject: "Наконец-то достучались до тебя, {{.Contact.Name}}!",
       delay: 86400,
@@ -39,8 +38,7 @@ const SequencePageSteps = ({ isShow, onChange }) => {
       id: new Date().getTime() + 1,
       Type: "manual_email",
       step: 1,
-      Name: "Отправить письмо",
-      Description: "Простой просмотр LinkedIn профиля",
+      Action: "send_letter",
       Body: "<body>Hi, {{.Contact.Name}}!</body>",
       Subject:
         "Здравствуйте, наконец-то достучались до тебя, {{.Contact.Name}}!",
@@ -50,8 +48,7 @@ const SequencePageSteps = ({ isShow, onChange }) => {
       id: new Date().getTime() + 2,
       Type: "linkedin",
       step: 2,
-      Name: "Просмотр профиля",
-      Description: "Простой просмотр LinkedIn профиля",
+      Action: "view_profile",
       Body: "<body>Aloha, {{.Contact.Name}}!</body>",
       Subject:
         "Добрый день, наконец-то достучались до тебя, {{.Contact.Name}}!",
@@ -61,8 +58,7 @@ const SequencePageSteps = ({ isShow, onChange }) => {
       id: new Date().getTime() + 3,
       Type: "linkedin",
       step: 3,
-      Name: "Просмотр профиля",
-      Description: "Простой просмотр LinkedIn профиля",
+      Action: "private_msg",
       Body: "<body>Приветствую, {{.Contact.Name}}!</body>",
       Subject:
         "Доброе утро, наконец-то достучались до тебя, {{.Contact.Name}}!",
@@ -74,6 +70,7 @@ const SequencePageSteps = ({ isShow, onChange }) => {
     dispatch(
       saveStepsSequence(
         steps.map((step) => ({
+          Action: step.Action,
           Delay: step.delay,
           Body: step.Body,
           Subject: step.Subject,
@@ -103,7 +100,6 @@ const SequencePageSteps = ({ isShow, onChange }) => {
           ...step,
           id: new Date().getTime(),
           step: steps.length,
-          description: "Простой просмотр LinkedIn профиля",
           delay: 86400,
         },
       ]);
