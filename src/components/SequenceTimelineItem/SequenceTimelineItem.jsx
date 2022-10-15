@@ -1,14 +1,10 @@
-import { AiOutlineDelete } from "react-icons/ai";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Moveable from "react-moveable";
 import { MdMoreHoriz } from "react-icons/md";
 import { generateTimeLabel } from "utils/utils";
-import {
-  PopoverBody,
-  UncontrolledPopover,
-  UncontrolledTooltip,
-} from "reactstrap";
+import { PopoverBody, UncontrolledPopover } from "reactstrap";
 import SequencePageScheduleModalTime from "components/SequencePageScheduleModalTime/SequencePageScheduleModalTime";
+import { ReactComponent as IconClose } from "../../assets/img/icons/common/close.svg";
 
 const STEP = 900 / 48;
 
@@ -92,7 +88,7 @@ const SequenceTimelineItem = ({
               onClick={() => !disabled && onRemoveJob(item.id)}
               style={{ cursor: "pointer" }}
             >
-              <AiOutlineDelete />
+              <IconClose style={{ height: 15, width: 15 }} fill="white" />
             </span>
           </>
         )}
@@ -189,7 +185,7 @@ const SequenceTimelineItem = ({
                 style={{ marginTop: -3, cursor: "pointer" }}
                 onClick={() => onRemoveJob(item.id)}
               >
-                <AiOutlineDelete color="red" />
+                <IconClose style={{ height: 15, width: 15 }} fill="red" />
               </span>
             </div>
           </PopoverBody>

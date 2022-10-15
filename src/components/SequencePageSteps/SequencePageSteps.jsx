@@ -32,7 +32,7 @@ const SequencePageSteps = ({ isShow, onChange }) => {
       Name: "Написать сообщение",
       Description: "Сообщение в LinkedIn профиль",
       Body: "<body>Привет, {{.Contact.Name}}!</body>",
-      Subject: "Наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
+      Subject: "Наконец-то достучались до тебя, {{.Contact.Name}}!",
       delay: 86400,
     },
     {
@@ -43,7 +43,7 @@ const SequencePageSteps = ({ isShow, onChange }) => {
       Description: "Простой просмотр LinkedIn профиля",
       Body: "<body>Hi, {{.Contact.Name}}!</body>",
       Subject:
-        "Здравствуйте, наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
+        "Здравствуйте, наконец-то достучались до тебя, {{.Contact.Name}}!",
       delay: 86400,
     },
     {
@@ -54,7 +54,7 @@ const SequencePageSteps = ({ isShow, onChange }) => {
       Description: "Простой просмотр LinkedIn профиля",
       Body: "<body>Aloha, {{.Contact.Name}}!</body>",
       Subject:
-        "Добрый день, наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
+        "Добрый день, наконец-то достучались до тебя, {{.Contact.Name}}!",
       delay: 86400,
     },
     {
@@ -65,7 +65,7 @@ const SequencePageSteps = ({ isShow, onChange }) => {
       Description: "Простой просмотр LinkedIn профиля",
       Body: "<body>Приветствую, {{.Contact.Name}}!</body>",
       Subject:
-        "Доброе утро, наконец-то достучались до тебя, {{.Contact.Name}}!</body>",
+        "Доброе утро, наконец-то достучались до тебя, {{.Contact.Name}}!",
       delay: 86400,
     },
   ]);

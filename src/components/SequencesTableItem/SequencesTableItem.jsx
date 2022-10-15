@@ -111,7 +111,10 @@ const SequencesTableItem = ({ sequence, fields, isSelect, onSelect }) => {
                   ...field.style,
                 }}
               >
-                <strong className="pr-1">{sequence[field.name]}%</strong> (0)
+                <strong className="pr-1">
+                  {Math.round(sequence[field.name] * 100)}%
+                </strong>{" "}
+                (0)
               </td>
             );
           } else if (field.name === "ReplyRate") {
@@ -123,7 +126,9 @@ const SequencesTableItem = ({ sequence, fields, isSelect, onSelect }) => {
                   ...field.style,
                 }}
               >
-                <strong className="pr-1">{sequence[field.name] * 100}%</strong>
+                <strong className="pr-1">
+                  {Math.round(sequence[field.name] * 100)}%
+                </strong>
               </td>
             );
           } else if (field.name === "Progress") {

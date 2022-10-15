@@ -90,14 +90,16 @@ const SequencePageStepsItem = ({
         >
           <div className="d-flex" style={{ width: 450 }}>
             <div style={{ fontWeight: 600, fontSize: 14 }} className="subject">
-              {step.Subject || step.Name}
+              {(step.Subject || step.Name).replace(/(<([^>]+)>)/gi, "")}
             </div>
           </div>
           <div
             className="pl-4"
             style={{ opacity: 0.7, fontSize: 14, width: 100, flex: 1 }}
           >
-            <div className="description">{step.Body || step.Description}</div>
+            <div className="description">
+              {(step.Body || step.Description).replace(/(<([^>]+)>)/gi, "")}
+            </div>
           </div>
           <div className="col1 col1-1 sequence-desc-controls d-flex">
             <FiEdit3
