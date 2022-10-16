@@ -27,7 +27,7 @@ const PreviewViewer = ({
         },
         Me: {
           ...Object.fromEntries(
-            Object.entries(account.Contact).map(([k, v]) => [
+            Object.entries({ ...account.Contact, ...account }).map(([k, v]) => [
               k[0].toUpperCase() + k.slice(1),
               v,
             ])
@@ -54,11 +54,12 @@ const PreviewViewer = ({
         },
         Me: {
           ...Object.fromEntries(
-            Object.entries(account.Contact).map(([k, v]) => [
+            Object.entries({ ...account.Contact, ...account }).map(([k, v]) => [
               k[0].toUpperCase() + k.slice(1),
               v,
             ])
           ),
+          FullName: account.fullName,
         },
         Sequence: {
           Sendings: 0,
