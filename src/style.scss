@@ -42,3 +42,9 @@ body {
     right: 7px;
   }
 }
+
+.tox .tox-toolbar,
+.tox .tox-toolbar__overflow,
+.tox .tox-toolbar__primary {
+  background-image: none !important;
+}

@@ -1,5 +1,4 @@
 import { Button, Input, Modal } from "reactstrap";
-
 import { useEffect, useState } from "react";
 import "./ModalCreateSequence.scss";
 import SequencePageSteps from "components/SequencePageSteps/SequencePageSteps";
@@ -9,12 +8,18 @@ import SequencePageSchedule from "components/SequencePageSchedule/SequencePageSc
 import SequencePageLaunch from "components/SequencePageLaunch/SequencePageLaunch";
 import Dropdown from "components/Dropdown/Dropdown";
 import { usePrompt } from "hooks/usePrompt";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { saveNameSequence } from "store/slices/sequenceMasterSlice";
+import { useSelector, useDispatch } from "react-redux";
 import PaginationCreateSequence from "components/PaginationCreateSequence/PaginationCreateSequence";
 import { useGetFoldersQuery } from "store/api/folders";
-import { saveFolderIdSequence } from "store/slices/sequenceMasterSlice";
+import {
+  saveFolderIdSequence,
+  saveNameSequence,
+} from "store/slices/sequenceMasterSlice";
+import {
+  setCurrentContactPage,
+  clearSelectedIds,
+  searchValueContactPage,
+} from "store/slices/contactsSlice";
 
 const ModalCreateSequence = ({ onClose }) => {
   const dispatch = useDispatch();
@@ -24,6 +29,14 @@ const ModalCreateSequence = ({ onClose }) => {
   const activeFolderId = useSelector(
     (state) => state.sequences.selectedFolderId
   );
+
+  useEffect(() => {
+    resetContactsData();
+
+    return () => {
+      resetContactsData();
+    };
+  }, []);
 
   useEffect(() => {
     dispatch(saveFolderIdSequence(activeFolderId));
@@ -103,6 +116,12 @@ const ModalCreateSequence = ({ onClose }) => {
     } else {
       onClose();
     }
+  };
+
+  const resetContactsData = () => {
+    dispatch(clearSelectedIds());
+    dispatch(setCurrentContactPage(0));
+    dispatch(searchValueContactPage(""));
   };
 
   const onSubmit = () => {

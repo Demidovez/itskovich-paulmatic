@@ -8,23 +8,27 @@ import {
 } from "reactstrap";
 import "./TaskTypes.scss";
 
-const TaskTypes = ({ types = [], current, setCurrent }) => {
+const TaskTypes = ({ types = [], task = {}, setCurrent }) => {
   const [type, setType] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const toggle = () => setDropdownOpen((prevState) => !prevState);
 
   useEffect(() => {
-    if (types.length) {
+    if (task.Type && types.length) {
+      setType(types.find((type) => type.Creds.Name === task.Type));
+    } else if (types.length) {
       setType(types[0]);
     }
-  }, [types]);
+  }, [task, types]);
 
   const onSetType = (type) => {
     setType(type);
     setCurrent({
       Type: type.Creds.Name,
       Action: type.Actions[0].Name,
+      Name: type.Creds.Title,
+      Description: type.Actions[0].Title,
     });
   };
 
@@ -36,7 +40,7 @@ const TaskTypes = ({ types = [], current, setCurrent }) => {
             key={type.Creds.Name}
             onClick={() => onSetType(type)}
             className={`type-icon ${
-              current && current.Type === type.Creds.Name ? "active" : ""
+              task.Type === type.Creds.Name ? "active" : ""
             }`}
           >
             <TypeIcon type={type.Creds.Name} />
@@ -51,12 +55,12 @@ const TaskTypes = ({ types = [], current, setCurrent }) => {
             style={{ boxShadow: "none", background: "none" }}
           >
             <h3 className="m-0">
-              {current
+              {type
                 ? (
                     type.Actions.find(
-                      (action) => action.Name === current.Action
+                      (action) => action.Name === task.Action
                     ) || {}
-                  ).Title || "1111111111"
+                  ).Title || ""
                 : ""}
             </h3>
           </DropdownToggle>
@@ -72,8 +76,9 @@ const TaskTypes = ({ types = [], current, setCurrent }) => {
                   key={index}
                   onClick={() =>
                     setCurrent({
-                      ...current,
+                      Type: task.Type,
                       Action: action.Name,
+                      Description: action.Title,
                     })
                   }
                 >

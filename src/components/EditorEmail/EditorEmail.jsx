@@ -6,6 +6,7 @@ const EditorEmail = ({
   className,
   files = [],
   content,
+  template = "",
   onChange = () => {},
   style = "",
   disabled = false,
@@ -15,7 +16,7 @@ const EditorEmail = ({
   placeholder,
 }) => {
   const [addedImagesId, setAdedImagesId] = useState([]);
-  const data = useMemo(() => content, [content]);
+  const data = useMemo(() => template || content, [template]);
 
   const editorRef = useRef(null);
 

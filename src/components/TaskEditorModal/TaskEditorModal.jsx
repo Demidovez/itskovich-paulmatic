@@ -17,7 +17,6 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
   const [isHasCC, setIsHasCC] = useState(false);
   const [isHasBCC, setIsHasBCC] = useState(false);
   const [types, setTypes] = useState([]);
-  const [currentType, setCurrentType] = useState(null);
   const [isChanged, setIsChanged] = useState(false);
   const [variablesList, setVariablesList] = useState([]);
   const [tamplatesList, setTamplatesList] = useState([]);
@@ -57,10 +56,16 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
   const Account = useSelector((state) => state.common.Account);
 
   useEffect(() => {
-    if (types.length) {
-      setCurrentType(types[0]);
+    if (!currentTask.Type && types.length) {
+      setCurrentTask((task) => ({
+        ...task,
+        Type: types[0].Creds.Name,
+        Action: types[0].Actions[0].Name,
+        Name: types[0].Creds.Title,
+        Description: types[0].Actions[0].Title,
+      }));
     }
-  }, [types.length]);
+  }, [currentTask, types.length]);
 
   useEffect(() => {
     setVariablesList(
@@ -81,17 +86,7 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
       );
   }, [templates]);
 
-  // useEffect(() => {
-  //   currentType &&
-  //     setCurrentTask((task) => ({
-  //       ...task,
-  //       Type: currentType.Creds.Name,
-  //       Name: currentType.Actions[0].Title,
-  //     }));
-  // }, [JSON.stringify(currentType)]);
-
   const toggleType = (type) => {
-    setCurrentType(type);
     setCurrentTask({
       ...currentTask,
       ...type,
@@ -131,8 +126,7 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
 
   useEffect(() => {
     if (
-      currentType &&
-      currentType.Type !== "manual_email" &&
+      currentTask.Type !== "manual_email" &&
       selectedVariable &&
       bodyTextareaRef.current
     ) {
@@ -159,9 +153,7 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
       }));
       setSelectedVariable("");
     }
-  }, [selectedVariable, bodyTextareaRef.current, currentType]);
-
-  // console.log(currentTask);
+  }, [selectedVariable, bodyTextareaRef.current]);
 
   return (
     <>
@@ -200,14 +192,13 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
             <div className="col col-7 d-flex flex-column">
               <TaskTypes
                 types={types}
-                current={currentType}
+                task={currentTask}
                 setCurrent={toggleType}
               />
 
               <div className="task-editor-wrapper flex-fill d-flex flex-column">
-                {["manual_email", "linkedin"].includes(
-                  currentType && currentType.Type
-                ) && (
+                {(["manual_email"].includes(currentTask.Type) ||
+                  currentTask.Action === "cold_msg") && (
                   <div className="editor-label editor-subject">
                     <span>Тема</span>
                     <Input
@@ -231,7 +222,7 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
                           setSelectedSubjectVariable(variable.name)
                         }
                       />
-                      {currentType && currentType.Type === "manual_email" && (
+                      {currentTask.Type === "manual_email" && (
                         <>
                           <span onClick={() => setIsHasCC(!isHasCC)}>CC</span>
                           <span onClick={() => setIsHasBCC(!isHasBCC)}>
@@ -265,7 +256,7 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
                 )}
                 <div className="task-editor flex-fill d-flex flex-column pl-0 pr-0 pb-0">
                   <div className="mb-0 mt-1 pl-3" style={{ zIndex: 100 }}>
-                    {currentType && currentType.Type === "manual_email" && (
+                    {currentTask.Type === "manual_email" && (
                       <DropdownWithIcon
                         label="Шаблон"
                         icon={() => <TbTemplate size="1.1rem" />}
@@ -287,9 +278,10 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
                     />
                   </div>
                   <div className="flex-fill">
-                    {currentType && currentType.Type === "manual_email" ? (
+                    {currentTask.Type === "manual_email" ? (
                       <EditorEmail
-                        content={activeTemplate}
+                        content={currentTask.Body}
+                        template={activeTemplate}
                         style="body {margin: 0px; padding: 0 10px}"
                         onChange={(Body) =>
                           setCurrentTask((task) => ({ ...task, Body }))

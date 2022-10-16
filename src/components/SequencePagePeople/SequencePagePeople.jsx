@@ -1,22 +1,21 @@
-import React from "react";
-import { Card, CardHeader, Container, Row, Col, CardFooter } from "reactstrap";
+import { Card, CardHeader, Row, Col, CardFooter } from "reactstrap";
 import TableContacts from "components/TableContacts/TableContacts";
 import CreateContactsSelector from "components/CreateContactsSelector/CreateContactsSelector";
-import { useEffect, useState } from "react";
-import ActionContactsBar from "components/ActionContactsBar/ActionContactsBar";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { clearSelectedIds } from "store/slices/contactsSlice";
-import ModalYouSure from "components/ModalYouSure/ModalYouSure";
-import { setCurrentContactPage } from "store/slices/contactsSlice";
+import {
+  clearSelectedIds,
+  setCurrentContactPage,
+  searchValueContactPage,
+} from "store/slices/contactsSlice";
 import Pagination from "components/Pagination/Pagination";
-import { searchValueContactPage } from "store/slices/contactsSlice";
 import { setCache } from "store/slices/tablesSlice";
 import SearchBarContacts from "components/SearchBarContacts/SearchBarContacts";
 import ModalContactForm from "components/ModalContactForm/ModalContactForm";
-import InteractiveTour from "components/InteractiveTour/InteractiveTour";
-import ModalAddToSequence from "components/ModalAddToSequence/ModalAddToSequence";
-import { useLazyGetContactsQuery } from "store/api/contacts";
-import { useCreateOrUpdateContactMutation } from "store/api/contacts";
+import {
+  useLazyGetContactsQuery,
+  useCreateOrUpdateContactMutation,
+} from "store/api/contacts";
 import { saveContactIdsSequence } from "store/slices/sequenceMasterSlice";
 
 const columns = [
@@ -98,10 +97,6 @@ const SequencePagePeople = ({ isShow }) => {
   const onSave = (contact) => {
     createOrUpdateContact(contact);
     onResetForm();
-  };
-
-  const onSelectActiveContact = (id) => {
-    setActiveContact(contactsData.Items.find((contact) => contact.id === id));
   };
 
   const onSearch = (searchStr) => {
