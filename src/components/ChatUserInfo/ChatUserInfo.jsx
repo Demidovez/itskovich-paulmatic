@@ -3,7 +3,7 @@ import "./ChatUserInfo.scss";
 const ChatUserInfo = () => {
   return (
     <div className="chat-user-info-component">
-      <h4>Демидовец Николай</h4>
+      <h5>Демидовец Николай</h5>
       <div className="chat-user-info">
         <div>nikolaydemidovez@gmail.com</div>
         <div>+792123456789</div>
