@@ -27,7 +27,9 @@ const DropdownWithIcon = ({
     }
   }, [dropdownOpen]);
 
-  const toggle = () => setDropdownOpen((prevState) => !prevState);
+  const toggle = () => {
+    setDropdownOpen((prevState) => !prevState);
+  };
 
   return (
     <Dropdown

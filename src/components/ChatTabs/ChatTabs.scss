@@ -1,0 +1,17 @@
+.chat-tabs-component {
+  .chat-tab {
+    color: rgb(145, 145, 145);
+    transition: all 0.2s;
+    cursor: pointer;
+    height: 100%;
+    border-bottom: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    user-select: none;
+
+    &.active {
+      color: black;
+      border-color: var(--primary);
+    }
+  }
+}

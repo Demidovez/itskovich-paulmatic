@@ -12,8 +12,6 @@ const PreviewViewer = ({
   const [cleanSubject, setCleanSubject] = useState("");
   const [cleanBody, setCleanBody] = useState("");
 
-  console.log(account);
-
   useEffect(() => {
     setCleanSubject(
       pupa((subject || "").replaceAll("{{.", "{{"), {

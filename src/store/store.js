@@ -6,6 +6,7 @@ import tasksReducer from "./slices/tasksSlice";
 import commonReducer from "./slices/commonSlice";
 import sequencesReducer from "./slices/sequencesSlice";
 import sequenceMasterReducer from "./slices/sequenceMasterSlice";
+import inboxReducer from "./slices/inboxSlice";
 import { contactsApi } from "./api/contacts";
 import { personsApi } from "./api/persons";
 import { companiesApi } from "./api/companies";
@@ -14,6 +15,7 @@ import { commonApi } from "./api/common";
 import { sequencesApi } from "./api/sequences";
 import { notificationsApi } from "./api/notifications";
 import { foldersApi } from "./api/folders";
+import { inboxApi } from "./api/inbox";
 
 export const store = configureStore({
   reducer: {
@@ -24,6 +26,7 @@ export const store = configureStore({
     common: commonReducer,
     sequences: sequencesReducer,
     sequenceMaster: sequenceMasterReducer,
+    inbox: inboxReducer,
     [contactsApi.reducerPath]: contactsApi.reducer,
     [personsApi.reducerPath]: personsApi.reducer,
     [companiesApi.reducerPath]: companiesApi.reducer,
@@ -32,6 +35,7 @@ export const store = configureStore({
     [sequencesApi.reducerPath]: sequencesApi.reducer,
     [notificationsApi.reducerPath]: notificationsApi.reducer,
     [foldersApi.reducerPath]: foldersApi.reducer,
+    [inboxApi.reducerPath]: inboxApi.reducer,
   },
   middleware: (getDefaultMiddleware) => [
     ...getDefaultMiddleware(),
@@ -43,5 +47,6 @@ export const store = configureStore({
     sequencesApi.middleware,
     notificationsApi.middleware,
     foldersApi.middleware,
+    inboxApi.middleware,
   ],
 });

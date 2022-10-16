@@ -8,6 +8,7 @@ import BtoB from "pages/BtoB.js";
 import Icons from "pages/Icons.js";
 import Tasks from "pages/Tasks";
 import Sequences from "pages/Sequences";
+import Inbox from "pages/Inbox";
 
 var routes = [
   {
@@ -17,14 +18,6 @@ var routes = [
     component: Index,
     layout: "/admin",
   },
-  // {
-  //   path: "/dashboard",
-  //   name: "Dashboard",
-  //   icon: "ni ni-tv-2 text-primary",
-  //   component: Index,
-  //   layout: "/admin",
-  //   position: "user",
-  // },
   {
     path: "/icons",
     name: "Icons",
@@ -50,7 +43,6 @@ var routes = [
     position: "user",
   },
   {
-    // path: "/index",
     path: "/contacts",
     name: "Контакты",
     icon: "ni ni-bullet-list-67 text-red",
@@ -76,6 +68,13 @@ var routes = [
     name: "Последовательности",
     icon: "ni ni-align-center text-green",
     component: Sequences,
+    layout: "/admin",
+  },
+  {
+    path: "/inbox",
+    name: "InBox",
+    icon: "ni ni-box-2 text-blue",
+    component: Inbox,
     layout: "/admin",
   },
   {

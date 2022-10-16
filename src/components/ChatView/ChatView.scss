@@ -1,0 +1,28 @@
+.chat-view-component {
+  .chat-body {
+    padding: 20px 0px;
+    background-color: rgb(245, 245, 245);
+
+    .chat-message {
+      & > div {
+        max-width: 800px;
+        margin: 0 20px 0px 20px;
+      }
+
+      & + .chat-message {
+        margin-top: 20px;
+      }
+
+      .message-user {
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .message-time {
+        opacity: 0.6;
+        font-size: 13px;
+        text-align: end;
+      }
+    }
+  }
+}
