@@ -105,6 +105,27 @@ export const sequencesApi = createApi({
         }
       },
     }),
+    createOrUpdateSequence: builder.mutation({
+      query: (model) => ({
+        url: "/createOrUpdate",
+        method: "POST",
+        body: model,
+        headers: {
+          "caller-version-code": 1,
+          sessionToken: "user-1",
+        },
+      }),
+      transformResponse: (response, _, arg) => {
+        if (response.result && arg.id) {
+          toast.success(`Последовательность обновлена`);
+        } else if (response.result) {
+          toast.success(`Последовательность создана`);
+        } else {
+          toast.error(`Ошибка!`);
+        }
+      },
+      invalidatesTags: [{ type: "Sequence", id: "LIST" }],
+    }),
   }),
 });
 
@@ -115,4 +136,5 @@ export const {
   useStopSequencesMutation,
   useStartSequencesMutation,
   useLazyDeleteSequencesQuery,
+  useCreateOrUpdateSequenceMutation,
 } = sequencesApi;

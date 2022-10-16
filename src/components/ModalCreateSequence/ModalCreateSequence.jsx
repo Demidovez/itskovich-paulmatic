@@ -20,6 +20,7 @@ import {
   clearSelectedIds,
   searchValueContactPage,
 } from "store/slices/contactsSlice";
+import { useCreateOrUpdateSequenceMutation } from "store/api/sequences";
 
 const ModalCreateSequence = ({ onClose }) => {
   const dispatch = useDispatch();
@@ -29,6 +30,8 @@ const ModalCreateSequence = ({ onClose }) => {
   const activeFolderId = useSelector(
     (state) => state.sequences.selectedFolderId
   );
+
+  const [createOrUpdateSequence] = useCreateOrUpdateSequenceMutation();
 
   useEffect(() => {
     resetContactsData();
@@ -56,11 +59,11 @@ const ModalCreateSequence = ({ onClose }) => {
       title: "Шаги",
       isDone: false,
     },
-    {
-      name: "settings",
-      title: "Настройки",
-      isDone: false,
-    },
+    // {
+    //   name: "settings",
+    //   title: "Настройки",
+    //   isDone: false,
+    // },
     {
       name: "people",
       title: "Люди",
@@ -125,7 +128,7 @@ const ModalCreateSequence = ({ onClose }) => {
   };
 
   const onSubmit = () => {
-    console.log(sequenceResultData);
+    createOrUpdateSequence(sequenceResultData);
     setIsChanged(false);
     onClose();
   };
@@ -187,20 +190,20 @@ const ModalCreateSequence = ({ onClose }) => {
         isShow={currentIndexPage === 0}
         onChange={() => setIsChanged(true)}
       />
-      <SequencePageSettings
+      {/* <SequencePageSettings
+        isShow={currentIndexPage === 1}
+        onChange={() => setIsChanged(true)}
+      /> */}
+      <SequencePagePeople
         isShow={currentIndexPage === 1}
         onChange={() => setIsChanged(true)}
       />
-      <SequencePagePeople
+      <SequencePageSchedule
         isShow={currentIndexPage === 2}
         onChange={() => setIsChanged(true)}
       />
-      <SequencePageSchedule
-        isShow={currentIndexPage === 3}
-        onChange={() => setIsChanged(true)}
-      />
       <SequencePageLaunch
-        isShow={currentIndexPage === 4}
+        isShow={currentIndexPage === 3}
         onChange={() => setIsChanged(true)}
       />
       <div className="modal-footer d-flex justify-content-between p-0">
