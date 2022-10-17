@@ -69,8 +69,12 @@ const CommonThings = () => {
           dispatch(updateChatByNotification(notification));
         }
 
-        if (notification.Type === "chat_msg" && notification.Object.Msgs[0].My)
+        if (
+          notification.Type === "chat_msg" &&
+          notification.Object.Msgs[0].My
+        ) {
           return;
+        }
 
         toast(
           () => (

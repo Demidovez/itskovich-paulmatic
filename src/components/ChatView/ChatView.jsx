@@ -2,20 +2,22 @@ import { useEffect, useRef, useState } from "react";
 import moment from "moment/moment";
 import "./ChatView.scss";
 import { Card, CardBody, CardHeader } from "reactstrap";
+import parse from "html-react-parser";
 
 const ChatView = ({ className, chat = { Msgs: [] } }) => {
-  const bottomRef = useRef(null);
+  const topRef = useRef(null);
 
   useEffect(() => {
-    bottomRef && bottomRef.current.scrollIntoView();
-  }, [chat.Msgs.length, bottomRef]);
+    topRef && topRef.current.scrollIntoView();
+  }, [chat.Msgs.length, topRef]);
 
   return (
     <div className={`chat-view-component ${className}`}>
+      <span ref={topRef} />
       <div className="chat-body">
         {chat.Msgs.length ? (
           [...chat.Msgs]
-            .sort((m1, m2) => moment(m1.Time) - moment(m2.Time))
+            .sort((m1, m2) => moment(m2.id) - moment(m1.id))
             .map((message) => (
               <div
                 key={message.Time}
@@ -23,17 +25,17 @@ const ChatView = ({ className, chat = { Msgs: [] } }) => {
                   message.My ? "flex-row-reverse" : ""
                 }`}
               >
-                <Card className="shadow" style={{ maxWidth: 600 }}>
+                <Card className="shadow" style={{ maxWidth: "80%" }}>
                   <CardHeader className="pt-1 pb-1 pl-2 pr-2 d-flex justify-content-between align-items-center">
                     <div className="pl-2 message-user pr-4">
-                      {chat.Contact.name}
+                      {(message.Contact || {}).name || ""}
                     </div>
                     <div className="pr-2 message-time">
                       {moment(message.Time).format("DD MMM yy HH:mm")}
                     </div>
                   </CardHeader>
                   <CardBody className="pt-2 pb-2 pl-3 pr-3 message-text">
-                    {message.Body}
+                    {parse(message.Body)}
                   </CardBody>
                 </Card>
               </div>
@@ -43,7 +45,6 @@ const ChatView = ({ className, chat = { Msgs: [] } }) => {
             Чтобы начать диалог отправьте сообщение контакту!
           </div>
         )}
-        <span ref={bottomRef} />
       </div>
     </div>
   );

@@ -63,9 +63,10 @@ const ChatsListBar = ({ className = "" }) => {
               </div>
             </div>
             <div className="chat-preview">
-              {chat.Msgs.slice(-1)[0].Body.length >= 115
-                ? chat.Msgs.slice(-1)[0].Body.slice(0, 115) + "..."
-                : chat.Msgs.slice(-1)[0].Body}
+              {chat.Msgs.slice(-1)[0].PlainBodyShort ||
+                (chat.Msgs.slice(-1)[0].Body.length >= 115
+                  ? chat.Msgs.slice(-1)[0].Body.slice(0, 115) + "..."
+                  : chat.Msgs.slice(-1)[0].Body)}
             </div>
           </div>
         ))
