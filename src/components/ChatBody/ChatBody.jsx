@@ -8,6 +8,7 @@ import { Col } from "reactstrap";
 import { useLazySearchChatQuery } from "store/api/inbox";
 import { useLazySendMessageQuery } from "store/api/inbox";
 import { updateChatByOneMessageFromServer } from "store/slices/commonSlice";
+import { updateChatByAllMessagesFromServer } from "store/slices/commonSlice";
 import { updateChatByOneMessage } from "store/slices/commonSlice";
 import "./ChatBody.scss";
 
@@ -17,17 +18,20 @@ const ChatBody = () => {
   const [chat, setChat] = useState(null);
   const [searchMessagesOfChat, { data: messages }] = useLazySearchChatQuery();
 
-  const { activeChatId } = useSelector((state) => state.inbox);
+  const activeChatId = useSelector((state) => state.inbox.activeChatId);
   const chats = useSelector((state) => state.common.Chats.Chats);
+  const activeChat = useSelector((state) => state.common.Chats.ActiveChat);
 
   const [sendMessageToServer, { data: messageFromServer }] =
     useLazySendMessageQuery();
 
   useEffect(() => {
-    if (activeChatId >= 0 && chats) {
-      setChat(chats.find((chat) => chat.Contact.id === activeChatId) || null);
+    if (activeChat.Contact.id) {
+      setChat(activeChat);
+    } else {
+      setChat(chats.find((chat) => chat.Contact.id === activeChatId));
     }
-  }, [activeChatId, chats]);
+  }, [chats, activeChat, activeChatId]);
 
   useEffect(() => {
     if (activeChatId >= 0) {
@@ -39,13 +43,13 @@ const ChatBody = () => {
 
   const sendMessage = (message) => {
     sendMessageToServer({
-      ChatId: chat.Contact.id,
+      ChatId: activeChatId,
       Body: message,
     });
 
     dispatch(
       updateChatByOneMessage({
-        ChatId: chat.Contact.id,
+        ChatId: activeChatId,
         Body: message,
       })
     );
@@ -57,16 +61,20 @@ const ChatBody = () => {
     }
   }, [(messageFromServer || {}).id]);
 
+  useEffect(() => {
+    messages && dispatch(updateChatByAllMessagesFromServer(messages));
+  }, [messages]);
+
   return (
     <Col
       md={9}
       className="chat-body-component d-flex pl-0 flex-column overflow-hidden h-100"
     >
-      {messages && chat ? (
+      {chat ? (
         <>
           <ChatUserInfo user={chat.Contact} />
           <div className="overflow-auto flex-fill">
-            <ChatView className="flex-fill" chat={chat} messages={messages} />
+            <ChatView className="flex-fill" chat={chat} />
           </div>
 
           <ChatEditor className="border-top" sendMessage={sendMessage} />

@@ -24,6 +24,11 @@ const ChatEditor = ({ className, sendMessage }) => {
       );
   }, [templates]);
 
+  const onSendMessage = () => {
+    sendMessage(message);
+    setMessage("");
+  };
+
   return (
     <div
       className={`chat-editor-component flex-fill d-flex flex-column pb-0 ${className}`}
@@ -46,7 +51,8 @@ const ChatEditor = ({ className, sendMessage }) => {
         <Button
           color="primary"
           className="mr-2"
-          onClick={() => sendMessage(message)}
+          onClick={onSendMessage}
+          disabled={message.length === 0}
         >
           Отправить
         </Button>

@@ -18,6 +18,13 @@ const EditorEmail = ({
   const [addedImagesId, setAdedImagesId] = useState([]);
   const data = useMemo(() => template || content, [template]);
 
+  useEffect(() => {
+    if (editorRef.current && content === "") {
+      editorRef.current.setContent("");
+      editorRef.current.undoManager.clear();
+    }
+  }, [content, editorRef]);
+
   const editorRef = useRef(null);
 
   useEffect(() => {

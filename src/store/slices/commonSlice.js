@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 import moment from "moment";
 
 const initialState = {
@@ -43,8 +43,13 @@ const initialState = {
   },
   Folders: [],
   Chats: {
+    ModifiedTime: 0,
     Folders: [],
     Chats: [],
+    ActiveChat: {
+      Contact: {},
+      Msgs: [],
+    },
   },
 };
 
@@ -79,31 +84,49 @@ export const commonSlice = createSlice({
       state.Folders = action.payload;
     },
     setChats: (state, action) => {
-      state.Chats = { ...action.payload };
-
       state.Chats.Folders = [
-        ...state.Chats.Folders,
+        ...action.payload.Folders,
         { id: 0, Name: "Все" },
       ].sort((f1, f2) => f1.id - f2.id);
 
-      state.Chats.Chats = [...state.Chats.Chats].sort(
-        (c1, c2) => moment(c2.Msgs[0].Time) - moment(c1.Msgs[0].Time)
+      state.Chats.Chats = [...action.payload.Chats].sort(
+        (c1, c2) =>
+          moment(c2.Msgs.slice(-1)[0].Time) - moment(c1.Msgs.slice(-1)[0].Time)
       );
+
+      state.Chats.ModifiedTime = new Date().getTime();
     },
     updateChatByOneMessage: (state, action) => {
       const chatId = action.payload.ChatId;
-      const message = action.payload.Body;
+      const message = {
+        Body: action.payload.Body,
+        Time: moment().format(),
+        accountId: 1001,
+        ChatId: chatId,
+        My: true,
+      };
 
       state.Chats.Chats = state.Chats.Chats.map((chat) =>
         chat.Contact.id === chatId
-          ? { ...chat, Msgs: [...chat.Msgs, message] }
+          ? {
+              ...chat,
+              Msgs: [...chat.Msgs, { ...message, Contact: chat.Contact }],
+            }
           : chat
       );
 
       state.Chats.Chats = [...state.Chats.Chats].sort(
         (c1, c2) =>
-          moment(c2.Msgs.slice(-1).Time) - moment(c1.Msgs.slice(-1).Time)
+          moment(c2.Msgs.slice(-1)[0].Time) - moment(c1.Msgs.slice(-1)[0].Time)
       );
+
+      if (chatId === state.Chats.ActiveChat.Contact.id) {
+        state.Chats.ActiveChat =
+          state.Chats.Chats.find((chat) => chat.Contact.id === chatId) ||
+          state.Chats.ActiveChat;
+      }
+
+      state.Chats.ModifiedTime = new Date().getTime();
     },
     updateChatByOneMessageFromServer: (state, action) => {
       const chatId = action.payload.ChatId;
@@ -121,8 +144,16 @@ export const commonSlice = createSlice({
 
       state.Chats.Chats = [...state.Chats.Chats].sort(
         (c1, c2) =>
-          moment(c2.Msgs.slice(-1).Time) - moment(c1.Msgs.slice(-1).Time)
+          moment(c2.Msgs.slice(-1)[0].Time) - moment(c1.Msgs.slice(-1)[0].Time)
       );
+
+      if (chatId === state.Chats.ActiveChat.Contact.id) {
+        state.Chats.ActiveChat =
+          state.Chats.Chats.find((chat) => chat.Contact.id === chatId) ||
+          state.Chats.ActiveChat;
+      }
+
+      state.Chats.ModifiedTime = new Date().getTime();
     },
     updateChatByAllMessagesFromServer: (state, action) => {
       const chatId = action.payload[0].ChatId;
@@ -133,8 +164,65 @@ export const commonSlice = createSlice({
 
       state.Chats.Chats = [...state.Chats.Chats].sort(
         (c1, c2) =>
-          moment(c2.Msgs.slice(-1).Time) - moment(c1.Msgs.slice(-1).Time)
+          moment(c2.Msgs.slice(-1)[0].Time) - moment(c1.Msgs.slice(-1)[0].Time)
       );
+
+      if (chatId === state.Chats.ActiveChat.Contact.id) {
+        state.Chats.ActiveChat =
+          state.Chats.Chats.find((chat) => chat.Contact.id === chatId) ||
+          state.Chats.ActiveChat;
+      }
+
+      state.Chats.ModifiedTime = new Date().getTime();
+    },
+    updateChatByNotification: (state, action) => {
+      const notify = action.payload.Object;
+
+      const hasChat = [...state.Chats.Chats].some(
+        (chat) => chat.Contact.id === notify.Contact.id
+      );
+
+      if (hasChat) {
+        state.Chats.Chats = [...state.Chats.Chats].map((chat) => {
+          const hasMessage = chat.Msgs.some(
+            (message) => message.id === notify.Msgs[0].id
+          );
+
+          return chat.Contact.id === notify.Contact.id
+            ? {
+                ...chat,
+                Msgs: hasMessage
+                  ? chat.Msgs.map((message) =>
+                      message.id === notify.Msgs[0].id
+                        ? notify.Msgs[0]
+                        : message
+                    )
+                  : [...chat.Msgs, notify.Msgs[0]],
+              }
+            : chat;
+        });
+
+        state.Chats.Chats = [...state.Chats.Chats].sort(
+          (c1, c2) =>
+            moment(c2.Msgs.slice(-1)[0].Time) -
+            moment(c1.Msgs.slice(-1)[0].Time)
+        );
+
+        if (notify.Contact.id === state.Chats.ActiveChat.Contact.id) {
+          state.Chats.ActiveChat =
+            state.Chats.Chats.find(
+              (chat) => chat.Contact.id === notify.Contact.id
+            ) || state.Chats.ActiveChat;
+        }
+      } else {
+        state.Chats.Chats = [...state.Chats.Chats, notify].sort(
+          (c1, c2) =>
+            moment(c2.Msgs.slice(-1)[0].Time) -
+            moment(c1.Msgs.slice(-1)[0].Time)
+        );
+      }
+
+      state.Chats.ModifiedTime = new Date().getTime();
     },
   },
 });
@@ -151,6 +239,7 @@ export const {
   updateChatByOneMessage,
   updateChatByOneMessageFromServer,
   updateChatByAllMessagesFromServer,
+  updateChatByNotification,
 } = commonSlice.actions;
 
 export default commonSlice.reducer;

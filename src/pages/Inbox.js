@@ -49,8 +49,8 @@ const Inbox = () => {
                 md={3}
                 className="border-right pr-0 d-flex flex-column overflow-hidden h-100"
               >
-                <ChatUsersSearchBar className="" />
-                <div className="overflow-auto">
+                {/* <ChatUsersSearchBar className="" /> */}
+                <div className="overflow-auto pt-2">
                   <ChatsListBar className="" />
                 </div>
               </Col>

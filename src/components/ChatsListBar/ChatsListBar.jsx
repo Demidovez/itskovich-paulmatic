@@ -8,7 +8,9 @@ const ChatsListBar = ({ className = "" }) => {
   const dispatch = useDispatch();
 
   const [chats, setChats] = useState([]);
-  const allChats = useSelector((state) => state.common.Chats.Chats);
+  const { Chats: allChats, ModifiedTime } = useSelector(
+    (state) => state.common.Chats
+  );
   const { activeFolderId, activeChatId, searchChatUser } = useSelector(
     (state) => state.inbox
   );
@@ -37,7 +39,7 @@ const ChatsListBar = ({ className = "" }) => {
         )
       );
     }
-  }, [activeFolderId, allChats, searchChatUser]);
+  }, [activeFolderId, allChats, searchChatUser, ModifiedTime]);
 
   const selectActiveChatId = (id) => {
     dispatch(setActiveChatId(id));
@@ -48,22 +50,22 @@ const ChatsListBar = ({ className = "" }) => {
       {chats.length ? (
         chats.map((chat) => (
           <div
-            key={chat.Msgs[0].ChatId}
+            key={chat.Contact.id}
             className={`chat ${
-              activeChatId === chat.Msgs[0].ChatId ? "active" : ""
+              activeChatId === chat.Contact.id ? "active" : ""
             }`}
-            onClick={() => selectActiveChatId(chat.Msgs[0].ChatId)}
+            onClick={() => selectActiveChatId(chat.Contact.id)}
           >
             <div className="d-flex justify-content-between align-items-center mb-1">
               <div className="chat-user">{chat.Contact.name}</div>
               <div className="chat-time">
-                {moment(chat.Msgs[0].Time).format("DD MMM yy HH:mm")}
+                {moment(chat.Msgs.slice(-1)[0].Time).format("DD MMM yy HH:mm")}
               </div>
             </div>
             <div className="chat-preview">
-              {chat.Msgs[0].Body.length >= 115
-                ? chat.Msgs[0].Body.slice(0, 115) + "..."
-                : chat.Msgs[0].Body}
+              {chat.Msgs.slice(-1)[0].Body.length >= 115
+                ? chat.Msgs.slice(-1)[0].Body.slice(0, 115) + "..."
+                : chat.Msgs.slice(-1)[0].Body}
             </div>
           </div>
         ))

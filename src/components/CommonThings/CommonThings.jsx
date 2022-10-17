@@ -18,6 +18,7 @@ import {
 } from "store/slices/commonSlice";
 import { toast } from "react-toastify";
 import { setLoaderStatus } from "store/slices/commonSlice";
+import { updateChatByNotification } from "store/slices/commonSlice";
 
 const CommonThings = () => {
   const dispatch = useDispatch();
@@ -55,8 +56,6 @@ const CommonThings = () => {
     getNotifications();
 
     const interval = setInterval(() => {
-      console.log("checking of notifications");
-
       getNotifications();
     }, 15000);
 
@@ -66,6 +65,13 @@ const CommonThings = () => {
   useEffect(() => {
     if (notifications) {
       notifications.forEach((notification) => {
+        if (notification.Type === "chat_msg") {
+          dispatch(updateChatByNotification(notification));
+        }
+
+        if (notification.Type === "chat_msg" && notification.Object.Msgs[0].My)
+          return;
+
         toast(
           () => (
             <div
