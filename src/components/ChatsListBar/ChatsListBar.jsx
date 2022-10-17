@@ -39,6 +39,10 @@ const ChatsListBar = ({ className = "" }) => {
     }
   }, [activeFolderId, allChats, searchChatUser]);
 
+  const selectActiveChatId = (id) => {
+    dispatch(setActiveChatId(id));
+  };
+
   return (
     <div className={`chats-list-bar-component pl-3 pr-3 ${className}`}>
       {chats.length ? (
@@ -48,7 +52,7 @@ const ChatsListBar = ({ className = "" }) => {
             className={`chat ${
               activeChatId === chat.Msgs[0].ChatId ? "active" : ""
             }`}
-            onClick={() => dispatch(setActiveChatId(chat.Msgs[0].ChatId))}
+            onClick={() => selectActiveChatId(chat.Msgs[0].ChatId)}
           >
             <div className="d-flex justify-content-between align-items-center mb-1">
               <div className="chat-user">{chat.Contact.name}</div>

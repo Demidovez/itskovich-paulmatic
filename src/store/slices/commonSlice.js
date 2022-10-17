@@ -90,6 +90,52 @@ export const commonSlice = createSlice({
         (c1, c2) => moment(c2.Msgs[0].Time) - moment(c1.Msgs[0].Time)
       );
     },
+    updateChatByOneMessage: (state, action) => {
+      const chatId = action.payload.ChatId;
+      const message = action.payload.Body;
+
+      state.Chats.Chats = state.Chats.Chats.map((chat) =>
+        chat.Contact.id === chatId
+          ? { ...chat, Msgs: [...chat.Msgs, message] }
+          : chat
+      );
+
+      state.Chats.Chats = [...state.Chats.Chats].sort(
+        (c1, c2) =>
+          moment(c2.Msgs.slice(-1).Time) - moment(c1.Msgs.slice(-1).Time)
+      );
+    },
+    updateChatByOneMessageFromServer: (state, action) => {
+      const chatId = action.payload.ChatId;
+
+      state.Chats.Chats = state.Chats.Chats.map((chat) =>
+        chat.Contact.id === chatId
+          ? {
+              ...chat,
+              Msgs: chat.Msgs.map((message) =>
+                message.id ? message : action.payload
+              ),
+            }
+          : chat
+      );
+
+      state.Chats.Chats = [...state.Chats.Chats].sort(
+        (c1, c2) =>
+          moment(c2.Msgs.slice(-1).Time) - moment(c1.Msgs.slice(-1).Time)
+      );
+    },
+    updateChatByAllMessagesFromServer: (state, action) => {
+      const chatId = action.payload[0].ChatId;
+
+      state.Chats.Chats = state.Chats.Chats.map((chat) =>
+        chat.Contact.id === chatId ? { ...chat, Msgs: action.payload } : chat
+      );
+
+      state.Chats.Chats = [...state.Chats.Chats].sort(
+        (c1, c2) =>
+          moment(c2.Msgs.slice(-1).Time) - moment(c1.Msgs.slice(-1).Time)
+      );
+    },
   },
 });
 
@@ -102,6 +148,9 @@ export const {
   setCommonInfoHtmlTemplates,
   setFolders,
   setChats,
+  updateChatByOneMessage,
+  updateChatByOneMessageFromServer,
+  updateChatByAllMessagesFromServer,
 } = commonSlice.actions;
 
 export default commonSlice.reducer;

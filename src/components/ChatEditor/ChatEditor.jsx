@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { Button } from "reactstrap";
 import "./ChatEditor.scss";
 
-const ChatEditor = ({ className }) => {
+const ChatEditor = ({ className, sendMessage }) => {
   const [message, setMessage] = useState("");
   const [activeTemplate, setActiveTemplate] = useState("");
   const [tamplatesList, setTamplatesList] = useState([]);
@@ -43,7 +43,11 @@ const ChatEditor = ({ className }) => {
           />
           <AttachFilesToChat className="editor-btn" />
         </div>
-        <Button color="primary" className="mr-2">
+        <Button
+          color="primary"
+          className="mr-2"
+          onClick={() => sendMessage(message)}
+        >
           Отправить
         </Button>
       </div>

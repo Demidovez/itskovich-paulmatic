@@ -3,12 +3,13 @@ import { getServerUrl } from "./server";
 
 export const inboxApi = createApi({
   reducerPath: "inboxApi",
-  baseQuery: fetchBaseQuery({ baseUrl: getServerUrl("inbox") }),
+  baseQuery: fetchBaseQuery({ baseUrl: getServerUrl("chats") }),
   endpoints: (builder) => ({
-    getCommonInfo: builder.query({
-      query: () => ({
-        url: "/ddd",
-        method: "GET",
+    sendMessage: builder.query({
+      query: (body) => ({
+        url: "/sendMsg",
+        method: "POST",
+        body: body,
         headers: {
           "caller-version-code": 1,
           sessionToken: "user-1",
@@ -17,7 +18,20 @@ export const inboxApi = createApi({
       }),
       transformResponse: (response) => response.result || {},
     }),
+    searchChat: builder.query({
+      query: (body) => ({
+        url: "/search",
+        method: "POST",
+        body: body,
+        headers: {
+          "caller-version-code": 1,
+          sessionToken: "user-1",
+          "Content-type": "application/json",
+        },
+      }),
+      transformResponse: (response) => response.result || [],
+    }),
   }),
 });
 
-export const { useLazyGetCommonInfoQuery } = inboxApi;
+export const { useLazySendMessageQuery, useLazySearchChatQuery } = inboxApi;

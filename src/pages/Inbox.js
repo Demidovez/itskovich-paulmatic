@@ -4,13 +4,9 @@ import InteractiveTour from "components/InteractiveTour/InteractiveTour";
 import ChatFolders from "components/ChatFolders/ChatFolders";
 import ChatMessagesSearchBar from "components/ChatMessagesSearchBar/ChatMessagesSearchBar";
 import ChatsListBar from "components/ChatsListBar/ChatsListBar";
-import ChatView from "components/ChatView/ChatView";
-import ChatEditor from "components/ChatEditor/ChatEditor";
 import ChatUsersSearchBar from "components/ChatUsersSearchBar/ChatUsersSearchBar";
 import DropdownWithIcon from "components/DropdownWithIcon/DropdownWithIcon";
 import { BsListTask } from "react-icons/bs";
-import ChatUserInfo from "components/ChatUserInfo/ChatUserInfo";
-import { useSelector } from "react-redux";
 import ChatBody from "components/ChatBody/ChatBody";
 
 const tourSteps = [
