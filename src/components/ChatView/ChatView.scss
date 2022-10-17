@@ -1,7 +1,14 @@
 .chat-view-component {
+  height: 100%;
+
   .chat-body {
+    min-height: 100%;
     padding: 20px 0px;
     background-color: rgb(245, 245, 245);
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
+    // flex-direction: column;
 
     .chat-message {
       & > div {
@@ -27,6 +34,15 @@
       .message-text {
         font-size: 14px;
       }
+    }
+
+    .no-chat-messages {
+      font-weight: 200;
+      opacity: 0.7;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 }

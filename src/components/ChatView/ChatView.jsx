@@ -3,8 +3,8 @@ import moment from "moment/moment";
 import "./ChatView.scss";
 import { Card, CardBody, CardHeader, Col, Row } from "reactstrap";
 
-const ChatView = ({ className }) => {
-  const [messages] = useState([
+const ChatView = ({ className, messages = [] }) => {
+  const [messages1] = useState([
     {
       id: 0,
       message: "Привет. У вас есть время обсудить?",
@@ -59,24 +59,32 @@ const ChatView = ({ className }) => {
   return (
     <div className={`chat-view-component ${className}`}>
       <div className="chat-body">
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`chat-message d-flex ${
-              message.isMe ? "flex-row-reverse" : ""
-            }`}
-          >
-            <Card className="shadow" style={{ maxWidth: 600 }}>
-              <CardHeader className="pt-1 pb-1 pl-2 pr-2 d-flex justify-content-between align-items-center">
-                <div className="pl-2 message-user pr-4">{message.contact}</div>
-                <div className="pr-2 message-time">{message.time}</div>
-              </CardHeader>
-              <CardBody className="pt-2 pb-2 pl-3 pr-3 message-text">
-                {message.message}
-              </CardBody>
-            </Card>
+        {messages.length ? (
+          messages1.map((message) => (
+            <div
+              key={message.id}
+              className={`chat-message d-flex ${
+                message.isMe ? "flex-row-reverse" : ""
+              }`}
+            >
+              <Card className="shadow" style={{ maxWidth: 600 }}>
+                <CardHeader className="pt-1 pb-1 pl-2 pr-2 d-flex justify-content-between align-items-center">
+                  <div className="pl-2 message-user pr-4">
+                    {message.contact}
+                  </div>
+                  <div className="pr-2 message-time">{message.time}</div>
+                </CardHeader>
+                <CardBody className="pt-2 pb-2 pl-3 pr-3 message-text">
+                  {message.message}
+                </CardBody>
+              </Card>
+            </div>
+          ))
+        ) : (
+          <div className="no-chat-messages">
+            Чтобы начать диалог отправьте сообщение контакту!
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

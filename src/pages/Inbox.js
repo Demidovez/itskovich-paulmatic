@@ -1,24 +1,17 @@
 import React from "react";
-import {
-  Card,
-  CardHeader,
-  Container,
-  Row,
-  Col,
-  CardFooter,
-  CardBody,
-  Button,
-} from "reactstrap";
+import { Card, CardHeader, Container, Row, Col, CardBody } from "reactstrap";
 import InteractiveTour from "components/InteractiveTour/InteractiveTour";
-import ChatTabs from "components/ChatTabs/ChatTabs";
+import ChatFolders from "components/ChatFolders/ChatFolders";
 import ChatMessagesSearchBar from "components/ChatMessagesSearchBar/ChatMessagesSearchBar";
 import ChatsListBar from "components/ChatsListBar/ChatsListBar";
 import ChatView from "components/ChatView/ChatView";
 import ChatEditor from "components/ChatEditor/ChatEditor";
 import ChatUsersSearchBar from "components/ChatUsersSearchBar/ChatUsersSearchBar";
 import DropdownWithIcon from "components/DropdownWithIcon/DropdownWithIcon";
-import { TbTemplate } from "react-icons/tb";
+import { BsListTask } from "react-icons/bs";
 import ChatUserInfo from "components/ChatUserInfo/ChatUserInfo";
+import { useSelector } from "react-redux";
+import ChatBody from "components/ChatBody/ChatBody";
 
 const tourSteps = [
   {
@@ -35,10 +28,10 @@ const Inbox = () => {
           <CardHeader className="p-0">
             <Row className="">
               <Col md={9} className="d-flex align-items-center">
-                <ChatTabs />
+                <ChatFolders />
                 <DropdownWithIcon
                   label="Действия"
-                  icon={() => <TbTemplate size="1.1rem" />}
+                  icon={() => <BsListTask size="1.0rem" />}
                   size="sm"
                   className="editor-btn mr-2 ml-4"
                   items={[
@@ -65,17 +58,8 @@ const Inbox = () => {
                   <ChatsListBar className="" />
                 </div>
               </Col>
-              <Col
-                md={9}
-                className="d-flex pl-0 flex-column overflow-hidden h-100"
-              >
-                <ChatUserInfo />
-                <div className="overflow-auto">
-                  <ChatView className="flex-fill" />
-                </div>
 
-                <ChatEditor className="border-top" />
-              </Col>
+              <ChatBody />
             </Row>
           </CardBody>
         </Card>

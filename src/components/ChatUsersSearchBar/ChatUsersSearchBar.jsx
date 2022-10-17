@@ -1,8 +1,14 @@
 import { Input } from "reactstrap";
 import "./ChatUsersSearchBar.scss";
 import { MdOutlineSearch } from "react-icons/md";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setSearchChatUser } from "store/slices/inboxSlice";
 
 const ChatUsersSearchBar = ({ className = "" }) => {
+  const dispatch = useDispatch();
+  const searchChatUser = useSelector((state) => state.inbox.searchChatUser);
+
   return (
     <div
       className={`chat-users-search-bar-component d-flex align-items-center ${className}`}
@@ -15,6 +21,8 @@ const ChatUsersSearchBar = ({ className = "" }) => {
         className="border-0"
         type="search"
         style={{ background: "none" }}
+        value={searchChatUser}
+        onChange={(e) => dispatch(setSearchChatUser(e.target.value))}
       />
     </div>
   );

@@ -14,6 +14,7 @@ import {
   setCurrentUser,
   setStatistickInfo,
   setCommonInfoTasks,
+  setChats,
 } from "store/slices/commonSlice";
 import { toast } from "react-toastify";
 import { setLoaderStatus } from "store/slices/commonSlice";
@@ -107,6 +108,7 @@ const CommonThings = () => {
       dispatch(setCommonInfoTasks(commonData.Tasks));
       dispatch(setCommonInfoHtmlTemplates(commonData.Templates));
       dispatch(setFolders(commonData.Folders));
+      dispatch(setChats(commonData.Chats));
       commonData.Account && saveUserToLocalStorage(commonData.Account);
       if (commonData.Account) {
         dispatch(setCurrentUser(commonData.Account));

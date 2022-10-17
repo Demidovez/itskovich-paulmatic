@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import moment from "moment";
 
 const initialState = {
   interval: 15,
@@ -41,6 +42,10 @@ const initialState = {
     Marketplace: {},
   },
   Folders: [],
+  Chats: {
+    Folders: [],
+    Chats: [],
+  },
 };
 
 export const commonSlice = createSlice({
@@ -73,6 +78,18 @@ export const commonSlice = createSlice({
     setFolders: (state, action) => {
       state.Folders = action.payload;
     },
+    setChats: (state, action) => {
+      state.Chats = { ...action.payload };
+
+      state.Chats.Folders = [
+        ...state.Chats.Folders,
+        { id: 0, Name: "Все" },
+      ].sort((f1, f2) => f1.id - f2.id);
+
+      state.Chats.Chats = [...state.Chats.Chats].sort(
+        (c1, c2) => moment(c2.Msgs[0].Time) - moment(c1.Msgs[0].Time)
+      );
+    },
   },
 });
 
@@ -84,6 +101,7 @@ export const {
   setCurrentUser,
   setCommonInfoHtmlTemplates,
   setFolders,
+  setChats,
 } = commonSlice.actions;
 
 export default commonSlice.reducer;
