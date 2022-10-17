@@ -5,14 +5,16 @@ import { useEffect, useState } from "react";
 import { TbTemplate } from "react-icons/tb";
 import { useSelector } from "react-redux";
 import { Button } from "reactstrap";
+import pupa from "pupa";
 import "./ChatEditor.scss";
 
-const ChatEditor = ({ className, sendMessage }) => {
+const ChatEditor = ({ className, sendMessage, chat = {} }) => {
   const [message, setMessage] = useState("");
   const [activeTemplate, setActiveTemplate] = useState("");
   const [tamplatesList, setTamplatesList] = useState([]);
 
   const templates = useSelector((state) => state.common.Templates.Marketplace);
+  const Account = useSelector((state) => state.common.Account);
 
   useEffect(() => {
     templates &&
@@ -27,6 +29,34 @@ const ChatEditor = ({ className, sendMessage }) => {
   const onSendMessage = () => {
     sendMessage(message);
     setMessage("");
+  };
+
+  const selectAvtiveTemplate = (template) => {
+    setActiveTemplate(
+      pupa((template || "").replaceAll("{{.", "{{"), {
+        Contact: {
+          ...Object.fromEntries(
+            Object.entries(chat.Contact).map(([k, v]) => [
+              k[0].toUpperCase() + k.slice(1),
+              v,
+            ])
+          ),
+        },
+        Me: {
+          ...Object.fromEntries(
+            Object.entries({ ...Account.Contact, ...Account }).map(([k, v]) => [
+              k[0].toUpperCase() + k.slice(1),
+              v,
+            ])
+          ),
+          FullName: Account.fullName,
+        },
+        Sequence: {
+          Sendings: 0,
+          Views: 0,
+        },
+      })
+    );
   };
 
   return (
@@ -44,7 +74,7 @@ const ChatEditor = ({ className, sendMessage }) => {
             size="sm"
             className="editor-btn mr-2"
             items={tamplatesList.map((template) => template.name)}
-            onSelect={(name) => setActiveTemplate(templates[name])}
+            onSelect={(name) => selectAvtiveTemplate(templates[name])}
           />
           <AttachFilesToChat className="editor-btn" />
         </div>

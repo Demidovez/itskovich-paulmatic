@@ -77,7 +77,11 @@ const ChatBody = () => {
             <ChatView className="flex-fill" chat={chat} />
           </div>
 
-          <ChatEditor className="border-top" sendMessage={sendMessage} />
+          <ChatEditor
+            className="border-top"
+            sendMessage={sendMessage}
+            chat={chat}
+          />
         </>
       ) : (
         <div className="no-chat-active">
