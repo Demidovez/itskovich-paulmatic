@@ -7,5 +7,22 @@
     display: flex;
     gap: 20px;
     font-size: 13px;
+
+    h5 {
+      margin-bottom: 0;
+      display: flex;
+      align-items: center;
+
+      &::after {
+        content: "";
+        margin-left: 20px;
+        margin-top: -1px;
+        font-weight: 200;
+        display: inline-block;
+        background: rgb(197, 197, 197);
+        width: 1px;
+        height: 100%;
+      }
+    }
   }
 }
