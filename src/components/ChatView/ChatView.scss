@@ -3,14 +3,22 @@
 
   .chat-body {
     min-height: 100%;
-    padding: 20px 0px;
+    padding: 10px 0px;
     background-color: rgb(245, 245, 245);
-    // display: flex;
-    // align-items: center;
-    // justify-content: center;
-    // flex-direction: column;
+
+    .chat-message-wrapper {
+      background-color: #5e72e400;
+      transition: background 1.5s;
+
+      &.searched-message {
+        background-color: #5e72e4bb;
+        transition: background 0.2s;
+      }
+    }
 
     .chat-message {
+      padding: 10px 0;
+
       & > div {
         margin: 0 20px 0px 20px;
       }

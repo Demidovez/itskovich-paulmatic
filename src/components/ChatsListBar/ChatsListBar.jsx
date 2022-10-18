@@ -1,19 +1,20 @@
 import moment from "moment/moment";
-import { useEffect, useState } from "react";
+import React, { createRef, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveChatId } from "store/slices/inboxSlice";
+import { Element, scroller } from "react-scroll";
 import "./ChatsListBar.scss";
 
 const ChatsListBar = ({ className = "" }) => {
   const dispatch = useDispatch();
 
   const [chats, setChats] = useState([]);
-  const { Chats: allChats, ModifiedTime } = useSelector(
-    (state) => state.common.Chats
-  );
-  const { activeFolderId, activeChatId, searchChatUser } = useSelector(
-    (state) => state.inbox
-  );
+  const allChats = useSelector((state) => state.common.Chats.Chats);
+  const ModifiedTime = useSelector((state) => state.common.Chats.ModifiedTime);
+  const activeFolderId = useSelector((state) => state.inbox.activeFolderId);
+  const activeChatId = useSelector((state) => state.inbox.activeChatId);
+  const searchedChatId = useSelector((state) => state.inbox.searchedChatId);
+  const searchChatUser = useSelector((state) => state.inbox.searchChatUser);
 
   useEffect(() => {
     if (activeFolderId > 0) {
@@ -39,36 +40,53 @@ const ChatsListBar = ({ className = "" }) => {
         )
       );
     }
-  }, [activeFolderId, allChats, searchChatUser, ModifiedTime]);
+  }, [activeFolderId, allChats.length, searchChatUser, ModifiedTime]);
 
   const selectActiveChatId = (id) => {
     dispatch(setActiveChatId(id));
   };
 
+  useEffect(() => {
+    if (searchedChatId >= 0) {
+      scroller.scrollTo("chat_" + searchedChatId, {
+        duration: 300,
+        smooth: true,
+        containerId: "scrollable",
+      });
+    }
+  }, [searchedChatId]);
+
   return (
-    <div className={`chats-list-bar-component pl-3 pr-3 ${className}`}>
+    <div className={`chats-list-bar-component pl-3 pr-3 ${className} `}>
       {chats.length ? (
         chats.map((chat) => (
-          <div
+          <Element
+            name={"chat_" + chat.Contact.id}
+            className="element"
             key={chat.Contact.id}
-            className={`chat ${
-              activeChatId === chat.Contact.id ? "active" : ""
-            }`}
-            onClick={() => selectActiveChatId(chat.Contact.id)}
           >
-            <div className="d-flex justify-content-between align-items-center mb-1">
-              <div className="chat-user">{chat.Contact.name}</div>
-              <div className="chat-time">
-                {moment(chat.Msgs.slice(-1)[0].Time).format("DD MMM yy HH:mm")}
+            <div
+              className={`chat ${
+                activeChatId === chat.Contact.id ? "active" : ""
+              }`}
+              onClick={() => selectActiveChatId(chat.Contact.id)}
+            >
+              <div className="d-flex justify-content-between align-items-center mb-1">
+                <div className="chat-user">{chat.Contact.name}</div>
+                <div className="chat-time">
+                  {moment(chat.Msgs.slice(-1)[0].Time).format(
+                    "DD MMM yy HH:mm"
+                  )}
+                </div>
+              </div>
+              <div className="chat-preview">
+                {chat.Msgs.slice(-1)[0].PlainBodyShort ||
+                  (chat.Msgs.slice(-1)[0].Body.length >= 115
+                    ? chat.Msgs.slice(-1)[0].Body.slice(0, 115) + "..."
+                    : chat.Msgs.slice(-1)[0].Body)}
               </div>
             </div>
-            <div className="chat-preview">
-              {chat.Msgs.slice(-1)[0].PlainBodyShort ||
-                (chat.Msgs.slice(-1)[0].Body.length >= 115
-                  ? chat.Msgs.slice(-1)[0].Body.slice(0, 115) + "..."
-                  : chat.Msgs.slice(-1)[0].Body)}
-            </div>
-          </div>
+          </Element>
         ))
       ) : (
         <div className="no-chats">Сообщений пока нет</div>

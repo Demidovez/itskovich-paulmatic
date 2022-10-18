@@ -77,7 +77,7 @@ const ChatEditor = ({ className, sendMessage, chat = {} }) => {
               items={tamplatesList.map((template) => template.name)}
               onSelect={(name) => selectAvtiveTemplate(templates[name])}
             />
-            <AttachFilesToChat className="editor-btn" />
+            {/* <AttachFilesToChat className="editor-btn" /> */}
           </div>
           <Button
             color="primary"

@@ -100,6 +100,10 @@ export const commonSlice = createSlice({
       const chatId = action.payload.ChatId;
       const message = {
         Body: action.payload.Body,
+        PlainBodyShort: action.payload.Body.replace(/(<([^>]+)>)/gi, "").slice(
+          0,
+          200
+        ),
         Time: moment().format(),
         accountId: 1001,
         ChatId: chatId,

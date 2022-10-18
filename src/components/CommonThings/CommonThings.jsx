@@ -20,6 +20,7 @@ import {
 import { useHistory, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { setActiveChatId } from "store/slices/inboxSlice";
+import { Events } from "react-scroll";
 
 const CommonThings = () => {
   const dispatch = useDispatch();
@@ -148,6 +149,20 @@ const CommonThings = () => {
   const saveUserToLocalStorage = (Account) => {
     localStorage.setItem("Account", JSON.stringify(Account));
   };
+
+  useEffect(() => {
+    Events.scrollEvent.register("end", function (to, element) {
+      if (to === "message_searched") {
+        setTimeout(() => {
+          element.classList.remove("searched-message");
+        }, 2000);
+      }
+    });
+
+    return () => {
+      Events.scrollEvent.remove("end");
+    };
+  }, []);
 
   return <></>;
 };

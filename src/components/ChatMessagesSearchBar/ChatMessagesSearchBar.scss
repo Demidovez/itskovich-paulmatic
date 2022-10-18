@@ -1,0 +1,51 @@
+.chat-messages-search-bar-component {
+  position: relative;
+
+  .result-wrapper {
+    bottom: 0;
+    right: 10px;
+    transform: translateY(100%);
+    position: absolute;
+    background-color: white;
+    min-width: 100%;
+    max-height: 400px;
+    overflow: auto;
+    border-radius: 8px;
+    padding-top: 10px;
+    box-shadow: 0 50px 100px rgb(50 50 93 / 10%),
+      0 15px 35px rgb(50 50 93 / 15%), 0 5px 15px rgb(0 0 0 / 10%);
+    transition: all 0.3s;
+
+    .result-item {
+      padding: 10px 16px;
+      background: #f4f4f4;
+      border: 1px solid rgb(241, 241, 241);
+      border-radius: 12px;
+      margin: 0 10px 10px 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:hover {
+        background: rgba(94, 114, 228, 0.4);
+      }
+
+      .result-user {
+        font-weight: 600;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+
+      .result-time {
+        font-size: 10px;
+        opacity: 0.5;
+        white-space: nowrap;
+        margin-left: 20px;
+      }
+
+      .result-preview {
+        padding-top: 5px;
+        font-size: 13px;
+      }
+    }
+  }
+}

@@ -50,7 +50,7 @@ const Inbox = () => {
                 className="border-right pr-0 d-flex flex-column overflow-hidden h-100"
               >
                 <ChatUsersSearchBar className="" />
-                <div className="overflow-auto pt-2">
+                <div className="overflow-auto pt-2" id="scrollable">
                   <ChatsListBar className="" />
                 </div>
               </Col>

@@ -22,6 +22,7 @@ const ChatBody = () => {
   const [searchMessagesOfChat, { data: messages }] = useLazySearchChatQuery();
 
   const activeChatId = useSelector((state) => state.inbox.activeChatId);
+
   const chats = useSelector((state) => state.common.Chats.Chats);
   const activeChat = useSelector((state) => state.common.Chats.ActiveChat);
 
@@ -80,7 +81,7 @@ const ChatBody = () => {
             className="d-flex flex-column"
           >
             <ChatUserInfo user={chat.Contact} />
-            <div className="overflow-auto flex-fill">
+            <div className="overflow-auto flex-fill" id="scrollable-messages">
               <ChatView className="flex-fill" chat={chat} />
             </div>
           </ReflexElement>
