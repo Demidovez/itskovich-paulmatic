@@ -33,6 +33,10 @@ export const inboxSlice = createSlice({
       state.searchedChatId = -1;
       state.searchedMessageId = -1;
     },
+    clearSearchMessageId: (state, action) => {
+      state.searchedChatId = -1;
+      state.searchedMessageId = -1;
+    },
   },
 });
 
@@ -41,6 +45,7 @@ export const {
   setActiveChatId,
   setSearchChatUser,
   setSearchedMessage,
+  clearSearchMessageId,
 } = inboxSlice.actions;
 
 export default inboxSlice.reducer;

@@ -21,6 +21,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { setActiveChatId } from "store/slices/inboxSlice";
 import { Events } from "react-scroll";
+import { clearSearchMessageId } from "store/slices/inboxSlice";
 
 const CommonThings = () => {
   const dispatch = useDispatch();
@@ -155,6 +156,7 @@ const CommonThings = () => {
       if (to === "message_searched") {
         setTimeout(() => {
           element.classList.remove("searched-message");
+          dispatch(clearSearchMessageId());
         }, 2000);
       }
     });
