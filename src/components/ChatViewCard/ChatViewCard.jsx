@@ -2,9 +2,24 @@ import moment from "moment/moment";
 import { Card, CardBody, CardHeader } from "reactstrap";
 import parse from "html-react-parser";
 import { Element, scroller } from "react-scroll";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const ChatViewCard = ({ message, isSearched }) => {
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  const handleScroll = () => {
+    const position = window.pageYOffset;
+    setScrollPosition(position);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   useEffect(() => {
     if (isSearched) {
       scroller.scrollTo("message_searched", {
@@ -15,7 +30,7 @@ const ChatViewCard = ({ message, isSearched }) => {
         isDynamic: true,
       });
     }
-  }, [isSearched, JSON.stringify(message)]);
+  }, [isSearched, scrollPosition]);
 
   return (
     <Element

@@ -51,20 +51,31 @@ const ChatMessagesSearchBar = ({ className = "" }) => {
 
   const getWrappedText = (body) => {
     const cleanedBody = body.replace(/(<([^>]+)>)/gi, "");
-    const indexOfSearchValue = cleanedBody.indexOf(searchValue);
+    const indexOfStartSearchValue = cleanedBody
+      .toLowerCase()
+      .indexOf(searchValue.toLowerCase());
+    const indexOfEndSearchValue = indexOfStartSearchValue + searchValue.length;
+    const labelSearchValue = cleanedBody.slice(
+      indexOfStartSearchValue,
+      indexOfEndSearchValue
+    );
 
     const textBeforeSearchValue = cleanedBody.slice(
-      Math.max(indexOfSearchValue - 50, 0),
-      indexOfSearchValue
+      Math.max(indexOfStartSearchValue - 50, 0),
+      indexOfStartSearchValue
     );
 
-    const textAfterSearchValue = cleanedBody.slice(
-      indexOfSearchValue + searchValue.length,
-      Math.min(indexOfSearchValue + searchValue.length + 50, cleanedBody.length)
-    );
+    const textAfterSearchValue =
+      indexOfEndSearchValue === cleanedBody.length - 1
+        ? ""
+        : cleanedBody.slice(
+            indexOfEndSearchValue,
+            Math.min(indexOfEndSearchValue + 50, cleanedBody.length)
+          );
+
     const wrappedText = `${
       textBeforeSearchValue.length < 50 ? "" : "..."
-    }${textBeforeSearchValue}<span class="search-value">${searchValue}</span>${textAfterSearchValue}${
+    }${textBeforeSearchValue}<span class="search-value">${labelSearchValue}</span>${textAfterSearchValue}${
       textAfterSearchValue.length < 50 ? "" : "..."
     }`;
 
