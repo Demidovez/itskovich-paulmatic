@@ -17,15 +17,17 @@ import {
   setChats,
   updateChatByNotification,
 } from "store/slices/commonSlice";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { setActiveChatId } from "store/slices/inboxSlice";
 
 const CommonThings = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const location = useLocation();
 
   const isFetchingTasks = useSelector((state) => state.tasks.isFetching);
+  const activeChatId = useSelector((state) => state.inbox.activeChatId);
 
   const [, { isSuccess: isExecutedTask }] = useExecuteTaskMutation({
     fixedCacheKey: "execute-task",
@@ -78,7 +80,9 @@ const CommonThings = () => {
 
         if (
           notification.Type === "chat_msg" &&
-          notification.Object.Msgs[0].My
+          (notification.Object.Msgs[0].My ||
+            (location.pathname.includes("admin/inbox") &&
+              activeChatId === notification.Object.Contact.id))
         ) {
           return;
         }
