@@ -10,6 +10,9 @@ import { useLazySendMessageQuery } from "store/api/inbox";
 import { updateChatByOneMessageFromServer } from "store/slices/commonSlice";
 import { updateChatByAllMessagesFromServer } from "store/slices/commonSlice";
 import { updateChatByOneMessage } from "store/slices/commonSlice";
+import { ReflexContainer, ReflexSplitter, ReflexElement } from "react-reflex";
+
+import "react-reflex/styles.css";
 import "./ChatBody.scss";
 
 const ChatBody = () => {
@@ -71,18 +74,27 @@ const ChatBody = () => {
       className="chat-body-component d-flex pl-0 flex-column overflow-hidden h-100"
     >
       {chat ? (
-        <>
-          <ChatUserInfo user={chat.Contact} />
-          <div className="overflow-auto flex-fill">
-            <ChatView className="flex-fill" chat={chat} />
-          </div>
+        <ReflexContainer orientation="horizontal">
+          <ReflexElement
+            style={{ overflow: "hidden" }}
+            className="d-flex flex-column"
+          >
+            <ChatUserInfo user={chat.Contact} />
+            <div className="overflow-auto flex-fill">
+              <ChatView className="flex-fill" chat={chat} />
+            </div>
+          </ReflexElement>
 
-          <ChatEditor
-            className="border-top"
-            sendMessage={sendMessage}
-            chat={chat}
-          />
-        </>
+          <ReflexSplitter style={{ height: 1, border: "none" }} />
+
+          <ReflexElement minSize={300} size={300}>
+            <ChatEditor
+              className="border-top"
+              sendMessage={sendMessage}
+              chat={chat}
+            />
+          </ReflexElement>
+        </ReflexContainer>
       ) : (
         <div className="no-chat-active">
           Для начала переписки выберите чат слева

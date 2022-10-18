@@ -60,44 +60,46 @@ const ChatEditor = ({ className, sendMessage, chat = {} }) => {
   };
 
   return (
-    <div
-      className={`chat-editor-component flex-fill d-flex flex-column pb-0 ${className}`}
-    >
+    <>
       <div
-        className="mt-2 ml-3 mb-0 d-flex justify-content-between"
-        style={{ zIndex: 100 }}
+        className={`chat-editor-component flex-fill d-flex flex-column pb-0 ${className}`}
       >
-        <div className="d-flex">
-          <DropdownWithIcon
-            label="Шаблон"
-            icon={() => <TbTemplate size="1.1rem" />}
-            size="sm"
-            className="editor-btn mr-2"
-            items={tamplatesList.map((template) => template.name)}
-            onSelect={(name) => selectAvtiveTemplate(templates[name])}
-          />
-          <AttachFilesToChat className="editor-btn" />
-        </div>
-        <Button
-          color="primary"
-          className="mr-2"
-          onClick={onSendMessage}
-          disabled={message.length === 0}
+        <div
+          className="mt-2 ml-3 mb-0 d-flex justify-content-between"
+          style={{ zIndex: 100 }}
         >
-          Отправить
-        </Button>
+          <div className="d-flex">
+            <DropdownWithIcon
+              label="Шаблон"
+              icon={() => <TbTemplate size="1.1rem" />}
+              size="sm"
+              className="editor-btn mr-2"
+              items={tamplatesList.map((template) => template.name)}
+              onSelect={(name) => selectAvtiveTemplate(templates[name])}
+            />
+            <AttachFilesToChat className="editor-btn" />
+          </div>
+          <Button
+            color="primary"
+            className="mr-2"
+            onClick={onSendMessage}
+            disabled={message.length === 0}
+          >
+            Отправить
+          </Button>
+        </div>
+        <div className="flex-fill">
+          <EditorEmail
+            content={message}
+            template={activeTemplate}
+            style="body {margin: 0px; padding: 0 10px}"
+            onChange={(message) => setMessage(message)}
+            placeholder="Введите сообщение..."
+            toolbar="undo redo bold italic alignleft aligncenter alignright alignjustify bullist numlist fontsize forecolor backcolor | blocks fontfamily removeformat "
+          />
+        </div>
       </div>
-      <div className="flex-fill">
-        <EditorEmail
-          content={message}
-          template={activeTemplate}
-          style="body {margin: 0px; padding: 0 10px}"
-          onChange={(message) => setMessage(message)}
-          placeholder="Введите сообщение..."
-          toolbar="undo redo bold italic alignleft aligncenter alignright alignjustify bullist numlist fontsize forecolor backcolor | blocks fontfamily removeformat "
-        />
-      </div>
-    </div>
+    </>
   );
 };
 

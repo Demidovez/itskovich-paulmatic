@@ -95,7 +95,9 @@ const CommonThings = () => {
                 {notification.Subject}
               </div>
               <div style={{ color: "white", fontSize: 13 }}>
-                {notification.Message}
+                {notification.Type === "chat_msg"
+                  ? notification.Object.Msgs[0].PlainBodyShort
+                  : notification.Message}
               </div>
             </div>
           ),
