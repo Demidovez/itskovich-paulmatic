@@ -15,13 +15,15 @@ import {
   setStatistickInfo,
   setCommonInfoTasks,
   setChats,
+  updateChatByNotification,
 } from "store/slices/commonSlice";
+import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
-import { setLoaderStatus } from "store/slices/commonSlice";
-import { updateChatByNotification } from "store/slices/commonSlice";
+import { setActiveChatId } from "store/slices/inboxSlice";
 
 const CommonThings = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const isFetchingTasks = useSelector((state) => state.tasks.isFetching);
 
@@ -62,6 +64,11 @@ const CommonThings = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const goToChat = (chat) => {
+    history.push("/admin/inbox");
+    dispatch(setActiveChatId(chat.Contact.id));
+  };
+
   useEffect(() => {
     if (notifications) {
       notifications.forEach((notification) => {
@@ -83,6 +90,11 @@ const CommonThings = () => {
                 backgroundColor: notification.Alertness || "var(--primary)",
                 padding: 15,
               }}
+              onClick={
+                notification.Type === "chat_msg"
+                  ? () => goToChat(notification.Object)
+                  : () => {}
+              }
             >
               <div
                 style={{
@@ -103,6 +115,7 @@ const CommonThings = () => {
           ),
           {
             className: "notification",
+            // autoClose: false,
           }
         );
       });
