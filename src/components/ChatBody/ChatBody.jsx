@@ -81,9 +81,7 @@ const ChatBody = () => {
             className="d-flex flex-column"
           >
             <ChatUserInfo user={chat.Contact} />
-            <div className="overflow-auto flex-fill" id="scrollable-messages">
-              <ChatView className="flex-fill" chat={chat} />
-            </div>
+            <ChatView className="flex-fill" chat={chat} />
           </ReflexElement>
 
           <ReflexSplitter style={{ height: 1, border: "none" }} />

@@ -16,29 +16,31 @@ const ChatView = ({ className, chat = { Msgs: [] } }) => {
   }, [chat.Msgs.length, topRef]);
 
   return (
-    <div className={`chat-view-component ${className}`}>
-      <span ref={topRef} />
-      <div className="chat-body">
-        {chat.Msgs.length ? (
-          [...chat.Msgs]
-            .sort((m1, m2) => m2.id - m1.id)
-            .map((message) => (
-              <Fragment key={message.Time}>
-                {message.Contact ? (
-                  <ChatViewCard
-                    message={message}
-                    isSearched={searchedMessageId === message.id}
-                  />
-                ) : chat.Msgs.length === 1 ? (
-                  <ChatViewInfoCard message={message} />
-                ) : null}
-              </Fragment>
-            ))
-        ) : (
-          <div className="no-chat-messages">
-            Чтобы начать диалог отправьте сообщение контакту!
-          </div>
-        )}
+    <div className="overflow-auto flex-fill" id="scrollable-messages">
+      <div className={`chat-view-component ${className}`}>
+        <span ref={topRef} />
+        <div className="chat-body">
+          {chat.Msgs.length ? (
+            [...chat.Msgs]
+              .sort((m1, m2) => m2.id - m1.id)
+              .map((message) => (
+                <Fragment key={message.Time}>
+                  {message.Contact ? (
+                    <ChatViewCard
+                      message={message}
+                      isSearched={searchedMessageId === message.id}
+                    />
+                  ) : chat.Msgs.length === 1 ? (
+                    <ChatViewInfoCard message={message} />
+                  ) : null}
+                </Fragment>
+              ))
+          ) : (
+            <div className="no-chat-messages">
+              Чтобы начать диалог отправьте сообщение контакту!
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

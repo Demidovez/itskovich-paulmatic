@@ -49,8 +49,9 @@ const ChatMessagesSearchBar = ({ className = "" }) => {
     dispatch(setSearchedMessage(message));
   };
 
-  const getWrappedText = (body) => {
+  const getWrappedText = (body, plainBodyShort) => {
     const cleanedBody = body.replace(/(<([^>]+)>)/gi, "");
+
     const indexOfStartSearchValue = cleanedBody
       .toLowerCase()
       .indexOf(searchValue.toLowerCase());
@@ -59,6 +60,10 @@ const ChatMessagesSearchBar = ({ className = "" }) => {
       indexOfStartSearchValue,
       indexOfEndSearchValue
     );
+
+    if (indexOfStartSearchValue === -1) {
+      return plainBodyShort.replace(/(<([^>]+)>)/gi, "");
+    }
 
     const textBeforeSearchValue = cleanedBody.slice(
       Math.max(indexOfStartSearchValue - 50, 0),
@@ -78,6 +83,30 @@ const ChatMessagesSearchBar = ({ className = "" }) => {
     }${textBeforeSearchValue}<span class="search-value">${labelSearchValue}</span>${textAfterSearchValue}${
       textAfterSearchValue.length < 50 ? "" : "..."
     }`;
+
+    return parse(wrappedText);
+  };
+
+  const getWrappedName = (name) => {
+    const cleanedBody = name.replace(/(<([^>]+)>)/gi, "");
+
+    const indexOfStartSearchValue = cleanedBody
+      .toLowerCase()
+      .indexOf(searchValue.toLowerCase());
+    const indexOfEndSearchValue = indexOfStartSearchValue + searchValue.length;
+    const labelSearchValue = cleanedBody.slice(
+      indexOfStartSearchValue,
+      indexOfEndSearchValue
+    );
+
+    if (indexOfStartSearchValue === -1) {
+      return name.replace(/(<([^>]+)>)/gi, "");
+    }
+
+    const wrappedText = cleanedBody.replace(
+      labelSearchValue,
+      `<span class="search-value">${labelSearchValue}</span>`
+    );
 
     return parse(wrappedText);
   };
@@ -118,14 +147,16 @@ const ChatMessagesSearchBar = ({ className = "" }) => {
                 onClick={() => goToChat(message)}
               >
                 <div className="d-flex justify-content-between align-items-center mb-1">
-                  <div className="result-user">{message.Contact.name}</div>
+                  <div className="result-user">
+                    {getWrappedName(message.Contact.name)}
+                  </div>
                   <div className="result-time">
                     {moment(message.Time).format("DD MMM yy HH:mm")}
                   </div>
                 </div>
 
                 <div className="result-preview">
-                  {getWrappedText(message.Body)}
+                  {getWrappedText(message.Body, message.PlainBodyShort)}
                 </div>
               </div>
             ))}

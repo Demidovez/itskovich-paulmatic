@@ -5,32 +5,18 @@ import { Element, scroller } from "react-scroll";
 import { useEffect, useRef, useState } from "react";
 
 const ChatViewCard = ({ message, isSearched }) => {
-  const [scrollPosition, setScrollPosition] = useState(0);
-
-  const handleScroll = () => {
-    const position = window.pageYOffset;
-    setScrollPosition(position);
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
   useEffect(() => {
     if (isSearched) {
       scroller.scrollTo("message_searched", {
         duration: 300,
+        delay: 0,
         smooth: true,
         offset: -50,
         containerId: "scrollable-messages",
         isDynamic: true,
       });
     }
-  }, [isSearched, scrollPosition]);
+  }, [isSearched]);
 
   return (
     <Element
