@@ -1,7 +1,11 @@
 import RegisterForm from "components/RegisterForm/RegisterForm";
+import { useEffect } from "react";
 import { Card, CardBody, Col } from "reactstrap";
 
 const Register = () => {
+  useEffect(() => {
+    localStorage.removeItem("sessionToken");
+  }, []);
   return (
     <>
       <Col lg="6" md="8">

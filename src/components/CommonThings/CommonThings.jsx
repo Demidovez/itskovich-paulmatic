@@ -11,7 +11,6 @@ import {
 import {
   setCommonInfoHtmlTemplates,
   setFolders,
-  setCurrentUser,
   setStatistickInfo,
   setCommonInfoTasks,
   setChats,
@@ -53,11 +52,6 @@ const CommonThings = () => {
   useEffect(() => {
     getCommonInfo();
     fetchStatistics();
-
-    const Account = localStorage.getItem("Account");
-    if (Account) {
-      dispatch(setCurrentUser(JSON.parse(Account)));
-    }
 
     getNotifications();
 
@@ -140,16 +134,8 @@ const CommonThings = () => {
       dispatch(setCommonInfoHtmlTemplates(commonData.Templates));
       dispatch(setFolders(commonData.Folders));
       dispatch(setChats(commonData.Chats));
-      commonData.Account && saveUserToLocalStorage(commonData.Account);
-      if (commonData.Account) {
-        dispatch(setCurrentUser(commonData.Account));
-      }
     }
   }, [commonData]);
-
-  const saveUserToLocalStorage = (Account) => {
-    localStorage.setItem("Account", JSON.stringify(Account));
-  };
 
   useEffect(() => {
     Events.scrollEvent.register("end", function (to, element) {

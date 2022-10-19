@@ -15,9 +15,11 @@ export function getServerUrl(category) {
 }
 
 export function getHeaders(additinalHeaders) {
+  const sessionToken = JSON.parse(localStorage.getItem("sessionToken"));
+
   return {
     "caller-version-code": 1,
-    sessionToken: "user-1",
+    sessionToken: sessionToken,
     "Content-type": "application/json",
     ...additinalHeaders,
   };

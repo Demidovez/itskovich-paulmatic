@@ -57,6 +57,9 @@ export const commonSlice = createSlice({
   name: "common",
   initialState,
   reducers: {
+    saveAccount: (state, action) => {
+      state.Account = action.payload;
+    },
     setLoaderStatus: (state, action) => {
       const page = action.payload.page;
       const part = action.payload.part;
@@ -253,6 +256,7 @@ export const commonSlice = createSlice({
 });
 
 export const {
+  saveAccount,
   setLoaderStatus,
   setCommonInfoTasks,
   setStatistickInfo,

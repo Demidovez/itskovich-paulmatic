@@ -8,12 +8,97 @@ import {
   InputGroup,
   Row,
   Col,
+  Spinner,
 } from "reactstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./RegisterForm.scss";
+import { useLazyTrySignUpQuery } from "store/api/login";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { saveAccount } from "store/slices/commonSlice";
+import { useLazyGetCommonInfoQuery } from "store/api/common";
+import { setCommonInfoTasks } from "store/slices/commonSlice";
+import { setCommonInfoHtmlTemplates } from "store/slices/commonSlice";
+import { setFolders } from "store/slices/commonSlice";
+import { setChats } from "store/slices/commonSlice";
+import { useHistory } from "react-router-dom";
 
 const RegisterForm = ({ className = "" }) => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const [resultError, setResultError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [trySignUp, { data: signUpResponse, error, isFetching }] =
+    useLazyTrySignUpQuery();
+  const [
+    getCommonInfo,
+    {
+      data: commonData,
+      error: errorCommonData,
+      isFetching: isFetchingCommonData,
+    },
+  ] = useLazyGetCommonInfoQuery();
+
+  useEffect(() => {
+    if (!isFetching && signUpResponse) {
+      if ((signUpResponse || {}).sessionToken) {
+        dispatch(saveAccount(signUpResponse));
+        localStorage.setItem(
+          "sessionToken",
+          JSON.stringify(signUpResponse.sessionToken)
+        );
+        getCommonInfo();
+      } else {
+        setResultError("Неизвестная ошибка! Попробуйте позже... ");
+      }
+
+      console.log(signUpResponse);
+    } else if (isFetching) {
+      setIsLoading(true);
+    }
+  }, [signUpResponse, isFetching]);
+
+  useEffect(() => {
+    console.log(errorCommonData);
+    if (
+      (error && error.status !== 200) ||
+      (errorCommonData && errorCommonData.status !== 200)
+    ) {
+      setResultError(
+        (error && error.data.message) ||
+          (errorCommonData && errorCommonData.data.error.message)
+      );
+      setIsLoading(false);
+    } else {
+      setResultError("");
+    }
+  }, [
+    JSON.stringify(error),
+    JSON.stringify(errorCommonData),
+    isFetching,
+    isFetchingCommonData,
+  ]);
+
+  useEffect(() => {
+    if (commonData) {
+      dispatch(setCommonInfoTasks(commonData.Tasks));
+      dispatch(setCommonInfoHtmlTemplates(commonData.Templates));
+      dispatch(setFolders(commonData.Folders));
+      dispatch(setChats(commonData.Chats));
+    }
+  }, [commonData]);
+
+  useEffect(() => {
+    if (!isFetchingCommonData && commonData) {
+      history.push("/admin/index");
+      setIsLoading(true);
+    } else if (isFetchingCommonData) {
+      setIsLoading(true);
+    }
+  }, [isFetchingCommonData, commonData]);
+
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -34,7 +119,12 @@ const RegisterForm = ({ className = "" }) => {
       agree: Yup.boolean().oneOf([true], "Обязательное поле!"),
     }),
     onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
+      trySignUp({
+        name: values.username,
+        email: values.useremail,
+        password: values.password,
+        company: values.company,
+      });
     },
   });
 
@@ -188,14 +278,17 @@ const RegisterForm = ({ className = "" }) => {
           </div>
         </Col>
       </Row>
-      <div className="text-center">
+      <div className="text-center position-relative">
+        <div className="server-error">{resultError ? resultError : ""}</div>
         <Button
           className="mt-4"
           color="primary"
           type="button"
           onClick={formik.handleSubmit}
+          disabled={isFetching}
+          style={{ minWidth: 150 }}
         >
-          Create account
+          {isLoading ? <Spinner color="white" size="sm" /> : "Create account"}
         </Button>
       </div>
     </Form>

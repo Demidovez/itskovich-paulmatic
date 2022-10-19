@@ -27,4 +27,14 @@
       left: 0;
     }
   }
+
+  .server-error {
+    position: absolute;
+    top: -10px;
+    width: 100%;
+    text-align: center;
+    color: var(--orange);
+    font-size: 14px;
+    font-weight: 400;
+  }
 }
