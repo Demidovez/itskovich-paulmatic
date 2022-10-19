@@ -119,6 +119,7 @@ const Contacts = () => {
   const onSave = (contact) => {
     createOrUpdateContact(contact);
     onResetForm();
+    console.log(contact);
   };
 
   const onRemove = (id) => {

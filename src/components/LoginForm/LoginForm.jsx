@@ -6,14 +6,11 @@ import {
   InputGroupAddon,
   InputGroupText,
   InputGroup,
-  Row,
-  Col,
   Spinner,
 } from "reactstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./LoginForm.scss";
-import { useLazyTrySignUpQuery } from "store/api/login";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { saveAccount } from "store/slices/commonSlice";

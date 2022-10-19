@@ -18,12 +18,14 @@ const Admin = (props) => {
   const location = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();
+  const [isSuccess, setIsSuccess] = useState(false);
 
   useLayoutEffect(() => {
     const Account = JSON.parse(localStorage.getItem("Account")) || {};
 
     if (Account.sessionToken) {
       dispatch(saveAccount(Account));
+      setIsSuccess(true);
     } else {
       history.push("/auth/login");
     }
@@ -80,7 +82,7 @@ const Admin = (props) => {
         draggable={false}
         pauseOnHover={false}
       />
-      <CommonThings />
+      {isSuccess && <CommonThings />}
     </>
   );
 };

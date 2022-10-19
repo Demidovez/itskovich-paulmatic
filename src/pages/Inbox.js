@@ -5,7 +5,6 @@ import ChatFolders from "components/ChatFolders/ChatFolders";
 import ChatMessagesSearchBar from "components/ChatMessagesSearchBar/ChatMessagesSearchBar";
 import ChatsListBar from "components/ChatsListBar/ChatsListBar";
 import ChatUsersSearchBar from "components/ChatUsersSearchBar/ChatUsersSearchBar";
-import DropdownWithIcon from "components/DropdownWithIcon/DropdownWithIcon";
 import ChatBody from "components/ChatBody/ChatBody";
 import ChatActionBar from "components/ChatActionBar/ChatActionBar";
 
