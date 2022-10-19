@@ -228,6 +228,27 @@ export const commonSlice = createSlice({
 
       state.Chats.ModifiedTime = new Date().getTime();
     },
+    moveChatToFolder: (state, action) => {
+      const activeChatId = action.payload.activeChatId;
+      const folderId = action.payload.folderId;
+
+      state.Chats.Chats = [...state.Chats.Chats].map((chat) =>
+        chat.Contact.id === activeChatId
+          ? { ...chat, FolderID: folderId }
+          : chat
+      );
+
+      state.Chats.ModifiedTime = new Date().getTime();
+    },
+    deleteChat: (state, action) => {
+      const activeChatId = action.payload;
+
+      state.Chats.Chats = [...state.Chats.Chats].filter(
+        (chat) => chat.Contact.id !== activeChatId
+      );
+
+      state.Chats.ModifiedTime = new Date().getTime();
+    },
   },
 });
 
@@ -244,6 +265,8 @@ export const {
   updateChatByOneMessageFromServer,
   updateChatByAllMessagesFromServer,
   updateChatByNotification,
+  moveChatToFolder,
+  deleteChat,
 } = commonSlice.actions;
 
 export default commonSlice.reducer;

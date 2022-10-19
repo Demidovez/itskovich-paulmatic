@@ -6,8 +6,8 @@ import ChatMessagesSearchBar from "components/ChatMessagesSearchBar/ChatMessages
 import ChatsListBar from "components/ChatsListBar/ChatsListBar";
 import ChatUsersSearchBar from "components/ChatUsersSearchBar/ChatUsersSearchBar";
 import DropdownWithIcon from "components/DropdownWithIcon/DropdownWithIcon";
-import { BsListTask } from "react-icons/bs";
 import ChatBody from "components/ChatBody/ChatBody";
+import ChatActionBar from "components/ChatActionBar/ChatActionBar";
 
 const tourSteps = [
   {
@@ -25,18 +25,7 @@ const Inbox = () => {
             <Row className="">
               <Col md={9} className="d-flex align-items-center">
                 <ChatFolders />
-                <DropdownWithIcon
-                  label="Действия"
-                  icon={() => <BsListTask size="1.0rem" />}
-                  size="sm"
-                  className="editor-btn mr-2 ml-4"
-                  items={[
-                    "Переместить в «Заинтересованные»",
-                    "Переместить в «Встреча»",
-                    "Удалить переписку",
-                  ]}
-                  onSelect={() => {}}
-                />
+                <ChatActionBar />
               </Col>
               <Col md={3} className="">
                 <ChatMessagesSearchBar />
