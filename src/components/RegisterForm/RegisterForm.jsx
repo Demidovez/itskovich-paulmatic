@@ -53,15 +53,12 @@ const RegisterForm = ({ className = "" }) => {
       } else {
         setResultError("Неизвестная ошибка! Попробуйте позже... ");
       }
-
-      console.log(signUpResponse);
     } else if (isFetching) {
       setIsLoading(true);
     }
   }, [signUpResponse, isFetching]);
 
   useEffect(() => {
-    console.log(errorCommonData);
     if (
       (error && error.status !== 200) ||
       (errorCommonData && errorCommonData.status !== 200)
@@ -285,7 +282,7 @@ const RegisterForm = ({ className = "" }) => {
           color="primary"
           type="button"
           onClick={formik.handleSubmit}
-          disabled={isFetching}
+          disabled={isLoading}
           style={{ minWidth: 150 }}
         >
           {isLoading ? <Spinner color="white" size="sm" /> : "Create account"}
