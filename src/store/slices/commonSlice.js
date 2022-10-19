@@ -77,9 +77,6 @@ export const commonSlice = createSlice({
     setStatistickInfo: (state, action) => {
       state.Tasks.Stats = action.payload;
     },
-    setCurrentUser: (state, action) => {
-      state.Account = action.payload;
-    },
     setCommonInfoHtmlTemplates: (state, action) => {
       state.Templates = action.payload;
     },
@@ -261,7 +258,6 @@ export const {
   setCommonInfoTasks,
   setStatistickInfo,
   setCommonInfoSequences,
-  setCurrentUser,
   setCommonInfoHtmlTemplates,
   setFolders,
   setChats,

@@ -12,6 +12,8 @@ const Auth = (props) => {
   const location = useLocation();
 
   React.useEffect(() => {
+    localStorage.removeItem("Account");
+
     document.body.classList.add("bg-default");
     return () => {
       document.body.classList.remove("bg-default");

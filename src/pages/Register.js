@@ -3,10 +3,6 @@ import { useEffect } from "react";
 import { Card, CardBody, Col } from "reactstrap";
 
 const Register = () => {
-  useEffect(() => {
-    localStorage.removeItem("sessionToken");
-    localStorage.removeItem("Account");
-  }, []);
   return (
     <>
       <Col lg="6" md="8">

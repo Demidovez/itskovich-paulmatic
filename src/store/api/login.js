@@ -15,7 +15,15 @@ export const loginApi = createApi({
       transformResponse: (response) => response.result || {},
     }),
     trySignUp: builder.query({
-      query: () => ({
+      query: (body) => ({
+        url: "commons",
+        method: "GET",
+        headers: getHeaders({ sessionToken: "user-1" }),
+      }),
+      transformResponse: (response) => (response.result || {}).Account,
+    }),
+    tryLognIn: builder.query({
+      query: (body) => ({
         url: "commons",
         method: "GET",
         headers: getHeaders({ sessionToken: "user-1" }),
@@ -25,4 +33,4 @@ export const loginApi = createApi({
   }),
 });
 
-export const { useLazyTrySignUpQuery } = loginApi;
+export const { useLazyTrySignUpQuery, useLazyTryLognInQuery } = loginApi;

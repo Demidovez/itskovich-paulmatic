@@ -1,13 +1,33 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, Route, Switch, Redirect } from "react-router-dom";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import {
+  useLocation,
+  Route,
+  Switch,
+  Redirect,
+  useHistory,
+} from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import routes from "routes.js";
 import Menu from "components/Menu/Menu";
 import CommonThings from "components/CommonThings/CommonThings";
+import { useDispatch } from "react-redux";
+import { saveAccount } from "store/slices/commonSlice";
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  useLayoutEffect(() => {
+    const Account = JSON.parse(localStorage.getItem("Account")) || {};
+
+    if (Account.sessionToken) {
+      dispatch(saveAccount(Account));
+    } else {
+      history.push("/auth/login");
+    }
+  }, []);
 
   useEffect(() => {
     document.documentElement.scrollTop = 0;
