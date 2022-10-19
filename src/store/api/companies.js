@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getServerUrl } from "./server";
+import { getHeaders, getServerUrl } from "./server";
 
 export const companiesApi = createApi({
   reducerPath: "companiesApi",
@@ -10,11 +10,7 @@ export const companiesApi = createApi({
       query: () => ({
         url: "/info/companies",
         method: "GET",
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-          "Content-type": "application/json",
-        },
+        headers: getHeaders(),
       }),
       transformResponse: (response) => response.result || {},
     }),
@@ -23,11 +19,7 @@ export const companiesApi = createApi({
         url: "/search/companies",
         method: "GET",
         params: params || {},
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-          "Content-type": "application/json",
-        },
+        headers: getHeaders(),
       }),
       transformResponse: (response) => {
         return (

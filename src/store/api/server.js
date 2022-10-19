@@ -13,3 +13,12 @@ export function getServerUrl(category) {
 
   return serverUrls.remote[protocol] + "/" + category;
 }
+
+export function getHeaders(additinalHeaders) {
+  return {
+    "caller-version-code": 1,
+    sessionToken: "user-1",
+    "Content-type": "application/json",
+    ...additinalHeaders,
+  };
+}

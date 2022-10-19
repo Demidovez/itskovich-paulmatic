@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getServerUrl } from "./server";
+import { getHeaders, getServerUrl } from "./server";
 import { toast } from "react-toastify";
 
 export const contactsApi = createApi({
@@ -13,11 +13,7 @@ export const contactsApi = createApi({
         method: "POST",
         params: params || {},
         body: body || {},
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-          "Content-type": "application/json",
-        },
+        headers: getHeaders(),
       }),
       transformResponse: (response) =>
         response.result || { Items: [], TotalCount: 0 },
@@ -34,11 +30,7 @@ export const contactsApi = createApi({
         url: "/createOrUpdate",
         method: "POST",
         body: contact,
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-          "Content-type": "application/json",
-        },
+        headers: getHeaders(),
       }),
       transformResponse: (response, _, arg) => {
         if (response.result && response.result.id === arg.id) {
@@ -56,10 +48,7 @@ export const contactsApi = createApi({
         url: "/create",
         method: "POST",
         body: contacts,
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-        },
+        headers: getHeaders(),
       }),
       transformResponse: (response) => {
         if (response.result) {
@@ -75,10 +64,7 @@ export const contactsApi = createApi({
         url: "/upload",
         method: "POST",
         body: file,
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-        },
+        headers: getHeaders(),
       }),
       transformResponse: (response) => {
         if (response.result) {
@@ -94,11 +80,7 @@ export const contactsApi = createApi({
         url: "/delete",
         method: "POST",
         body: ids,
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-          "Content-type": "application/json",
-        },
+        headers: getHeaders(),
       }),
       transformResponse: (response, _, arg) => {
         if (response.executionTimeMs && arg.length > 1) {

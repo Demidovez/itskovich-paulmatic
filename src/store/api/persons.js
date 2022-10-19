@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getServerUrl } from "./server";
+import { getHeaders, getServerUrl } from "./server";
 import { toast } from "react-toastify";
 
 export const personsApi = createApi({
@@ -11,11 +11,7 @@ export const personsApi = createApi({
       query: () => ({
         url: "/info/persons",
         method: "GET",
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-          "Content-type": "application/json",
-        },
+        headers: getHeaders(),
       }),
       transformResponse: (response) => response.result || {},
     }),
@@ -24,11 +20,7 @@ export const personsApi = createApi({
         url: "/search/persons",
         method: "GET",
         params: params || {},
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-          "Content-type": "application/json",
-        },
+        headers: getHeaders(),
       }),
       transformResponse: (response) => {
         return (
@@ -51,11 +43,7 @@ export const personsApi = createApi({
         url: "/addToContacts",
         method: "GET",
         params: { entityIds: ids.join() },
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-          "Content-type": "application/json",
-        },
+        headers: getHeaders(),
       }),
       transformResponse: (response, _, arg) => {
         if ((response.result || {}).error || response.message) {
@@ -70,11 +58,7 @@ export const personsApi = createApi({
         url: "/addToSequence",
         method: "GET",
         params: { entityIds: entityIds.join(), sequenceId },
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-          "Content-type": "application/json",
-        },
+        headers: getHeaders(),
       }),
       transformResponse: (response, _, arg) => {
         if ((response.result || {}).error || response.message) {

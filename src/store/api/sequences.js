@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getServerUrl } from "./server";
+import { getHeaders, getServerUrl } from "./server";
 import { toast } from "react-toastify";
 
 export const sequencesApi = createApi({
@@ -13,10 +13,7 @@ export const sequencesApi = createApi({
         method: "POST",
         body: body || {},
         params,
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-        },
+        headers: getHeaders(),
       }),
       transformResponse: (response) =>
         response.result || { Items: [], TotalCount: 0 },
@@ -36,18 +33,12 @@ export const sequencesApi = createApi({
           contactIds: ids.join(),
           sequenceId: sequence,
         },
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-        },
+        headers: getHeaders(),
       }),
       transformResponse: (response, _, arg) => {
         if ((response.result || {}).error) {
           toast.error(`Ошибка!`);
         } else {
-          // toast.success(
-          //   `${arg.ids.length} контакта(ов) добавлено в «${arg.sequence.Name}»!`
-          // );
           toast.success(
             `Перейдите на страницу «Задачи» для коммуникации с клиентом`
           );
@@ -61,10 +52,7 @@ export const sequencesApi = createApi({
         params: {
           sequenceIds: sequenceIds.join(),
         },
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-        },
+        headers: getHeaders(),
       }),
       invalidatesTags: [{ type: "Sequence", id: "LIST" }],
     }),
@@ -75,10 +63,7 @@ export const sequencesApi = createApi({
         params: {
           sequenceIds: sequenceIds.join(),
         },
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-        },
+        headers: getHeaders(),
       }),
       invalidatesTags: [{ type: "Sequence", id: "LIST" }],
     }),
@@ -89,10 +74,7 @@ export const sequencesApi = createApi({
         params: {
           sequenceIds: sequenceIds.join(),
         },
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-        },
+        headers: getHeaders(),
       }),
       transformResponse: (response, _, arg) => {
         if ((response.result || {}).error) {
@@ -110,10 +92,7 @@ export const sequencesApi = createApi({
         url: "/createOrUpdate",
         method: "POST",
         body: model,
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-        },
+        headers: getHeaders(),
       }),
       transformResponse: (response, _, arg) => {
         if (response.result && arg.id) {

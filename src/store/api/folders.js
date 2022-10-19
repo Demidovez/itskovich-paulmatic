@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getServerUrl } from "./server";
+import { getHeaders, getServerUrl } from "./server";
 import { toast } from "react-toastify";
 
 export const foldersApi = createApi({
@@ -12,11 +12,7 @@ export const foldersApi = createApi({
         url: "/search",
         method: "POST",
         body: {},
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-          "Content-type": "application/json",
-        },
+        headers: getHeaders(),
       }),
       transformResponse: (response) => {
         return (
@@ -39,11 +35,7 @@ export const foldersApi = createApi({
         url: "delete",
         method: "POST",
         body: folders,
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-          "Content-type": "application/json",
-        },
+        headers: getHeaders(),
       }),
       transformResponse: (response) => {
         if (response.error) {
@@ -59,11 +51,7 @@ export const foldersApi = createApi({
         url: "createOrUpdate",
         method: "POST",
         body: folder,
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-          "Content-type": "application/json",
-        },
+        headers: getHeaders(),
       }),
       transformResponse: (response, _, arg) => {
         if (response.error) {

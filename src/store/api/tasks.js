@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getServerUrl } from "./server";
+import { getHeaders, getServerUrl } from "./server";
 
 export const tasksApi = createApi({
   reducerPath: "tasksApi",
@@ -17,10 +17,7 @@ export const tasksApi = createApi({
           Invisible: true,
         },
         params,
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-        },
+        headers: getHeaders(),
       }),
       transformResponse: (response) =>
         response.result || { Items: [], TotalCount: 0 },
@@ -37,10 +34,7 @@ export const tasksApi = createApi({
         url: "/execute",
         method: "POST",
         body: task || {},
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-        },
+        headers: getHeaders(),
       }),
       transformResponse: (response) => {
         return response.result || [];
@@ -52,10 +46,7 @@ export const tasksApi = createApi({
         url: "/skip",
         method: "POST",
         body: { id, accountId },
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-        },
+        headers: getHeaders(),
       }),
       transformResponse: (response) => {
         return response.result || [];
@@ -67,10 +58,7 @@ export const tasksApi = createApi({
         url: "/markReplied",
         method: "POST",
         body: { id, accountId },
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-        },
+        headers: getHeaders(),
       }),
       transformResponse: (response) => {
         return response.result || [];
@@ -81,10 +69,7 @@ export const tasksApi = createApi({
       query: () => ({
         url: "/stats",
         method: "GET",
-        headers: {
-          "caller-version-code": 1,
-          sessionToken: "user-1",
-        },
+        headers: getHeaders(),
       }),
       transformResponse: (response) => response.result || {},
     }),
