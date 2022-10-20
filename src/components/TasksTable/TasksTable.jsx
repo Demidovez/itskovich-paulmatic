@@ -28,7 +28,7 @@ import { setLoaderStatus } from "store/slices/commonSlice";
 
 moment.locale("ru");
 
-const COUNT_ON_PAGE = 10;
+const COUNT_ON_PAGE = 50;
 
 const fields = [
   {
@@ -211,7 +211,7 @@ const TasksTable = () => {
 
   return (
     <>
-      <div className="table-tasks-component h-100 overflow-auto">
+      <div className="table-tasks-component h1-100 overflow-auto">
         {((cached || tasksData || {}).Items || []).length === 0 ? (
           <p className="message">Не найдено :(</p>
         ) : (

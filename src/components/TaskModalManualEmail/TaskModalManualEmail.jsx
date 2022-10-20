@@ -8,6 +8,7 @@ import { usePrompt } from "hooks/usePrompt";
 import AttachFilesBar from "components/AttachFilesBar/AttachFilesBar";
 import { useSelector } from "react-redux";
 import pupa from "pupa";
+import useYouSure from "hooks/useYouSure";
 
 const TaskModalManualEmail = ({
   task,
@@ -16,12 +17,11 @@ const TaskModalManualEmail = ({
   onSkip,
   onReplied,
 }) => {
-  const [isChanged, setIsChanged] = useState(false);
+  const { tryClose, tryForceClose, setIsChanged } = useYouSure(onClose);
   const [currentTask, setCurrentTask] = useState(task);
 
   const updateCurrentTask = (task) => {
     setCurrentTask(task);
-    setIsChanged(true);
   };
 
   const onEvent = (callback, data) => {
@@ -29,25 +29,6 @@ const TaskModalManualEmail = ({
       callback(data.task, data.toastMessage);
     } else {
       callback(data);
-    }
-
-    setIsChanged(false);
-  };
-
-  usePrompt(isChanged);
-
-  const handleClose = () => {
-    if (isChanged) {
-      var answer = window.confirm("Вы уверены, что хотите закрыть?");
-
-      if (answer) {
-        setIsChanged(false);
-        onClose();
-      } else {
-        //some code
-      }
-    } else {
-      onClose();
     }
   };
 
@@ -99,13 +80,27 @@ const TaskModalManualEmail = ({
     };
   }, [onKeyDown]);
 
+  useEffect(() => {
+    if (
+      JSON.stringify({ ...currentTask, Body: "" }) !==
+      JSON.stringify({ ...task, Body: "" })
+    ) {
+      setIsChanged(true);
+    } else if (
+      currentTask.Body.replace(/(<([^>]+)>)/gi, "") !==
+      task.Body.replace(/(<([^>]+)>)/gi, "")
+    ) {
+      setIsChanged(true);
+    }
+  }, [JSON.stringify(currentTask), task]);
+
   return (
     <>
       <Modal
         className="modal-dialog-centered mt-0 mb-0 flex-column"
         contentClassName="h-100 flex-fill"
         isOpen={true}
-        toggle={() => handleClose()}
+        toggle={tryClose}
         style={{
           maxWidth: "1000px",
           width: "90%",
@@ -131,7 +126,7 @@ const TaskModalManualEmail = ({
             className="close"
             data-dismiss="modal"
             type="button"
-            onClick={() => handleClose()}
+            onClick={tryClose}
             style={{ position: "absolute", right: "1.25rem" }}
           >
             <span aria-hidden={true}>×</span>
@@ -247,7 +242,7 @@ const TaskModalManualEmail = ({
                   Ответ получен
                 </Button>
               ) : null}
-              <Button color="primary" onClick={() => handleClose()}>
+              <Button color="primary" onClick={tryClose}>
                 Закрыть
               </Button>
             </>

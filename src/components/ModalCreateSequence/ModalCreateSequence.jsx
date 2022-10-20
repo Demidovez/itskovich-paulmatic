@@ -21,8 +21,11 @@ import {
   searchValueContactPage,
 } from "store/slices/contactsSlice";
 import { useCreateOrUpdateSequenceMutation } from "store/api/sequences";
+import useYouSure from "hooks/useYouSure";
 
 const ModalCreateSequence = ({ onClose }) => {
+  const { tryClose, tryForceClose, setIsChanged } = useYouSure(onClose);
+
   const dispatch = useDispatch();
   const sequenceResultData = useSelector((state) => state.sequenceMaster.data);
   const sequenceName = useSelector((state) => state.sequenceMaster.data.Name);
@@ -46,9 +49,6 @@ const ModalCreateSequence = ({ onClose }) => {
   }, [activeFolderId]);
 
   const { data: foldersList } = useGetFoldersQuery();
-
-  const [isChanged, setIsChanged] = useState(false);
-  usePrompt(isChanged);
 
   const [currentIndexPage, setCurrentIndexPage] = useState(0);
 
@@ -106,21 +106,6 @@ const ModalCreateSequence = ({ onClose }) => {
     dispatch(saveNameSequence(name));
   };
 
-  const handleClose = () => {
-    if (isChanged) {
-      var answer = window.confirm("Вы уверены, что хотите закрыть?");
-
-      if (answer) {
-        setIsChanged(false);
-        onClose();
-      } else {
-        //some code
-      }
-    } else {
-      onClose();
-    }
-  };
-
   const resetContactsData = () => {
     dispatch(clearSelectedIds());
     dispatch(setCurrentContactPage(0));
@@ -138,7 +123,7 @@ const ModalCreateSequence = ({ onClose }) => {
       className="modal-dialog-centered modal-create-sequence-component mt-0 mb-0 flex-column height-fill"
       contentClassName="h-100 flex-fill"
       isOpen={true}
-      toggle={() => handleClose()}
+      toggle={tryClose}
       style={{
         maxWidth: "1200px",
         width: "90%",
@@ -180,7 +165,7 @@ const ModalCreateSequence = ({ onClose }) => {
           className="close"
           data-dismiss="modal"
           type="button"
-          onClick={() => handleClose()}
+          onClick={tryClose}
           style={{ position: "absolute", right: "1.25rem" }}
         >
           <span aria-hidden={true}>×</span>
@@ -220,7 +205,7 @@ const ModalCreateSequence = ({ onClose }) => {
             outline
             data-dismiss="modal"
             type="button"
-            onClick={() => handleClose()}
+            onClick={tryForceClose}
             size="sm"
           >
             Отмена

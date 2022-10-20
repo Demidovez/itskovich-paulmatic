@@ -1,3 +1,4 @@
+import useYouSure from "hooks/useYouSure";
 import { useEffect, useState } from "react";
 import {
   Card,
@@ -11,6 +12,7 @@ import {
 
 const ModalContactForm = ({ contact, isShow, onSave, onRemove, onClose }) => {
   const [currentContact, setCurrentContact] = useState(contact || {});
+  const { tryClose, tryForceClose, setIsChanged } = useYouSure(onClose);
 
   useEffect(() => {
     setCurrentContact(contact || {});
@@ -19,21 +21,25 @@ const ModalContactForm = ({ contact, isShow, onSave, onRemove, onClose }) => {
   const handleSave = () => {
     onSave(currentContact);
     setCurrentContact({});
+    setIsChanged(false);
   };
 
   const handleRemove = () => {
     onRemove(currentContact.id);
     setCurrentContact({});
+    setIsChanged(false);
   };
 
-  const onInputChange = ({ target }, field) =>
+  const onInputChange = ({ target }, field) => {
     setCurrentContact({ ...currentContact, [field]: target.value });
+    setIsChanged(true);
+  };
 
   return (
     <Modal
       className="modal-dialog-centered"
       isOpen={isShow}
-      toggle={() => onClose()}
+      toggle={tryClose}
       style={{
         maxWidth: "500px",
         width: "90%",
@@ -49,7 +55,7 @@ const ModalContactForm = ({ contact, isShow, onSave, onRemove, onClose }) => {
             className="close"
             data-dismiss="modal"
             type="button"
-            onClick={() => onClose()}
+            onClick={tryClose}
             style={{ position: "absolute", right: "1.25rem" }}
           >
             <span aria-hidden={true}>×</span>
@@ -102,7 +108,7 @@ const ModalContactForm = ({ contact, isShow, onSave, onRemove, onClose }) => {
                   color="danger"
                   className="w-100"
                   outline
-                  onClick={onClose}
+                  onClick={tryForceClose}
                 >
                   Отмена
                 </Button>

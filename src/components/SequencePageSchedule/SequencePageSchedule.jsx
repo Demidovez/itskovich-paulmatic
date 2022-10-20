@@ -152,9 +152,10 @@ const SequencePageSchedule = ({ isShow, onChange }) => {
                   <SequenceTimeline
                     disabled={!checkedDays.includes(index)}
                     jobs={jobs[day.name] || []}
-                    setJobs={(editedJobs) =>
-                      setJobs({ ...jobs, [day.name]: editedJobs })
-                    }
+                    setJobs={(editedJobs) => {
+                      setJobs({ ...jobs, [day.name]: editedJobs });
+                      // onChange();
+                    }}
                     onRemoveJob={(id) => removeJob(day.name, id)}
                     onFullTimeline={(isFull) =>
                       setIsFullTimeline({

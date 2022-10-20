@@ -95,8 +95,6 @@ const SequencePageSteps = ({ isShow, onChange }) => {
   };
 
   const createOrUpdateStep = (step) => {
-    onChange();
-
     if (step.id) {
       setSteps((steps) =>
         steps.map((oldStep) => (oldStep.id === step.id ? step : oldStep))
@@ -136,20 +134,27 @@ const SequencePageSteps = ({ isShow, onChange }) => {
     setSteps((steps) => steps.filter((step) => step.id !== id));
   };
 
+  const callback = (callback, ...args) => {
+    callback(...args);
+    onChange();
+  };
+
   return (
     <>
       {isShow ? (
         <div className="sequence-page-steps-component modal-body d-flex flex-column overflow-auto p-0">
           <div className="add-step">
             {steps.length ? (
-              <div onClick={addStep}>
+              <div onClick={() => callback(addStep)}>
                 <MdAdd size="1.6rem" />
               </div>
             ) : null}
           </div>
           <div className="h-100 dragcontext">
             {steps.length > 0 ? (
-              <DragDropContext onDragEnd={onDragEnd}>
+              <DragDropContext
+                onDragEnd={(...args) => callback(onDragEnd, ...args)}
+              >
                 <Droppable droppableId="droppable">
                   {(provided) => (
                     <div ref={provided.innerRef} className="">
@@ -174,8 +179,10 @@ const SequencePageSteps = ({ isShow, onChange }) => {
                               >
                                 <SequencePageStepsItem
                                   step={step}
-                                  onChange={updateStep}
-                                  onDelete={() => onDelete(step.id)}
+                                  onChange={(...args) =>
+                                    callback(updateStep, ...args)
+                                  }
+                                  onDelete={() => callback(onDelete, step.id)}
                                   openModal={() =>
                                     setDataForModalEditor({
                                       mode: "edit",
@@ -202,7 +209,12 @@ const SequencePageSteps = ({ isShow, onChange }) => {
             ) : (
               <div className="d-flex flex-column align-items-center pt-7">
                 <p>Здесь Вы можете создать шаги последовательности</p>
-                <Button color="primary" outline type="button" onClick={addStep}>
+                <Button
+                  color="primary"
+                  outline
+                  type="button"
+                  onClick={() => callback(addStep)}
+                >
                   Создать шаг
                 </Button>
               </div>
@@ -216,7 +228,7 @@ const SequencePageSteps = ({ isShow, onChange }) => {
               }
               mode={dataForModalEditor.mode}
               onClose={() => setDataForModalEditor({})}
-              onSubmit={(step) => createOrUpdateStep(step)}
+              onSubmit={(step) => callback(createOrUpdateStep, step)}
             />
           )}
         </div>

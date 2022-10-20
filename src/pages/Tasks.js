@@ -55,7 +55,10 @@ const Tasks = () => {
 
         <Card className="shadow flex-fill overflow-hidden">
           {isShowLoader ? <Loader className="mt-7" /> : null}
-          <div style={{ display: isShowLoader ? "none" : "block" }}>
+          <div
+            style={{ display: isShowLoader ? "none" : "flex" }}
+            className="h-100 overflow-hidden flex-column"
+          >
             <CardHeader className="border-0">
               <Row className="d-flex align-items-center">
                 <Col

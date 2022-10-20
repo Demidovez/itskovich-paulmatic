@@ -18,6 +18,7 @@
     "postinstall": "patch-package",
     "deploy_dev": "./deploy_dev.sh",
     "deploy_prod": "./deploy_prod.sh",
+    "restart_server": "./restart_server.sh",
     "install-force": "npm install --force",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

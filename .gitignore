@@ -8,4 +8,5 @@ package-lock.json
 .DS_Store
 deploy_dev.sh
 deploy_prod.sh
+restart_server.sh
 /public/tinymce

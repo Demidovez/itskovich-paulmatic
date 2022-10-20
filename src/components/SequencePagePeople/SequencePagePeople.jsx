@@ -42,7 +42,7 @@ const columns = [
 
 const COUNT_ON_PAGE = 100;
 
-const SequencePagePeople = ({ isShow }) => {
+const SequencePagePeople = ({ isShow, onChange }) => {
   const [isCreateNew, setIsCreateNew] = useState(false);
   const dispatch = useDispatch();
   const { selectedIds, currentPage, searchValue } = useSelector(
@@ -51,6 +51,7 @@ const SequencePagePeople = ({ isShow }) => {
 
   useEffect(() => {
     dispatch(saveContactIdsSequence(selectedIds || []));
+    selectedIds.length && onChange(); // TODO: А если мы редактируем последовательность? (selectedIds может быть больше 0)
   }, [(selectedIds || []).toString()]);
 
   const cacheTables = useSelector((state) => state.tables.cache);

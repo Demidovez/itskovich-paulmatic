@@ -1,7 +1,6 @@
 import { Button, Input, Modal } from "reactstrap";
 import EditorEmail from "components/EditorEmail/EditorEmail";
 import { useEffect, useRef, useState } from "react";
-import { usePrompt } from "hooks/usePrompt";
 import { useSelector } from "react-redux";
 
 import "./TaskEditorModal.scss";
@@ -11,13 +10,14 @@ import { BiCodeCurly } from "react-icons/bi";
 import { TbTemplate } from "react-icons/tb";
 import PreviewViewer from "components/PreviewViewer/PreviewViewer";
 import DropdownIcon from "components/DropdownIcon/DropdownIcon";
+import useYouSure from "hooks/useYouSure";
 
 const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
+  const { tryClose, tryForceClose, setIsChanged } = useYouSure(onClose, true);
   const [currentTask, setCurrentTask] = useState(task);
   const [isHasCC, setIsHasCC] = useState(false);
   const [isHasBCC, setIsHasBCC] = useState(false);
   const [types, setTypes] = useState([]);
-  const [isChanged, setIsChanged] = useState(false);
   const [variablesList, setVariablesList] = useState([]);
   const [tamplatesList, setTamplatesList] = useState([]);
   const [activeTemplate, setActiveTemplate] = useState("");
@@ -27,24 +27,8 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
   const subjectRef = useRef(null);
   const bodyTextareaRef = useRef(null);
 
-  usePrompt(isChanged);
-
-  const handleClose = () => {
-    if (isChanged) {
-      const answer = window.confirm("Вы уверены, что хотите закрыть?");
-
-      if (answer) {
-        setIsChanged(false);
-        onClose();
-      } else {
-        //some code
-      }
-    } else {
-      onClose();
-    }
-  };
-
   const dirtyTypes = useSelector((state) => state.common.Tasks.Types);
+
   useEffect(() => {
     setTypes([...Object.values(dirtyTypes)].sort((a, b) => a.Order - b.Order));
   }, [JSON.stringify(dirtyTypes)]);
@@ -126,6 +110,20 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
 
   useEffect(() => {
     if (
+      JSON.stringify({ ...currentTask, Body: "" }) !==
+      JSON.stringify({ ...task, Body: "" })
+    ) {
+      setIsChanged(true);
+    } else if (
+      currentTask.Body.replace(/(<([^>]+)>)/gi, "") !==
+      task.Body.replace(/(<([^>]+)>)/gi, "")
+    ) {
+      setIsChanged(true);
+    }
+  }, [JSON.stringify(currentTask), task]);
+
+  useEffect(() => {
+    if (
       currentTask.Type !== "manual_email" &&
       selectedVariable &&
       bodyTextareaRef.current
@@ -155,13 +153,17 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
     }
   }, [selectedVariable, bodyTextareaRef.current]);
 
+  const callback = (callback, ...args) => {
+    callback(...args);
+  };
+
   return (
     <>
       <Modal
         className="modal-dialog-centered mt-0 mb-0 flex-column task-editor-modal-component"
         contentClassName="h-100 flex-fill"
         isOpen={true}
-        toggle={() => handleClose()}
+        toggle={tryClose}
         style={{
           maxWidth: "1400px",
           width: "90%",
@@ -181,7 +183,7 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
             className="close"
             data-dismiss="modal"
             type="button"
-            onClick={() => handleClose()}
+            onClick={tryClose}
             style={{ position: "absolute", right: "1.25rem" }}
           >
             <span aria-hidden={true}>×</span>
@@ -208,7 +210,7 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
                       className="editor-subject-input"
                       value={currentTask.Subject || ""}
                       onChange={(e) =>
-                        setCurrentTask({
+                        callback(setCurrentTask, {
                           ...currentTask,
                           Subject: e.target.value,
                         })
@@ -219,7 +221,7 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
                       <DropdownIcon
                         items={variablesList}
                         onSelect={(variable) =>
-                          setSelectedSubjectVariable(variable.name)
+                          callback(setSelectedSubjectVariable, variable.name)
                         }
                       />
                       {currentTask.Type === "manual_email" && (
@@ -263,7 +265,9 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
                         size="sm"
                         className="editor-btn mr-2"
                         items={tamplatesList.map((template) => template.name)}
-                        onSelect={(name) => setActiveTemplate(templates[name])}
+                        onSelect={(name) =>
+                          callback(setActiveTemplate, templates[name])
+                        }
                       />
                     )}
                     <DropdownWithIcon
@@ -273,7 +277,7 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
                       size="sm"
                       items={variablesList}
                       onSelect={(variable) =>
-                        setSelectedVariable(variable.name)
+                        callback(setSelectedVariable, variable.name)
                       }
                     />
                   </div>
@@ -284,7 +288,10 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
                         template={activeTemplate}
                         style="body {margin: 0px; padding: 0 10px}"
                         onChange={(Body) =>
-                          setCurrentTask((task) => ({ ...task, Body }))
+                          setCurrentTask((task) => ({
+                            ...task,
+                            Body,
+                          }))
                         }
                         insertedVariable={selectedVariable}
                         placeholder="Введите тело письма..."
@@ -297,7 +304,7 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
                         placeholder="Сообщение..."
                         className="pl-3 h-100 border-0 task-editor-textarea"
                         onChange={(e) =>
-                          setCurrentTask((task) => ({
+                          callback(setCurrentTask, (task) => ({
                             ...task,
                             Body: e.target.value,
                           }))
@@ -330,7 +337,7 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
             outline
             data-dismiss="modal"
             type="button"
-            onClick={() => handleClose()}
+            onClick={tryForceClose}
           >
             Отмена
           </Button>
@@ -339,7 +346,7 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
             type="button"
             onClick={() => {
               onSubmit(currentTask);
-              handleClose();
+              tryForceClose();
             }}
           >
             {mode === "create" ? "Создать" : "Сохранить"}
