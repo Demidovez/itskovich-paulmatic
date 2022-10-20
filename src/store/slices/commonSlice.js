@@ -4,6 +4,7 @@ import moment from "moment";
 const initialState = {
   interval: 15,
   isLoaded: false,
+
   loader: {
     pages: {
       sequences: {
@@ -33,7 +34,9 @@ const initialState = {
     },
   },
   Sequences: {},
-  Account: {},
+  Account: {
+    InMailSettings: "saved",
+  },
   Templates: {
     Cache: {},
     Compiler: {
@@ -59,7 +62,11 @@ export const commonSlice = createSlice({
   initialState,
   reducers: {
     saveAccount: (state, action) => {
-      state.Account = action.payload;
+      state.Account = {
+        ...state.Account,
+        ...action.payload,
+        InMailSettings: (action.payload || {}).InMailSettings || "none",
+      };
     },
     setLoaderStatus: (state, action) => {
       const page = action.payload.page;
@@ -99,6 +106,9 @@ export const commonSlice = createSlice({
       );
 
       state.Chats.ModifiedTime = new Date().getTime();
+    },
+    setInMailSettingsStatus: (state, action) => {
+      state.Account.InMailSettings = action.payload;
     },
     updateChatByOneMessage: (state, action) => {
       const chatId = action.payload.ChatId;
@@ -272,6 +282,7 @@ export const {
   moveChatToFolder,
   deleteChat,
   addHtmlTemplates,
+  setInMailSettingsStatus,
 } = commonSlice.actions;
 
 export default commonSlice.reducer;

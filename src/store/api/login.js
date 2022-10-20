@@ -11,7 +11,7 @@ export const loginApi = createApi({
         url: "/register",
         method: "GET",
         params: params,
-        headers: getHeaders(), // { sessionToken: "user-1" }
+        headers: getHeaders(),
       }),
       transformResponse: (response) => response.result,
     }),
@@ -25,7 +25,7 @@ export const loginApi = createApi({
             Buffer.from(`${username}:${password}`, "binary").toString("base64"),
         }),
       }),
-      transformResponse: (response) => (response.result || {}).account,
+      transformResponse: (response) => response.result,
     }),
   }),
 });

@@ -14,6 +14,10 @@ import { useDispatch } from "react-redux";
 import { saveAccount } from "store/slices/commonSlice";
 import useFetchCommon from "hooks/useFetchCommon";
 import useFetchNotifications from "hooks/useFetchNotifications";
+import useFetchStatistics from "hooks/useFetchStatistics";
+import ModalEmailSettings from "components/ModalEmailSettings/ModalEmailSettings";
+import { useSelector } from "react-redux";
+import { setInMailSettingsStatus } from "store/slices/commonSlice";
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);
@@ -21,16 +25,22 @@ const Admin = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [isSuccess, setIsSuccess] = useState(false);
+  const mailSettingsStatus = useSelector(
+    (state) => state.common.Account.InMailSettings
+  );
 
   // const fetchCommon = useFetchCommon();
   // const fetchNotifications = useFetchNotifications();
-  // use
+  // const fetchStatistics = useFetchStatistics();
 
   useLayoutEffect(() => {
     const Account = JSON.parse(localStorage.getItem("Account")) || {};
 
     if (Account.sessionToken) {
       dispatch(saveAccount(Account));
+      // fetchCommon();
+      // fetchNotifications();
+      // fetchStatistics();
       setIsSuccess(true);
     } else {
       history.push("/auth/login");
@@ -58,6 +68,9 @@ const Admin = (props) => {
       }
     });
   };
+
+  const onCloseModalEmailSettings = () =>
+    dispatch(setInMailSettingsStatus("saved"));
 
   return (
     <>
@@ -89,6 +102,12 @@ const Admin = (props) => {
         pauseOnHover={false}
       />
       {isSuccess && <CommonThings />}
+      {mailSettingsStatus !== "saved" && (
+        <ModalEmailSettings
+          onClose={onCloseModalEmailSettings}
+          status={mailSettingsStatus}
+        />
+      )}
     </>
   );
 };

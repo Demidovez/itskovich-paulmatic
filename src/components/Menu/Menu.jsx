@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { NavLink as NavLinkRRD, Link } from "react-router-dom";
 import {
@@ -23,10 +24,12 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import { setInMailSettingsStatus } from "store/slices/commonSlice";
 
 import "./Menu.scss";
 
 const Menu = (props) => {
+  const dispatch = useDispatch();
   const [collapseOpen, setCollapseOpen] = useState();
 
   const account = useSelector((state) => state.common.Account);
@@ -44,7 +47,7 @@ const Menu = (props) => {
       .filter((route) => route.position !== "user")
       .map((prop, key) => {
         return (
-          <NavItem key={key} id={"nav_item_"+prop.path.substring(1)}>
+          <NavItem key={key} id={"nav_item_" + prop.path.substring(1)}>
             <NavLink
               to={prop.layout + prop.path}
               tag={NavLinkRRD}
@@ -217,6 +220,12 @@ const Menu = (props) => {
                 <DropdownItem to="/admin/user-profile" tag={Link}>
                   <i className="ni ni-settings-gear-65" />
                   <span>Settings</span>
+                </DropdownItem>
+                <DropdownItem
+                  onClick={() => dispatch(setInMailSettingsStatus("change"))}
+                >
+                  <i className="ni ni-email-83" />
+                  <span>Найстройки почты</span>
                 </DropdownItem>
                 <DropdownItem to="/admin/user-profile" tag={Link}>
                   <i className="ni ni-calendar-grid-58" />

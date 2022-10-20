@@ -15,7 +15,7 @@ const useFetchNotifications = () => {
 
   const activeChatId = useSelector((state) => state.inbox.activeChatId);
 
-  const [getNotifications, { data: notifications }] =
+  const [getNotifications, { data: notifications, isSuccess }] =
     useLazyGetNotificationsQuery();
 
   useEffect(() => {
@@ -35,8 +35,10 @@ const useFetchNotifications = () => {
     dispatch(setActiveChatId(chat.Contact.id));
   }, []);
 
+  console.log("getNotifications", isSuccess);
+
   useEffect(() => {
-    if (notifications) {
+    if (isSuccess && notifications) {
       notifications.forEach((notification) => {
         if (notification.Type === "chat_msg") {
           dispatch(updateChatByNotification(notification));
@@ -88,9 +90,9 @@ const useFetchNotifications = () => {
         );
       });
     }
-  }, [JSON.stringify(notifications)]);
+  }, [isSuccess, notifications]);
 
-  return setIsStarted;
+  return () => setIsStarted(true);
 };
 
 export default useFetchNotifications;
