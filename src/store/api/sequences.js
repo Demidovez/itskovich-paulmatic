@@ -67,7 +67,7 @@ export const sequencesApi = createApi({
       }),
       invalidatesTags: [{ type: "Sequence", id: "LIST" }],
     }),
-    deleteSequences: builder.query({
+    deleteSequences: builder.mutation({
       query: (sequenceIds) => ({
         url: "/delete",
         method: "GET",
@@ -80,12 +80,10 @@ export const sequencesApi = createApi({
         if ((response.result || {}).error) {
           toast.error(`Ошибка!`);
         } else {
-          // toast.success(
-          //   `${arg.ids.length} контакта(ов) добавлено в «${arg.sequence.Name}»!`
-          // );
           toast.success(`Последовательность удалена!`);
         }
       },
+      invalidatesTags: [{ type: "Sequence", id: "LIST" }],
     }),
     createOrUpdateSequence: builder.mutation({
       query: (model) => ({
@@ -116,6 +114,6 @@ export const {
   useLazyAddContactsToSequenceQuery,
   useStopSequencesMutation,
   useStartSequencesMutation,
-  useLazyDeleteSequencesQuery,
+  useDeleteSequencesMutation,
   useCreateOrUpdateSequenceMutation,
 } = sequencesApi;

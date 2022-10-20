@@ -1,17 +1,9 @@
 import Checkbox from "components/Checkbox/Checkbox";
-import Pagination from "components/Pagination/Pagination";
-import TasksTable from "components/TasksTable/TasksTable";
-import TasksBarStatsByStatus from "components/TasksBarStatsByStatus/TasksBarStatsByStatus";
-import TasksBarStatsByType from "components/TasksBarStatsByType/TasksBarStatsByType";
-import TaskSort from "components/TaskSort/TaskSort";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Container, Row, Card, CardHeader, Col, Button } from "reactstrap";
+import { Container, Row, Card, Button } from "reactstrap";
 import { selectAllTasks } from "store/slices/tasksSlice";
-import SequencesSort from "components/SequencesSort/SequencesSort";
-import SequencesStatusesSelector from "components/SequencesStatusesSelector/SequencesStatusesSelector";
 import SequencesFolders from "components/SequencesFolders/SequencesFolders";
-import { MdOutlineSearch } from "react-icons/md";
 import SequencesTable from "components/SequencesTable/SequencesTable";
 import SequencesSearchBar from "components/SequencesSearchBar/SequencesSearchBar";
 import ModalCreateSequence from "components/ModalCreateSequence/ModalCreateSequence";
@@ -20,9 +12,9 @@ import {
   clearSelectedIds,
 } from "store/slices/sequencesSlice";
 import ActionSequencesBar from "components/ActionSequencesBar/ActionSequencesBar";
-import { useLazyDeleteSequencesQuery } from "store/api/sequences";
 import Loader from "components/Loader/Loader";
 import useLoader from "hooks/useLoader";
+import { useDeleteSequencesMutation } from "store/api/sequences";
 
 const Sequences = () => {
   const dispatch = useDispatch();
@@ -42,13 +34,13 @@ const Sequences = () => {
     setIsShowCreator(false);
   };
 
-  const [deleteSequences] = useLazyDeleteSequencesQuery();
+  const [deleteSequences] = useDeleteSequencesMutation();
 
   const onDeleteSequences = () => {
-    isSelectedAll && setAllSequences();
-    selectedIds.length && dispatch(clearSelectedIds());
+    // isSelectedAll && setAllSequences();
 
     deleteSequences(selectedIds);
+    dispatch(clearSelectedIds());
   };
 
   const { isLoadingFolders, isLoadingSequences } = useSelector(
