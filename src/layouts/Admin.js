@@ -12,6 +12,8 @@ import Menu from "components/Menu/Menu";
 import CommonThings from "components/CommonThings/CommonThings";
 import { useDispatch } from "react-redux";
 import { saveAccount } from "store/slices/commonSlice";
+import useFetchCommon from "hooks/useFetchCommon";
+import useFetchNotifications from "hooks/useFetchNotifications";
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);
@@ -19,6 +21,10 @@ const Admin = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [isSuccess, setIsSuccess] = useState(false);
+
+  // const fetchCommon = useFetchCommon();
+  // const fetchNotifications = useFetchNotifications();
+  // use
 
   useLayoutEffect(() => {
     const Account = JSON.parse(localStorage.getItem("Account")) || {};

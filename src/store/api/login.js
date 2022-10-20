@@ -1,26 +1,31 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getHeaders, getServerUrl } from "./server";
+import { Buffer } from "buffer";
 
 export const loginApi = createApi({
   reducerPath: "loginApi",
-  baseQuery: fetchBaseQuery({ baseUrl: getServerUrl("") }),
+  baseQuery: fetchBaseQuery({ baseUrl: getServerUrl("accounts") }),
   endpoints: (builder) => ({
     trySignUp: builder.query({
       query: (params) => ({
-        url: "/users/register",
+        url: "/register",
         method: "GET",
         params: params,
         headers: getHeaders(), // { sessionToken: "user-1" }
       }),
-      transformResponse: (response) => (response.result || {}).Account,
+      transformResponse: (response) => response.result,
     }),
     tryLognIn: builder.query({
-      query: (body) => ({
-        url: "commons",
+      query: ({ username, password }) => ({
+        url: "/login",
         method: "GET",
-        headers: getHeaders({ sessionToken: "user-1" }),
+        headers: getHeaders({
+          Authorization:
+            "Basic " +
+            Buffer.from(`${username}:${password}`, "binary").toString("base64"),
+        }),
       }),
-      transformResponse: (response) => (response.result || {}).Account,
+      transformResponse: (response) => (response.result || {}).account,
     }),
   }),
 });

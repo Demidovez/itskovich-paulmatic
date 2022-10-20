@@ -24,49 +24,54 @@ import { clearSearchMessageId } from "store/slices/inboxSlice";
 
 const CommonThings = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
-  const location = useLocation();
+  const history = useHistory(); // done
+  const location = useLocation(); // done
 
-  const isFetchingTasks = useSelector((state) => state.tasks.isFetching);
-  const activeChatId = useSelector((state) => state.inbox.activeChatId);
+  const isFetchingTasks = useSelector((state) => state.tasks.isFetching); // done
+  const activeChatId = useSelector((state) => state.inbox.activeChatId); // done
 
   const [, { isSuccess: isExecutedTask }] = useExecuteTaskMutation({
     fixedCacheKey: "execute-task",
-  });
+  }); // done
   const [, { isSuccess: isSkipedTask }] = useSkipTaskMutation({
     fixedCacheKey: "skip-task",
-  });
+  }); // done
   const [, { isSuccess: isRepliedTask }] = useReplyTaskMutation({
     fixedCacheKey: "reply-task",
-  });
+  }); // done
   const [getNotifications, { data: notifications }] =
-    useLazyGetNotificationsQuery();
-  const [getCommonInfo, { data: commonData }] = useLazyGetCommonInfoQuery();
+    useLazyGetNotificationsQuery(); // done
+  const [getCommonInfo, { data: commonData }] = useLazyGetCommonInfoQuery(); // done
   const [fetchStatistics, { data: statisticsData, isLoading }] =
-    useLazyGetStatisticsOfTasksQuery();
+    useLazyGetStatisticsOfTasksQuery(); // done
 
+  // done
   useEffect(() => {
     statisticsData && dispatch(setStatistickInfo(statisticsData));
   }, [statisticsData]);
 
   useEffect(() => {
-    getCommonInfo();
-    fetchStatistics();
+    getCommonInfo(); //done
+    fetchStatistics(); // done
 
-    getNotifications();
+    getNotifications(); //done
 
+    // done
     const interval = setInterval(() => {
       getNotifications();
     }, 15000);
 
+    // done
     return () => clearInterval(interval);
   }, []);
 
+  // done
   const goToChat = (chat) => {
     history.push("/admin/inbox");
     dispatch(setActiveChatId(chat.Contact.id));
   };
 
+  // done
   useEffect(() => {
     if (notifications) {
       notifications.forEach((notification) => {
@@ -122,12 +127,14 @@ const CommonThings = () => {
     }
   }, [JSON.stringify(notifications)]);
 
+  // done
   useEffect(() => {
     if (isExecutedTask || isSkipedTask || isFetchingTasks || isRepliedTask) {
       fetchStatistics();
     }
   }, [isExecutedTask, isSkipedTask, isFetchingTasks, isRepliedTask]);
 
+  // done
   useEffect(() => {
     if (commonData) {
       dispatch(setCommonInfoTasks(commonData.Tasks));

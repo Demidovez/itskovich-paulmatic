@@ -59,8 +59,10 @@ const LoginForm = ({ className = "" }) => {
       (errorCommonData && errorCommonData.status !== 200)
     ) {
       setResultError(
-        (error && error.data.message) ||
-          (errorCommonData && errorCommonData.data.error.message)
+        (error && (error.data.message || error.data.error.message)) ||
+          (errorCommonData &&
+            (errorCommonData.data.message ||
+              errorCommonData.data.error.message))
       );
       setIsLoading(false);
     } else {
@@ -106,7 +108,7 @@ const LoginForm = ({ className = "" }) => {
     }),
     onSubmit: (values) => {
       tryLogin({
-        email: values.useremail,
+        username: values.useremail,
         password: values.password,
       });
     },

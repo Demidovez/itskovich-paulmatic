@@ -19,7 +19,7 @@ export function getHeaders(additinalHeaders) {
 
   return {
     "caller-version-code": 1,
-    sessionToken: Account.sessionToken,
+    sessionToken: Account.sessionToken || "",
     "Content-type": "application/json",
     ...additinalHeaders,
   };

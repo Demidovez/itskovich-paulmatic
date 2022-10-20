@@ -16,4 +16,4 @@ export const commonApi = createApi({
   }),
 });
 
-export const { useLazyGetCommonInfoQuery } = commonApi;
+export const { useLazyGetCommonInfoQuery, useGetCommonInfoQuery } = commonApi;

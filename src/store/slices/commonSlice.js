@@ -3,6 +3,7 @@ import moment from "moment";
 
 const initialState = {
   interval: 15,
+  isLoaded: false,
   loader: {
     pages: {
       sequences: {
@@ -92,7 +93,7 @@ export const commonSlice = createSlice({
         { id: 0, Name: "Все" },
       ].sort((f1, f2) => f1.id - f2.id);
 
-      state.Chats.Chats = [...action.payload.Chats].sort(
+      state.Chats.Chats = [...(action.payload.Chats || [])].sort(
         (c1, c2) =>
           moment(c2.Msgs.slice(-1)[0].Time) - moment(c1.Msgs.slice(-1)[0].Time)
       );
