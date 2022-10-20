@@ -38,21 +38,21 @@ export const tasksSlice = createSlice({
       state.isFetching = action.payload;
     },
     executeCachedTask: (state, action) => {
-      const executedTask = action.payload;
+      const { id, Status, Alertness } = action.payload || {};
       state.cached.Items = state.cached.Items.map((task) =>
-        task.id === executedTask.id ? executedTask : task
+        task.id === id ? { ...task, Status, Alertness } : task
       );
     },
     skipCachedTask: (state, action) => {
-      const skippedTask = action.payload;
+      const { id, Status, Alertness } = action.payload || {};
       state.cached.Items = state.cached.Items.map((task) =>
-        task.id === skippedTask.id ? skippedTask : task
+        task.id === id ? { ...task, Status, Alertness } : task
       );
     },
     replyCachedTask: (state, action) => {
-      const repliedTask = action.payload;
+      const { id, Status, Alertness } = action.payload || {};
       state.cached.Items = state.cached.Items.map((task) =>
-        task.id === repliedTask.id ? repliedTask : task
+        task.id === id ? { ...task, Status, Alertness } : task
       );
     },
   },

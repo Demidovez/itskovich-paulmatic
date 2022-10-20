@@ -119,15 +119,34 @@ const TasksTable = () => {
     }
   }, [isFetching, tasksData]);
 
-  const [executeTask] = useExecuteTaskMutation({
+  const [executeTask, { data: resultExecuteTask }] = useExecuteTaskMutation({
     fixedCacheKey: "execute-task",
   });
-  const [skipTask] = useSkipTaskMutation({
+  const [skipTask, { data: resultSkipTask }] = useSkipTaskMutation({
     fixedCacheKey: "skip-task",
   });
-  const [replyTask] = useReplyTaskMutation({
+  const [replyTask, { data: resultReplyTask }] = useReplyTaskMutation({
     fixedCacheKey: "reply-task",
   });
+
+  useEffect(() => {
+    console.log(resultExecuteTask);
+    if (resultExecuteTask) {
+      dispatch(executeCachedTask(resultExecuteTask));
+    }
+  }, [resultExecuteTask]);
+
+  useEffect(() => {
+    if (resultSkipTask) {
+      dispatch(skipCachedTask(resultSkipTask));
+    }
+  }, [resultSkipTask]);
+
+  useEffect(() => {
+    if (resultReplyTask) {
+      dispatch(replyCachedTask(resultReplyTask));
+    }
+  }, [resultReplyTask]);
 
   const { isSelectedAll, selectedIds } = useSelector((state) => state.tasks);
 
@@ -164,9 +183,6 @@ const TasksTable = () => {
   const onExecuteTask = (task, toastMessage) => {
     if (task) {
       executeTask(task);
-      dispatch(
-        executeCachedTask({ ...task, Status: "completed", Alertness: "gray" })
-      );
     }
 
     if (toastMessage) {
@@ -181,9 +197,6 @@ const TasksTable = () => {
   const onSkipTask = (task) => {
     if (task) {
       skipTask(task);
-      dispatch(
-        skipCachedTask({ ...task, Status: "skipped", Alertness: "gray" })
-      );
     }
 
     setTimeout(fetchTasks, 3000);
@@ -194,9 +207,6 @@ const TasksTable = () => {
   const onRepliedTask = (task) => {
     if (task) {
       replyTask(task);
-      dispatch(
-        replyCachedTask({ ...task, Status: "replied", Alertness: "gray" })
-      );
     }
 
     setTimeout(fetchTasks, 3000);

@@ -37,7 +37,7 @@ export const tasksApi = createApi({
         headers: getHeaders(),
       }),
       transformResponse: (response) => {
-        return response.result || [];
+        return response.result || {};
       },
       // invalidatesTags: [{ type: "Task", id: "LIST" }],
     }),
@@ -49,7 +49,7 @@ export const tasksApi = createApi({
         headers: getHeaders(),
       }),
       transformResponse: (response) => {
-        return response.result || [];
+        return response.result || {};
       },
       // invalidatesTags: [{ type: "Task", id: "LIST" }],
     }),
@@ -61,7 +61,7 @@ export const tasksApi = createApi({
         headers: getHeaders(),
       }),
       transformResponse: (response) => {
-        return response.result || [];
+        return response.result || {};
       },
       // invalidatesTags: [{ type: "Task", id: "LIST" }],
     }),
