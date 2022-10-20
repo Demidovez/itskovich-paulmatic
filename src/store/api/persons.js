@@ -49,7 +49,13 @@ export const personsApi = createApi({
         if ((response.result || {}).error || response.message) {
           toast.error(`Ошибка!`);
         } else {
-          toast.success(`${arg.length} контакта(ов) добавлено!`);
+          if (response.result) {
+            toast.success(
+              `${(response.result || []).length} контакта(ов) добавлено!`
+            );
+          } else {
+            toast.error(`Уже в контактах!`);
+          }
         }
       },
     }),

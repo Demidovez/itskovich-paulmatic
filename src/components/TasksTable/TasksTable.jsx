@@ -143,7 +143,6 @@ const TasksTable = () => {
     fetchTasks();
 
     const intervalId = setInterval(() => {
-      console.log("request of tasks");
       fetchTasks();
     }, 30000); // TODO1: 30000
 

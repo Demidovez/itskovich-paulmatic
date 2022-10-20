@@ -8,8 +8,6 @@ const TasksBarStatsByType = () => {
     Stats: { All, ByType },
   } = useSelector((state) => state.common.Tasks);
 
-  console.log(All, ByType, Types);
-
   return (
     <Card className="card-stats mb-4 mb-xl-0 shadow">
       <CardBody className="pt-2 pb-1 ">
