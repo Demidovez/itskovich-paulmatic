@@ -102,6 +102,8 @@ export const sequencesApi = createApi({
         } else {
           toast.error(`Ошибка!`);
         }
+
+        return response.result || {};
       },
       invalidatesTags: [{ type: "Sequence", id: "LIST" }],
     }),

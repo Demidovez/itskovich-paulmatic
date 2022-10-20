@@ -78,6 +78,7 @@ const SequencePageSteps = ({ isShow, onChange }) => {
         steps.map((step) => ({
           Action: step.Action,
           Delay: step.delay,
+          DueTime: moment("0001-01-01").add(step.delay, "second").format(),
           Body: step.Body,
           Subject: step.Subject,
           Type: step.Type,

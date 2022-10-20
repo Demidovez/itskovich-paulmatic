@@ -22,6 +22,7 @@ import {
 } from "store/slices/contactsSlice";
 import { useCreateOrUpdateSequenceMutation } from "store/api/sequences";
 import useYouSure from "hooks/useYouSure";
+import { addHtmlTemplates } from "store/slices/commonSlice";
 
 const ModalCreateSequence = ({ onClose }) => {
   const { tryClose, tryForceClose, setIsChanged } = useYouSure(onClose);
@@ -34,7 +35,17 @@ const ModalCreateSequence = ({ onClose }) => {
     (state) => state.sequences.selectedFolderId
   );
 
-  const [createOrUpdateSequence] = useCreateOrUpdateSequenceMutation();
+  const [createOrUpdateSequence, { data: resultOfCreateOrUpdateSequence }] =
+    useCreateOrUpdateSequenceMutation();
+
+  useEffect(() => {
+    if (
+      resultOfCreateOrUpdateSequence &&
+      resultOfCreateOrUpdateSequence.templates
+    ) {
+      dispatch(addHtmlTemplates(resultOfCreateOrUpdateSequence.templates));
+    }
+  }, [resultOfCreateOrUpdateSequence]);
 
   useEffect(() => {
     resetContactsData();

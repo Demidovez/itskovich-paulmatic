@@ -80,6 +80,9 @@ export const commonSlice = createSlice({
     setCommonInfoHtmlTemplates: (state, action) => {
       state.Templates = action.payload;
     },
+    addHtmlTemplates: (state, action) => {
+      state.Templates.Cache = { ...state.Templates.Cache, ...action.payload };
+    },
     setFolders: (state, action) => {
       state.Folders = action.payload;
     },
@@ -267,6 +270,7 @@ export const {
   updateChatByNotification,
   moveChatToFolder,
   deleteChat,
+  addHtmlTemplates,
 } = commonSlice.actions;
 
 export default commonSlice.reducer;

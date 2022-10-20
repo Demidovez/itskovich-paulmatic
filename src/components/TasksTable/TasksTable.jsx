@@ -130,7 +130,6 @@ const TasksTable = () => {
   });
 
   useEffect(() => {
-    console.log(resultExecuteTask);
     if (resultExecuteTask) {
       dispatch(executeCachedTask(resultExecuteTask));
     }
@@ -163,7 +162,7 @@ const TasksTable = () => {
 
     const intervalId = setInterval(() => {
       fetchTasks();
-    }, 30000); // TODO1: 30000
+    }, 30000);
 
     return () => clearInterval(intervalId);
   }, [fetchTasks]);
