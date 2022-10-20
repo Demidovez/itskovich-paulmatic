@@ -65,7 +65,7 @@ const SequencesTableItem = ({ sequence, fields, isSelect, onSelect }) => {
           } else if (field.name === "Stopped") {
             return (
               <td
-                className="d-flex align-items-center pl-1 pr-1"
+                className="d-flex align-items-center pl-2 pr-0"
                 key={field.name}
                 style={{
                   ...field.style,
