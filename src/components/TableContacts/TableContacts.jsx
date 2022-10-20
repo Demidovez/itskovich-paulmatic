@@ -134,7 +134,7 @@ const TableContacts = ({
                 if (field.name === "checkbox") {
                   return (
                     <td
-                      className="p-0 pt-3 position-relative"
+                      className="p-0 pt-3"
                       key={field.name}
                       style={{
                         whiteSpace: "normal",

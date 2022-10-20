@@ -51,6 +51,7 @@ const SequencesTableItem = ({ sequence, fields, isSelect, onSelect }) => {
                 key={field.name}
                 style={{
                   ...field.style,
+                  zIndex: 100,
                 }}
               >
                 <Checkbox
