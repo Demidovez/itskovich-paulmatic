@@ -97,6 +97,7 @@ const RegisterForm = ({ className = "" }) => {
     initialValues: {
       username: "",
       useremail: "",
+      directorUsername: "",
       password: "",
       company: "",
       agree: false,
@@ -106,6 +107,7 @@ const RegisterForm = ({ className = "" }) => {
       useremail: Yup.string()
         .email("Неверный E-mail!")
         .required("Обязательное поле!"),
+      directorUsername: Yup.string().email("Неверный E-mail!"),
       password: Yup.string()
         .min(5, "Требуется минимум 5 символов")
         .required("Обязательное поле!"),
@@ -114,10 +116,11 @@ const RegisterForm = ({ className = "" }) => {
     }),
     onSubmit: (values) => {
       trySignUp({
-        name: values.username,
-        email: values.useremail,
+        fullName: values.username,
+        username: values.useremail,
         password: values.password,
-        company: values.company,
+        // company: values.company,
+        directorUsername: values.directorUsername,
       });
     },
   });
@@ -233,6 +236,35 @@ const RegisterForm = ({ className = "" }) => {
         <div className="field-error">
           {formik.touched.company && formik.errors.company
             ? formik.errors.company
+            : ""}
+        </div>
+      </FormGroup>
+      <FormGroup
+        className={`field-wrapper ${
+          formik.touched.directorUsername && formik.errors.directorUsername
+            ? "has-error"
+            : ""
+        }`}
+      >
+        <InputGroup className="input-group-alternative mb-3">
+          <InputGroupAddon addonType="prepend">
+            <InputGroupText>
+              <i className="ni ni-email-83" />
+            </InputGroupText>
+          </InputGroupAddon>
+          <Input
+            placeholder="Director E-mail"
+            type="text"
+            name="directorUsername"
+            autoComplete="nope"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.directorUsername}
+          />
+        </InputGroup>
+        <div className="field-error">
+          {formik.touched.directorUsername && formik.errors.directorUsername
+            ? formik.errors.directorUsername
             : ""}
         </div>
       </FormGroup>

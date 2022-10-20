@@ -5,20 +5,12 @@ export const loginApi = createApi({
   reducerPath: "loginApi",
   baseQuery: fetchBaseQuery({ baseUrl: getServerUrl("") }),
   endpoints: (builder) => ({
-    trySignUp1: builder.query({
-      query: (body) => ({
-        url: "login/signup",
-        method: "POST",
-        headers: getHeaders(),
-        body,
-      }),
-      transformResponse: (response) => response.result || {},
-    }),
     trySignUp: builder.query({
-      query: (body) => ({
-        url: "commons",
+      query: (params) => ({
+        url: "/users/register",
         method: "GET",
-        headers: getHeaders({ sessionToken: "user-1" }),
+        params: params,
+        headers: getHeaders(), // { sessionToken: "user-1" }
       }),
       transformResponse: (response) => (response.result || {}).Account,
     }),
