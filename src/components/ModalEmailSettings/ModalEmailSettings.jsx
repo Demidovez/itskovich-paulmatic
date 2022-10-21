@@ -27,10 +27,20 @@ const ModalEmailSettings = ({ onClose }) => {
     if (InMailSettings) {
       setEmailServers(
         emailServersDefault.map((server) =>
-          server.Creds.Id === InMailSettings.Creds.Id ? InMailSettings : server
+          server.Creds.Id === (InMailSettings.Creds || {}).Id
+            ? InMailSettings
+            : server
         )
       );
-      setActiveServer(InMailSettings);
+      setActiveServer(
+        (InMailSettings.Creds || {}).Id
+          ? InMailSettings
+          : {
+              Creds: {
+                Id: "another",
+              },
+            }
+      );
     }
   }, [InMailSettings, emailServersDefault]);
 
