@@ -1,7 +1,10 @@
 import LoginForm from "components/LoginForm/LoginForm";
+import { useHistory } from "react-router-dom";
 import { Card, CardBody, Row, Col } from "reactstrap";
 
 const Login = () => {
+  const history = useHistory();
+
   return (
     <>
       <Col lg="5" md="7">
@@ -67,13 +70,12 @@ const Login = () => {
             </>
           </Col>
           <Col className="text-right" xs="6">
-            <a
-              className="text-light"
-              href="#pablo"
-              onClick={(e) => e.preventDefault()}
+            <div
+              onClick={(e) => history.push("/auth/register")}
+              style={{ color: "#ced4da", cursor: "pointer" }}
             >
               <small>Create new account</small>
-            </a>
+            </div>
           </Col>
         </Row>
       </Col>

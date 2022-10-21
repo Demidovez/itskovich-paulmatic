@@ -104,7 +104,7 @@ const RegisterForm = ({ className = "" }) => {
       directorUsername: "",
       password: "",
       company: "",
-      agree: false,
+      // agree: false,
     },
     validationSchema: Yup.object({
       username: Yup.string().required("Обязательное поле!"),
@@ -116,7 +116,7 @@ const RegisterForm = ({ className = "" }) => {
         .min(5, "Требуется минимум 5 символов")
         .required("Обязательное поле!"),
       company: Yup.string().required("Обязательное поле!"),
-      agree: Yup.boolean().oneOf([true], "Обязательное поле!"),
+      // agree: Yup.boolean().oneOf([true], "Обязательное поле!"),
     }),
     onSubmit: (values) => {
       trySignUp({
@@ -272,7 +272,7 @@ const RegisterForm = ({ className = "" }) => {
             : ""}
         </div>
       </FormGroup>
-      <Row className="my-4">
+      {/* <Row className="my-4">
         <Col
           xs="12"
           className={`field-wrapper ${
@@ -307,7 +307,7 @@ const RegisterForm = ({ className = "" }) => {
             </div>
           </div>
         </Col>
-      </Row>
+      </Row> */}
       <div className="text-center position-relative">
         <div className="server-error">{resultError ? resultError : ""}</div>
         <Button
