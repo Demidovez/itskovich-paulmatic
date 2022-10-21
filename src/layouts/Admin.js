@@ -18,6 +18,7 @@ import useFetchStatistics from "hooks/useFetchStatistics";
 import ModalEmailSettings from "components/ModalEmailSettings/ModalEmailSettings";
 import { useSelector } from "react-redux";
 import { setInMailSettingsStatus } from "store/slices/commonSlice";
+import { setIsNeedSetEmailServer } from "store/slices/commonSlice";
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);
@@ -25,8 +26,8 @@ const Admin = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [isSuccess, setIsSuccess] = useState(false);
-  const mailSettingsStatus = useSelector(
-    (state) => state.common.Account.InMailSettings
+  const isNeedSetEmailServer = useSelector(
+    (state) => state.common.isNeedSetEmailServer
   );
 
   // const fetchCommon = useFetchCommon();
@@ -38,6 +39,8 @@ const Admin = (props) => {
 
     if (Account.sessionToken) {
       dispatch(saveAccount(Account));
+      Account.InMailSettings === null &&
+        dispatch(setIsNeedSetEmailServer(true));
       // fetchCommon();
       // fetchNotifications();
       // fetchStatistics();
@@ -69,8 +72,9 @@ const Admin = (props) => {
     });
   };
 
-  const onCloseModalEmailSettings = () =>
-    dispatch(setInMailSettingsStatus("saved"));
+  const onCloseModalEmailSettings = () => {
+    dispatch(setIsNeedSetEmailServer(false));
+  };
 
   return (
     <>
@@ -102,11 +106,8 @@ const Admin = (props) => {
         pauseOnHover={false}
       />
       {isSuccess && <CommonThings />}
-      {mailSettingsStatus !== "saved" && (
-        <ModalEmailSettings
-          onClose={onCloseModalEmailSettings}
-          status={mailSettingsStatus}
-        />
+      {isNeedSetEmailServer && (
+        <ModalEmailSettings onClose={onCloseModalEmailSettings} />
       )}
     </>
   );

@@ -24,6 +24,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import { setIsNeedSetEmailServer } from "store/slices/commonSlice";
 import { setInMailSettingsStatus } from "store/slices/commonSlice";
 
 import "./Menu.scss";
@@ -222,7 +223,7 @@ const Menu = (props) => {
                   <span>Settings</span>
                 </DropdownItem>
                 <DropdownItem
-                  onClick={() => dispatch(setInMailSettingsStatus("change"))}
+                  onClick={() => dispatch(setIsNeedSetEmailServer(true))}
                 >
                   <i className="ni ni-email-83" />
                   <span>Настройки почты</span>

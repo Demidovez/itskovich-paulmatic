@@ -27,7 +27,20 @@ export const loginApi = createApi({
       }),
       transformResponse: (response) => response.result,
     }),
+    trySaveEmailServer: builder.query({
+      query: (body) => ({
+        url: "/setEmailSettings",
+        method: "POST",
+        body: body,
+        headers: getHeaders(),
+      }),
+      transformResponse: (response) => response.result,
+    }),
   }),
 });
 
-export const { useLazyTrySignUpQuery, useLazyTryLognInQuery } = loginApi;
+export const {
+  useLazyTrySignUpQuery,
+  useLazyTryLognInQuery,
+  useLazyTrySaveEmailServerQuery,
+} = loginApi;

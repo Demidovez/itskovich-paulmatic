@@ -6,48 +6,57 @@ import { useSelector } from "react-redux";
 import { Button, Modal } from "reactstrap";
 import "./ModalEmailSettings.scss";
 
-const ModalEmailSettings = ({ onClose, status }) => {
-  const [activeServer, setActiveServer] = useState({ id: "another" });
-  const [isCanClose, setIsCanClose] = useState(false);
+const ModalEmailSettings = ({ onClose }) => {
+  const [activeServer, setActiveServer] = useState({
+    Creds: {
+      Id: "another",
+    },
+  });
   const { tryClose, tryForceClose, setIsChanged } = useYouSure(onClose);
 
-  const emailServers = useSelector(
+  const emailServersDefault = useSelector(
     (state) => state.common.AccountSettings.EmailServers
   );
+  const InMailSettings = useSelector(
+    (state) => state.common.Account.InMailSettings
+  );
 
-  const onSubmit = (values) => {
-    console.log(values);
-    setIsCanClose(true);
-  };
+  const [emailServers, setEmailServers] = useState([]);
+
+  useState(() => {
+    if (InMailSettings) {
+      setEmailServers(
+        emailServersDefault.map((server) =>
+          server.Creds.Id === InMailSettings.Creds.Id ? InMailSettings : server
+        )
+      );
+      setActiveServer(InMailSettings);
+    }
+  }, [InMailSettings, emailServersDefault]);
 
   useEffect(() => {
-    isCanClose && tryForceClose();
-  }, [isCanClose, tryForceClose]);
-
-  useEffect(() => {
-    if (status === "none") {
+    if (InMailSettings === null) {
       setIsChanged(true);
     }
-  }, [status, setIsChanged]);
+  }, [InMailSettings]);
 
   return (
     <Modal
       className="modal-email-settings-component modal-dialog-centered"
       toggle={tryClose}
       isOpen={true}
-      backdrop={status === "none" ? "static" : true}
+      backdrop={InMailSettings ? true : "static"}
       style={{
         maxWidth: "1000px",
         width: "55%",
         minWidth: "700px",
-        // padding: "0.5rem 0",
       }}
     >
       <div className="modal-header p-4">
         <h5 className="modal-title" id="exampleModalLabel">
           Настройка почты для работы
         </h5>
-        {status === "none" ? null : (
+        {InMailSettings ? (
           <button
             aria-label="Close"
             className="close"
@@ -57,19 +66,21 @@ const ModalEmailSettings = ({ onClose, status }) => {
           >
             <span aria-hidden={true}>×</span>
           </button>
-        )}
+        ) : null}
       </div>
       <div className="modal-body p-0">
         <div className="email-servers mt-0 ml-4 mr-4 mb-4">
           {emailServers.map((server) => (
             <div
               key={server.Creds.Id}
-              className={activeServer.id === server.Creds.Id ? "active" : ""}
+              className={
+                activeServer.Creds.Id === server.Creds.Id ? "active" : ""
+              }
               onClick={() =>
                 setActiveServer((old) => ({
                   ...old,
                   ...server,
-                  id: server.Creds.Id,
+                  Creds: server.Creds,
                 }))
               }
             >
@@ -80,7 +91,7 @@ const ModalEmailSettings = ({ onClose, status }) => {
           <div className="email-separator" />
           {emailServers.length ? (
             <div
-              className={activeServer.id === "another" ? "active" : ""}
+              className={activeServer.Creds.Id === "another" ? "active" : ""}
               onClick={() =>
                 setActiveServer((old) => ({
                   ...old,
@@ -90,7 +101,9 @@ const ModalEmailSettings = ({ onClose, status }) => {
                   Password: "",
                   SmtpPort: "",
                   ImapPort: "",
-                  id: "another",
+                  Creds: {
+                    Id: "another",
+                  },
                 }))
               }
             >
@@ -100,11 +113,11 @@ const ModalEmailSettings = ({ onClose, status }) => {
           ) : null}
         </div>
         <EmailForm
-          isChange={status === "change"}
+          isChange={InMailSettings !== null}
           className="p-4"
-          onSubmit={onSubmit}
           onClose={tryForceClose}
           server={activeServer}
+          onChange={() => setIsChanged(true)}
         />
       </div>
     </Modal>

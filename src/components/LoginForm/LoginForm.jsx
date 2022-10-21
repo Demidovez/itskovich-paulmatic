@@ -47,6 +47,7 @@ const LoginForm = ({ className = "" }) => {
         getCommonInfo();
       } else {
         setResultError("Неизвестная ошибка! Попробуйте позже... ");
+        setIsLoading(false);
       }
     } else if (isFetching) {
       setIsLoading(true);

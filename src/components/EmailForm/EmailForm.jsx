@@ -11,16 +11,10 @@ import {
 import { Formik } from "formik";
 import * as Yup from "yup";
 import "./EmailForm.scss";
-import { useLazyTrySignUpQuery } from "store/api/login";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { saveAccount } from "store/slices/commonSlice";
-import { useLazyGetCommonInfoQuery } from "store/api/common";
-import { setCommonInfoTasks } from "store/slices/commonSlice";
-import { setCommonInfoHtmlTemplates } from "store/slices/commonSlice";
-import { setFolders } from "store/slices/commonSlice";
-import { setChats } from "store/slices/commonSlice";
-import { useHistory } from "react-router-dom";
+import { useLazyTrySaveEmailServerQuery } from "store/api/login";
+import { setInMailSettingsStatus } from "store/slices/commonSlice";
 
 const URL_REGEX =
   /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
@@ -29,98 +23,67 @@ const EmailForm = ({
   className = "",
   isChange = false,
   server = {},
-  onSubmit,
   onClose,
+  onChange,
 }) => {
   const dispatch = useDispatch();
-  const history = useHistory();
+
   const [resultError, setResultError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const [trySignUp, { data: signUpResponse, error, isFetching }] =
-    useLazyTrySignUpQuery();
-
-  const trySaveEmailServer = (values) => {
-    setIsLoading(true);
-
-    setResultError("");
-
-    setTimeout(() => {
-      const answer = window.confirm("Все работает?");
-
-      if (answer) {
-        setIsLoading(false);
-        setResultError("");
-        onSubmit(values);
-      } else {
-        setIsLoading(false);
-        setResultError("Ошибка! Попробуйте еще раз...");
-      }
-    }, 3000);
-  };
-
-  const [
-    getCommonInfo,
-    {
-      data: commonData,
-      error: errorCommonData,
-      isFetching: isFetchingCommonData,
-    },
-  ] = useLazyGetCommonInfoQuery();
+  const [trySaveEmailServer, { data: emailServerResponse, error, isFetching }] =
+    useLazyTrySaveEmailServerQuery();
 
   useEffect(() => {
-    if (!isFetching && signUpResponse) {
-      if ((signUpResponse || {}).sessionToken) {
-        dispatch(saveAccount(signUpResponse));
-        localStorage.setItem("Account", JSON.stringify(signUpResponse));
-        getCommonInfo();
+    if (!isFetching && emailServerResponse) {
+      if ((emailServerResponse || {}).InMailSettings) {
+        dispatch(
+          setInMailSettingsStatus({
+            ...emailServerResponse.InMailSettings,
+            Creds: {
+              Name: server.Creds.Name,
+              Id: server.Creds.Id,
+            },
+          })
+        );
+        localStorage.setItem(
+          "Account",
+          JSON.stringify({
+            ...emailServerResponse,
+            InMailSettings: {
+              ...emailServerResponse.InMailSettings,
+              Creds: {
+                Name: server.Creds.Name,
+                Id: server.Creds.Id,
+              },
+            },
+          })
+        );
+        setIsLoading(false);
+        setResultError("");
+        onClose();
       } else {
-        setResultError("Неизвестная ошибка! Попробуйте позже... ");
+        setResultError("Ошибка! Попробуйте еще раз... ");
+        setIsLoading(false);
       }
     } else if (isFetching) {
       setIsLoading(true);
     }
-  }, [signUpResponse, isFetching]);
+  }, [emailServerResponse, isFetching, server]);
 
   useEffect(() => {
-    if (
-      (error && error.status !== 200) ||
-      (errorCommonData && errorCommonData.status !== 200)
-    ) {
+    if (error && error.status !== 200) {
       setResultError(
-        (error && (error.data.message || error.data.error.message)) ||
-          (errorCommonData &&
-            (errorCommonData.data.message ||
-              errorCommonData.data.error.message))
+        error &&
+          (error.data.message ||
+            error.data.error.message ||
+            "Ошибка! Попробуйте еще раз...")
       );
       setIsLoading(false);
     } else {
       setResultError("");
     }
-  }, [
-    JSON.stringify(error),
-    JSON.stringify(errorCommonData),
-    isFetching,
-    isFetchingCommonData,
-  ]);
-
-  useEffect(() => {
-    if (commonData) {
-      dispatch(setCommonInfoTasks(commonData.Tasks));
-      dispatch(setCommonInfoHtmlTemplates(commonData.Templates));
-      dispatch(setFolders(commonData.Folders));
-      dispatch(setChats(commonData.Chats));
-    }
-  }, [commonData]);
-
-  useEffect(() => {
-    if (!isFetchingCommonData && commonData) {
-      history.push("/admin/index");
-      setIsLoading(true);
-    } else if (isFetchingCommonData) {
-      setIsLoading(true);
-    }
-  }, [isFetchingCommonData, commonData]);
+  }, [JSON.stringify(error), isFetching]);
 
   return (
     <Formik
@@ -138,19 +101,29 @@ const EmailForm = ({
           .email("Неверный E-mail!")
           .required("Обязательное поле!"),
         Password: Yup.string().required("Обязательное поле!"),
-        SmtpPort: Yup.number().typeError("Требуется число!"),
-        ImapPort: Yup.number().typeError("Требуется число!"),
-        SmtpHost: Yup.string().matches(
-          URL_REGEX,
-          "Требуется доменное имя сервера!"
-        ),
-        ImapHost: Yup.string().matches(
-          URL_REGEX,
-          "Требуется доменное имя сервера!"
-        ),
+        SmtpPort: Yup.number()
+          .integer("Требуется целое число!")
+          .typeError("Требуется число!")
+          .min(1, "Требуется число больше 0!")
+          .required("Обязательное поле!"),
+        ImapPort: Yup.number()
+          .integer("Требуется целое число!")
+          .typeError("Требуется число!")
+          .min(1, "Требуется число больше 0!")
+          .required("Обязательное поле!"),
+        SmtpHost: Yup.string()
+          .matches(URL_REGEX, "Требуется доменное имя сервера!")
+          .required("Обязательное поле!"),
+        ImapHost: Yup.string()
+          .matches(URL_REGEX, "Требуется доменное имя сервера!")
+          .required("Обязательное поле!"),
       })}
       onSubmit={(values) => {
-        trySaveEmailServer(values);
+        trySaveEmailServer({
+          ...values,
+          ImapPort: +values.ImapPort,
+          SmtpPort: +values.SmtpPort,
+        });
       }}
     >
       {(formik) => (
@@ -158,12 +131,13 @@ const EmailForm = ({
           role="form"
           className={`email-form-component ${className} mt-3`}
           onSubmit={formik.handleSubmit}
+          onChange={onChange}
         >
           <div className="d-flex">
             <FormGroup
               className={`field-wrapper ${
                 formik.touched.Login && formik.errors.Login ? "has-error" : ""
-              } mr-4`}
+              } mr-4 flex-fill`}
             >
               <InputGroup className="input-group-alternative mb-0">
                 <InputGroupAddon addonType="prepend">
@@ -192,7 +166,7 @@ const EmailForm = ({
                 formik.touched.Password && formik.errors.Password
                   ? "has-error"
                   : ""
-              }`}
+              } flex-fill`}
             >
               <InputGroup className="input-group-alternative">
                 <InputGroupAddon addonType="prepend">

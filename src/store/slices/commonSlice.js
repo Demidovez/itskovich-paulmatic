@@ -4,7 +4,7 @@ import moment from "moment";
 const initialState = {
   interval: 15,
   isLoaded: false,
-
+  isNeedSetEmailServer: false,
   loader: {
     pages: {
       sequences: {
@@ -35,7 +35,7 @@ const initialState = {
   },
   Sequences: {},
   Account: {
-    InMailSettings: "saved",
+    InMailSettings: null,
   },
   AccountSettings: {
     EmailServers: [],
@@ -68,7 +68,7 @@ export const commonSlice = createSlice({
       state.Account = {
         ...state.Account,
         ...action.payload,
-        InMailSettings: (action.payload || {}).InMailSettings || "none",
+        InMailSettings: (action.payload || {}).InMailSettings || null,
       };
     },
     setLoaderStatus: (state, action) => {
@@ -112,6 +112,9 @@ export const commonSlice = createSlice({
     },
     setInMailSettingsStatus: (state, action) => {
       state.Account.InMailSettings = action.payload;
+    },
+    setIsNeedSetEmailServer: (state, action) => {
+      state.isNeedSetEmailServer = action.payload;
     },
     setAccountSettings: (state, action) => {
       state.AccountSettings = { ...state.AccountSettings, ...action.payload };
@@ -290,6 +293,7 @@ export const {
   addHtmlTemplates,
   setInMailSettingsStatus,
   setAccountSettings,
+  setIsNeedSetEmailServer,
 } = commonSlice.actions;
 
 export default commonSlice.reducer;

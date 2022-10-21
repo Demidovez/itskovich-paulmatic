@@ -50,6 +50,7 @@ const RegisterForm = ({ className = "" }) => {
         getCommonInfo();
       } else {
         setResultError("Неизвестная ошибка! Попробуйте позже... ");
+        setIsLoading(false);
       }
     } else if (isFetching) {
       setIsLoading(true);

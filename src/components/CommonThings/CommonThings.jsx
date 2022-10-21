@@ -144,11 +144,21 @@ const CommonThings = () => {
       dispatch(setFolders(commonData.Folders));
       dispatch(setChats(commonData.Chats));
       dispatch(setAccountSettings(commonData.AccountSettings));
-      dispatch(
-        setInMailSettingsStatus(
-          (commonData.Action || {}).InMailSettings ? "saved" : "none"
-        )
-      );
+      if ((commonData.Account || {}).InMailSettings) {
+        const emailServerCreds = (
+          (JSON.parse(localStorage.getItem("Account")) || {}).InMailSettings ||
+          {}
+        ).Creds;
+
+        dispatch(
+          setInMailSettingsStatus({
+            ...commonData.Account.InMailSettings,
+            Creds: emailServerCreds,
+          })
+        );
+      } else {
+        dispatch(setInMailSettingsStatus(null));
+      }
     }
   }, [commonData]);
 

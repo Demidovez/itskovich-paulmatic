@@ -21,11 +21,21 @@ const useFetchCommon = () => {
       dispatch(setFolders(commonData.Folders));
       dispatch(setChats(commonData.Chats));
       dispatch(setAccountSettings(commonData.AccountSettings));
-      dispatch(
-        setInMailSettingsStatus(
-          (commonData.Action || {}).InMailSettings ? "saved" : "none"
-        )
-      );
+      if ((commonData.Account || {}).InMailSettings) {
+        const emailServerId = (
+          (JSON.parse(localStorage.getItem("Account")) || {}).InMailSettings ||
+          {}
+        ).Id;
+
+        dispatch(
+          setInMailSettingsStatus({
+            ...commonData.Account.InMailSettings,
+            Id: emailServerId,
+          })
+        );
+      } else {
+        dispatch(setInMailSettingsStatus("none"));
+      }
     }
   }, [isSuccess, commonData]);
 
