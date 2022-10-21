@@ -11,12 +11,13 @@
       justify-content: center;
 
       .form-wrapper {
-        max-width: 360px;
+        width: 360px;
 
         h2 {
           font-size: 1.5rem;
           line-height: 1.375;
           color: #344767;
+          margin-bottom: 20px;
         }
 
         p {
@@ -42,8 +43,10 @@
         border-radius: 0.75rem;
         height: 100%;
         background-size: cover;
+        background-color: #4450ff;
         display: flex;
         align-items: center;
+        justify-content: center;
         position: relative;
         overflow: hidden;
         //   background-color: rgb(94 114 228 / 1);

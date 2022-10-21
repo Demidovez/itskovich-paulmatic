@@ -10,7 +10,7 @@ const Login = () => {
               <Nav className="nav-footer justify-content-center">
                 <NavItem>
                   <NavLink
-                    href="https://www.creative-tim.com?ref=adr-auth-footer"
+                    href="https://palmautic.ru/why_palmautic"
                     target="_blank"
                     style={{
                       color: "#919eb4",
@@ -19,12 +19,12 @@ const Login = () => {
                       marginRight: 48,
                     }}
                   >
-                    Creative Tim
+                    Почему Palmautic?
                   </NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink
-                    href="https://www.creative-tim.com/presentation?ref=adr-auth-footer"
+                    href="/"
                     target="_blank"
                     style={{
                       color: "#919eb4",
@@ -33,12 +33,12 @@ const Login = () => {
                       fontSize: 16,
                     }}
                   >
-                    About Us
+                    License
                   </NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink
-                    href="http://blog.creative-tim.com?ref=adr-auth-footer"
+                    href="/"
                     target="_blank"
                     style={{
                       color: "#919eb4",
@@ -47,21 +47,7 @@ const Login = () => {
                       fontSize: 16,
                     }}
                   >
-                    Blog
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink
-                    href="https://github.com/creativetimofficial/argon-dashboard/blob/master/LICENSE.md?ref=adr-auth-footer"
-                    target="_blank"
-                    style={{
-                      color: "#919eb4",
-                      fontWeight: 300,
-                      marginRight: 48,
-                      fontSize: 16,
-                    }}
-                  >
-                    MIT License
+                    FAQ
                   </NavLink>
                 </NavItem>
               </Nav>
@@ -71,7 +57,7 @@ const Login = () => {
                 className="copyright text-center text-muted m-5"
                 style={{ fontWeight: 300, color: "#8896ae" }}
               >
-                © {new Date().getFullYear()} Creative Tim
+                © {new Date().getFullYear()} Palmautic Solutions
               </div>
             </Col>
           </Row>

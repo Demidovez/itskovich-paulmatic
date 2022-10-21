@@ -102,14 +102,25 @@ const Menu = (props) => {
 
   const renderLogo = () => {
     return logo ? (
-      <NavbarBrand className="pt-0 pb-0 pl-0 mr-0" {...navbarBrandProps}>
-        <img
-          alt={logo.imgAlt}
-          className="navbar-brand-img logo-height pt-3 pb-3"
-          src={logo.imgSrc}
-          style={{ maxWidth: "180px" }}
-        />
-      </NavbarBrand>
+      <Link
+        to={"/admin" + getpath(ROUTES.index.path)}
+        style={{
+          backgroundImage:
+            "url(" +
+            require("../../assets/img/icons/common/enterprise_white.svg")
+              .default +
+            ")",
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
+          height: "4.5rem",
+          width: 200,
+          overflow: "hidden",
+          backgroundPositionX: -40,
+          backgroundPositionY: -10,
+          backgroundSize: 250,
+          display: "block",
+        }}
+      ></Link>
     ) : null;
   };
 

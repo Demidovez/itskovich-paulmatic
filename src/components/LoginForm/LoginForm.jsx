@@ -135,7 +135,7 @@ const LoginForm = ({ className = "" }) => {
           placeholder="E-mail"
           type="text"
           name="useremail"
-          autoComplete="nope"
+          autoComplete="email"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.useremail}
@@ -157,7 +157,7 @@ const LoginForm = ({ className = "" }) => {
           placeholder="Пароль"
           type="password"
           name="password"
-          autoComplete="nope"
+          // autoComplete="password"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.password}
@@ -177,6 +177,7 @@ const LoginForm = ({ className = "" }) => {
           type="button"
           onClick={formik.handleSubmit}
           disabled={isLoading}
+          style={{ background: "#4450ff" }}
         >
           {isLoading ? <Spinner color="white" size="sm" /> : "Войти"}
         </Button>

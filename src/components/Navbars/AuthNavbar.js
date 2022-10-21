@@ -16,12 +16,25 @@ const AdminNavbar = () => {
     <>
       <Navbar className="navbar-top navbar-horizontal navbar-dark" expand="md">
         <Container className="px-4">
-          <NavbarBrand to="/" tag={Link}>
-            <img
+          <NavbarBrand
+            to="/"
+            tag={Link}
+            style={{
+              backgroundImage: `url(${
+                require("../../assets/img/icons/common/enterprise_white.svg")
+                  .default
+              })`,
+            }}
+          >
+            {/* <img
               alt="..."
-              src={require("../../assets/img/brand/logo.svg").default}
+              src={
+                require("../../assets/img/icons/common/enterprise white.svg")
+                  .default
+              }
+              // src={require("../../assets/img/brand/logo.svg").default}
               style={{ height: "80px" }}
-            />
+            /> */}
           </NavbarBrand>
           <button className="navbar-toggler" id="navbar-collapse-main">
             <span className="navbar-toggler-icon" />

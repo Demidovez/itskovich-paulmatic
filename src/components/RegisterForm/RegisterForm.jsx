@@ -148,7 +148,7 @@ const RegisterForm = ({ className = "" }) => {
           placeholder="Имя"
           type="text"
           name="username"
-          autoComplete="off"
+          autoComplete="name"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.username}
@@ -171,7 +171,7 @@ const RegisterForm = ({ className = "" }) => {
           placeholder="E-mail"
           type="text"
           name="useremail"
-          autoComplete="nope"
+          autoComplete="email"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.useremail}
@@ -193,7 +193,7 @@ const RegisterForm = ({ className = "" }) => {
           placeholder="Пароль"
           type="password"
           name="password"
-          autoComplete="nope"
+          autoComplete="new-password"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.password}
@@ -215,7 +215,7 @@ const RegisterForm = ({ className = "" }) => {
           placeholder="Компания"
           type="text"
           name="company"
-          autoComplete="nope"
+          autoComplete="organization"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.company}
@@ -231,14 +231,14 @@ const RegisterForm = ({ className = "" }) => {
           formik.touched.directorUsername && formik.errors.directorUsername
             ? "has-error"
             : ""
-        } mb-3`}
+        } mb-0`}
       >
         <span>E-mail директора</span>
         <Input
           placeholder="E-mail директора"
           type="text"
           name="directorUsername"
-          autoComplete="nope"
+          autoComplete="email"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.directorUsername}
@@ -287,14 +287,15 @@ const RegisterForm = ({ className = "" }) => {
         </Col>
       </Row> */}
       </>
-      <div className="text-center position-relative mt-5">
+      <div className="text-center position-relative ">
         <div className="server-error">{resultError ? resultError : ""}</div>
         <Button
-          className="mt-0 w-100"
+          className="mt-5 w-100"
           color="primary"
           type="button"
           onClick={formik.handleSubmit}
           disabled={isLoading}
+          style={{ background: "#4450ff" }}
         >
           {isLoading ? <Spinner color="white" size="sm" /> : "Создать аккаунт"}
         </Button>

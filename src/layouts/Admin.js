@@ -85,7 +85,9 @@ const Admin = (props) => {
         routes={Object.values(ROUTES)}
         logo={{
           innerLink: "/admin" + getpath(ROUTES.index.path),
-          imgSrc: require("../assets/img/brand/logo.svg").default,
+          imgSrc: require("../assets/img/icons/common/enterprise_white.svg")
+            .default,
+          // imgSrc: require("../assets/img/brand/logo.svg").default,
           imgAlt: "...",
         }}
       />

@@ -59,7 +59,8 @@
 
   .server-error {
     position: absolute;
-    top: -10px;
+    top: 0px;
+    // transform: translateY(-100%);
     width: 100%;
     text-align: center;
     color: var(--orange);

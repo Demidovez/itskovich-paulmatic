@@ -10,15 +10,16 @@ const Register = () => {
     <>
       <div>
         <h2>Регистрация</h2>
-        <p>
+        {/* <p>
           Введите свое имя, адрес электронной почты, пароль, компанию и
           электронную почту Вашего директора для регистрации
-        </p>
+        </p> */}
         <RegisterForm />
         <p className="text-center mt-3">
           Уже есть аккаунт?
           <span
             className="login-link"
+            style={{ color: "#4450ff" }}
             onClick={() => history.push("/auth/login")}
           >
             Авторизация

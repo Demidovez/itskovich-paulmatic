@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
-import { useLocation, Route, Switch, Redirect } from "react-router-dom";
+import { useLocation, Route, Switch, Redirect, Link } from "react-router-dom";
 import { Container, Row, Col } from "reactstrap";
-
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
 import { ROUTES } from "routes";
@@ -50,19 +49,33 @@ const Auth = (props) => {
         <div className="image p-3">
           <div
             className="image-wrapper"
-            style={{
-              backgroundImage: `url('${require("../../assets/img/signup.jpeg")}')`,
-            }}
+            // style={{
+            //   backgroundImage: `url('${
+            //     require("../../assets/img/icons/common/logo_for_auth.svg")
+            //       .default
+            //   }')`,
+            // }}
           >
-            <div className="image-back" />
-            <div className="title">
+            <a href="https://palmautic.ru" target="_blank">
+              <img
+                src={
+                  require("../../assets/img/icons/common/logo_for_auth.svg")
+                    .default
+                }
+                style={{
+                  width: 300,
+                }}
+              />
+            </a>
+            {/* <div className="image-back" /> */}
+            {/* <div className="title">
               <h4>Ваше путешествие начинается здесь</h4>
               <p>
                 Palmautic - B2B sales engagement платформа, которая
                 автоматизирует мультиканальное взаимодействие с клиентами на
                 протяжении всего процесса продаж
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

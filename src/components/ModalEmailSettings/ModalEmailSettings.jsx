@@ -25,7 +25,33 @@ const ModalEmailSettings = ({ onClose }) => {
 
   useEffect(() => {
     setEmailServers(
-      emailServersDefault.map((server) =>
+      [
+        {
+          SmtpHost: "smtp.outlook.ru",
+          ImapHost: "imap.outlook.ru",
+          Login: "",
+          Password: "",
+          SmtpPort: 993,
+          ImapPort: 465,
+          Creds: {
+            Name: "Outlook",
+            Id: "outlook",
+          },
+        },
+        {
+          SmtpHost: "smtp.exchange.ru",
+          ImapHost: "imap.exchange.ru",
+          Login: "",
+          Password: "",
+          SmtpPort: 993,
+          ImapPort: 465,
+          Creds: {
+            Name: "Microsoft Exchange",
+            Id: "exchange",
+          },
+        },
+        ...emailServersDefault,
+      ].map((server) =>
         server.Creds.Id === ((InMailSettings && InMailSettings.Creds) || {}).Id
           ? InMailSettings
           : server

@@ -8,12 +8,13 @@ const Login = () => {
     <>
       <div>
         <h2>Авторизация</h2>
-        <p>Введите свое адрес электронной почты и пароль для авторизации</p>
+        {/* <p>Введите свой адрес электронной почты и пароль для авторизации</p> */}
         <LoginForm />
         <p className="text-center mt-3">
           Нету аккаунта?
           <span
             className="login-link"
+            style={{ color: "#4450ff" }}
             onClick={() => history.push("/auth/register")}
           >
             Создать
