@@ -1,0 +1,76 @@
+import React, { useEffect } from "react";
+import { useLocation, Route, Switch, Redirect } from "react-router-dom";
+import { Container, Row, Col } from "reactstrap";
+
+import AuthNavbar from "components/Navbars/AuthNavbar.js";
+import AuthFooter from "components/Footers/AuthFooter.js";
+import { ROUTES } from "routes";
+import "./Auth.scss";
+
+const Auth = (props) => {
+  const mainContent = React.useRef(null);
+  const location = useLocation();
+
+  useEffect(() => {
+    localStorage.removeItem("Account");
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.scrollTop = 0;
+    document.scrollingElement.scrollTop = 0;
+    mainContent.current.scrollTop = 0;
+  }, [location]);
+
+  const getRoutes = (routes) =>
+    routes.map((prop, key) => {
+      if (prop.layout === "/auth") {
+        return (
+          <Route
+            path={prop.layout + prop.path}
+            component={prop.component}
+            key={key}
+          />
+        );
+      } else {
+        return null;
+      }
+    });
+
+  return (
+    <div className="auth-component main-content" ref={mainContent}>
+      <div className="content d-flex">
+        <div className="form">
+          <div className="form-wrapper">
+            <Switch>
+              {getRoutes(Object.values(ROUTES))}
+              <Redirect from="*" to="/auth/login" />
+            </Switch>
+          </div>
+        </div>
+        <div className="image p-3">
+          <div
+            className="image-wrapper"
+            style={{
+              backgroundImage: `url('${require("../../assets/img/signup.jpeg")}')`,
+            }}
+          >
+            <div className="image-back" />
+            <div className="title">
+              <h4>Ваше путешествие начинается здесь</h4>
+              <p>
+                Palmautic - B2B sales engagement платформа, которая
+                автоматизирует мультиканальное взаимодействие с клиентами на
+                протяжении всего процесса продаж
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <AuthFooter />
+      </div>
+    </div>
+  );
+};
+
+export default Auth;

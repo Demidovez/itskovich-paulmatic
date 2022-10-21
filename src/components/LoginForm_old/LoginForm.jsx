@@ -128,19 +128,24 @@ const LoginForm = ({ className = "" }) => {
       <FormGroup
         className={`field-wrapper ${
           formik.touched.useremail && formik.errors.useremail ? "has-error" : ""
-        } mb-3`}
+        }`}
       >
-        <span>E-mail</span>
-        <Input
-          placeholder="E-mail"
-          type="text"
-          name="useremail"
-          autoComplete="nope"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.useremail}
-        />
-
+        <InputGroup className="input-group-alternative mb-3">
+          <InputGroupAddon addonType="prepend">
+            <InputGroupText>
+              <i className="ni ni-email-83" />
+            </InputGroupText>
+          </InputGroupAddon>
+          <Input
+            placeholder="E-mail"
+            type="text"
+            name="useremail"
+            autoComplete="nope"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.useremail}
+          />
+        </InputGroup>
         <div className="field-error">
           {formik.touched.useremail && formik.errors.useremail
             ? formik.errors.useremail
@@ -150,19 +155,24 @@ const LoginForm = ({ className = "" }) => {
       <FormGroup
         className={`field-wrapper ${
           formik.touched.password && formik.errors.password ? "has-error" : ""
-        } mb-3`}
+        }`}
       >
-        <span>Пароль</span>
-        <Input
-          placeholder="Пароль"
-          type="password"
-          name="password"
-          autoComplete="nope"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.password}
-        />
-
+        <InputGroup className="input-group-alternative">
+          <InputGroupAddon addonType="prepend">
+            <InputGroupText>
+              <i className="ni ni-lock-circle-open" />
+            </InputGroupText>
+          </InputGroupAddon>
+          <Input
+            placeholder="Password"
+            type="password"
+            name="password"
+            autoComplete="nope"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.password}
+          />
+        </InputGroup>
         <div className="field-error">
           {formik.touched.password && formik.errors.password
             ? formik.errors.password
@@ -172,13 +182,14 @@ const LoginForm = ({ className = "" }) => {
       <div className="text-center position-relative">
         <div className="server-error">{resultError ? resultError : ""}</div>
         <Button
-          className="mt-4 w-100"
+          className="mt-4"
           color="primary"
           type="button"
           onClick={formik.handleSubmit}
           disabled={isLoading}
+          style={{ minWidth: 150 }}
         >
-          {isLoading ? <Spinner color="white" size="sm" /> : "Войти"}
+          {isLoading ? <Spinner color="white" size="sm" /> : "Sign in"}
         </Button>
       </div>
     </Form>

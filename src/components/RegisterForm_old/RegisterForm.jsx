@@ -141,20 +141,24 @@ const RegisterForm = ({ className = "" }) => {
       <FormGroup
         className={`field-wrapper ${
           formik.touched.username && formik.errors.username ? "has-error" : ""
-        } mb-3`}
+        }`}
       >
-        <span>Имя</span>
-        <Input
-          placeholder="Имя"
-          type="text"
-          name="username"
-          autoComplete="off"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.username}
-          className="py-2"
-        />
-
+        <InputGroup className="input-group-alternative mb-3">
+          <InputGroupAddon addonType="prepend">
+            <InputGroupText>
+              <i className="ni ni-hat-3" />
+            </InputGroupText>
+          </InputGroupAddon>
+          <Input
+            placeholder="Name"
+            type="text"
+            name="username"
+            autoComplete="off"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.username}
+          />
+        </InputGroup>
         <div className="field-error">
           {formik.touched.username && formik.errors.username
             ? formik.errors.username
@@ -164,19 +168,24 @@ const RegisterForm = ({ className = "" }) => {
       <FormGroup
         className={`field-wrapper ${
           formik.touched.useremail && formik.errors.useremail ? "has-error" : ""
-        } mb-3`}
+        }`}
       >
-        <span>E-mail</span>
-        <Input
-          placeholder="E-mail"
-          type="text"
-          name="useremail"
-          autoComplete="nope"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.useremail}
-        />
-
+        <InputGroup className="input-group-alternative mb-3">
+          <InputGroupAddon addonType="prepend">
+            <InputGroupText>
+              <i className="ni ni-email-83" />
+            </InputGroupText>
+          </InputGroupAddon>
+          <Input
+            placeholder="E-mail"
+            type="text"
+            name="useremail"
+            autoComplete="nope"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.useremail}
+          />
+        </InputGroup>
         <div className="field-error">
           {formik.touched.useremail && formik.errors.useremail
             ? formik.errors.useremail
@@ -186,19 +195,24 @@ const RegisterForm = ({ className = "" }) => {
       <FormGroup
         className={`field-wrapper ${
           formik.touched.password && formik.errors.password ? "has-error" : ""
-        } mb-3`}
+        }`}
       >
-        <span>Пароль</span>
-        <Input
-          placeholder="Пароль"
-          type="password"
-          name="password"
-          autoComplete="nope"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.password}
-        />
-
+        <InputGroup className="input-group-alternative">
+          <InputGroupAddon addonType="prepend">
+            <InputGroupText>
+              <i className="ni ni-lock-circle-open" />
+            </InputGroupText>
+          </InputGroupAddon>
+          <Input
+            placeholder="Password"
+            type="password"
+            name="password"
+            autoComplete="nope"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.password}
+          />
+        </InputGroup>
         <div className="field-error">
           {formik.touched.password && formik.errors.password
             ? formik.errors.password
@@ -208,18 +222,24 @@ const RegisterForm = ({ className = "" }) => {
       <FormGroup
         className={`field-wrapper ${
           formik.touched.company && formik.errors.company ? "has-error" : ""
-        } mb-3`}
+        }`}
       >
-        <span>Компания</span>
-        <Input
-          placeholder="Компания"
-          type="text"
-          name="company"
-          autoComplete="nope"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.company}
-        />
+        <InputGroup className="input-group-alternative mb-3">
+          <InputGroupAddon addonType="prepend">
+            <InputGroupText>
+              <i className="ni ni-briefcase-24" />
+            </InputGroupText>
+          </InputGroupAddon>
+          <Input
+            placeholder="Company"
+            type="text"
+            name="company"
+            autoComplete="nope"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.company}
+          />
+        </InputGroup>
         <div className="field-error">
           {formik.touched.company && formik.errors.company
             ? formik.errors.company
@@ -231,26 +251,31 @@ const RegisterForm = ({ className = "" }) => {
           formik.touched.directorUsername && formik.errors.directorUsername
             ? "has-error"
             : ""
-        } mb-3`}
+        }`}
       >
-        <span>E-mail директора</span>
-        <Input
-          placeholder="E-mail директора"
-          type="text"
-          name="directorUsername"
-          autoComplete="nope"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.directorUsername}
-        />
+        <InputGroup className="input-group-alternative mb-3">
+          <InputGroupAddon addonType="prepend">
+            <InputGroupText>
+              <i className="ni ni-email-83" />
+            </InputGroupText>
+          </InputGroupAddon>
+          <Input
+            placeholder="Director E-mail"
+            type="text"
+            name="directorUsername"
+            autoComplete="nope"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.directorUsername}
+          />
+        </InputGroup>
         <div className="field-error">
           {formik.touched.directorUsername && formik.errors.directorUsername
             ? formik.errors.directorUsername
             : ""}
         </div>
       </FormGroup>
-      <>
-        {/* <Row className="my-4">
+      {/* <Row className="my-4">
         <Col
           xs="12"
           className={`field-wrapper ${
@@ -286,17 +311,17 @@ const RegisterForm = ({ className = "" }) => {
           </div>
         </Col>
       </Row> */}
-      </>
-      <div className="text-center position-relative mt-5">
+      <div className="text-center position-relative">
         <div className="server-error">{resultError ? resultError : ""}</div>
         <Button
-          className="mt-0 w-100"
+          className="mt-4"
           color="primary"
           type="button"
           onClick={formik.handleSubmit}
           disabled={isLoading}
+          style={{ minWidth: 150 }}
         >
-          {isLoading ? <Spinner color="white" size="sm" /> : "Создать аккаунт"}
+          {isLoading ? <Spinner color="white" size="sm" /> : "Create account"}
         </Button>
       </div>
     </Form>

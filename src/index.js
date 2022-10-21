@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.min.css";
 import "style.scss";
 
 import AdminLayout from "layouts/Admin.js";
-import AuthLayout from "layouts/Auth.js";
+import AuthLayout from "layouts/Auth/Auth.js";
 
 import { store } from "./store/store";
 import { Provider } from "react-redux";
