@@ -2,6 +2,7 @@ import { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useGetCommonInfoQuery } from "store/api/common";
 import { useLazyGetCommonInfoQuery } from "store/api/common";
+import { setAccountSettings } from "store/slices/commonSlice";
 import { setChats } from "store/slices/commonSlice";
 import { setInMailSettingsStatus } from "store/slices/commonSlice";
 import { setFolders } from "store/slices/commonSlice";
@@ -19,6 +20,7 @@ const useFetchCommon = () => {
       dispatch(setCommonInfoHtmlTemplates(commonData.Templates));
       dispatch(setFolders(commonData.Folders));
       dispatch(setChats(commonData.Chats));
+      dispatch(setAccountSettings(commonData.AccountSettings));
       dispatch(
         setInMailSettingsStatus(
           (commonData.Action || {}).InMailSettings ? "saved" : "none"

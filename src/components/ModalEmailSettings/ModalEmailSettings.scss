@@ -1,2 +1,48 @@
 .modal-email-settings-component {
+  .modal-content {
+    overflow: hidden;
+  }
+
+  .email-servers {
+    background-color: rgb(246, 246, 246);
+    padding: 16px;
+    border-radius: 7px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 20px;
+
+    & > div:not(.email-separator) {
+      background-color: white;
+      width: 100px;
+      min-width: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px 20px;
+      border-radius: 6px;
+      box-shadow: 0 15px 35px rgb(50 50 93 / 5%), 0 5px 15px rgb(0 0 0 / 8%);
+      cursor: pointer;
+      transition: all 0.2s;
+
+      .email-label {
+        font-weight: 600;
+        padding-top: 5px;
+        font-size: 15px;
+      }
+
+      &:hover,
+      &.active {
+        background-color: #5e72e4;
+        color: white;
+      }
+    }
+
+    .email-separator {
+      width: 1px;
+      height: 40px;
+      background-color: rgb(215, 215, 215);
+      opacity: 0.6;
+    }
+  }
 }

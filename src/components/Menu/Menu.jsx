@@ -225,7 +225,7 @@ const Menu = (props) => {
                   onClick={() => dispatch(setInMailSettingsStatus("change"))}
                 >
                   <i className="ni ni-email-83" />
-                  <span>Найстройки почты</span>
+                  <span>Настройки почты</span>
                 </DropdownItem>
                 <DropdownItem to="/admin/user-profile" tag={Link}>
                   <i className="ni ni-calendar-grid-58" />

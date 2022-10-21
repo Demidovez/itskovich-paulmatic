@@ -22,6 +22,7 @@ import { setActiveChatId } from "store/slices/inboxSlice";
 import { Events } from "react-scroll";
 import { clearSearchMessageId } from "store/slices/inboxSlice";
 import { setInMailSettingsStatus } from "store/slices/commonSlice";
+import { setAccountSettings } from "store/slices/commonSlice";
 
 const CommonThings = () => {
   const dispatch = useDispatch();
@@ -142,6 +143,7 @@ const CommonThings = () => {
       dispatch(setCommonInfoHtmlTemplates(commonData.Templates));
       dispatch(setFolders(commonData.Folders));
       dispatch(setChats(commonData.Chats));
+      dispatch(setAccountSettings(commonData.AccountSettings));
       dispatch(
         setInMailSettingsStatus(
           (commonData.Action || {}).InMailSettings ? "saved" : "none"

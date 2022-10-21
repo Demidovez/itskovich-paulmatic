@@ -1,26 +1,32 @@
-import { SiGmail } from "react-icons/si";
+import { SiGmail, SiMaildotru } from "react-icons/si";
+import { FaYandex } from "react-icons/fa";
+import { MdOutlineMarkunreadMailbox } from "react-icons/md";
+import { TbMail } from "react-icons/tb";
 
-const EmailIcon = ({ name }) => {
+const EmailIcon = ({ id }) => {
   let Icon;
 
-  switch (name) {
-    case "Gmail":
+  switch (id) {
+    case "mailru":
+      Icon = () => <TbMail />;
+      break;
+    case "gmail":
       Icon = () => <SiGmail />;
       break;
-    case "Mail.ru":
-      Icon = () => <SiGmail />;
+    case "ya":
+      Icon = () => <FaYandex />;
       break;
-    case "Yandex":
-      Icon = () => <SiGmail />;
+    case "ra":
+      Icon = () => <MdOutlineMarkunreadMailbox />;
       break;
-    case "Outlook":
-      Icon = () => <SiGmail />;
+    case "another":
+      Icon = () => <SiMaildotru />;
       break;
     default:
       Icon = () => <SiGmail />;
   }
 
-  return Icon;
+  return <Icon />;
 };
 
 export default EmailIcon;

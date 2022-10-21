@@ -37,6 +37,9 @@ const initialState = {
   Account: {
     InMailSettings: "saved",
   },
+  AccountSettings: {
+    EmailServers: [],
+  },
   Templates: {
     Cache: {},
     Compiler: {
@@ -109,6 +112,9 @@ export const commonSlice = createSlice({
     },
     setInMailSettingsStatus: (state, action) => {
       state.Account.InMailSettings = action.payload;
+    },
+    setAccountSettings: (state, action) => {
+      state.AccountSettings = { ...state.AccountSettings, ...action.payload };
     },
     updateChatByOneMessage: (state, action) => {
       const chatId = action.payload.ChatId;
@@ -283,6 +289,7 @@ export const {
   deleteChat,
   addHtmlTemplates,
   setInMailSettingsStatus,
+  setAccountSettings,
 } = commonSlice.actions;
 
 export default commonSlice.reducer;
