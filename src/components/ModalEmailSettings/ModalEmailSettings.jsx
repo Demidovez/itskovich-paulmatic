@@ -54,7 +54,7 @@ const ModalEmailSettings = ({ onClose }) => {
   return (
     <Modal
       className="modal-email-settings-component modal-dialog-centered"
-      toggle={tryClose}
+      toggle={InMailSettings ? tryClose : () => {}}
       isOpen={true}
       backdrop={InMailSettings ? true : "static"}
       style={{
