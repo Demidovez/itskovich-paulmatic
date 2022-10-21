@@ -7,7 +7,6 @@ import {
   useHistory,
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import routes from "routes.js";
 import Menu from "components/Menu/Menu";
 import CommonThings from "components/CommonThings/CommonThings";
 import { useDispatch } from "react-redux";
@@ -17,10 +16,13 @@ import useFetchNotifications from "hooks/useFetchNotifications";
 import useFetchStatistics from "hooks/useFetchStatistics";
 import ModalEmailSettings from "components/ModalEmailSettings/ModalEmailSettings";
 import { useSelector } from "react-redux";
-import { setInMailSettingsStatus } from "store/slices/commonSlice";
 import { setIsNeedSetEmailServer } from "store/slices/commonSlice";
+import { ROUTES } from "routes";
+import useRoutes from "hooks/useRoutes";
+import { getpath } from "utils/utils";
 
 const Admin = (props) => {
+  // const routes = useRoutes();
   const mainContent = React.useRef(null);
   const location = useLocation();
   const history = useHistory();
@@ -61,7 +63,7 @@ const Admin = (props) => {
       if (prop.layout === "/admin") {
         return (
           <Route
-            path={prop.layout + prop.path}
+            path={prop.layout + getpath(prop.path)}
             component={prop.component}
             key={key}
           />
@@ -80,17 +82,17 @@ const Admin = (props) => {
     <>
       <Menu
         {...props}
-        routes={routes}
+        routes={Object.values(ROUTES)}
         logo={{
-          innerLink: "/admin/index",
+          innerLink: "/admin" + getpath(ROUTES.index.path),
           imgSrc: require("../assets/img/brand/logo.svg").default,
           imgAlt: "...",
         }}
       />
       <div className="main-content" ref={mainContent}>
         <Switch>
-          {getRoutes(routes)}
-          <Redirect from="*" to="/admin/index" />
+          {getRoutes(Object.values(ROUTES))}
+          <Redirect from="*" to={"/admin" + getpath(ROUTES.index.path)} />
         </Switch>
       </div>
       <ToastContainer

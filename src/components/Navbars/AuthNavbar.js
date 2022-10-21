@@ -72,7 +72,7 @@ const AdminNavbar = () => {
               {/* <NavItem>
                 <NavLink
                   className="nav-link-icon"
-                  to="/admin/user-profile"
+                  to={"/admin" + getpath(ROUTES["user-profile"].path)}
                   tag={Link}
                 >
                   <i className="ni ni-single-02" />

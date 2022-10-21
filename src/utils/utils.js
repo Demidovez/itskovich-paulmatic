@@ -42,3 +42,10 @@ export const generateTimeLabel = (
 
   return `${startH}:${startMin}${isShort ? "-" : " - "}${endH}:${endMin}`;
 };
+
+export const getpath = (path) => {
+  const username = (JSON.parse(localStorage.getItem("Account")) || {}).username;
+  const emailUser = username ? "/" + username : "";
+
+  return emailUser + path;
+};

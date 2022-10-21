@@ -1,4 +1,3 @@
-import { useHistory } from "react-router-dom";
 import { Fragment, useState, useEffect } from "react";
 import { useLazyGetPersonsInfoQuery } from "store/api/persons";
 import { useLazyGetCompaniesInfoQuery } from "store/api/companies";

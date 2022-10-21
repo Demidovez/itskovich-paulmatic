@@ -21,6 +21,7 @@ import { setFolders } from "store/slices/commonSlice";
 import { setChats } from "store/slices/commonSlice";
 import { useHistory } from "react-router-dom";
 import { useLazyTryLognInQuery } from "store/api/login";
+import { ROUTES } from "routes";
 
 const LoginForm = ({ className = "" }) => {
   const dispatch = useDispatch();
@@ -60,8 +61,11 @@ const LoginForm = ({ className = "" }) => {
       (errorCommonData && errorCommonData.status !== 200)
     ) {
       setResultError(
-        (error && (error.data.message || error.data.error.message)) ||
+        (error &&
+          error.data &&
+          (error.data.message || error.data.error.message)) ||
           (errorCommonData &&
+            errorCommonData.data &&
             (errorCommonData.data.message ||
               errorCommonData.data.error.message))
       );
@@ -87,7 +91,7 @@ const LoginForm = ({ className = "" }) => {
 
   useEffect(() => {
     if (!isFetchingCommonData && commonData) {
-      history.push("/admin/index");
+      history.push("/admin/" + commonData.Account.username + "/index");
       setIsLoading(true);
     } else if (isFetchingCommonData) {
       setIsLoading(true);

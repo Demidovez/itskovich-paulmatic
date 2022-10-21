@@ -10,74 +10,78 @@ import Tasks from "pages/Tasks";
 import Sequences from "pages/Sequences";
 import Inbox from "pages/Inbox";
 
-var routes = [
-  {
-    path: "/index",
+// const username = (JSON.parse(localStorage.getItem("Account")) || {}).username;
+// const emailUser = username ? "/" + username : "";
+const emailUser = "";
+
+export const ROUTES = {
+  index: {
+    path: emailUser + "/index",
     name: "Дашборд",
     icon: "ni ni-tv-2 text-primary",
     component: Index,
     layout: "/admin",
   },
-  {
-    path: "/icons",
+  icons: {
+    path: emailUser + "/icons",
     name: "Icons",
     icon: "ni ni-planet text-blue",
     component: Icons,
     layout: "/admin",
     position: "user",
   },
-  {
-    path: "/maps",
+  maps: {
+    path: emailUser + "/maps",
     name: "Maps",
     icon: "ni ni-pin-3 text-orange",
     component: Maps,
     layout: "/admin",
     position: "user",
   },
-  {
-    path: "/user-profile",
+  "user-profile": {
+    path: emailUser + "/user-profile",
     name: "User Profile",
     icon: "ni ni-single-02 text-yellow",
     component: Profile,
     layout: "/admin",
     position: "user",
   },
-  {
-    path: "/contacts",
+  contacts: {
+    path: emailUser + "/contacts",
     name: "Контакты",
     icon: "ni ni-bullet-list-67 text-red",
     component: Contacts,
     layout: "/admin",
   },
-  {
-    path: "/b2b",
+  b2b: {
+    path: emailUser + "/b2b",
     name: "B2B Database",
     icon: "ni ni-archive-2 text-red",
     component: BtoB,
     layout: "/admin",
   },
-  {
-    path: "/tasks",
+  tasks: {
+    path: emailUser + "/tasks",
     name: "Задачи",
     icon: "ni ni-air-baloon text-purple",
     component: Tasks,
     layout: "/admin",
   },
-  {
-    path: "/sequences",
+  sequences: {
+    path: emailUser + "/sequences",
     name: "Последовательности",
     icon: "ni ni-align-center text-green",
     component: Sequences,
     layout: "/admin",
   },
-  {
-    path: "/inbox",
+  inbox: {
+    path: emailUser + "/inbox",
     name: "InBox",
     icon: "ni ni-box-2 text-blue",
     component: Inbox,
     layout: "/admin",
   },
-  {
+  login: {
     path: "/login",
     name: "Login",
     icon: "ni ni-key-25 text-info",
@@ -85,7 +89,7 @@ var routes = [
     layout: "/auth",
     position: "user",
   },
-  {
+  register: {
     path: "/register",
     name: "Register",
     icon: "ni ni-circle-08 text-pink",
@@ -93,5 +97,4 @@ var routes = [
     layout: "/auth",
     position: "user",
   },
-];
-export default routes;
+};

@@ -23,6 +23,8 @@ import { Events } from "react-scroll";
 import { clearSearchMessageId } from "store/slices/inboxSlice";
 import { setInMailSettingsStatus } from "store/slices/commonSlice";
 import { setAccountSettings } from "store/slices/commonSlice";
+import { ROUTES } from "routes";
+import { getpath } from "utils/utils";
 
 const CommonThings = () => {
   const dispatch = useDispatch();
@@ -69,7 +71,7 @@ const CommonThings = () => {
 
   // done
   const goToChat = (chat) => {
-    history.push("/admin/inbox");
+    history.push("/admin" + getpath(ROUTES.inbox.path));
     dispatch(setActiveChatId(chat.Contact.id));
   };
 
@@ -84,7 +86,7 @@ const CommonThings = () => {
         if (
           notification.Type === "chat_msg" &&
           (notification.Object.Msgs[0].My ||
-            (location.pathname.includes("admin/inbox") &&
+            (location.pathname.includes("/inbox") &&
               activeChatId === notification.Object.Contact.id))
         ) {
           return;

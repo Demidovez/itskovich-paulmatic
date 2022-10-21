@@ -6,6 +6,8 @@ import { updateChatByNotification } from "store/slices/commonSlice";
 import { setActiveChatId } from "store/slices/inboxSlice";
 import { useHistory, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { ROUTES } from "routes";
+import { getpath } from "utils/utils";
 
 const useFetchNotifications = () => {
   const [isStarted, setIsStarted] = useState(false);
@@ -31,7 +33,7 @@ const useFetchNotifications = () => {
   }, [isStarted]);
 
   const goToChat = useCallback((chat) => {
-    history.push("/admin/inbox");
+    history.push("/admin" + getpath(ROUTES.inbox.path));
     dispatch(setActiveChatId(chat.Contact.id));
   }, []);
 
@@ -47,7 +49,7 @@ const useFetchNotifications = () => {
         if (
           notification.Type === "chat_msg" &&
           (notification.Object.Msgs[0].My ||
-            (location.pathname.includes("admin/inbox") &&
+            (location.pathname.includes("/inbox") &&
               activeChatId === notification.Object.Contact.id))
         ) {
           return;

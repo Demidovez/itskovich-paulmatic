@@ -63,8 +63,11 @@ const RegisterForm = ({ className = "" }) => {
       (errorCommonData && errorCommonData.status !== 200)
     ) {
       setResultError(
-        (error && (error.data.message || error.data.error.message)) ||
+        (error &&
+          error.data &&
+          (error.data.message || error.data.error.message)) ||
           (errorCommonData &&
+            errorCommonData.data &&
             (errorCommonData.data.message ||
               errorCommonData.data.error.message))
       );
@@ -90,7 +93,7 @@ const RegisterForm = ({ className = "" }) => {
 
   useEffect(() => {
     if (!isFetchingCommonData && commonData) {
-      history.push("/admin/index");
+      history.push("/admin/" + commonData.Account.username + "/index");
       setIsLoading(true);
     } else if (isFetchingCommonData) {
       setIsLoading(true);

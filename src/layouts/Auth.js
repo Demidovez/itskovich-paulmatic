@@ -4,8 +4,7 @@ import { Container, Row, Col } from "reactstrap";
 
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
-
-import routes from "routes.js";
+import { ROUTES } from "routes";
 
 const Auth = (props) => {
   const mainContent = React.useRef(null);
@@ -79,7 +78,7 @@ const Auth = (props) => {
         <Container className="mt--8 pb-5">
           <Row className="justify-content-center">
             <Switch>
-              {getRoutes(routes)}
+              {getRoutes(Object.values(ROUTES))}
               <Redirect from="*" to="/auth/login" />
             </Switch>
           </Row>

@@ -6,6 +6,8 @@ import { useGetSequencesQuery } from "store/api/sequences";
 import { BsCheckCircleFill, BsCircle } from "react-icons/bs";
 import { useHistory } from "react-router-dom";
 import "./ModalAddToSequence.scss";
+import { ROUTES } from "routes";
+import { getpath } from "utils/utils";
 
 const ModalAddToSequence = ({
   isShow,
@@ -100,7 +102,9 @@ const ModalAddToSequence = ({
             color="primary"
             data-dismiss="modal"
             type="button"
-            onClick={() => history.push("/admin/sequences")}
+            onClick={() =>
+              history.push("/admin" + getpath(ROUTES.sequences.path))
+            }
             outline
             className="m-3"
           >

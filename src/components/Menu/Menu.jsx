@@ -24,8 +24,10 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import { ROUTES } from "routes";
 import { setIsNeedSetEmailServer } from "store/slices/commonSlice";
 import { setInMailSettingsStatus } from "store/slices/commonSlice";
+import { getpath } from "utils/utils";
 
 import "./Menu.scss";
 
@@ -50,7 +52,7 @@ const Menu = (props) => {
         return (
           <NavItem key={key} id={"nav_item_" + prop.path.substring(1)}>
             <NavLink
-              to={prop.layout + prop.path}
+              to={prop.layout + getpath(prop.path)}
               tag={NavLinkRRD}
               onClick={closeCollapse}
               activeClassName="active"
@@ -72,7 +74,11 @@ const Menu = (props) => {
       .filter((route) => route.position === "user")
       .map((prop, key) => {
         return (
-          <DropdownItem to={prop.layout + prop.path} tag={Link} key={key}>
+          <DropdownItem
+            to={prop.layout + getpath(prop.path)}
+            tag={Link}
+            key={key}
+          >
             <i className={`${prop.icon}`} />
             <span>{prop.name}</span>
           </DropdownItem>
@@ -214,11 +220,17 @@ const Menu = (props) => {
                   <i className="ni ni-spaceship" />
                   <span>Восстановить туры</span>
                 </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
+                <DropdownItem
+                  to={"/admin" + getpath(ROUTES["user-profile"].path)}
+                  tag={Link}
+                >
                   <i className="ni ni-single-02" />
                   <span>My profile</span>
                 </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
+                <DropdownItem
+                  to={"/admin" + getpath(ROUTES["user-profile"].path)}
+                  tag={Link}
+                >
                   <i className="ni ni-settings-gear-65" />
                   <span>Settings</span>
                 </DropdownItem>
@@ -228,11 +240,17 @@ const Menu = (props) => {
                   <i className="ni ni-email-83" />
                   <span>Настройки почты</span>
                 </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
+                <DropdownItem
+                  to={"/admin" + getpath(ROUTES["user-profile"].path)}
+                  tag={Link}
+                >
                   <i className="ni ni-calendar-grid-58" />
                   <span>Activity</span>
                 </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
+                <DropdownItem
+                  to={"/admin" + getpath(ROUTES["user-profile"].path)}
+                  tag={Link}
+                >
                   <i className="ni ni-support-16" />
                   <span>Support</span>
                 </DropdownItem>
