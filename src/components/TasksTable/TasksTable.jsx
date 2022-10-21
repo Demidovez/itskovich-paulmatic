@@ -394,17 +394,19 @@ const TasksTable = () => {
           </Table>
         )}
       </div>
-      <CardFooter className="d-flex justify-content-between align-items-center">
-        <div></div>
-        <Pagination
-          allCount={
-            tasksData ? tasksData.TotalCount : cached && cached.TotalCount
-          }
-          countOnPage={COUNT_ON_PAGE}
-          page={currentPage}
-          moveToPage={onSetCurrentPage}
-        />
-      </CardFooter>
+      {((cached || tasksData || {}).Items || []).length === 0 ? null : (
+        <CardFooter className="d-flex justify-content-between align-items-center">
+          <div></div>
+          <Pagination
+            allCount={
+              tasksData ? tasksData.TotalCount : cached && cached.TotalCount
+            }
+            countOnPage={COUNT_ON_PAGE}
+            page={currentPage}
+            moveToPage={onSetCurrentPage}
+          />
+        </CardFooter>
+      )}
       <TasksModals
         task={taskToModal}
         onClose={closeModal}

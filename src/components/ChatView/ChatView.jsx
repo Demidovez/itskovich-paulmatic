@@ -5,24 +5,23 @@ import ChatViewInfoCard from "components/ChatViewInfoCard/ChatViewInfoCard";
 import { useSelector } from "react-redux";
 
 const ChatView = ({ className, chat = { Msgs: [] } }) => {
-  const topRef = useRef(null);
+  const botRef = useRef(null);
 
   const searchedMessageId = useSelector(
     (state) => state.inbox.searchedMessageId
   );
 
   useEffect(() => {
-    topRef && topRef.current.scrollIntoView();
-  }, [chat.Msgs.length, topRef]);
+    botRef && botRef.current.scrollIntoView();
+  }, [chat.Msgs.length, botRef]);
 
   return (
     <div className="overflow-auto flex-fill" id="scrollable-messages">
       <div className={`chat-view-component ${className}`}>
-        <span ref={topRef} />
         <div className="chat-body">
           {chat.Msgs.length ? (
             [...chat.Msgs]
-              .sort((m1, m2) => m2.id - m1.id)
+              .sort((m1, m2) => m1.id - m2.id)
               .map((message) => (
                 <Fragment key={message.Time}>
                   {message.Contact ? (
@@ -41,6 +40,7 @@ const ChatView = ({ className, chat = { Msgs: [] } }) => {
             </div>
           )}
         </div>
+        <span ref={botRef} />
       </div>
     </div>
   );
