@@ -11,6 +11,7 @@ import {
   Col,
 } from "reactstrap";
 import UserHeader from "components/Headers/UserHeader.js";
+import Tariffs from "components/Tariffs/Tariffs";
 
 const Profile = () => {
   return (
@@ -27,7 +28,7 @@ const Profile = () => {
                       <img
                         alt="..."
                         className="rounded-circle"
-                        src={require("../assets/img/theme/team-4-800x800.jpg")}
+                        src={require("../assets/img/theme/team-1-800x800.jpg")}
                       />
                     </a>
                   </div>
@@ -300,6 +301,7 @@ const Profile = () => {
           </Col>
         </Row>
       </Container>
+      <Tariffs />
     </>
   );
 };

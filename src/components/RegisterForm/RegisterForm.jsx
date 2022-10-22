@@ -110,16 +110,16 @@ const RegisterForm = ({ className = "" }) => {
       // agree: false,
     },
     validationSchema: Yup.object({
-      username: Yup.string().required("Обязательное поле!"),
+      username: Yup.string().required("Обязательное поле"),
       useremail: Yup.string()
-        .email("Неверный E-mail!")
-        .required("Обязательное поле!"),
-      directorUsername: Yup.string().email("Неверный E-mail!"),
+        .email("Неверный E-mail")
+        .required("Обязательное поле"),
+      directorUsername: Yup.string().email("Неверный E-mail"),
       password: Yup.string()
         .min(5, "Требуется минимум 5 символов")
-        .required("Обязательное поле!"),
-      company: Yup.string().required("Обязательное поле!"),
-      // agree: Yup.boolean().oneOf([true], "Обязательное поле!"),
+        .required("Обязательное поле"),
+      company: Yup.string().required("Обязательное поле"),
+      // agree: Yup.boolean().oneOf([true], "Обязательное поле"),
     }),
     onSubmit: (values) => {
       trySignUp({

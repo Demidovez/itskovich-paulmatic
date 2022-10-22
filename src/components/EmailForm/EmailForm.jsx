@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLazyTrySaveEmailServerQuery } from "store/api/login";
 import { setInMailSettingsStatus } from "store/slices/commonSlice";
+import { useSelector } from "react-redux";
 
 const URL_REGEX =
   /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
@@ -30,6 +31,8 @@ const EmailForm = ({
 
   const [resultError, setResultError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const Account = useSelector((state) => state.common.Account);
 
   const [trySaveEmailServer, { data: emailServerResponse, error, isFetching }] =
     useLazyTrySaveEmailServerQuery();
@@ -88,7 +91,7 @@ const EmailForm = ({
   return (
     <Formik
       initialValues={{
-        Login: server.Login || "",
+        Login: server.Login || Account.username || "",
         Password: server.Password || "",
         SmtpPort: server.SmtpPort || "",
         ImapPort: server.ImapPort || "",
@@ -98,25 +101,25 @@ const EmailForm = ({
       enableReinitialize
       validationSchema={Yup.object({
         Login: Yup.string()
-          .email("Неверный E-mail!")
-          .required("Обязательное поле!"),
-        Password: Yup.string().required("Обязательное поле!"),
+          .email("Неверный E-mail")
+          .required("Обязательное поле"),
+        Password: Yup.string().required("Обязательное поле"),
         SmtpPort: Yup.number()
-          .integer("Требуется целое число!")
-          .typeError("Требуется число!")
-          .min(1, "Требуется число больше 0!")
-          .required("Обязательное поле!"),
+          .integer("Требуется целое число")
+          .typeError("Требуется число")
+          .min(1, "Требуется число больше 0")
+          .required("Обязательное поле"),
         ImapPort: Yup.number()
-          .integer("Требуется целое число!")
-          .typeError("Требуется число!")
-          .min(1, "Требуется число больше 0!")
-          .required("Обязательное поле!"),
+          .integer("Требуется целое число")
+          .typeError("Требуется число")
+          .min(1, "Требуется число больше 0")
+          .required("Обязательное поле"),
         SmtpHost: Yup.string()
-          .matches(URL_REGEX, "Требуется доменное имя сервера!")
-          .required("Обязательное поле!"),
+          .matches(URL_REGEX, "Требуется доменное имя сервера")
+          .required("Обязательное поле"),
         ImapHost: Yup.string()
-          .matches(URL_REGEX, "Требуется доменное имя сервера!")
-          .required("Обязательное поле!"),
+          .matches(URL_REGEX, "Требуется доменное имя сервера")
+          .required("Обязательное поле"),
       })}
       onSubmit={(values) => {
         trySaveEmailServer({

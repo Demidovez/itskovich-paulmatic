@@ -105,11 +105,11 @@ const LoginForm = ({ className = "" }) => {
     },
     validationSchema: Yup.object({
       useremail: Yup.string()
-        .email("Неверный E-mail!")
-        .required("Обязательное поле!"),
+        .email("Неверный E-mail")
+        .required("Обязательное поле"),
       password: Yup.string()
         .min(5, "Требуется минимум 5 символов")
-        .required("Обязательное поле!"),
+        .required("Обязательное поле"),
     }),
     onSubmit: (values) => {
       tryLogin({

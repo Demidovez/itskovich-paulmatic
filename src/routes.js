@@ -10,20 +10,24 @@ import Tasks from "pages/Tasks";
 import Sequences from "pages/Sequences";
 import Inbox from "pages/Inbox";
 
-// const username = (JSON.parse(localStorage.getItem("Account")) || {}).username;
-// const emailUser = username ? "/" + username : "";
-const emailUser = "";
-
 export const ROUTES = {
   index: {
-    path: emailUser + "/index",
+    path: "/index",
     name: "Дашборд",
     icon: "ni ni-tv-2 text-primary",
     component: Index,
     layout: "/admin",
   },
+  "user-profile": {
+    path: "/user-profile",
+    name: "Мой профиль",
+    icon: "ni ni-single-02 text-yellow",
+    component: Profile,
+    layout: "/admin",
+    position: "user",
+  },
   icons: {
-    path: emailUser + "/icons",
+    path: "/icons",
     name: "Icons",
     icon: "ni ni-planet text-blue",
     component: Icons,
@@ -31,51 +35,43 @@ export const ROUTES = {
     position: "user",
   },
   maps: {
-    path: emailUser + "/maps",
+    path: "/maps",
     name: "Maps",
     icon: "ni ni-pin-3 text-orange",
     component: Maps,
     layout: "/admin",
     position: "user",
   },
-  "user-profile": {
-    path: emailUser + "/user-profile",
-    name: "User Profile",
-    icon: "ni ni-single-02 text-yellow",
-    component: Profile,
-    layout: "/admin",
-    position: "user",
-  },
   contacts: {
-    path: emailUser + "/contacts",
+    path: "/contacts",
     name: "Контакты",
     icon: "ni ni-bullet-list-67 text-red",
     component: Contacts,
     layout: "/admin",
   },
   b2b: {
-    path: emailUser + "/b2b",
+    path: "/b2b",
     name: "B2B Database",
     icon: "ni ni-archive-2 text-red",
     component: BtoB,
     layout: "/admin",
   },
   tasks: {
-    path: emailUser + "/tasks",
+    path: "/tasks",
     name: "Задачи",
     icon: "ni ni-air-baloon text-purple",
     component: Tasks,
     layout: "/admin",
   },
   sequences: {
-    path: emailUser + "/sequences",
+    path: "/sequences",
     name: "Последовательности",
     icon: "ni ni-align-center text-green",
     component: Sequences,
     layout: "/admin",
   },
   inbox: {
-    path: emailUser + "/inbox",
+    path: "/inbox",
     name: "InBox",
     icon: "ni ni-box-2 text-blue",
     component: Inbox,

@@ -26,7 +26,7 @@ import {
 } from "reactstrap";
 import { ROUTES } from "routes";
 import { setIsNeedSetEmailServer } from "store/slices/commonSlice";
-import { setInMailSettingsStatus } from "store/slices/commonSlice";
+import { ReactComponent as UserIcon } from "../../assets/img/icons/common/user.svg";
 import { getpath } from "utils/utils";
 
 import "./Menu.scss";
@@ -205,11 +205,11 @@ const Menu = (props) => {
             <UncontrolledDropdown nav>
               <DropdownToggle className="p-0" nav>
                 <Media className="align-items-center">
-                  <span className="avatar avatar-sm rounded-circle">
-                    <img
-                      alt="..."
-                      src={require("../../assets/img/theme/team-1-800x800.jpg")}
-                    />
+                  <span
+                    className="avatar avatar-sm rounded-circle"
+                    style={{ background: "#ced0fe" }}
+                  >
+                    <UserIcon color="#636bff" />
                   </span>
                   <Media className="ml-2 d-none d-lg-block">
                     <span className="mb-0 text-sm font-weight-bold">
@@ -230,13 +230,6 @@ const Menu = (props) => {
                 >
                   <i className="ni ni-spaceship" />
                   <span>Восстановить туры</span>
-                </DropdownItem>
-                <DropdownItem
-                  to={"/admin" + getpath(ROUTES["user-profile"].path)}
-                  tag={Link}
-                >
-                  <i className="ni ni-single-02" />
-                  <span>My profile</span>
                 </DropdownItem>
                 <DropdownItem
                   to={"/admin" + getpath(ROUTES["user-profile"].path)}
@@ -267,6 +260,15 @@ const Menu = (props) => {
                 </DropdownItem>
                 <DropdownItem divider />
                 {createUserLinks(routes)}
+                <DropdownItem divider />
+                <DropdownItem
+                  onClick={() => {
+                    localStorage.removeItem("tours");
+                  }}
+                >
+                  <i className="ni ni-spaceship" />
+                  <span>Выйти</span>
+                </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>

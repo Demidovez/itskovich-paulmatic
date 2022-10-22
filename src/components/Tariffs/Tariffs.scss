@@ -1,0 +1,124 @@
+.tariffs-component {
+  background-color: #4450ffdd;
+  position: relative;
+
+  .pattern {
+    background-size: 500px;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.4;
+  }
+
+  .title {
+    h4 {
+      color: white;
+      font-weight: 600;
+      font-size: 52px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    p {
+      text-align: center;
+      color: white;
+      font-size: 18px;
+      margin-bottom: 50px;
+    }
+  }
+
+  .content {
+    display: flex;
+    justify-content: space-between;
+    gap: 60px;
+
+    .tariff {
+      flex: 1;
+      background-color: #f8f8ff;
+      border-radius: 15px;
+      box-shadow: 0px 0px 35px 0px rgb(0 0 0 / 10%);
+      overflow: hidden;
+      transition: all 0.3s;
+      display: flex;
+      flex-direction: column;
+      // justify-content: space-between;
+
+      & > div {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        flex: 1 1 auto;
+      }
+
+      &:hover {
+        transform: scale(1.025);
+      }
+
+      .header {
+        height: 215px;
+        max-height: 215px;
+        padding: 0 20px 10px;
+
+        h5 {
+          padding-top: 20px;
+          padding-bottom: 20px;
+          border-bottom: 1px solid #ffffff22;
+          border-width: 1px;
+          color: #f8f8ff;
+          font-weight: 600;
+          font-size: 20px;
+        }
+
+        .price {
+          font-weight: 600;
+          font-size: 30px;
+          color: white;
+          margin-top: 33px;
+        }
+
+        span {
+          color: #f8f8ff;
+          margin-top: 5px;
+          margin-bottom: 30px;
+          font-weight: 200;
+          display: block;
+        }
+      }
+
+      .proffits {
+        padding-top: 20px;
+
+        .proffit {
+          padding-left: 20px;
+          padding-right: 20px;
+          color: black;
+          font-weight: 300;
+          margin-bottom: 10px;
+          font-size: 14px;
+
+          span {
+            font-weight: 600;
+            padding-right: 5px;
+          }
+        }
+      }
+
+      .tariff-btn {
+        button {
+          color: white;
+          border-radius: 30px;
+          text-transform: uppercase;
+          padding: 10px 30px;
+          margin: 20px 0;
+          outline: none;
+          border: none;
+        }
+      }
+    }
+
+    .tariff:nth-child(2) h5 {
+      border-color: #ffffff;
+    }
+  }
+}
