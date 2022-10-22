@@ -24,6 +24,8 @@ import {
 } from "variables/charts.js";
 
 import DashBoardStatistics from "components/DashBoardStatistics/DashBoardStatistics.js";
+import FullCalendar from "components/FullCalendar/FullCalendar";
+import CalendarView from "components/FullCalendar/FullCalendar";
 
 const Index = () => {
   const [activeNav, setActiveNav] = useState(1);
@@ -250,7 +252,9 @@ const Index = () => {
           </Col>
         </Row>
         <Row>
-          <Col xl="8"></Col>
+          <Col xl="8">
+            <CalendarView />
+          </Col>
           <Col className="mb-5 mb-xl-0" xl="4">
             <Card className="bg-gradient-default shadow">
               <CardHeader className="bg-transparent">

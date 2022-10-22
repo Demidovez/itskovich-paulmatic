@@ -5,6 +5,8 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import "assets/plugins/nucleo/css/nucleo.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/scss/argon-dashboard-react.scss";
+import "assets/vendor/fullcalendar/dist/fullcalendar.min.css";
+import "assets/vendor/sweetalert2/dist/sweetalert2.min.css";
 import "react-toastify/dist/ReactToastify.min.css";
 import "style.scss";
 

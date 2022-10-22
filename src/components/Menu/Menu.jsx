@@ -113,11 +113,11 @@ const Menu = (props) => {
           backgroundSize: "cover",
           backgroundPosition: "center top",
           height: "4.5rem",
-          width: 200,
+          width: 220,
           overflow: "hidden",
-          backgroundPositionX: -40,
-          backgroundPositionY: -10,
-          backgroundSize: 250,
+          backgroundPositionX: -45,
+          backgroundPositionY: -20,
+          backgroundSize: 300,
           display: "block",
         }}
       ></Link>

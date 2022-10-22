@@ -58,12 +58,6 @@ const Tariffs = () => {
 
   return (
     <div className="tariffs-component  ">
-      <div
-        className="pattern"
-        style={{
-          backgroundImage: `url(${require("../../assets/img/pattern1.png")})`,
-        }}
-      />
       <Container className="pb-6" fluid>
         <Row>
           <Col lg="2"></Col>
