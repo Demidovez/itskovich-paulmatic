@@ -26,6 +26,7 @@ import {
 import DashBoardStatistics from "components/DashBoardStatistics/DashBoardStatistics.js";
 import FullCalendar from "components/FullCalendar/FullCalendar";
 import CalendarView from "components/FullCalendar/FullCalendar";
+import DashBoardTabs from "components/DashBoardTabs/DashBoardTabs";
 
 const Index = () => {
   const [activeNav, setActiveNav] = useState(1);
@@ -42,6 +43,13 @@ const Index = () => {
   };
   return (
     <>
+      <Container className="" fluid>
+        <Row className="">
+          <Col className="py-4">
+            <DashBoardTabs />
+          </Col>
+        </Row>
+      </Container>
       <DashBoardStatistics />
       <Container className="mt-5 mb-6" fluid>
         <Row className="mb-5">
