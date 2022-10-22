@@ -1,6 +1,6 @@
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
 
-const Header = () => {
+const DashBoardStatistics = () => {
   return (
     <>
       <div className="header bg-gradient-info pb-6 pt-6">
@@ -128,4 +128,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default DashBoardStatistics;

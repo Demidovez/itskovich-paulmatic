@@ -1,11 +1,9 @@
 import Index from "pages/Index.js";
 import Profile from "pages/Profile.js";
-import Maps from "pages/Maps.js";
 import Register from "pages/Register.js";
 import Login from "pages/Login.js";
 import Contacts from "pages/Contacts.js";
 import BtoB from "pages/BtoB.js";
-import Icons from "pages/Icons.js";
 import Tasks from "pages/Tasks";
 import Sequences from "pages/Sequences";
 import Inbox from "pages/Inbox";
@@ -23,22 +21,6 @@ export const ROUTES = {
     name: "Мой профиль",
     icon: "ni ni-single-02 text-yellow",
     component: Profile,
-    layout: "/admin",
-    position: "user",
-  },
-  icons: {
-    path: "/icons",
-    name: "Icons",
-    icon: "ni ni-planet text-blue",
-    component: Icons,
-    layout: "/admin",
-    position: "user",
-  },
-  maps: {
-    path: "/maps",
-    name: "Maps",
-    icon: "ni ni-pin-3 text-orange",
-    component: Maps,
     layout: "/admin",
     position: "user",
   },
