@@ -3,6 +3,7 @@ import { RiMailSendLine } from "react-icons/ri";
 
 const DashBoardStatistics = ({
   tasks = { Sequences: { Total: { Values: {} } } },
+  sequences = [],
 }) => {
   const { manual_email, auto_email } = tasks.Sequences.Total.Values
     .completed || { auto_email: 0, manual_email: 0 };
@@ -14,6 +15,11 @@ const DashBoardStatistics = ({
   const allCountersReplied = Object.values(
     tasks.Sequences.Total.Values.replied || {}
   ).reduce((acc, val) => (acc += val), 0);
+
+  const openRate = sequences.length
+    ? sequences.reduce((acc, seq) => (acc += seq.OpenRate), 0) /
+      sequences.length
+    : 0;
 
   return (
     <>
@@ -85,7 +91,9 @@ const DashBoardStatistics = ({
                         >
                           Open Rate
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">0</span>
+                        <span className="h2 font-weight-bold mb-0">
+                          {openRate}%
+                        </span>
                       </div>
                       <Col className="col-auto">
                         <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">

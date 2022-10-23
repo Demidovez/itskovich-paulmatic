@@ -81,6 +81,13 @@ const Dashboard = () => {
             ] || {}
           ).ByTasks
         }
+        sequences={
+          (
+            dashboardStatsResponse.ByAccount[
+              activeAccountId || currentAccountId
+            ] || {}
+          ).Sequences
+        }
       />
       <Container className="mt-5 mb-6" fluid>
         <Row className="mb-5">
