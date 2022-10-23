@@ -1,6 +1,6 @@
 import { SiGmail, SiMaildotru } from "react-icons/si";
 import { FaYandex } from "react-icons/fa";
-import { MdOutlineMarkunreadMailbox } from "react-icons/md";
+import { MdOutlineMarkunreadMailbox, MdEmail } from "react-icons/md";
 import { TbMail } from "react-icons/tb";
 import { ReactComponent as Outlook } from "../../assets/img/icons/common/logo_outlook.svg";
 import { ReactComponent as MicrosoftExchange } from "../../assets/img/icons/common/microsoft_exchange.svg";
@@ -38,7 +38,7 @@ const EmailIcon = ({ id }) => {
       Icon = () => <SiMaildotru />;
       break;
     default:
-      Icon = () => <SiGmail />;
+      Icon = () => <MdEmail />;
   }
 
   return <Icon />;

@@ -24,6 +24,8 @@ import { setFolders } from "store/slices/commonSlice";
 import { setChats } from "store/slices/commonSlice";
 import { useHistory } from "react-router-dom";
 
+const NICKNAME_REGEX = /^[A-Za-z0-9_]+$/;
+
 const RegisterForm = ({ className = "" }) => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -103,6 +105,7 @@ const RegisterForm = ({ className = "" }) => {
   const formik = useFormik({
     initialValues: {
       username: "",
+      nickname: "",
       useremail: "",
       directorUsername: "",
       password: "",
@@ -111,6 +114,12 @@ const RegisterForm = ({ className = "" }) => {
     },
     validationSchema: Yup.object({
       username: Yup.string().required("Обязательное поле"),
+      nickname: Yup.string()
+        .matches(
+          NICKNAME_REGEX,
+          "Допускаются буквы латинского алфавита, цифры и _"
+        )
+        .required("Обязательное поле"),
       useremail: Yup.string()
         .email("Неверный E-mail")
         .required("Обязательное поле"),
@@ -124,9 +133,10 @@ const RegisterForm = ({ className = "" }) => {
     onSubmit: (values) => {
       trySignUp({
         fullName: values.username,
+        nickname: values.nickname,
         username: values.useremail,
         password: values.password,
-        // company: values.company,
+        company: values.company,
         directorUsername: values.directorUsername,
       });
     },
@@ -158,6 +168,29 @@ const RegisterForm = ({ className = "" }) => {
         <div className="field-error">
           {formik.touched.username && formik.errors.username
             ? formik.errors.username
+            : " "}
+        </div>
+      </FormGroup>
+      <FormGroup
+        className={`field-wrapper ${
+          formik.touched.nickname && formik.errors.nickname ? "has-error" : ""
+        } mb-3`}
+      >
+        <span>Никнейм</span>
+        <Input
+          placeholder="Никнейм"
+          type="text"
+          name="nickname"
+          autoComplete="name"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.nickname}
+          className="py-2"
+        />
+
+        <div className="field-error">
+          {formik.touched.nickname && formik.errors.nickname
+            ? formik.errors.nickname
             : " "}
         </div>
       </FormGroup>
@@ -287,10 +320,10 @@ const RegisterForm = ({ className = "" }) => {
         </Col>
       </Row> */}
       </>
+      <div className="server-error">{resultError ? resultError : ""}</div>
       <div className="text-center position-relative ">
-        <div className="server-error">{resultError ? resultError : ""}</div>
         <Button
-          className="mt-5 w-100"
+          className="w-100"
           color="primary"
           type="button"
           onClick={formik.handleSubmit}

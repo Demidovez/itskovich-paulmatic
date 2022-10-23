@@ -23,6 +23,8 @@ import { useHistory } from "react-router-dom";
 import { useLazyTryLognInQuery } from "store/api/login";
 import { ROUTES } from "routes";
 
+const NICKNAME_REGEX = /^[A-Za-z0-9_]+$/;
+
 const LoginForm = ({ className = "" }) => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -100,10 +102,17 @@ const LoginForm = ({ className = "" }) => {
 
   const formik = useFormik({
     initialValues: {
+      nickname: "",
       useremail: "",
       password: "",
     },
     validationSchema: Yup.object({
+      nickname: Yup.string()
+        .matches(
+          NICKNAME_REGEX,
+          "Допускаются буквы латинского алфавита, цифры и _"
+        )
+        .required("Обязательное поле"),
       useremail: Yup.string()
         .email("Неверный E-mail")
         .required("Обязательное поле"),
@@ -113,6 +122,7 @@ const LoginForm = ({ className = "" }) => {
     }),
     onSubmit: (values) => {
       tryLogin({
+        nickname: values.nickname,
         username: values.useremail,
         password: values.password,
       });
@@ -122,7 +132,7 @@ const LoginForm = ({ className = "" }) => {
   return (
     <Form
       role="form"
-      className={`register-form-component ${className}`}
+      className={`login-form-component ${className}`}
       onSubmit={formik.handleSubmit}
     >
       <FormGroup
@@ -149,8 +159,31 @@ const LoginForm = ({ className = "" }) => {
       </FormGroup>
       <FormGroup
         className={`field-wrapper ${
-          formik.touched.password && formik.errors.password ? "has-error" : ""
+          formik.touched.nickname && formik.errors.nickname ? "has-error" : ""
         } mb-3`}
+      >
+        <span>Никнейм</span>
+        <Input
+          placeholder="Никнейм"
+          type="text"
+          name="nickname"
+          autoComplete="name"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.nickname}
+          className="py-2"
+        />
+
+        <div className="field-error">
+          {formik.touched.nickname && formik.errors.nickname
+            ? formik.errors.nickname
+            : " "}
+        </div>
+      </FormGroup>
+      <FormGroup
+        className={`field-wrapper ${
+          formik.touched.password && formik.errors.password ? "has-error" : ""
+        } mb-0`}
       >
         <span>Пароль</span>
         <Input
@@ -169,10 +202,10 @@ const LoginForm = ({ className = "" }) => {
             : ""}
         </div>
       </FormGroup>
+      <div className="server-error">{resultError ? resultError : ""}</div>
       <div className="text-center position-relative">
-        <div className="server-error">{resultError ? resultError : ""}</div>
         <Button
-          className="mt-4 w-100"
+          className="w-100"
           color="primary"
           type="button"
           onClick={formik.handleSubmit}

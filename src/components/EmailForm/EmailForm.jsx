@@ -32,7 +32,9 @@ const EmailForm = ({
   const [resultError, setResultError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const Account = useSelector((state) => state.common.Account);
+  const { Login, Password } = useSelector(
+    (state) => state.common.Account.InMailSettings || {}
+  );
 
   const [trySaveEmailServer, { data: emailServerResponse, error, isFetching }] =
     useLazyTrySaveEmailServerQuery();
@@ -91,8 +93,8 @@ const EmailForm = ({
   return (
     <Formik
       initialValues={{
-        Login: server.Login || Account.username || "",
-        Password: server.Password || "",
+        Login: server.Login || Login || "",
+        Password: server.Password || Password || "",
         SmtpPort: server.SmtpPort || "",
         ImapPort: server.ImapPort || "",
         SmtpHost: server.SmtpHost || "",
