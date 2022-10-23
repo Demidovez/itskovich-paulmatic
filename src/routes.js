@@ -1,4 +1,4 @@
-import Index from "pages/Index.js";
+import Dashboard from "pages/Dashboard.js";
 import Profile from "pages/Profile.js";
 import Register from "pages/Register.js";
 import Login from "pages/Login.js";
@@ -13,7 +13,7 @@ export const ROUTES = {
     path: "/index",
     name: "Дашборд",
     icon: "ni ni-tv-2 text-primary",
-    component: Index,
+    component: Dashboard,
     layout: "/admin",
   },
   "user-profile": {

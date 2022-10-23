@@ -31,10 +31,17 @@ const EmailForm = ({
 
   const [resultError, setResultError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [currentLogin, setCurrentLogin] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
 
   const { Login, Password } = useSelector(
     (state) => state.common.Account.InMailSettings || {}
   );
+
+  useEffect(() => {
+    setCurrentLogin(Login);
+    setCurrentPassword(Password);
+  }, [Login, Password]);
 
   const [trySaveEmailServer, { data: emailServerResponse, error, isFetching }] =
     useLazyTrySaveEmailServerQuery();
@@ -93,8 +100,8 @@ const EmailForm = ({
   return (
     <Formik
       initialValues={{
-        Login: server.Login || Login || "",
-        Password: server.Password || Password || "",
+        Login: server.Login || currentLogin || "",
+        Password: server.Password || currentPassword || "",
         SmtpPort: server.SmtpPort || "",
         ImapPort: server.ImapPort || "",
         SmtpHost: server.SmtpHost || "",
@@ -155,7 +162,10 @@ const EmailForm = ({
                   type="text"
                   name="Login"
                   autoComplete="email"
-                  onChange={formik.handleChange}
+                  onChange={(e) => {
+                    formik.handleChange(e);
+                    setCurrentLogin(e.target.value);
+                  }}
                   onBlur={formik.handleBlur}
                   value={formik.values.Login}
                 />
@@ -184,7 +194,10 @@ const EmailForm = ({
                   type="password"
                   name="Password"
                   autoComplete="current-password"
-                  onChange={formik.handleChange}
+                  onChange={(e) => {
+                    formik.handleChange(e);
+                    setCurrentPassword(e.target.value);
+                  }}
                   onBlur={formik.handleBlur}
                   value={formik.values.Password}
                 />

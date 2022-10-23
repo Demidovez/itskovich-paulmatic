@@ -47,15 +47,7 @@ const Auth = (props) => {
           </div>
         </div>
         <div className="image p-3">
-          <div
-            className="image-wrapper"
-            // style={{
-            //   backgroundImage: `url('${
-            //     require("../../assets/img/icons/common/logo_for_auth.svg")
-            //       .default
-            //   }')`,
-            // }}
-          >
+          <div className="image-wrapper">
             <a href="https://palmautic.ru" target="_blank">
               <img
                 src={
@@ -67,15 +59,6 @@ const Auth = (props) => {
                 }}
               />
             </a>
-            {/* <div className="image-back" /> */}
-            {/* <div className="title">
-              <h4>Ваше путешествие начинается здесь</h4>
-              <p>
-                Palmautic - B2B sales engagement платформа, которая
-                автоматизирует мультиканальное взаимодействие с клиентами на
-                протяжении всего процесса продаж
-              </p>
-            </div> */}
           </div>
         </div>
       </div>

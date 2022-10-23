@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { NavLink as NavLinkRRD, Link } from "react-router-dom";
+import { NavLink as NavLinkRRD, Link, useHistory } from "react-router-dom";
 import {
   Collapse,
   DropdownMenu,
@@ -28,12 +28,17 @@ import { ROUTES } from "routes";
 import { setIsNeedSetEmailServer } from "store/slices/commonSlice";
 import { ReactComponent as UserIcon } from "../../assets/img/icons/common/user.svg";
 import { getpath } from "utils/utils";
+import { BiLogOut } from "react-icons/bi";
 
 import "./Menu.scss";
+import ModalYouSure from "components/ModalYouSure/ModalYouSure";
 
 const Menu = (props) => {
   const dispatch = useDispatch();
+  const history = useHistory();
+
   const [collapseOpen, setCollapseOpen] = useState();
+  const [isAskSure, setIsAskSure] = useState(false);
 
   const account = useSelector((state) => state.common.Account);
 
@@ -75,7 +80,11 @@ const Menu = (props) => {
       .map((prop, key) => {
         return (
           <DropdownItem
-            to={prop.layout + getpath(prop.path)}
+            to={
+              prop.layout.includes("admin")
+                ? prop.layout + getpath(prop.path)
+                : prop.layout + prop.path
+            }
             tag={Link}
             key={key}
           >
@@ -122,6 +131,11 @@ const Menu = (props) => {
         }}
       ></Link>
     ) : null;
+  };
+
+  const onLogoutSubmit = () => {
+    setIsAskSure(false);
+    history.push("/auth/login");
   };
 
   return (
@@ -262,11 +276,10 @@ const Menu = (props) => {
                 {createUserLinks(routes)}
                 <DropdownItem divider />
                 <DropdownItem
-                  onClick={() => {
-                    localStorage.removeItem("tours");
-                  }}
+                  onClick={() => setIsAskSure(true)}
+                  className="d-flex align-items-center"
                 >
-                  <i className="ni ni-spaceship" />
+                  <BiLogOut />
                   <span>Выйти</span>
                 </DropdownItem>
               </DropdownMenu>
@@ -274,6 +287,13 @@ const Menu = (props) => {
           </Nav>
         </Row>
       </Container>
+      <ModalYouSure
+        isShow={isAskSure}
+        title={"Выйти"}
+        text={"Вы уверены, что хотите выйти?"}
+        onAgree={onLogoutSubmit}
+        onCancel={() => setIsAskSure(false)}
+      />
     </Navbar>
   );
 };

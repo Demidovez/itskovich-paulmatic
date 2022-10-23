@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Tour from "reactour";
 
-const InteractiveTour = ({ name = "none", steps }) => {
+const InteractiveTour = ({ name = "none", steps, canShow = true }) => {
   const [isStartTour, setIsStartTour] = useState(false);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const InteractiveTour = ({ name = "none", steps }) => {
       {steps ? (
         <Tour
           steps={steps}
-          isOpen={isStartTour}
+          isOpen={isStartTour && canShow}
           onRequestClose={closeTour}
           rounded={5}
           accentColor={"#5e72e4"}

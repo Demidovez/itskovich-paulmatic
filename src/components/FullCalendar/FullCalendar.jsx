@@ -46,7 +46,7 @@ import { events } from "variables/general.js";
 
 let calendar;
 
-class CalendarView extends React.Component {
+class FullCalendar extends React.Component {
   state = {
     events: events,
     alert: null,
@@ -506,4 +506,4 @@ class CalendarView extends React.Component {
   }
 }
 
-export default CalendarView;
+export default FullCalendar;

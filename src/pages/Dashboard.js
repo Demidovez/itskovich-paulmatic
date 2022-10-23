@@ -16,21 +16,53 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import {
-  chartOptions,
-  parseOptions,
-  chartExample1,
-  chartExample2,
-} from "variables/charts.js";
+import { chartOptions, parseOptions, chartExample1 } from "variables/charts.js";
 
 import DashBoardStatistics from "components/DashBoardStatistics/DashBoardStatistics.js";
 import FullCalendar from "components/FullCalendar/FullCalendar";
-import CalendarView from "components/FullCalendar/FullCalendar";
 import DashBoardTabs from "components/DashBoardTabs/DashBoardTabs";
+import InteractiveTour from "components/InteractiveTour/InteractiveTour";
+import { useSelector } from "react-redux";
 
-const Index = () => {
+const tourSteps = [
+  {
+    selector: "#nav_item_index",
+    content:
+      "Страница Дашборд покажет текущие ваши показатели и ваших сотрудников.",
+  },
+  {
+    selector: ".dashboard-tabs-component .tabs",
+    content: "Просматривайте статистику сотрудников",
+  },
+  {
+    selector: "#first-stat",
+    content: "Основные показатели",
+  },
+  {
+    selector: "#sequences",
+    content: "Ваши последовательности",
+  },
+  {
+    selector: "#types",
+    content: "Все типы взаимодействий",
+  },
+  {
+    selector: ".fullcalendar-component",
+    content: "Календарь задач",
+  },
+  {
+    selector: "#sales-value",
+    content: "Показатели продаж",
+  },
+];
+
+const Dashboard = () => {
   const [activeNav, setActiveNav] = useState(1);
   const [chartExample1Data, setChartExample1Data] = useState("data1");
+
+  const isNeedSetEmailServer = useSelector(
+    (state) => state.common.isNeedSetEmailServer
+  );
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
@@ -54,7 +86,7 @@ const Index = () => {
       <Container className="mt-5 mb-6" fluid>
         <Row className="mb-5">
           <Col className="mb-5 mb-xl-0" xl="8">
-            <Card className="shadow">
+            <Card className="shadow" id="sequences">
               <CardHeader className="border-0">
                 <Row className="align-items-center">
                   <div className="col">
@@ -139,7 +171,7 @@ const Index = () => {
             </Card>
           </Col>
           <Col xl="4">
-            <Card className="shadow">
+            <Card className="shadow" id="types">
               <CardHeader className="border-0">
                 <Row className="align-items-center">
                   <div className="col">
@@ -261,10 +293,10 @@ const Index = () => {
         </Row>
         <Row>
           <Col xl="8">
-            <CalendarView />
+            <FullCalendar />
           </Col>
           <Col className="mb-5 mb-xl-0" xl="4">
-            <Card className="bg-gradient-default shadow">
+            <Card className="bg-gradient-default shadow" id="sales-value">
               <CardHeader className="bg-transparent">
                 <Row className="align-items-center">
                   <div className="col">
@@ -317,8 +349,13 @@ const Index = () => {
           </Col>
         </Row>
       </Container>
+      <InteractiveTour
+        steps={tourSteps}
+        name="dashboard"
+        canShow={!isNeedSetEmailServer}
+      />
     </>
   );
 };
 
-export default Index;
+export default Dashboard;
