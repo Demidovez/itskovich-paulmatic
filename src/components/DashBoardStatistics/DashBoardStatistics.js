@@ -1,4 +1,5 @@
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
+import { RiMailSendLine } from "react-icons/ri";
 
 const DashBoardStatistics = ({
   tasks = { Sequences: { Total: { Values: {} } } },
@@ -37,7 +38,7 @@ const DashBoardStatistics = ({
                       </div>
                       <Col className="col-auto">
                         <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
-                          <i className="fas fa-chart-bar" />
+                          <RiMailSendLine />
                         </div>
                       </Col>
                     </Row>
