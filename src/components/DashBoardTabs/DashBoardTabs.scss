@@ -28,7 +28,7 @@
     align-items: center;
     justify-content: center;
     height: 30px;
-    width: 150px;
+    width: 175px;
     font-size: 14px;
     font-weight: 300;
     border-radius: 10px;
@@ -36,14 +36,12 @@
     transition: color 0.15s ease-in;
     position: relative;
 
-    // &::after {
-    //   content: "";
-    //   width: 2px;
-    //   height: 20px;
-    //   background-color: red;
-    //   position: absolute;
-    //   right: 0;
-    // }
+    & > div {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 0 9px;
+    }
   }
 
   input[type="radio"] {
@@ -54,34 +52,12 @@
     }
   }
 
-  input[id="radio-0"] {
-    &:checked {
-      & ~ .glider {
-        transform: translateX(0);
-      }
-    }
-  }
-
-  input[id="radio-1"] {
-    &:checked {
-      & ~ .glider {
-        transform: translateX(100%);
-      }
-    }
-  }
-
-  input[id="radio-2"] {
-    &:checked {
-      & ~ .glider {
-        transform: translateX(200%);
-      }
-    }
-  }
-
-  input[id="radio-3"] {
-    &:checked {
-      & ~ .glider {
-        transform: translateX(300%);
+  @for $i from 0 through 20 {
+    input[id="radio-#{$i}"] {
+      &:checked {
+        & ~ .glider {
+          transform: translateX($i * 100%);
+        }
       }
     }
   }
@@ -90,11 +66,14 @@
     position: absolute;
     display: flex;
     height: 30px;
-    width: 150px;
+    width: 175px;
     background-color: var(--primary);
     z-index: 1;
     border-radius: 40px; // just a high number to create pill effect
     transition: 0.25s ease-out;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 
   @media (max-width: 1100px) {

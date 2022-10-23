@@ -7,6 +7,7 @@ import commonReducer from "./slices/commonSlice";
 import sequencesReducer from "./slices/sequencesSlice";
 import sequenceMasterReducer from "./slices/sequenceMasterSlice";
 import inboxReducer from "./slices/inboxSlice";
+import dashboardReducer from "./slices/dashboardSlice";
 import { contactsApi } from "./api/contacts";
 import { personsApi } from "./api/persons";
 import { companiesApi } from "./api/companies";
@@ -17,6 +18,7 @@ import { notificationsApi } from "./api/notifications";
 import { foldersApi } from "./api/folders";
 import { inboxApi } from "./api/inbox";
 import { loginApi } from "./api/login";
+import { dashboardApi } from "./api/dashboard";
 
 export const store = configureStore({
   reducer: {
@@ -28,6 +30,7 @@ export const store = configureStore({
     sequences: sequencesReducer,
     sequenceMaster: sequenceMasterReducer,
     inbox: inboxReducer,
+    dashboard: dashboardReducer,
     [contactsApi.reducerPath]: contactsApi.reducer,
     [personsApi.reducerPath]: personsApi.reducer,
     [companiesApi.reducerPath]: companiesApi.reducer,
@@ -38,6 +41,7 @@ export const store = configureStore({
     [foldersApi.reducerPath]: foldersApi.reducer,
     [inboxApi.reducerPath]: inboxApi.reducer,
     [loginApi.reducerPath]: loginApi.reducer,
+    [dashboardApi.reducerPath]: dashboardApi.reducer,
   },
   middleware: (getDefaultMiddleware) => [
     ...getDefaultMiddleware(),
@@ -51,5 +55,6 @@ export const store = configureStore({
     foldersApi.middleware,
     inboxApi.middleware,
     loginApi.middleware,
+    dashboardApi.middleware,
   ],
 });

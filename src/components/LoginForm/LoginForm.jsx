@@ -102,28 +102,19 @@ const LoginForm = ({ className = "" }) => {
 
   const formik = useFormik({
     initialValues: {
-      nickname: "",
-      useremail: "",
+      username: "",
       password: "",
     },
     validationSchema: Yup.object({
-      nickname: Yup.string()
-        .matches(
-          NICKNAME_REGEX,
-          "Допускаются буквы латинского алфавита, цифры и _"
-        )
-        .required("Обязательное поле"),
-      useremail: Yup.string()
-        .email("Неверный E-mail")
-        .required("Обязательное поле"),
+      username: Yup.string().required("Обязательное поле"),
       password: Yup.string()
         .min(5, "Требуется минимум 5 символов")
         .required("Обязательное поле"),
     }),
     onSubmit: (values) => {
       tryLogin({
-        nickname: values.nickname,
-        username: values.useremail,
+        username: values.username, // TODO: Удалить потом
+        Username: values.username,
         password: values.password,
       });
     },
@@ -137,47 +128,24 @@ const LoginForm = ({ className = "" }) => {
     >
       <FormGroup
         className={`field-wrapper ${
-          formik.touched.useremail && formik.errors.useremail ? "has-error" : ""
+          formik.touched.username && formik.errors.username ? "has-error" : ""
         } mb-3`}
       >
-        <span>E-mail</span>
+        <span>Логин или E-mail</span>
         <Input
-          placeholder="E-mail"
+          placeholder="Логин или E-mail"
           type="text"
-          name="useremail"
-          autoComplete="email"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.useremail}
-        />
-
-        <div className="field-error">
-          {formik.touched.useremail && formik.errors.useremail
-            ? formik.errors.useremail
-            : ""}
-        </div>
-      </FormGroup>
-      <FormGroup
-        className={`field-wrapper ${
-          formik.touched.nickname && formik.errors.nickname ? "has-error" : ""
-        } mb-3`}
-      >
-        <span>Никнейм</span>
-        <Input
-          placeholder="Никнейм"
-          type="text"
-          name="nickname"
+          name="username"
           autoComplete="name"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          value={formik.values.nickname}
-          className="py-2"
+          value={formik.values.username}
         />
 
         <div className="field-error">
-          {formik.touched.nickname && formik.errors.nickname
-            ? formik.errors.nickname
-            : " "}
+          {formik.touched.username && formik.errors.username
+            ? formik.errors.username
+            : ""}
         </div>
       </FormGroup>
       <FormGroup

@@ -81,6 +81,15 @@ export const commonSlice = createSlice({
     setCommonInfoTasks: (state, action) => {
       state.Tasks = action.payload;
       state.loader.pages.tasks.isLoadingStatistics = false;
+
+      // TODO: Удалить потом
+      state.Tasks = {
+        ...state.Tasks,
+        Types: {
+          ...state.Tasks.Types,
+          auto_email: { Creds: { Title: "Автоматический E-mail" } },
+        },
+      };
     },
     setCommonInfoSequences: (state, action) => {
       state.Sequences = action.payload;
