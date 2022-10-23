@@ -1,4 +1,44 @@
 .modal-email-settings-component {
+  .modal-header {
+    .warning {
+      margin-top: 1px;
+      font-size: 12px;
+      padding-left: 15px;
+      margin-left: 15px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      line-height: 1.1;
+
+      &::before {
+        position: absolute;
+        left: 0;
+        top: 2px;
+        content: "";
+        display: block;
+        width: 1px;
+        height: 10px;
+        background-color: rgb(169, 169, 169);
+      }
+    }
+
+    .change-account {
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.3s;
+
+      &:hover {
+        color: black;
+      }
+
+      span {
+        margin-left: 3px;
+      }
+    }
+  }
+
   .modal-content {
     overflow: hidden;
   }

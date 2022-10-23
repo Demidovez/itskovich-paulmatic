@@ -3,10 +3,13 @@ import EmailIcon from "components/EmailIcon/EmailIcon";
 import useYouSure from "hooks/useYouSure";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { Button, Modal } from "reactstrap";
+import { BiLogOut } from "react-icons/bi";
 import "./ModalEmailSettings.scss";
 
 const ModalEmailSettings = ({ onClose }) => {
+  const history = useHistory();
   const [activeServer, setActiveServer] = useState({
     Creds: {
       Id: "another",
@@ -63,10 +66,24 @@ const ModalEmailSettings = ({ onClose }) => {
         minWidth: "700px",
       }}
     >
-      <div className="modal-header p-4">
-        <h5 className="modal-title" id="exampleModalLabel">
-          Настройка почты для работы
-        </h5>
+      <div className="modal-header p-4 align-items-center">
+        <div className="d-flex align-items-center">
+          <h5 className="modal-title" id="exampleModalLabel">
+            Настройка почты для работы
+          </h5>
+          {activeServer.Creds.Id === "mailru" ? (
+            <div className="warning">
+              Для Mail.ru необходимо настроить пароль для внешнего приложения,
+              <a
+                href="https://help.mail.ru/mail/security/protection/external"
+                target="_blank"
+                style={{ paddingLeft: 4 }}
+              >
+                подробнее
+              </a>
+            </div>
+          ) : null}
+        </div>
         {InMailSettings ? (
           <button
             aria-label="Close"
@@ -77,7 +94,15 @@ const ModalEmailSettings = ({ onClose }) => {
           >
             <span aria-hidden={true}>×</span>
           </button>
-        ) : null}
+        ) : (
+          <div
+            onClick={() => history.push("/auth/login")}
+            className="change-account"
+          >
+            <BiLogOut size="1rem" />
+            <span>Сменить аккаунт</span>
+          </div>
+        )}
       </div>
       <div className="modal-body p-0">
         <div className="email-servers mt-0 ml-4 mr-4 mb-4">

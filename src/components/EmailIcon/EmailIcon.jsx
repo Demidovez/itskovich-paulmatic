@@ -1,5 +1,5 @@
 import { SiGmail, SiMaildotru } from "react-icons/si";
-import { FaYandex } from "react-icons/fa";
+import { FaYandex, FaUserSecret } from "react-icons/fa";
 import { MdOutlineMarkunreadMailbox, MdEmail } from "react-icons/md";
 import { TbMail } from "react-icons/tb";
 import { ReactComponent as Outlook } from "../../assets/img/icons/common/logo_outlook.svg";
@@ -17,6 +17,9 @@ const EmailIcon = ({ id }) => {
       break;
     case "ya":
       Icon = () => <FaYandex />;
+      break;
+    case "yop":
+      Icon = () => <FaUserSecret />;
       break;
     case "ra":
       Icon = () => <MdOutlineMarkunreadMailbox />;
