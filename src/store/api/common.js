@@ -13,7 +13,19 @@ export const commonApi = createApi({
       }),
       transformResponse: (response) => response.result || {},
     }),
+    getTariffs: builder.query({
+      query: () => ({
+        url: "accounting/tariffs",
+        method: "GET",
+        headers: getHeaders(),
+      }),
+      transformResponse: (response) => response.result || [],
+    }),
   }),
 });
 
-export const { useLazyGetCommonInfoQuery, useGetCommonInfoQuery } = commonApi;
+export const {
+  useLazyGetCommonInfoQuery,
+  useGetCommonInfoQuery,
+  useLazyGetTariffsQuery,
+} = commonApi;

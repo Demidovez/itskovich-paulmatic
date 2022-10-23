@@ -24,6 +24,7 @@ const initialState = {
       },
     },
   },
+  tariffs: [],
   Tasks: {
     Statuses: [],
     Types: {},
@@ -36,6 +37,11 @@ const initialState = {
   Sequences: {},
   Account: {
     InMailSettings: null,
+    Tariff: {
+      Creds: {
+        Name: "",
+      },
+    },
   },
   AccountSettings: {
     EmailServers: [],
@@ -281,6 +287,67 @@ export const commonSlice = createSlice({
 
       state.Chats.ModifiedTime = new Date().getTime();
     },
+    setTariffs: (state, action) => {
+      const tariffs = action.payload.map((tariff) => {
+        let currentTariff = tariff;
+
+        if (currentTariff.Creds.Name === "Basic") {
+          currentTariff = {
+            ...currentTariff,
+            color: "#636bff",
+            period: "14 дней",
+            proffitsTitle: "",
+            proffits: [
+              "Базовая автоматизация последовательности (Ограничение в 2 последовательности)",
+              "Расширение для Gmail/LinkedIn",
+              "Отправка 200 email’ов/день",
+              "CSV импорт/экспорт",
+              "Чтение, ответы на электронные письма",
+              "Доступ к API",
+              "Базовая аналитика и отчеты",
+              "10 поисков email’ов в B2B Database",
+            ],
+          };
+        } else if (currentTariff.Creds.Name === "Professional") {
+          currentTariff = {
+            ...currentTariff,
+            color: "#fcb236",
+            period: "в месяц",
+            proffitsTitle: 'Всё, что в "Basic"',
+            proffits: [
+              "Неограниченное количество последовательностей",
+              "Отправка 10 000 email’ов/день",
+              "Интеграция со всеми поставщиками электронной почты",
+              "Расширенная аналитика, отчеты и информационные панели",
+              "A/B тестирование",
+              "Ручные задачи",
+              "Записи звонков",
+              "400 поисков email’ов в месяц",
+            ],
+          };
+        } else if (currentTariff.Creds.Name === "Enterprise") {
+          currentTariff = {
+            ...currentTariff,
+            color: "#636bff",
+            period: "оплата за год",
+            proffitsTitle: 'Всё, что в "Professional"',
+            proffits: [
+              "Неограниченное количество email’ов/день",
+              "Обогащенные данные о контакте и смена работы",
+              "Транскрипция вызовов",
+              "Настраиваемые отчеты",
+              "Расширенный доступ к API",
+              "Персональный менеджер по работе с клиентами",
+              "1200+ поисков email’ов в месяц",
+            ],
+          };
+        }
+
+        return currentTariff;
+      });
+
+      state.tariffs = tariffs;
+    },
   },
 });
 
@@ -303,6 +370,7 @@ export const {
   setInMailSettingsStatus,
   setAccountSettings,
   setIsNeedSetEmailServer,
+  setTariffs,
 } = commonSlice.actions;
 
 export default commonSlice.reducer;

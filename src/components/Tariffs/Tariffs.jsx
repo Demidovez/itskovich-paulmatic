@@ -1,63 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Button, Col, Container, Row } from "reactstrap";
+import { useLazyGetTariffsQuery } from "store/api/common";
+import { setTariffs } from "store/slices/commonSlice";
+import { MdDone } from "react-icons/md";
 import "./Tariffs.scss";
 
+const PRICE = {
+  0: "Бесплатно",
+  "-1": "Индивидуально",
+};
+
 const Tariffs = () => {
-  const [tariffs] = useState([
-    {
-      id: 0,
-      title: "Basic",
-      price: "Бесплатно",
-      period: "14 дней",
-      color: "#636bff",
-      proffitsTitle: "",
-      proffits: [
-        "Базовая автоматизация последовательности (Ограничение в 2 последовательности)",
-        "Расширение для Gmail/LinkedIn",
-        "Отправка 200 email’ов/день",
-        "CSV импорт/экспорт",
-        "Чтение, ответы на электронные письма",
-        "Доступ к API",
-        "Базовая аналитика и отчеты",
-        "10 поисков email’ов в B2B Database",
-      ],
-    },
-    {
-      id: 1,
-      title: "Professional",
-      price: "6600 ₽",
-      period: "в месяц",
-      color: "#fcb236",
-      proffitsTitle: "Всё, что в «Basic»",
-      proffits: [
-        "Неограниченное количество последовательностей",
-        "Отправка 10 000 email’ов/день",
-        "Интеграция со всеми поставщиками электронной почты",
-        "Расширенная аналитика, отчеты и информационные панели",
-        "A/B тестирование",
-        "Ручные задачи",
-        "Записи звонков",
-        "400 поисков email’ов в месяц",
-      ],
-    },
-    {
-      id: 2,
-      title: "Enterprise",
-      price: "Индивидуально",
-      period: "оплата за год",
-      color: "#636bff",
-      proffitsTitle: "Всё, что в «Professional»",
-      proffits: [
-        "Неограниченное количество email’ов/день",
-        "Обогащенные данные о контакте и смена работы",
-        "Транскрипция вызовов",
-        "Настраиваемые отчеты",
-        "Расширенный доступ к API",
-        "Персональный менеджер по работе с клиентами",
-        "1200+ поисков email’ов в месяц",
-      ],
-    },
-  ]);
+  const dispatch = useDispatch();
+
+  const tariffs = useSelector((state) => state.common.tariffs);
+  const currentTariff = useSelector(
+    (state) => state.common.Account.Tariff.Creds.Name
+  );
+
+  const [getTariffs, { data: tariffResponse }] = useLazyGetTariffsQuery();
+
+  useEffect(() => {
+    getTariffs();
+  }, []);
+
+  useEffect(() => {
+    if (tariffResponse) {
+      dispatch(setTariffs(tariffResponse));
+    }
+  }, [tariffResponse]);
 
   return (
     <div className="tariffs-component  ">
@@ -77,13 +50,17 @@ const Tariffs = () => {
               </div>
               <div className="content">
                 {tariffs.map((tariff) => (
-                  <div key={tariff.id} className="tariff">
+                  <div key={tariff.Creds.Id} className="tariff">
                     <div
                       className="header"
-                      style={{ backgroundColor: tariff.color }}
+                      style={{ backgroundColor: tariff.color || "#636bff" }}
                     >
-                      <h5>{tariff.title}</h5>
-                      <div className="price">{tariff.price}</div>
+                      <h5>{tariff.Creds.Name}</h5>
+                      <div
+                        className={`price ${tariff.Price === -1 ? "long" : ""}`}
+                      >
+                        {PRICE[tariff.Price] || tariff.Price + " ₽"}
+                      </div>
                       <span>{tariff.period}</span>
                     </div>
                     <div>
@@ -94,16 +71,29 @@ const Tariffs = () => {
                           </div>
                         ) : null}
 
-                        {tariff.proffits.map((proffit, index) => (
+                        {(tariff.proffits || []).map((proffit, index) => (
                           <div key={index} className="proffit">
                             <span>/</span> {proffit}
                           </div>
                         ))}
                       </div>
                       <div className="tariff-btn d-flex justify-content-center">
-                        <Button style={{ backgroundColor: tariff.color }}>
-                          Получить доступ
-                        </Button>
+                        {currentTariff === tariff.Creds.Name ? (
+                          <div className="tariff-current">
+                            <div>
+                              <MdDone />
+                            </div>
+                            <span>Подписка активна</span>
+                          </div>
+                        ) : (
+                          <Button
+                            style={{
+                              backgroundColor: tariff.color || "#636bff",
+                            }}
+                          >
+                            Получить доступ
+                          </Button>
+                        )}
                       </div>
                     </div>
                   </div>

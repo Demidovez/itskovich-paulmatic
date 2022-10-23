@@ -134,13 +134,32 @@
           font-family: "Eastman", Arial, sans-serif;
         }
       }
+
+      .tariff-current {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: "Eastman", Arial, sans-serif;
+        margin: 20px 0 25px;
+
+        & > div {
+          background-color: var(--green);
+          color: white;
+          width: 20px;
+          height: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 30px;
+        }
+      }
     }
 
     .tariff:nth-child(2) h5 {
       border-color: #ffffff;
     }
 
-    .tariff:nth-child(3) .price {
+    .tariff .price.long {
       font-size: 34px;
       margin-bottom: 10px;
     }
