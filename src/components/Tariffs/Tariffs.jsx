@@ -19,6 +19,7 @@ const Tariffs = () => {
         "Чтение, ответы на электронные письма",
         "Доступ к API",
         "Базовая аналитика и отчеты",
+        "10 поисков email’ов в B2B Database",
       ],
     },
     {
@@ -36,6 +37,7 @@ const Tariffs = () => {
         "A/B тестирование",
         "Ручные задачи",
         "Записи звонков",
+        "400 поисков email’ов в месяц",
       ],
     },
     {
@@ -47,11 +49,12 @@ const Tariffs = () => {
       proffitsTitle: "Всё, что в «Professional»",
       proffits: [
         "Неограниченное количество email’ов/день",
-        "Обогащение данные о контакте и смена работы",
+        "Обогащенные данные о контакте и смена работы",
         "Транскрипция вызовов",
         "Настраиваемые отчеты",
         "Расширенный доступ к API",
         "Персональный менеджер по работе с клиентами",
+        "1200+ поисков email’ов в месяц",
       ],
     },
   ]);
@@ -86,7 +89,7 @@ const Tariffs = () => {
                     <div>
                       <div className="proffits">
                         {tariff.proffitsTitle ? (
-                          <div className="proffit">
+                          <div className="proffit proffit-first">
                             <span>/</span> {tariff.proffitsTitle}
                           </div>
                         ) : null}

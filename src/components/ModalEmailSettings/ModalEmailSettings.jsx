@@ -54,12 +54,12 @@ const ModalEmailSettings = ({ onClose }) => {
   return (
     <Modal
       className="modal-email-settings-component modal-dialog-centered"
+      modalClassName="d-flex"
       toggle={InMailSettings ? tryClose : () => {}}
       isOpen={true}
       backdrop={InMailSettings ? true : "static"}
       style={{
-        maxWidth: "1000px",
-        width: "55%",
+        maxWidth: "90%",
         minWidth: "700px",
       }}
     >
