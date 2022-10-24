@@ -15,29 +15,29 @@ const useFetchCommon = () => {
     useLazyGetCommonInfoQuery();
 
   useEffect(() => {
-    if (isSuccess && commonData) {
+    if (commonData) {
       dispatch(setCommonInfoTasks(commonData.Tasks));
       dispatch(setCommonInfoHtmlTemplates(commonData.Templates));
       dispatch(setFolders(commonData.Folders));
       dispatch(setChats(commonData.Chats));
       dispatch(setAccountSettings(commonData.AccountSettings));
       if ((commonData.Account || {}).InMailSettings) {
-        const emailServerId = (
+        const emailServerCreds = (
           (JSON.parse(localStorage.getItem("Account")) || {}).InMailSettings ||
           {}
-        ).Id;
+        ).Creds;
 
         dispatch(
           setInMailSettingsStatus({
             ...commonData.Account.InMailSettings,
-            Id: emailServerId,
+            Creds: emailServerCreds,
           })
         );
       } else {
-        dispatch(setInMailSettingsStatus("none"));
+        dispatch(setInMailSettingsStatus(null));
       }
     }
-  }, [isSuccess, commonData]);
+  }, [commonData]);
 
   return getCommonInfo;
 };

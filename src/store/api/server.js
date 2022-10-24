@@ -14,13 +14,13 @@ export function getServerUrl(category) {
   return serverUrls.remote[protocol] + "/" + category;
 }
 
-export function getHeaders(additinalHeaders) {
+export function getHeaders(additinalHeaders, isFile = false) {
   const Account = JSON.parse(localStorage.getItem("Account")) || {};
 
   return {
     "caller-version-code": 1,
     sessionToken: Account.sessionToken || "",
-    "Content-type": "application/json",
+    ...(isFile ? {} : { "Content-type": "application/json" }),
     ...additinalHeaders,
   };
 }

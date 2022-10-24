@@ -15,6 +15,8 @@ import ActionSequencesBar from "components/ActionSequencesBar/ActionSequencesBar
 import Loader from "components/Loader/Loader";
 import useLoader from "hooks/useLoader";
 import { useDeleteSequencesMutation } from "store/api/sequences";
+import { toast } from "react-toastify";
+import { setShowTariffModal } from "store/slices/commonSlice";
 
 const Sequences = () => {
   const dispatch = useDispatch();
@@ -24,6 +26,10 @@ const Sequences = () => {
     (state) => state.sequences
   );
 
+  const MaxSequencesPerDay = useSelector(
+    (state) => state.common.Account.Tariff.FeatureAbilities.MaxSequencesPerDay
+  );
+
   const setAllSequences = () => dispatch(selectAllSequences(!isSelectedAll));
 
   const createSequence = () => {
@@ -31,7 +37,12 @@ const Sequences = () => {
   };
 
   const doneCreateSequence = () => {
-    setIsShowCreator(false);
+    if (MaxSequencesPerDay <= 0) {
+      dispatch(setShowTariffModal(true));
+      toast.error(`Вы израсходовали все свои последовательности!`);
+    } else {
+      setIsShowCreator(false);
+    }
   };
 
   const [deleteSequences] = useDeleteSequencesMutation();

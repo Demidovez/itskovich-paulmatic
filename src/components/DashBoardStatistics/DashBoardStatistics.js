@@ -39,7 +39,7 @@ const DashBoardStatistics = ({
                           Количество отправленных E-mail
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">
-                          {manual_email + auto_email}
+                          {manual_email + auto_email || 0}
                         </span>
                       </div>
                       <Col className="col-auto">

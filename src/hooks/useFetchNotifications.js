@@ -8,6 +8,8 @@ import { useHistory, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ROUTES } from "routes";
 import { getpath } from "utils/utils";
+import { updateAccount } from "store/slices/commonSlice";
+import { setShowTariffModal } from "store/slices/commonSlice";
 
 const useFetchNotifications = () => {
   const [isStarted, setIsStarted] = useState(false);
@@ -37,8 +39,6 @@ const useFetchNotifications = () => {
     dispatch(setActiveChatId(chat.Contact.id));
   }, []);
 
-  console.log("getNotifications", isSuccess);
-
   useEffect(() => {
     if (isSuccess && notifications) {
       notifications.forEach((notification) => {
@@ -52,6 +52,20 @@ const useFetchNotifications = () => {
             (location.pathname.includes("/inbox") &&
               activeChatId === notification.Object.Contact.id))
         ) {
+          return;
+        }
+
+        if (notification.Type === "account_updated") {
+          console.log("account_updated");
+          dispatch(updateAccount(notification.Object));
+
+          return;
+        }
+
+        if (notification.Type === "feature_unaccessable") {
+          console.log("feature_unaccessable");
+          dispatch(setShowTariffModal(true));
+
           return;
         }
 

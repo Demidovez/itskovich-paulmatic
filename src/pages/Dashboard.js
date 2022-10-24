@@ -66,13 +66,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <Container className="" fluid>
-        <Row className="">
-          <Col className="py-4">
-            <DashBoardTabs data={dashboardStatsResponse.ByAccount} />
-          </Col>
-        </Row>
-      </Container>
+      <DashBoardTabs data={dashboardStatsResponse.ByAccount} />
       <DashBoardStatistics
         tasks={
           (

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { NavLink as NavLinkRRD, Link, useHistory } from "react-router-dom";
@@ -27,11 +27,25 @@ import {
 import { ROUTES } from "routes";
 import { setIsNeedSetEmailServer } from "store/slices/commonSlice";
 import { ReactComponent as UserIcon } from "../../assets/img/icons/common/user.svg";
+import { ReactComponent as BlockMenuItemIcon } from "../../assets/img/icons/common/lock.svg";
 import { getpath } from "utils/utils";
 import { BiLogOut } from "react-icons/bi";
 
 import "./Menu.scss";
 import ModalYouSure from "components/ModalYouSure/ModalYouSure";
+import { setShowTariffModal } from "store/slices/commonSlice";
+const basicLogo =
+  require("../../assets/img/icons/common/basic_white.svg").default;
+const professionalLogo =
+  require("../../assets/img/icons/common/professional_white.svg").default;
+const enterpriseLogo =
+  require("../../assets/img/icons/common/enterprise_white.svg").default;
+
+const LOGO = {
+  Basic: basicLogo,
+  Professional: professionalLogo,
+  Enterprise: enterpriseLogo,
+};
 
 const Menu = (props) => {
   const dispatch = useDispatch();
@@ -41,6 +55,12 @@ const Menu = (props) => {
   const [isAskSure, setIsAskSure] = useState(false);
 
   const account = useSelector((state) => state.common.Account);
+  const isAccessToB2B = useSelector(
+    (state) => state.common.Account.Tariff.FeatureAbilities.B2B
+  );
+  const currentTariff = useSelector(
+    (state) => state.common.Account.Tariff.Creds.Name
+  );
 
   const toggleCollapse = () => {
     setCollapseOpen((data) => !data);
@@ -50,10 +70,19 @@ const Menu = (props) => {
     setCollapseOpen(false);
   };
 
+  const showBlockedMessage = (e) => {
+    e.preventDefault();
+    dispatch(setShowTariffModal(true));
+  };
+
   const createLinks = (routes) => {
     return routes
       .filter((route) => route.position !== "user")
       .map((prop, key) => {
+        const thisIsB2B = prop.path.includes(ROUTES.b2b.path.replace("/", ""));
+        // const isBlocked = thisIsB2B && !isAccessToB2B; // TODO: вернуть обратно
+        const isBlocked = false; // TODO: удалить
+
         return (
           <NavItem key={key} id={"nav_item_" + prop.path.substring(1)}>
             <NavLink
@@ -61,9 +90,16 @@ const Menu = (props) => {
               tag={NavLinkRRD}
               onClick={closeCollapse}
               activeClassName="active"
-              className="pl-lg-3 pr-lg-3 pl-sm-2 pr-sm-2 nav-link-menu"
-              // className="h-100 d-flex justify-content-center align-items-center align-content-center"
+              className={`pl-lg-3 pr-lg-3 pl-sm-2 pr-sm-2 nav-link-menu`}
             >
+              {isBlocked ? (
+                <div className="block-nav" onClick={showBlockedMessage}>
+                  <BlockMenuItemIcon
+                    fill="#2ecc71"
+                    style={{ width: 30, height: 30 }}
+                  />
+                </div>
+              ) : null}
               <i
                 className={`${prop.icon} pr-lg-2 pr-md-0 ml--2 ml-md-0 mt--1`}
               />
@@ -114,11 +150,7 @@ const Menu = (props) => {
       <Link
         to={"/admin" + getpath(ROUTES.index.path)}
         style={{
-          backgroundImage:
-            "url(" +
-            require("../../assets/img/icons/common/enterprise_white.svg")
-              .default +
-            ")",
+          backgroundImage: "url(" + (LOGO[currentTariff] || basicLogo) + ")",
           backgroundSize: "cover",
           backgroundPosition: "center top",
           height: "4.5rem",

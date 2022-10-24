@@ -18,11 +18,11 @@ import ModalEmailSettings from "components/ModalEmailSettings/ModalEmailSettings
 import { useSelector } from "react-redux";
 import { setIsNeedSetEmailServer } from "store/slices/commonSlice";
 import { ROUTES } from "routes";
-import useRoutes from "hooks/useRoutes";
 import { getpath } from "utils/utils";
+import { setShowTariffModal } from "store/slices/commonSlice";
+import ModalTariff from "components/ModalTariff/ModalTariff";
 
 const Admin = (props) => {
-  // const routes = useRoutes();
   const mainContent = React.useRef(null);
   const location = useLocation();
   const history = useHistory();
@@ -30,6 +30,9 @@ const Admin = (props) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const isNeedSetEmailServer = useSelector(
     (state) => state.common.isNeedSetEmailServer
+  );
+  const isShowedTariffModal = useSelector(
+    (state) => state.common.isShowedTariffModal
   );
 
   // const fetchCommon = useFetchCommon();
@@ -78,6 +81,10 @@ const Admin = (props) => {
     dispatch(setIsNeedSetEmailServer(false));
   };
 
+  const onCloseTariffModal = () => {
+    dispatch(setShowTariffModal(false));
+  };
+
   return (
     <>
       <Menu
@@ -100,7 +107,7 @@ const Admin = (props) => {
         theme="colored"
         position="bottom-right"
         hideProgressBar
-        autoClose={3000}
+        autoClose={15000}
         newestOnTop={false}
         closeOnClick={false}
         rtl={false}
@@ -112,6 +119,7 @@ const Admin = (props) => {
       {isNeedSetEmailServer && (
         <ModalEmailSettings onClose={onCloseModalEmailSettings} />
       )}
+      {isShowedTariffModal && <ModalTariff onClose={onCloseTariffModal} />}
     </>
   );
 };

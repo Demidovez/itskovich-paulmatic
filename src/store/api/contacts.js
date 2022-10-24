@@ -64,7 +64,7 @@ export const contactsApi = createApi({
         url: "/upload",
         method: "POST",
         body: file,
-        headers: getHeaders(),
+        headers: getHeaders({}, true),
       }),
       transformResponse: (response) => {
         if (response.result) {

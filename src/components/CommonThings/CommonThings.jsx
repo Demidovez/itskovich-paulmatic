@@ -25,6 +25,8 @@ import { setInMailSettingsStatus } from "store/slices/commonSlice";
 import { setAccountSettings } from "store/slices/commonSlice";
 import { ROUTES } from "routes";
 import { getpath } from "utils/utils";
+import { updateAccount } from "store/slices/commonSlice";
+import { setShowTariffModal } from "store/slices/commonSlice";
 
 const CommonThings = () => {
   const dispatch = useDispatch();
@@ -89,6 +91,20 @@ const CommonThings = () => {
             (location.pathname.includes("/inbox") &&
               activeChatId === notification.Object.Contact.id))
         ) {
+          return;
+        }
+
+        if (notification.Type === "account_updated") {
+          console.log("account_updated");
+          dispatch(updateAccount(notification.Object));
+
+          return;
+        }
+
+        if (notification.Type === "feature_unaccessable") {
+          console.log("feature_unaccessable");
+          dispatch(setShowTariffModal(true));
+
           return;
         }
 

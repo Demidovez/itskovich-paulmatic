@@ -34,6 +34,15 @@ const DEFAULT_FIELDS = [
     },
   },
   {
+    label: "Должность",
+    name: "Job",
+    style: {
+      width: "20%",
+      minWidth: "100px",
+      maxWidth: "400px",
+    },
+  },
+  {
     label: "E-mail",
     name: "email",
     style: {

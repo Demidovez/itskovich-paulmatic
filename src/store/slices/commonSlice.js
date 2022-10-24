@@ -5,6 +5,7 @@ const initialState = {
   interval: 15,
   isLoaded: false,
   isNeedSetEmailServer: false,
+  isShowedTariffModal: false,
   loader: {
     pages: {
       sequences: {
@@ -41,6 +42,7 @@ const initialState = {
       Creds: {
         Name: "",
       },
+      FeatureAbilities: {},
     },
   },
   AccountSettings: {
@@ -76,6 +78,9 @@ export const commonSlice = createSlice({
         ...action.payload,
         InMailSettings: (action.payload || {}).InMailSettings || null,
       };
+    },
+    updateAccount: (state, action) => {
+      state.Account = { ...state.Account, ...action.payload };
     },
     setLoaderStatus: (state, action) => {
       const page = action.payload.page;
@@ -348,6 +353,9 @@ export const commonSlice = createSlice({
 
       state.tariffs = tariffs;
     },
+    setShowTariffModal: (state, action) => {
+      state.isShowedTariffModal = action.payload;
+    },
   },
 });
 
@@ -371,6 +379,8 @@ export const {
   setAccountSettings,
   setIsNeedSetEmailServer,
   setTariffs,
+  setShowTariffModal,
+  updateAccount,
 } = commonSlice.actions;
 
 export default commonSlice.reducer;

@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { setActiveTabId } from "store/slices/dashboardSlice";
 import { useLazyGetDashboardStatsQuery } from "store/api/dashboard";
 import { setActiveAccountId } from "store/slices/dashboardSlice";
+import { Col, Container, Row } from "reactstrap";
 
 const DashBoardTabs = ({ className = "", data = {} }) => {
   const dispatch = useDispatch();
@@ -37,37 +38,47 @@ const DashBoardTabs = ({ className = "", data = {} }) => {
 
   return (
     <>
-      <div className="dashboard-tabs-component">
-        <div className={`${className} tabs`}>
-          {persons.map((person, index) => (
-            <Fragment key={index}>
-              <input
-                type="radio"
-                id={`radio-${index}`}
-                name="tabs"
-                checked={(activeAccountId || currentAccountId) === person.id}
-                onChange={() => dispatch(setActiveAccountId(person.id))}
-              />
-              <label
-                className={`tab ${
-                  (activeAccountId || currentAccountId) === person.id ||
-                  person.id === 0
-                    ? "active"
-                    : ""
-                }`}
-                htmlFor={`radio-${index}`}
-              >
-                {index === 0 ? (
-                  <BsFillStarFill style={{ marginRight: 5 }} />
-                ) : null}
-                <div>{person.label}</div>
-              </label>
-            </Fragment>
-          ))}
+      {(persons || []).length > 1 ? (
+        <Container className="" fluid>
+          <Row className="">
+            <Col className="py-4">
+              <div className="dashboard-tabs-component">
+                <div className={`${className} tabs`}>
+                  {persons.map((person, index) => (
+                    <Fragment key={index}>
+                      <input
+                        type="radio"
+                        id={`radio-${index}`}
+                        name="tabs"
+                        checked={
+                          (activeAccountId || currentAccountId) === person.id
+                        }
+                        onChange={() => dispatch(setActiveAccountId(person.id))}
+                      />
+                      <label
+                        className={`tab ${
+                          (activeAccountId || currentAccountId) === person.id ||
+                          person.id === 0
+                            ? "active"
+                            : ""
+                        }`}
+                        htmlFor={`radio-${index}`}
+                      >
+                        {index === 0 ? (
+                          <BsFillStarFill style={{ marginRight: 5 }} />
+                        ) : null}
+                        <div>{person.label}</div>
+                      </label>
+                    </Fragment>
+                  ))}
 
-          <span className="glider"></span>
-        </div>
-      </div>
+                  <span className="glider"></span>
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      ) : null}
     </>
   );
 };

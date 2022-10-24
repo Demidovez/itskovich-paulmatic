@@ -16,44 +16,31 @@ const DashboardTypesInteractions = ({
   const [all, setAll] = useState({
     completed: 0,
     replied: 0,
-    skipped: 0,
   });
 
   useEffect(() => {
-    if (tasks.Sequences.Total.completed) {
+    if (tasks.Sequences.Total.Values.completed) {
       setAll((all) => ({
         ...all,
-        completed: Object.values(tasks.Sequences.Total.completed).reduce(
+        completed: Object.values(tasks.Sequences.Total.Values.completed).reduce(
           (acc, val) => (acc += val),
           0
         ),
       }));
     }
-  }, [tasks.Sequences.Total.completed]);
+  }, [tasks.Sequences.Total.Values.completed]);
 
   useEffect(() => {
-    if (tasks.Sequences.Total.replied) {
+    if (tasks.Sequences.Total.Values.replied) {
       setAll((all) => ({
         ...all,
-        replied: Object.values(tasks.Sequences.Total.replied).reduce(
+        replied: Object.values(tasks.Sequences.Total.Values.replied).reduce(
           (acc, val) => (acc += val),
           0
         ),
       }));
     }
-  }, [tasks.Sequences.Total.replied]);
-
-  useEffect(() => {
-    if (tasks.Sequences.Total.skipped) {
-      setAll((all) => ({
-        ...all,
-        skipped: Object.values(tasks.Sequences.Total.skipped).reduce(
-          (acc, val) => (acc += val),
-          0
-        ),
-      }));
-    }
-  }, [tasks.Sequences.Total.skipped]);
+  }, [tasks.Sequences.Total.Values.replied]);
 
   const [activeType, setActiveType] = useState("completed");
 
@@ -83,14 +70,6 @@ const DashboardTypesInteractions = ({
             >
               Отвеченные
             </Button>
-            <Button
-              color="primary"
-              onClick={() => setActiveType("skipped")}
-              size="sm"
-              disabled={all.skipped === 0}
-            >
-              Пропущенные
-            </Button>
           </div>
         </Row>
       </CardHeader>
@@ -102,15 +81,15 @@ const DashboardTypesInteractions = ({
               (all[activeType] ? (task[type] || 0) / all[activeType] : 0) * 100
             );
 
-            console.log(all[activeType]);
-
             return (
               <tr key={type}>
                 <th scope="row">{data.Creds.Title}</th>
                 <td>{task[type]}</td>
                 <td>
                   <div className="d-flex align-items-center">
-                    <span className="mr-2">{progress}%</span>
+                    <span className="mr-2">
+                      <div style={{ minWidth: 33 }}>{progress}%</div>
+                    </span>
                     <div>
                       <Progress
                         max={100}
@@ -125,32 +104,6 @@ const DashboardTypesInteractions = ({
               </tr>
             );
           })}
-          {/* {Object.entries(
-            (tasks.Sequences.Total.Values || {})[activeType] || {}
-          ).map(([task, value]) => {
-            const progress = Math.round((value / all[activeType]) * 100);
-
-            return (
-              <tr key={task}>
-                <th scope="row">{task}</th>
-                <td>{value}</td>
-                <td>
-                  <div className="d-flex align-items-center">
-                    <span className="mr-2">{progress}%</span>
-                    <div>
-                      <Progress
-                        max={100}
-                        value={progress || 0}
-                        barClassName={
-                          CLASSES_PROGRESS[Math.floor(progress / 20) * 20]
-                        }
-                      />
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            );
-          })} */}
         </tbody>
       </Table>
     </Card>
