@@ -15,25 +15,68 @@ import { HiOutlineMail } from "react-icons/hi";
 import "./ProfileForm.scss";
 import { setIsNeedSetEmailServer } from "store/slices/commonSlice";
 import { useSelector } from "react-redux";
+import { useLazyTryUpdateQuery } from "store/api/login";
+import { useEffect, useState } from "react";
+import { updateAccount } from "store/slices/commonSlice";
 
 const NICKNAME_REGEX = /^[A-Za-z0-9_]+$/;
 
 const ProfileForm = ({ className = "" }) => {
   const dispatch = useDispatch();
-  const trySignUp = () => {};
+  const [resultError, setResultError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const resultError = "";
-  const isLoading = false;
+  const [tryUpdate, { data: updateAccountResponse, error, isFetching }] =
+    useLazyTryUpdateQuery();
+
+  useEffect(() => {
+    if (!isFetching && updateAccountResponse) {
+      if ((updateAccountResponse || {}).username) {
+        dispatch(
+          updateAccount({
+            ...updateAccountResponse,
+          })
+        );
+        // localStorage.setItem(
+        //   "Account",
+        //   JSON.stringify({
+        //     ...updateAccountResponse,
+        //   })
+        // );
+        setIsLoading(false);
+        setResultError("");
+      } else {
+        setResultError("Ошибка! Попробуйте еще раз... ");
+        setIsLoading(false);
+      }
+    } else if (isFetching) {
+      setIsLoading(true);
+    }
+  }, [updateAccountResponse, isFetching]);
+
+  useEffect(() => {
+    if (error && error.status !== 200) {
+      setResultError(
+        error &&
+          (error.data.message ||
+            error.data.error.message ||
+            "Ошибка! Попробуйте еще раз...")
+      );
+      setIsLoading(false);
+    } else {
+      setResultError("");
+    }
+  }, [JSON.stringify(error), isFetching]);
 
   const Account = useSelector((state) => state.common.Account || {});
 
   const formik = useFormik({
     initialValues: {
       username: Account.fullName || "",
-      nickname: "",
-      directorUsername: "",
+      nickname: Account.nickname || "",
+      directorUsername: Account.directorUsername || "",
       password: Account.password || "",
-      company: "",
+      company: Account.company || "",
       // agree: false,
     },
     enableReinitialize: true,
@@ -53,10 +96,10 @@ const ProfileForm = ({ className = "" }) => {
       // agree: Yup.boolean().oneOf([true], "Обязательное поле"),
     }),
     onSubmit: (values) => {
-      trySignUp({
+      tryUpdate({
         fullName: values.username,
         nickname: values.nickname,
-        // username: values.useremail,
+        username: Account.username,
         password: values.password,
         company: values.company,
         directorUsername: values.directorUsername,
@@ -228,17 +271,18 @@ const ProfileForm = ({ className = "" }) => {
                     </div>
                   </FormGroup>
                 </Form>
-                <div className="server-error">
-                  {resultError ? resultError : ""}
-                </div>
-                <div className="position-relative mt-4">
+                <div className="position-relative mt-4 d-flex align-items-center">
                   <Button
                     className=""
                     color="primary"
                     type="button"
                     onClick={formik.handleSubmit}
                     disabled={isLoading}
-                    style={{ background: "#f9b237", borderRadius: 40 }}
+                    style={{
+                      background: "#f9b237",
+                      borderRadius: 40,
+                      minWidth: 120,
+                    }}
                   >
                     {isLoading ? (
                       <Spinner color="white" size="sm" />
@@ -246,6 +290,9 @@ const ProfileForm = ({ className = "" }) => {
                       "Сохранить"
                     )}
                   </Button>
+                  <div className="server-error">
+                    {resultError ? resultError : ""}
+                  </div>
                 </div>
               </div>
             </div>

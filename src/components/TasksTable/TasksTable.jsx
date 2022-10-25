@@ -309,7 +309,8 @@ const TasksTable = () => {
                             <strong className="pr-1 ">
                               {task[field.name]}
                             </strong>{" "}
-                            - {task.Contact.name} - [#{task.id}]
+                            - {task.Contact.name}
+                            {/* - [#{task.id}] */}
                           </div>
                         </td>
                       );

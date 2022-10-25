@@ -28,6 +28,10 @@ const ModalCreateSequence = ({ onClose }) => {
   const { tryClose, tryForceClose, setIsChanged } = useYouSure(onClose);
 
   const dispatch = useDispatch();
+
+  const [resultError, setResultError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
   const sequenceResultData = useSelector((state) => state.sequenceMaster.data);
   const sequenceName = useSelector((state) => state.sequenceMaster.data.Name);
 
@@ -125,6 +129,7 @@ const ModalCreateSequence = ({ onClose }) => {
 
   const onSubmit = () => {
     createOrUpdateSequence(sequenceResultData);
+    console.log(sequenceResultData);
     setIsChanged(false);
     onClose();
   };

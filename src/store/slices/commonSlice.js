@@ -82,6 +82,9 @@ export const commonSlice = createSlice({
     updateAccount: (state, action) => {
       state.Account = { ...state.Account, ...action.payload };
     },
+    updatePayment: (state, action) => {
+      state.Account = state.Account;
+    },
     setLoaderStatus: (state, action) => {
       const page = action.payload.page;
       const part = action.payload.part;
@@ -381,6 +384,7 @@ export const {
   setTariffs,
   setShowTariffModal,
   updateAccount,
+  updatePayment,
 } = commonSlice.actions;
 
 export default commonSlice.reducer;

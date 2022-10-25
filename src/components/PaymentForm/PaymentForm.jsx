@@ -11,43 +11,104 @@ import {
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./PaymentForm.scss";
+import { useDispatch } from "react-redux";
+import { useLazyTryUpdatePaymentQuery } from "store/api/login";
+import { updatePayment } from "store/slices/commonSlice";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
-const NICKNAME_REGEX = /^[A-Za-z0-9_]+$/;
+const NAME_REGEX = /^[a-zA-Z\s]*$/;
 
 const PaymentForm = ({ className = "" }) => {
-  const trySignUp = () => {};
+  const dispatch = useDispatch();
+  const [resultError, setResultError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const resultError = "";
-  const isLoading = false;
+  const [tryUpdatePayment, { data: updatePaymentResponse, error, isFetching }] =
+    useLazyTryUpdatePaymentQuery();
+
+  useEffect(() => {
+    if (!isFetching && updatePaymentResponse) {
+      if ((updatePaymentResponse || {}).username) {
+        dispatch(
+          updatePayment({
+            ...updatePaymentResponse,
+          })
+        );
+        // localStorage.setItem(
+        //   "Account",
+        //   JSON.stringify({
+        //     ...updateAccountResponse,
+        //   })
+        // );
+        setIsLoading(false);
+        setResultError("");
+      } else {
+        setResultError("Ошибка! Попробуйте еще раз... ");
+        setIsLoading(false);
+      }
+    } else if (isFetching) {
+      console.log("asdasdasd");
+      setIsLoading(true);
+    }
+  }, [updatePaymentResponse, isFetching]);
+
+  useEffect(() => {
+    if (error && error.status !== 200) {
+      setResultError(
+        error &&
+          (error.data.message ||
+            error.data.error.message ||
+            "Ошибка! Попробуйте еще раз...")
+      );
+      setIsLoading(false);
+    } else {
+      setResultError("");
+    }
+  }, [JSON.stringify(error), isFetching]);
+
+  const Account = useSelector((state) => state.common.Account || {});
 
   const formik = useFormik({
     initialValues: {
-      username: "",
-      nickname: "",
-      useremail: "",
-      directorUsername: "",
-      password: "",
-      company: "",
-      // agree: false,
+      number: Account.number || "",
+      name: Account.name || "",
+      date: Account.date || "",
+      ccv: Account.ccv || "",
     },
+    enableReinitialize: true,
     validationSchema: Yup.object({
-      username: Yup.string().required("Обязательное поле"),
-      nickname: Yup.string().required("Обязательное поле"),
-      useremail: Yup.string().required("Обязательное поле"),
-      directorUsername: Yup.string().required("Обязательное поле"),
-      password: Yup.string().required("Обязательное поле"),
-      company: Yup.string().required("Обязательное поле"),
-      // agree: Yup.boolean().oneOf([true], "Обязательное поле"),
+      number: Yup.number()
+        .test(
+          "len",
+          "Требуется 16 цифр",
+          (val) => val && val.toString().length === 16
+        )
+        .integer("Требуется целое число")
+        .typeError("Требуется число")
+        .required("Обязательное поле"),
+      name: Yup.string()
+        .matches(NAME_REGEX, "Допускаются только буквы латинского алфавита")
+        .required("Обязательное поле"),
+      date: Yup.string().required("Обязательное поле"),
+      ccv: Yup.number()
+        .test(
+          "len",
+          "Требуется трехзначное число",
+          (val) => val && val.toString().length === 3
+        )
+        .integer("Требуется целое число")
+        .typeError("Требуется число")
+        .required("Обязательное поле"),
     }),
     onSubmit: (values) => {
-      trySignUp({
-        fullName: values.username,
-        nickname: values.nickname,
-        username: values.useremail,
-        password: values.password,
-        company: values.company,
-        directorUsername: values.directorUsername,
+      tryUpdatePayment({
+        number: values.number,
+        name: values.name,
+        date: values.date,
+        ccv: +values.ccv,
       });
+      setResultError("");
     },
   });
 
@@ -89,7 +150,7 @@ const PaymentForm = ({ className = "" }) => {
                 >
                   <FormGroup
                     className={`field-wrapper ${
-                      formik.touched.username && formik.errors.username
+                      formik.touched.name && formik.errors.name
                         ? "has-error"
                         : ""
                     } mb-3`}
@@ -98,23 +159,23 @@ const PaymentForm = ({ className = "" }) => {
                     <Input
                       placeholder="Имя владельца карты"
                       type="text"
-                      name="username"
+                      name="name"
                       autoComplete="name"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      value={formik.values.username}
+                      value={formik.values.name.toUpperCase()}
                       className="py-2"
                     />
 
                     <div className="field-error">
-                      {formik.touched.username && formik.errors.username
-                        ? formik.errors.username
+                      {formik.touched.name && formik.errors.name
+                        ? formik.errors.name
                         : " "}
                     </div>
                   </FormGroup>
                   <FormGroup
                     className={`field-wrapper ${
-                      formik.touched.nickname && formik.errors.nickname
+                      formik.touched.number && formik.errors.number
                         ? "has-error"
                         : ""
                     } mb-3`}
@@ -123,17 +184,17 @@ const PaymentForm = ({ className = "" }) => {
                     <Input
                       placeholder="Номер карты"
                       type="text"
-                      name="nickname"
+                      name="number"
                       autoComplete="name"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      value={formik.values.nickname}
+                      value={formik.values.number}
                       className="py-2"
                     />
 
                     <div className="field-error">
-                      {formik.touched.nickname && formik.errors.nickname
-                        ? formik.errors.nickname
+                      {formik.touched.number && formik.errors.number
+                        ? formik.errors.number
                         : " "}
                     </div>
                   </FormGroup>
@@ -143,7 +204,7 @@ const PaymentForm = ({ className = "" }) => {
                   >
                     <FormGroup
                       className={`field-wrapper ${
-                        formik.touched.useremail && formik.errors.useremail
+                        formik.touched.date && formik.errors.date
                           ? "has-error"
                           : ""
                       } mb-3 flex-fill`}
@@ -152,22 +213,22 @@ const PaymentForm = ({ className = "" }) => {
                       <Input
                         placeholder="Срок действия"
                         type="text"
-                        name="useremail"
+                        name="date"
                         autoComplete="email"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        value={formik.values.useremail}
+                        value={formik.values.date}
                       />
 
                       <div className="field-error">
-                        {formik.touched.useremail && formik.errors.useremail
-                          ? formik.errors.useremail
+                        {formik.touched.date && formik.errors.date
+                          ? formik.errors.date
                           : ""}
                       </div>
                     </FormGroup>
                     <FormGroup
                       className={`field-wrapper ${
-                        formik.touched.password && formik.errors.password
+                        formik.touched.ccv && formik.errors.ccv
                           ? "has-error"
                           : ""
                       } mb-3 flex-fill`}
@@ -176,32 +237,36 @@ const PaymentForm = ({ className = "" }) => {
                       <Input
                         placeholder="CCV"
                         type="password"
-                        name="password"
+                        name="ccv"
                         autoComplete="new-password"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        value={formik.values.password}
+                        value={formik.values.ccv}
                       />
 
                       <div className="field-error">
-                        {formik.touched.password && formik.errors.password
-                          ? formik.errors.password
+                        {formik.touched.ccv && formik.errors.ccv
+                          ? formik.errors.ccv
                           : ""}
                       </div>
                     </FormGroup>
                   </div>
                 </Form>
-                <div className="server-error">
-                  {resultError ? resultError : ""}
-                </div>
-                <div className="position-relative mt-4 d-flex justify-content-end">
+                <div className="position-relative mt-4 d-flex justify-content-end align-items-center">
+                  <div className="server-error">
+                    {resultError ? resultError : ""}
+                  </div>
                   <Button
                     className=""
                     color="primary"
                     type="button"
                     onClick={formik.handleSubmit}
                     disabled={isLoading}
-                    style={{ background: "#4450ff", borderRadius: 40 }}
+                    style={{
+                      background: "#4450ff",
+                      borderRadius: 40,
+                      minWidth: 120,
+                    }}
                   >
                     {isLoading ? (
                       <Spinner color="white" size="sm" />

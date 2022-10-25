@@ -36,6 +36,24 @@ export const loginApi = createApi({
       }),
       transformResponse: (response) => response.result,
     }),
+    tryUpdate: builder.query({
+      query: (body) => ({
+        url: "/update",
+        method: "POST",
+        body: body,
+        headers: getHeaders(),
+      }),
+      transformResponse: (response) => response.result,
+    }),
+    tryUpdatePayment: builder.query({
+      query: (body) => ({
+        url: "/update_payment",
+        method: "POST",
+        body: body,
+        headers: getHeaders(),
+      }),
+      transformResponse: (response) => response.result,
+    }),
   }),
 });
 
@@ -43,4 +61,6 @@ export const {
   useLazyTrySignUpQuery,
   useLazyTryLognInQuery,
   useLazyTrySaveEmailServerQuery,
+  useLazyTryUpdateQuery,
+  useLazyTryUpdatePaymentQuery,
 } = loginApi;
