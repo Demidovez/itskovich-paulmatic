@@ -219,6 +219,7 @@ const TaskModalManualEmail = ({
                 }
               />
             </div>
+
             <EditorEmail
               files={attachedFiles}
               content={emailBody}
@@ -260,6 +261,7 @@ const TaskModalManualEmail = ({
               <Button
                 color="primary"
                 type="button"
+                disabled={currentTask.Body === ""}
                 onClick={() =>
                   onEvent(onExecute, {
                     task: currentTask,

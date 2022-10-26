@@ -27,6 +27,7 @@ import { ROUTES } from "routes";
 import { getpath } from "utils/utils";
 import { updateAccount } from "store/slices/commonSlice";
 import { setShowTariffModal } from "store/slices/commonSlice";
+import { updateChatByOneMessageHiddenly } from "store/slices/commonSlice";
 
 const CommonThings = () => {
   const dispatch = useDispatch();
@@ -104,6 +105,13 @@ const CommonThings = () => {
         if (notification.Type === "feature_unaccessable") {
           console.log("feature_unaccessable");
           dispatch(setShowTariffModal(true));
+
+          return;
+        }
+
+        if (notification.Type === "chat_msg_updated") {
+          console.log("chat_msg_updated");
+          dispatch(updateChatByOneMessageHiddenly(notification.Object));
 
           return;
         }

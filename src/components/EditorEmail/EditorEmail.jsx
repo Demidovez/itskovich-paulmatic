@@ -54,13 +54,26 @@ const EditorEmail = ({
     editorRef.current.execCommand("InsertImage", false, imageBase64);
   };
 
+  console.log(data, content);
+
   return (
     <>
       <Editor
         tinymceScriptSrc={process.env.PUBLIC_URL + "/tinymce/tinymce.min.js"}
         onInit={(evt, editor) => (editorRef.current = editor)}
-        onEditorChange={(content) => onChange(content)}
-        initialValue={data}
+        onEditorChange={(value) => {
+          const contentCleared = content
+            .replace(/(<([^>]+)>)/gi, "")
+            .replace("\n", "");
+          const valueCleared = value
+            .replace(/(<([^>]+)>)/gi, "")
+            .replace("\n", "");
+
+          if (contentCleared !== valueCleared) {
+            onChange(value);
+          }
+        }}
+        initialValue={data || content || ""}
         // value={data}
         disabled={disabled}
         init={{

@@ -15,7 +15,7 @@ const TasksBarStatsByType = () => {
           {[...Object.values(Types)]
             .sort((t1, t2) => t1.Order - t2.Order)
             .map((type) => (
-              <div className="col" key={type.Creds.Name}>
+              <div className="col" key={type.Creds.Name || type.Creds.Title}>
                 <CardTitle
                   tag="h5"
                   className="text-uppercase text-muted mb-0 text-nowrap"
@@ -23,7 +23,7 @@ const TasksBarStatsByType = () => {
                   {type.Creds.Title}
                 </CardTitle>
                 <span className="h2 font-weight-bold mb-0">
-                  {ByType[type.Creds.Name]}
+                  {ByType[type.Creds.Name] || 0}
                 </span>
               </div>
             ))}

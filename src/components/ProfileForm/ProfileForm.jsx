@@ -144,7 +144,12 @@ const ProfileForm = ({ className = "" }) => {
                         onClick={() => dispatch(setIsNeedSetEmailServer(true))}
                       >
                         <HiOutlineMail size="1.3rem" color="white" />
-                        <span className="text-white m-0">Изменить</span>
+                        <span
+                          className="text-white m-0"
+                          style={{ whiteSpace: "nowrap" }}
+                        >
+                          Настроить почту
+                        </span>
                       </Button>
                     </div>
                   </FormGroup>

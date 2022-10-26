@@ -3,6 +3,7 @@ import ChatViewCard from "components/ChatViewCard/ChatViewCard";
 import "./ChatView.scss";
 import ChatViewInfoCard from "components/ChatViewInfoCard/ChatViewInfoCard";
 import { useSelector } from "react-redux";
+import ChatViewCardTaskType from "components/ChatViewCardTaskType/ChatViewCardTaskType";
 
 const ChatView = ({ className, chat = { Msgs: [] } }) => {
   const botRef = useRef(null);
@@ -29,8 +30,15 @@ const ChatView = ({ className, chat = { Msgs: [] } }) => {
                       message={message}
                       isSearched={searchedMessageId === message.id}
                     />
-                  ) : chat.Msgs.length === 1 ? (
+                  ) : null}
+                  {message.Contact ? null : chat.Msgs.length === 1 ? (
                     <ChatViewInfoCard message={message} />
+                  ) : null}
+                  {message.TaskType ? (
+                    <ChatViewCardTaskType
+                      message={message}
+                      isSearched={searchedMessageId === message.id}
+                    />
                   ) : null}
                 </Fragment>
               ))

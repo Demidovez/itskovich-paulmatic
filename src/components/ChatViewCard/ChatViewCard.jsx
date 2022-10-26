@@ -3,6 +3,7 @@ import { Card, CardBody, CardHeader } from "reactstrap";
 import parse from "html-react-parser";
 import { Element, scroller } from "react-scroll";
 import { useEffect, useRef, useState } from "react";
+import { MdDone, MdDoneAll } from "react-icons/md";
 
 const ChatViewCard = ({ message, isSearched }) => {
   useEffect(() => {
@@ -34,8 +35,11 @@ const ChatViewCard = ({ message, isSearched }) => {
             <div className="pl-2 message-user pr-4">
               {(message.Contact || {}).name || ""}
             </div>
-            <div className="pr-2 message-time">
-              {moment(message.Time).format("DD MMM yy HH:mm")}
+            <div className="d-flex align-items-center">
+              <div className="pr-2 message-time" style={{ paddingTop: 2 }}>
+                {moment(message.Time).format("DD MMM yy HH:mm")}
+              </div>
+              {message.Opened ? <MdDoneAll color="green" /> : <MdDone />}
             </div>
           </CardHeader>
           <CardBody className="pt-2 pb-2 pl-3 pr-3 message-text">

@@ -6,7 +6,13 @@ import { ImLinkedin } from "react-icons/im";
 import { MdEmail } from "react-icons/md";
 import { FaTelegramPlane } from "react-icons/fa";
 
-const TypeIcon = ({ type, size = "1rem", className = "", inverse = false }) => {
+const TypeIcon = ({
+  type,
+  size = "1rem",
+  className = "",
+  inverse = false,
+  style = {},
+}) => {
   let Icon;
   let color;
 
@@ -39,7 +45,7 @@ const TypeIcon = ({ type, size = "1rem", className = "", inverse = false }) => {
 
   return (
     <div
-      style={{ background: inverse ? "none" : color }}
+      style={{ background: inverse ? "none" : color, ...style }}
       className={`${className}`}
     >
       <Icon size={size} color={inverse ? color : "white"} />

@@ -3,6 +3,7 @@ import React, { createRef, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveChatId } from "store/slices/inboxSlice";
 import { Element, scroller } from "react-scroll";
+import { MdDone, MdDoneAll } from "react-icons/md";
 import "./ChatsListBar.scss";
 
 const ChatsListBar = ({ className = "" }) => {
@@ -73,10 +74,17 @@ const ChatsListBar = ({ className = "" }) => {
             >
               <div className="d-flex justify-content-between align-items-center mb-1">
                 <div className="chat-user">{chat.Contact.name}</div>
-                <div className="chat-time">
+                <div className="chat-time d-flex align-items-center">
                   {moment(chat.Msgs.slice(-1)[0].Time).format(
                     "DD MMM yy HH:mm"
                   )}
+                  <span className="pl-2" style={{ marginTop: -4 }}>
+                    {chat.Msgs.slice(-1)[0].Opened ? (
+                      <MdDoneAll size="1.0rem" />
+                    ) : (
+                      <MdDone size="1.0rem" />
+                    )}
+                  </span>
                 </div>
               </div>
               <div className="chat-preview">

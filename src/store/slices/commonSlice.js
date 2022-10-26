@@ -178,6 +178,33 @@ export const commonSlice = createSlice({
 
       state.Chats.ModifiedTime = new Date().getTime();
     },
+    updateChatByOneMessageHiddenly: (state, action) => {
+      const chatId = action.payload.ChatId;
+
+      state.Chats.Chats = state.Chats.Chats.map((chat) =>
+        chat.Contact.id === chatId
+          ? {
+              ...chat,
+              Msgs: chat.Msgs.map((message) =>
+                message.id ? message : { ...message, ...action.payload }
+              ),
+            }
+          : chat
+      );
+
+      state.Chats.Chats = [...state.Chats.Chats].sort(
+        (c1, c2) =>
+          moment(c2.Msgs.slice(-1)[0].Time) - moment(c1.Msgs.slice(-1)[0].Time)
+      );
+
+      if (chatId === state.Chats.ActiveChat.Contact.id) {
+        state.Chats.ActiveChat =
+          state.Chats.Chats.find((chat) => chat.Contact.id === chatId) ||
+          state.Chats.ActiveChat;
+      }
+
+      state.Chats.ModifiedTime = new Date().getTime();
+    },
     updateChatByOneMessageFromServer: (state, action) => {
       const chatId = action.payload.ChatId;
 
@@ -372,6 +399,7 @@ export const {
   setFolders,
   setChats,
   updateChatByOneMessage,
+  updateChatByOneMessageHiddenly,
   updateChatByOneMessageFromServer,
   updateChatByAllMessagesFromServer,
   updateChatByNotification,
