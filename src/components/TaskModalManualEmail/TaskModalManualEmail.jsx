@@ -24,6 +24,12 @@ const TaskModalManualEmail = ({
     setCurrentTask(task);
   };
 
+  // useEffect(() => {
+  //   if ((task || {}).Body) {
+  //     setCurrentTask((currTask) => ({ ...currTask, Body: task.Body }));
+  //   }
+  // }, [(task || {}).Body]);
+
   const onEvent = (callback, data) => {
     if (data.task) {
       callback(data.task, data.toastMessage);
@@ -57,6 +63,7 @@ const TaskModalManualEmail = ({
       },
     });
 
+    setCurrentTask((currTask) => ({ ...currTask, Body: injectedEmailBody }));
     setEmailBody(injectedEmailBody);
   }, [task.Body, emailTemplates, account]);
 
