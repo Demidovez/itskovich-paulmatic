@@ -51,14 +51,23 @@ const ChatViewCardTaskType = ({ message, isSearched }) => {
         }`}
       >
         <Card className={`shadow`} style={{ maxWidth: "80%" }}>
-          <div className="pr-2 message-time text-center">
-            {moment(message.Time).format("DD MMM yy HH:mm")}
-          </div>
+          <CardHeader className="pt-0 pb-0 pl-2 pr-2 d-flex justify-content-between align-items-center">
+            <div className="d-flex align-items-center">
+              <div className="pl-2 message-user pr-3">
+                {message.My ? "Вы" : (message.Contact || {}).name || ""}
+              </div>
+              <TypeIcon
+                type={message.TaskType || "auto_email"}
+                className="d-flex align-items-center justify-content-center type-icon mr-3 shadow"
+              />
+            </div>
+            <div className="d-flex align-items-center">
+              <div className="pr-2 message-time" style={{ paddingTop: 2 }}>
+                {moment(message.Time).format("DD MMM yy HH:mm")}
+              </div>
+            </div>
+          </CardHeader>
           <CardBody className="pt-2 pb-2 pl-3 pr-3 message-text d-flex align-items-center">
-            <TypeIcon
-              type={message.TaskType || "telegram"}
-              className="d-flex align-items-center justify-content-center type-icon mr-3 shadow"
-            />
             <div>{parse(message.Body)}</div>
           </CardBody>
         </Card>

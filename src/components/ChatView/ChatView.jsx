@@ -26,20 +26,21 @@ const ChatView = ({ className, chat = { Msgs: [] } }) => {
               .map((message) => (
                 <Fragment key={message.Time}>
                   {message.Contact ? (
-                    <ChatViewCard
-                      message={message}
-                      isSearched={searchedMessageId === message.id}
-                    />
-                  ) : null}
-                  {message.Contact ? null : chat.Msgs.length === 1 ? (
+                    message.TaskType ? (
+                      <ChatViewCardTaskType
+                        message={message}
+                        isSearched={searchedMessageId === message.id}
+                      />
+                    ) : (
+                      <ChatViewCard
+                        message={message}
+                        isSearched={searchedMessageId === message.id}
+                      />
+                    )
+                  ) : (
                     <ChatViewInfoCard message={message} />
-                  ) : null}
-                  {message.TaskType ? (
-                    <ChatViewCardTaskType
-                      message={message}
-                      isSearched={searchedMessageId === message.id}
-                    />
-                  ) : null}
+                  )}
+                  {}
                 </Fragment>
               ))
           ) : (

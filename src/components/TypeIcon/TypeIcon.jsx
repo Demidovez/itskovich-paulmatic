@@ -26,6 +26,7 @@ const TypeIcon = ({
       color = "#3f7fab";
       break;
     case "manual_email":
+    case "auto_email":
     case "mail":
       Icon = MdEmail;
       color = "#2a58fc";

@@ -16,7 +16,18 @@ const EditorEmail = ({
   placeholder,
 }) => {
   const [addedImagesId, setAdedImagesId] = useState([]);
-  const data = useMemo(() => template || content, [template]);
+  const data = useMemo(
+    () => template || content,
+    [template, content.length > 0]
+  );
+
+  useEffect(() => {
+    if (editorRef.current && content.length > 0) {
+      editorRef.current.setContent(content);
+      editorRef.current.selection.select(editorRef.current.getBody(), true);
+      editorRef.current.selection.collapse(false);
+    }
+  }, [content.length > 0, editorRef]);
 
   useEffect(() => {
     if (editorRef.current && content === "") {
@@ -54,8 +65,6 @@ const EditorEmail = ({
     editorRef.current.execCommand("InsertImage", false, imageBase64);
   };
 
-  console.log(data, content);
-
   return (
     <>
       <Editor
@@ -73,7 +82,7 @@ const EditorEmail = ({
             onChange(value);
           }
         }}
-        initialValue={data || content || ""}
+        initialValue={data || ""}
         // value={data}
         disabled={disabled}
         init={{

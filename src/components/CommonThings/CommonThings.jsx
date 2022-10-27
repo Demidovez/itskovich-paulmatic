@@ -112,8 +112,6 @@ const CommonThings = () => {
         if (notification.Type === "chat_msg_updated") {
           console.log("chat_msg_updated");
           dispatch(updateChatByOneMessageHiddenly(notification.Object));
-
-          return;
         }
 
         toast(
