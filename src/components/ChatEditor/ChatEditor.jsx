@@ -12,9 +12,14 @@ const ChatEditor = ({ className, sendMessage, chat = {} }) => {
   const [message, setMessage] = useState("");
   const [activeTemplate, setActiveTemplate] = useState("");
   const [tamplatesList, setTamplatesList] = useState([]);
+  const [attachedFiles, setAttachedFiles] = useState([]);
 
   const templates = useSelector((state) => state.common.Templates.Marketplace);
   const Account = useSelector((state) => state.common.Account);
+
+  useEffect(() => {
+    console.log(attachedFiles);
+  }, [attachedFiles.length]);
 
   useEffect(() => {
     templates &&
@@ -27,7 +32,11 @@ const ChatEditor = ({ className, sendMessage, chat = {} }) => {
   }, [templates]);
 
   const onSendMessage = () => {
-    sendMessage(message);
+    sendMessage(
+      message,
+      attachedFiles.map(({ lastModified, ...rest }) => rest)
+    );
+    setAttachedFiles([]);
     setMessage("");
   };
 
@@ -65,7 +74,7 @@ const ChatEditor = ({ className, sendMessage, chat = {} }) => {
         className={`chat-editor-component flex-fill d-flex flex-column pb-0 ${className}`}
       >
         <div
-          className="mt-2 ml-3 mb-0 d-flex justify-content-between"
+          className="mt-2 ml-3 mb-0 d-flex justify-content-between align-items-center"
           style={{ zIndex: 100 }}
         >
           <div className="d-flex">
@@ -77,7 +86,18 @@ const ChatEditor = ({ className, sendMessage, chat = {} }) => {
               items={tamplatesList.map((template) => template.name)}
               onSelect={(name) => selectAvtiveTemplate(templates[name])}
             />
-            {/* <AttachFilesToChat className="editor-btn" /> */}
+            <AttachFilesToChat
+              className="editor-btn"
+              isEmpty={attachedFiles.length === 0}
+              onFileDeattach={(lastModified) =>
+                setAttachedFiles((files) =>
+                  files.filter((file) => file.lastModified !== lastModified)
+                )
+              }
+              onFileAttached={(file) =>
+                setAttachedFiles((files) => [...files, file])
+              }
+            />
           </div>
           <Button
             color="primary"

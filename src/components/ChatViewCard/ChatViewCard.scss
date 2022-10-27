@@ -1,0 +1,45 @@
+.chat-view-card-component {
+  .files {
+    display: flex;
+
+    & > a {
+      padding: 10px 20px 10px 10px;
+      border-radius: 8px;
+      border: 1px solid rgb(239, 239, 239);
+      margin-right: 14px;
+      margin-bottom: 7px;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: gray;
+
+      span {
+        font-size: 12px;
+      }
+
+      & > div {
+        width: 40px;
+        height: 40px;
+        background-color: rgb(218, 218, 218);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease-in-out;
+        color: gray;
+      }
+
+      &:hover {
+        // background-color: var(--primary);
+        // color: white;
+
+        & > div {
+          background-color: var(--primary);
+          color: white;
+        }
+      }
+    }
+  }
+}

@@ -1,11 +1,13 @@
 import moment from "moment/moment";
-import { Card, CardBody, CardHeader } from "reactstrap";
+import { Card, CardBody, CardFooter, CardHeader } from "reactstrap";
 import parse from "html-react-parser";
 import { Element, scroller } from "react-scroll";
 import { useEffect, useRef, useState } from "react";
 import { MdDone, MdDoneAll } from "react-icons/md";
+import { BsDownload } from "react-icons/bs";
+import "./ChatViewCard.scss";
 
-const ChatViewCard = ({ message, isSearched }) => {
+const ChatViewCard = ({ message, isSearched, isLast }) => {
   useEffect(() => {
     if (isSearched) {
       scroller.scrollTo("message_searched", {
@@ -23,7 +25,9 @@ const ChatViewCard = ({ message, isSearched }) => {
     <Element
       key={message.Time}
       name={`message_${isSearched ? "searched" : "simple"}`}
-      className={`chat-message-wrapper ${isSearched ? "searched-message" : ""}`}
+      className={`chat-message-wrapper ${
+        isSearched ? "searched-message" : ""
+      } chat-view-card-component`}
     >
       <div
         className={`chat-message d-flex ${
@@ -44,6 +48,35 @@ const ChatViewCard = ({ message, isSearched }) => {
           </CardHeader>
           <CardBody className="pt-2 pb-2 pl-3 pr-3 message-text">
             {parse(message.Body)}
+            {isLast ? (
+              <div className="files">
+                {[
+                  {
+                    Name: "Ананас.jpg",
+                    Content:
+                      "https://petapixel.com/assets/uploads/2022/07/DALLEcopy.jpg",
+                  },
+                  {
+                    Name: "Картинка.jpg",
+                    Content:
+                      "https://static.vecteezy.com/packs/media/vectors/term-bg-1-666de2d9.jpg",
+                  },
+                ].map((file, index) => (
+                  <a
+                    href={file.Content}
+                    target="_blank"
+                    key={index}
+                    onClick={() => {}}
+                    className=""
+                  >
+                    <div>
+                      <BsDownload />
+                    </div>
+                    <span>{file.Name}</span>
+                  </a>
+                ))}
+              </div>
+            ) : null}
           </CardBody>
         </Card>
       </div>

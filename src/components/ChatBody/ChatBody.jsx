@@ -46,10 +46,11 @@ const ChatBody = () => {
     }
   }, [activeChatId]);
 
-  const sendMessage = (message) => {
+  const sendMessage = (message, attachedFiles) => {
     sendMessageToServer({
       ChatId: activeChatId,
       Body: message,
+      Attachments: attachedFiles,
     });
 
     dispatch(
