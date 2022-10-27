@@ -24,6 +24,7 @@ const ChatBody = () => {
   const activeChatId = useSelector((state) => state.inbox.activeChatId);
 
   const chats = useSelector((state) => state.common.Chats.Chats);
+  const ModifiedTime = useSelector((state) => state.common.Chats.ModifiedTime);
   const activeChat = useSelector((state) => state.common.Chats.ActiveChat);
 
   const [sendMessageToServer, { data: messageFromServer }] =
@@ -35,7 +36,7 @@ const ChatBody = () => {
     } else {
       setChat(chats.find((chat) => chat.Contact.id === activeChatId));
     }
-  }, [chats, activeChat, activeChatId]);
+  }, [chats, activeChat, activeChatId, ModifiedTime]);
 
   useEffect(() => {
     if (activeChatId >= 0) {
