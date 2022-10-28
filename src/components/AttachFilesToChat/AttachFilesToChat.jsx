@@ -20,10 +20,10 @@ const AttachFilesToChat = ({
     }
   }, [isEmpty]);
 
+  console.log(files);
+
   const onInputFile = async (e) => {
     const file = e.target.files[0];
-
-    console.log(file.size / 1024 / 1024);
 
     if (file.size / 1024 / 1024 > 50) {
       toast.error(`Файл слишком большой! Максимум 50 МБ`);
@@ -37,6 +37,8 @@ const AttachFilesToChat = ({
         ContentBase64: await fileToBase64(file),
       });
     }
+
+    e.target.value = "";
   };
 
   const onUploadFile = () => {

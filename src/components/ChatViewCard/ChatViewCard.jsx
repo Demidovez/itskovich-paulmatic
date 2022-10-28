@@ -59,7 +59,7 @@ const ChatViewCard = ({ message, isSearched }) => {
               <div className="files">
                 {message.Attachments.map((file, index) => (
                   <a
-                    href={file.Content}
+                    href={file.ContentBase64}
                     target="_blank"
                     key={index}
                     onClick={() => {}}
