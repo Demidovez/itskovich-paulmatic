@@ -47,7 +47,9 @@ const ChatViewCard = ({ message, isSearched, isLast }) => {
             </div>
           </CardHeader>
           <CardBody className="pt-2 pb-2 pl-3 pr-3 message-text">
-            {parse(message.Body)}
+            {parse(
+              (message.Body || "").replace(/\<body[^>]*\>([^]*)\<\/body/m, "")
+            )}
             {isLast ? (
               <div className="files">
                 {[

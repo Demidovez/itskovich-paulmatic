@@ -68,7 +68,13 @@ const ChatViewCardTaskType = ({ message, isSearched }) => {
             </div>
           </CardHeader>
           <CardBody className="pt-2 pb-2 pl-3 pr-3 message-text d-flex align-items-center">
-            <div>{parse(message.Body)}</div>
+            <div>
+              {parse(
+                (message.Body || "")
+                  .replace("<body>", "")
+                  .replace("</body>", "")
+              )}
+            </div>
           </CardBody>
         </Card>
       </div>
