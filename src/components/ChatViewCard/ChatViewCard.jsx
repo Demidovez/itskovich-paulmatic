@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { MdDone, MdDoneAll } from "react-icons/md";
 import { BsDownload } from "react-icons/bs";
 import "./ChatViewCard.scss";
+import { getServerUrl } from "store/api/server";
 
 const ChatViewCard = ({ message, isSearched }) => {
   useEffect(() => {
@@ -59,11 +60,12 @@ const ChatViewCard = ({ message, isSearched }) => {
               <div className="files">
                 {message.Attachments.map((file, index) => (
                   <a
-                    href={file.ContentBase64}
+                    href={getServerUrl("getFile?key=") + file.ContentBase64}
                     target="_blank"
                     key={index}
                     onClick={() => {}}
                     className=""
+                    download={file.Name}
                   >
                     <div>
                       <BsDownload />
