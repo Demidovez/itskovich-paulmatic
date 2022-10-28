@@ -72,7 +72,7 @@ const Tasks = () => {
                     onChange={onSelectAllTasks}
                   />
                 </Col>
-                <Col md={6} className="d-flex justify-content-end">
+                {/* <Col md={6} className="d-flex justify-content-end">
                   <div className="d-flex align-items-center">
                     <i
                       className="fas fa-history pr-2"
@@ -80,7 +80,7 @@ const Tasks = () => {
                     ></i>
                     <TaskSort />
                   </div>
-                </Col>
+                </Col> */}
               </Row>
             </CardHeader>
             <TasksTable />
