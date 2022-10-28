@@ -11,7 +11,7 @@ const serverUrls = {
 export function getServerUrl(category) {
   const protocol = window.location.protocol.replace(":", "");
 
-  return serverUrls.remote[protocol] + "/" + category;
+  return serverUrls.local.dev + "/" + category;
 }
 
 export function getHeaders(additinalHeaders, isFile = false) {

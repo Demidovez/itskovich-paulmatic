@@ -218,7 +218,7 @@ const B2InfoTable = ({
         </Table>
 
         {((data || cacheTables[info.name] || {}).Items || {}).length === 0 && (
-          <p className="message">Не найдено :(</p>
+          <p className="message">По вашему запросу результаты не найдены</p>
         )}
       </div>
       <CardFooter

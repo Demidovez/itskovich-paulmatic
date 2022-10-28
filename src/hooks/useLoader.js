@@ -1,6 +1,6 @@
 const { useState, useEffect } = require("react");
 
-const useLoader = (isLoading, loaderTime = 500) => {
+const useLoader = (isLoading, loaderTime = 300) => {
   const [isShowLoader, setIsShowLoader] = useState(isLoading);
   const [isCanDone, setIsCanDone] = useState(false);
 

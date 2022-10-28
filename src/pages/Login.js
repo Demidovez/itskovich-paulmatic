@@ -7,11 +7,11 @@ const Login = () => {
   return (
     <>
       <div>
-        <h2>Авторизация</h2>
+        <h2>Вход</h2>
         {/* <p>Введите свой адрес электронной почты и пароль для авторизации</p> */}
         <LoginForm />
         <p className="text-center mt-3">
-          Нету аккаунта?
+          У Вас нет аккаунта?
           <span
             className="login-link"
             style={{ color: "#4450ff" }}

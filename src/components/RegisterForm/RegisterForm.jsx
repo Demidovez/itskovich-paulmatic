@@ -266,9 +266,9 @@ const RegisterForm = ({ className = "" }) => {
             : ""
         } mb-0`}
       >
-        <span>E-mail директора</span>
+        <span>Имя пользователя руководителя</span>
         <Input
-          placeholder="E-mail директора"
+          placeholder="Имя пользователя руководителя"
           type="text"
           name="directorUsername"
           autoComplete="email"
