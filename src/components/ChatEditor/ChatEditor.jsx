@@ -89,9 +89,9 @@ const ChatEditor = ({ className, sendMessage, chat = {} }) => {
             <AttachFilesToChat
               className="editor-btn"
               isEmpty={attachedFiles.length === 0}
-              onFileDeattach={(lastModified) =>
+              onFileDeattach={(id) =>
                 setAttachedFiles((files) =>
-                  files.filter((file) => file.lastModified !== lastModified)
+                  files.filter((file) => file.id !== id)
                 )
               }
               onFileAttached={(file) =>
