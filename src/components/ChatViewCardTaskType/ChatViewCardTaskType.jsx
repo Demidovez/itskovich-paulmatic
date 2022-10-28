@@ -71,8 +71,11 @@ const ChatViewCardTaskType = ({ message, isSearched }) => {
             <div>
               {parse(
                 (message.Body || "")
-                  .replace("<body>", "")
-                  .replace("</body>", "")
+                  .replaceAll(
+                    /<([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)>/g,
+                    "&lt;$1&gt;"
+                  )
+                  .replaceAll("\n", "<br/>")
               )}
             </div>
           </CardBody>
