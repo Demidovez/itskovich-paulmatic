@@ -14,6 +14,7 @@ import { ReflexContainer, ReflexSplitter, ReflexElement } from "react-reflex";
 
 import "react-reflex/styles.css";
 import "./ChatBody.scss";
+import { toast } from "react-toastify";
 
 const ChatBody = () => {
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ const ChatBody = () => {
   const ModifiedTime = useSelector((state) => state.common.Chats.ModifiedTime);
   const activeChat = useSelector((state) => state.common.Chats.ActiveChat);
 
-  const [sendMessageToServer, { data: messageFromServer }] =
+  const [sendMessageToServer, { data: messageFromServer, error, isError }] =
     useLazySendMessageQuery();
 
   useEffect(() => {
@@ -60,6 +61,16 @@ const ChatBody = () => {
       })
     );
   };
+
+  useEffect(() => {
+    if (isError && error) {
+      toast.error(
+        error.data.message ||
+          error.data.error.message ||
+          "Ошибка! Попробуйте еще раз..."
+      );
+    }
+  }, [error, isError]);
 
   useEffect(() => {
     if ((messageFromServer || {}).id) {
