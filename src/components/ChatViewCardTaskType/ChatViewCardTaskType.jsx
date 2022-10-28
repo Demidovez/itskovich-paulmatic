@@ -6,23 +6,6 @@ import { useEffect, useRef, useState } from "react";
 import TypeIcon from "components/TypeIcon/TypeIcon";
 import "./ChatViewCardTaskType.scss";
 
-// const TaskType = ({type}) => {
-//   let Icon;
-
-//   switch(type) {
-//     case "call": {
-//       Icon = () => < />
-//       break;
-//     }
-//       default: {
-//         Icon = () => < />
-//         break;
-//     }
-//   }
-
-//   return <></>
-// }
-
 const ChatViewCardTaskType = ({ message, isSearched }) => {
   useEffect(() => {
     if (isSearched) {

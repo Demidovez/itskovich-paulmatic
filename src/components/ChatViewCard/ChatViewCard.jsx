@@ -5,7 +5,6 @@ import { Element, scroller } from "react-scroll";
 import { useEffect, useRef, useState } from "react";
 import { MdDone, MdDoneAll } from "react-icons/md";
 import { BsDownload } from "react-icons/bs";
-import sanitizeHtml from "sanitize-html";
 import "./ChatViewCard.scss";
 
 const ChatViewCard = ({ message, isSearched }) => {
@@ -21,13 +20,6 @@ const ChatViewCard = ({ message, isSearched }) => {
       });
     }
   }, [isSearched]);
-
-  console.log(
-    (message.Body || "").replaceAll(
-      /<([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)>/g,
-      "&lt;$1&gt;"
-    )
-  );
 
   return (
     <Element
