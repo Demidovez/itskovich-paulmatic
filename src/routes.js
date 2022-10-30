@@ -18,7 +18,7 @@ export const ROUTES = {
     path: "/index",
     name: "Дашборд",
     icon: () => (
-      <DashboardIcon fill="var(--primary)" style={{ width: 20, height: 20 }} />
+      <DashboardIcon fill="var(--primary)" style={{ width: 40, height: 40 }} />
     ),
     // icon: "ni ni-tv-2 text-primary",
     component: Dashboard,
@@ -27,7 +27,7 @@ export const ROUTES = {
   "user-profile": {
     path: "/user-profile",
     name: "Мой профиль",
-    icon: () => <DashboardIcon style={{ width: 20, height: 20 }} />,
+    icon: () => <DashboardIcon style={{ width: 40, height: 40 }} />,
     // icon: "ni ni-single-02 text-yellow",
     component: Profile,
     layout: "/admin",
@@ -36,7 +36,7 @@ export const ROUTES = {
   contacts: {
     path: "/contacts",
     name: "Контакты",
-    icon: () => <ContactsIcon fill="red" style={{ width: 20, height: 20 }} />,
+    icon: () => <ContactsIcon fill="red" style={{ width: 40, height: 40 }} />,
     // icon: "ni ni-bullet-list-67 text-red",
     component: Contacts,
     layout: "/admin",
@@ -44,7 +44,7 @@ export const ROUTES = {
   b2b: {
     path: "/b2b",
     name: "B2B Database",
-    icon: () => <DashboardIcon fill="red" style={{ width: 20, height: 20 }} />,
+    icon: () => <DashboardIcon fill="red" style={{ width: 40, height: 40 }} />,
     // icon: "ni ni-archive-2 text-red",
     component: BtoB,
     layout: "/admin",
@@ -52,7 +52,7 @@ export const ROUTES = {
   tasks: {
     path: "/tasks",
     name: "Задачи",
-    icon: () => <TasksIcon fill="purple" style={{ width: 20, height: 20 }} />,
+    icon: () => <TasksIcon fill="purple" style={{ width: 40, height: 40 }} />,
     // icon: "ni ni-air-baloon text-purple",
     component: Tasks,
     layout: "/admin",
@@ -61,7 +61,7 @@ export const ROUTES = {
     path: "/sequences",
     name: "Последовательности",
     icon: () => (
-      <SequencesIcon fill="green" style={{ width: 20, height: 20 }} />
+      <SequencesIcon fill="green" style={{ width: 40, height: 40 }} />
     ),
     // icon: "ni ni-align-center text-green",
     component: Sequences,
@@ -70,7 +70,7 @@ export const ROUTES = {
   inbox: {
     path: "/inbox",
     name: "InBox",
-    icon: () => <InboxIcon fill="blue" style={{ width: 20, height: 20 }} />,
+    icon: () => <InboxIcon fill="blue" style={{ width: 40, height: 40 }} />,
     // icon: "ni ni-box-2 text-blue",
     component: Inbox,
     layout: "/admin",
