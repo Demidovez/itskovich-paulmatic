@@ -114,16 +114,13 @@ const RegisterForm = ({ className = "" }) => {
     validationSchema: Yup.object({
       username: Yup.string().required("Обязательное поле"),
       nickname: Yup.string()
-        .matches(
-          NICKNAME_REGEX,
-          "Буквы латинского алфавита, цифры и _"
-        )
+        .matches(NICKNAME_REGEX, "Буквы латинского алфавита, цифры и _")
         .required("Обязательное поле"),
       directorUsername: Yup.string().required("Обязательное поле"),
       password: Yup.string()
         .min(5, "Требуется минимум 5 символов")
         .required("Обязательное поле"),
-      company: Yup.string().required("Обязательное поле"),
+      company: Yup.string(),
       // agree: Yup.boolean().oneOf([true], "Обязательное поле"),
     }),
     onSubmit: (values) => {
