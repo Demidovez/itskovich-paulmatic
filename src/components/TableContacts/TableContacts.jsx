@@ -219,7 +219,9 @@ const TableContacts = ({
                           ...field.style,
                         }}
                       >
-                        {(contact[field.name] || []).join(", ")}
+                        {(contact[field.name] || [])
+                          .map(({ Name }) => Name)
+                          .join(", ")}
                       </td>
                     );
                   } else {
