@@ -71,7 +71,7 @@ const DEFAULT_FIELDS = [
   },
   {
     label: "Последовательность",
-    name: "Sequence",
+    name: "Sequences",
     style: {
       width: "14%",
       minWidth: "100px",
@@ -113,6 +113,8 @@ const TableContacts = ({
       setFields(DEFAULT_FIELDS.filter((field) => field.isDisabled !== true));
     }
   }, [columns]);
+
+  console.log(data.Items);
 
   return (
     <div
@@ -210,7 +212,7 @@ const TableContacts = ({
                             ))}
                       </td>
                     );
-                  } else if (["Sequence"].includes(field.name)) {
+                  } else if (["Sequences"].includes(field.name)) {
                     return (
                       <td
                         key={field.name}
