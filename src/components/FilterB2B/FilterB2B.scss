@@ -1,0 +1,20 @@
+.filter-b2b {
+  .filter-reset {
+    cursor: pointer;
+    opacity: 0.6;
+    color: red;
+    display: flex;
+    align-items: center;
+
+    & > span {
+      font-size: 15px;
+      margin-left: 5px;
+      line-height: 16px;
+      border-bottom: 1px solid transparent;
+    }
+
+    &:hover > span {
+      border-bottom-color: red;
+    }
+  }
+}

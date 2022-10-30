@@ -1,0 +1,12 @@
+.attach-files-bar-component {
+  .attached-file {
+    color: white;
+    cursor: pointer;
+    background-color: black;
+
+    &:hover {
+      text-decoration: line-through;
+      background-color: var(--orange);
+    }
+  }
+}

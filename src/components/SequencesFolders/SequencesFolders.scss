@@ -1,0 +1,56 @@
+.squences-folders-component {
+  .create-folder {
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      color: var(--primary);
+    }
+  }
+
+  .folders {
+    & > div {
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+
+      &.folder {
+        .folder-name {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+
+        .edit-folder {
+          opacity: 0;
+          transition: all 0.3s;
+        }
+
+        &.active {
+          color: var(--primary);
+        }
+      }
+
+      &.folder:hover {
+        color: var(--primary);
+
+        .edit-folder {
+          opacity: 1;
+        }
+      }
+
+      & > div {
+        opacity: 0.7;
+        padding-top: 7px;
+
+        &:hover,
+        &.active {
+          color: var(--primary);
+        }
+      }
+    }
+
+    .all-sequences.active {
+      color: var(--primary);
+    }
+  }
+}

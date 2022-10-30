@@ -1,0 +1,25 @@
+.sequence-page-schedule-component {
+  .header-schedule {
+    color: gray;
+    font-weight: 100;
+  }
+
+  .row-schedule {
+    display: flex;
+    align-items: center;
+    margin: 30px 0;
+
+    .timeline {
+      background: rgb(243, 243, 243);
+      border-radius: 0px;
+      min-height: 50px;
+      overflow: hidden;
+      flex: 1;
+      opacity: 0.6;
+
+      &.active {
+        opacity: 1;
+      }
+    }
+  }
+}

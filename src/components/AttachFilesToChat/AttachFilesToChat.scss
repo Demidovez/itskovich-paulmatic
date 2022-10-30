@@ -1,0 +1,12 @@
+.attach-files-to-chat-component {
+  .attached-file {
+    color: white;
+    cursor: pointer;
+    background-color: var(--primary);
+
+    &:hover {
+      text-decoration: line-through;
+      background-color: var(--orange);
+    }
+  }
+}

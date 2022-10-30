@@ -1,0 +1,43 @@
+.chats-list-bar-component {
+  margin-top: 10px;
+  position: relative;
+
+  .chat {
+    padding: 10px 16px;
+    background: #f4f4f4;
+    border: 1px solid rgb(241, 241, 241);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background: #5e72e466;
+    }
+
+    &.active {
+      background-color: #5e72e4;
+      color: white;
+    }
+
+    .chat-user {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .chat-time {
+      font-size: 12px;
+      opacity: 0.5;
+    }
+
+    .chat-preview {
+      font-size: 14px;
+    }
+  }
+
+  .no-chats {
+    text-align: center;
+    font-size: 14px;
+    opacity: 0.7;
+  }
+}

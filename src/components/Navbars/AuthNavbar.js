@@ -1,22 +1,4 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.2
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import { Link } from "react-router-dom";
-// reactstrap components
 import {
   UncontrolledCollapse,
   NavbarBrand,
@@ -26,7 +8,7 @@ import {
   Nav,
   Container,
   Row,
-  Col
+  Col,
 } from "reactstrap";
 
 const AdminNavbar = () => {
@@ -34,11 +16,25 @@ const AdminNavbar = () => {
     <>
       <Navbar className="navbar-top navbar-horizontal navbar-dark" expand="md">
         <Container className="px-4">
-          <NavbarBrand to="/" tag={Link}>
-            <img
+          <NavbarBrand
+            to="/"
+            tag={Link}
+            style={{
+              backgroundImage: `url(${
+                require("../../assets/img/icons/common/enterprise_white.svg")
+                  .default
+              })`,
+            }}
+          >
+            {/* <img
               alt="..."
-              src={require("../../assets/img/brand/argon-react-white.png")}
-            />
+              src={
+                require("../../assets/img/icons/common/enterprise white.svg")
+                  .default
+              }
+              // src={require("../../assets/img/brand/logo.svg").default}
+              style={{ height: "80px" }}
+            /> */}
           </NavbarBrand>
           <button className="navbar-toggler" id="navbar-collapse-main">
             <span className="navbar-toggler-icon" />
@@ -50,7 +46,8 @@ const AdminNavbar = () => {
                   <Link to="/">
                     <img
                       alt="..."
-                      src={require("../../assets/img/brand/argon-react.png")}
+                      src={require("../../assets/img/brand/logo.svg").default}
+                      style={{ height: "8.5rem" }}
                     />
                   </Link>
                 </Col>
@@ -63,12 +60,12 @@ const AdminNavbar = () => {
               </Row>
             </div>
             <Nav className="ml-auto" navbar>
-              <NavItem>
+              {/* <NavItem>
                 <NavLink className="nav-link-icon" to="/" tag={Link}>
                   <i className="ni ni-planet" />
                   <span className="nav-link-inner--text">Dashboard</span>
                 </NavLink>
-              </NavItem>
+              </NavItem> */}
               <NavItem>
                 <NavLink
                   className="nav-link-icon"
@@ -76,25 +73,25 @@ const AdminNavbar = () => {
                   tag={Link}
                 >
                   <i className="ni ni-circle-08" />
-                  <span className="nav-link-inner--text">Register</span>
+                  <span className="nav-link-inner--text">Регистрация</span>
                 </NavLink>
               </NavItem>
               <NavItem>
                 <NavLink className="nav-link-icon" to="/auth/login" tag={Link}>
                   <i className="ni ni-key-25" />
-                  <span className="nav-link-inner--text">Login</span>
+                  <span className="nav-link-inner--text">Вход</span>
                 </NavLink>
               </NavItem>
-              <NavItem>
+              {/* <NavItem>
                 <NavLink
                   className="nav-link-icon"
-                  to="/admin/user-profile"
+                  to={"/admin" + getpath(ROUTES["user-profile"].path)}
                   tag={Link}
                 >
                   <i className="ni ni-single-02" />
                   <span className="nav-link-inner--text">Profile</span>
                 </NavLink>
-              </NavItem>
+              </NavItem> */}
             </Nav>
           </UncontrolledCollapse>
         </Container>

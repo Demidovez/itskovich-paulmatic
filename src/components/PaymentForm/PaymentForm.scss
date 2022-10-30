@@ -1,0 +1,90 @@
+.payment-form-component {
+  h4 {
+    color: black;
+    font-family: "Eastman", Arial, sans-serif;
+    font-size: 30px;
+  }
+
+  .contacts {
+    .contacts-form {
+      background-color: #4450ff;
+      padding: 30px;
+      border-radius: 10px;
+
+      .field-wrapper {
+        position: relative;
+
+        span {
+          color: white;
+          display: block;
+          font-size: 12px;
+          font-weight: 600;
+          margin-bottom: 8px;
+          margin-left: 4px;
+        }
+
+        input {
+          border-radius: 0.5rem rem;
+          font-size: 0.875rem;
+          font-weight: 300;
+          height: 40px;
+          line-height: 1.4rem;
+          outline: 2px solid transparent;
+          outline-offset: 2px;
+          transition-duration: 0.15s;
+          transition-property: all;
+          transition-timing-function: ease;
+          background-color: #1a26c4;
+          border: #050936;
+          color: white;
+
+          &:focus {
+            --tw-shadow: 0 3px 9px rgba(50, 50, 9, 0),
+              3px 4px 8px rgba(94, 114, 228, 0.1);
+            box-shadow: 0 0 #0000, 0 0 #0000, var(--tw-shadow);
+            border-color: var(--primary);
+          }
+        }
+
+        &.has-error > input,
+        &.has-error .custom-control-label::before {
+          border: 1px solid var(--orange);
+        }
+      }
+
+      .field-error {
+        position: absolute;
+        bottom: -1px;
+        right: 0;
+        transform: translateY(100%);
+        color: var(--orange);
+        font-size: 12px;
+        font-weight: 400;
+      }
+    }
+  }
+
+  .description {
+    h4 {
+      color: black;
+      font-family: "Eastman", Arial, sans-serif;
+      font-size: 40px;
+    }
+
+    p {
+      font-family: "Eastman", Arial, sans-serif;
+      font-size: 16px;
+
+      span {
+        font-weight: 600;
+      }
+    }
+  }
+
+  .server-error {
+    color: var(--orange);
+    font-size: 14px;
+    font-weight: 400;
+    margin-right: 20px;
+  }
+}

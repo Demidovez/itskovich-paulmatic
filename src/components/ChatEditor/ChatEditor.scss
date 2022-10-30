@@ -1,0 +1,19 @@
+.chat-editor-component {
+  height: 100%;
+
+  .editor-btn > button {
+    color: rgb(116, 116, 116) !important;
+    border-color: rgb(224, 224, 224) !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    height: 34px;
+  }
+
+  .editor-btn button.dropdown-item:active {
+    background-color: #e1e1e1;
+  }
+
+  .tox-tinymce {
+    border: none;
+  }
+}

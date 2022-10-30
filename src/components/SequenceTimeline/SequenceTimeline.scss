@@ -1,0 +1,85 @@
+.sequence-timeline-component {
+  position: relative;
+
+  .timeline-item {
+    position: absolute;
+    top: 0;
+    height: 50px;
+    background-color: var(--primary);
+    margin: 0 1px;
+    color: white;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    cursor: grab;
+    border-left: 1px solid rgb(243, 243, 243);
+    border-right: 1px solid rgb(243, 243, 243);
+
+    &.resizing,
+    &.dragging {
+      background-color: #354cd1;
+      z-index: 3001;
+
+      &.dragging + .moveable-dragging {
+        z-index: 3001;
+      }
+    }
+
+    .item-label {
+      width: 100%;
+      font-size: 12px;
+    }
+
+    .remove-icon {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      right: 0;
+      padding: 10px;
+    }
+
+    &.small-size {
+      text-align: left;
+      .item-label {
+        width: auto;
+        padding: 0 5px;
+
+        &.short {
+          padding: 0 10px;
+          max-width: 50px;
+        }
+      }
+
+      .remove-icon {
+        position: static;
+        padding: 0;
+      }
+    }
+  }
+
+  .moveable-line {
+    position: absolute;
+    width: 1px;
+    height: 5px !important;
+    background: transparent !important;
+    transform-origin: 0px 0px !important;
+    top: 2.5px !important;
+
+    &.moveable-direction[data-rotation="90"]::after {
+      content: "";
+      position: absolute;
+      width: 80%;
+      bottom: 0;
+      left: 10%;
+      height: 1px;
+      margin: 0 auto;
+      background-color: #ffffff;
+    }
+
+    &.moveable-direction[data-rotation="0"],
+    &.moveable-direction[data-line-index="render-line-0"],
+    &.moveable-direction[data-line-index="render-line-2"] {
+      display: none;
+    }
+  }
+}

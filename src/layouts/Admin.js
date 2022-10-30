@@ -1,36 +1,61 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.2
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-import React from "react";
-import { useLocation, Route, Switch, Redirect } from "react-router-dom";
-// reactstrap components
-import { Container } from "reactstrap";
-// core components
-import AdminNavbar from "components/Navbars/AdminNavbar.js";
-import AdminFooter from "components/Footers/AdminFooter.js";
-import Sidebar from "components/Sidebar/Sidebar.js";
-
-import routes from "routes.js";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import {
+  useLocation,
+  Route,
+  Switch,
+  Redirect,
+  useHistory,
+} from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import Menu from "components/Menu/Menu";
+import CommonThings from "components/CommonThings/CommonThings";
+import { useDispatch } from "react-redux";
+import { saveAccount } from "store/slices/commonSlice";
+import useFetchCommon from "hooks/useFetchCommon";
+import useFetchNotifications from "hooks/useFetchNotifications";
+import useFetchStatistics from "hooks/useFetchStatistics";
+import ModalEmailSettings from "components/ModalEmailSettings/ModalEmailSettings";
+import { useSelector } from "react-redux";
+import { setIsNeedSetEmailServer } from "store/slices/commonSlice";
+import { ROUTES } from "routes";
+import { getpath } from "utils/utils";
+import { setShowTariffModal } from "store/slices/commonSlice";
+import ModalTariff from "components/ModalTariff/ModalTariff";
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const [isSuccess, setIsSuccess] = useState(false);
+  const isNeedSetEmailServer = useSelector(
+    (state) => state.common.isNeedSetEmailServer
+  );
+  const isShowedTariffModal = useSelector(
+    (state) => state.common.isShowedTariffModal
+  );
 
-  React.useEffect(() => {
+  // const fetchCommon = useFetchCommon();
+  // const fetchNotifications = useFetchNotifications();
+  // const fetchStatistics = useFetchStatistics();
+
+  useLayoutEffect(() => {
+    const Account = JSON.parse(localStorage.getItem("Account")) || {};
+
+    if (Account.sessionToken) {
+      dispatch(saveAccount(Account));
+      Account.InMailSettings === null &&
+        dispatch(setIsNeedSetEmailServer(true));
+      // fetchCommon();
+      // fetchNotifications();
+      // fetchStatistics();
+      setIsSuccess(true);
+    } else {
+      history.push("/auth/login");
+    }
+  }, []);
+
+  useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     mainContent.current.scrollTop = 0;
@@ -41,7 +66,7 @@ const Admin = (props) => {
       if (prop.layout === "/admin") {
         return (
           <Route
-            path={prop.layout + prop.path}
+            path={prop.layout + getpath(prop.path)}
             component={prop.component}
             key={key}
           />
@@ -52,42 +77,49 @@ const Admin = (props) => {
     });
   };
 
-  const getBrandText = (path) => {
-    for (let i = 0; i < routes.length; i++) {
-      if (
-        props.location.pathname.indexOf(routes[i].layout + routes[i].path) !==
-        -1
-      ) {
-        return routes[i].name;
-      }
-    }
-    return "Brand";
+  const onCloseModalEmailSettings = () => {
+    dispatch(setIsNeedSetEmailServer(false));
+  };
+
+  const onCloseTariffModal = () => {
+    dispatch(setShowTariffModal(false));
   };
 
   return (
     <>
-      <Sidebar
+      <Menu
         {...props}
-        routes={routes}
+        routes={Object.values(ROUTES)}
         logo={{
-          innerLink: "/admin/index",
-          imgSrc: require("../assets/img/brand/argon-react.png"),
-          imgAlt: "..."
+          innerLink: "/admin" + getpath(ROUTES.index.path),
+          imgSrc: require("../assets/img/icons/common/enterprise_white.svg")
+            .default,
+          imgAlt: "...",
         }}
       />
       <div className="main-content" ref={mainContent}>
-        <AdminNavbar
-          {...props}
-          brandText={getBrandText(props.location.pathname)}
-        />
         <Switch>
-          {getRoutes(routes)}
-          <Redirect from="*" to="/admin/index" />
+          {getRoutes(Object.values(ROUTES))}
+          <Redirect from="*" to={"/admin" + getpath(ROUTES.index.path)} />
         </Switch>
-        <Container fluid>
-          <AdminFooter />
-        </Container>
       </div>
+      <ToastContainer
+        theme="colored"
+        position="bottom-right"
+        hideProgressBar
+        autoClose={15000}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover={false}
+      />
+      {isSuccess && <CommonThings />}
+      {isNeedSetEmailServer && (
+        <ModalEmailSettings onClose={onCloseModalEmailSettings} />
+      )}
+      {isShowedTariffModal && <ModalTariff onClose={onCloseTariffModal} />}
     </>
   );
 };

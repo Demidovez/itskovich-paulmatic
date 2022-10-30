@@ -1,0 +1,160 @@
+.modal-tariff-component {
+  .tariffs-block {
+    background-color: white;
+    position: relative;
+
+    .title {
+      h4 {
+        color: black;
+        font-family: "Eastman", Arial, sans-serif;
+        font-weight: 700;
+        font-size: 32px;
+        text-transform: uppercase;
+        text-align: center;
+      }
+
+      p {
+        text-align: center;
+        color: black;
+        font-size: 15px;
+        margin-bottom: 20px;
+        font-family: "Eastman", Arial, sans-serif;
+        font-weight: 400;
+      }
+    }
+
+    .content {
+      display: flex;
+      justify-content: space-between;
+      gap: 35px;
+
+      .tariff {
+        flex: 1;
+        background-color: #f8f8ff;
+        border-radius: 15px;
+        box-shadow: 0px 0px 35px 0px rgb(0 0 0 / 10%);
+        overflow: hidden;
+        transition: all 0.3s;
+        display: flex;
+        flex-direction: column;
+        // justify-content: space-between;
+
+        & > div {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          flex: 1 1 auto;
+        }
+
+        &:hover {
+          transform: scale(1.025);
+        }
+
+        .header {
+          height: 160px;
+          max-height: 160px;
+          padding: 0 20px 10px;
+
+          h5 {
+            padding-top: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ffffff22;
+            border-width: 1px;
+            color: #f8f8ff;
+            font-weight: 600;
+            font-size: 16px;
+            font-family: "Eastman", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+          }
+
+          .price {
+            font-weight: 700;
+            font-size: 22px;
+            color: white;
+            margin-top: 10px;
+            font-family: "Eastman", Arial, sans-serif;
+          }
+
+          span {
+            color: #f8f8ff;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            font-weight: 400;
+            display: block;
+            font-size: 16px;
+            line-height: 1.55;
+            font-family: "Eastman", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+          }
+        }
+
+        .proffits {
+          padding-top: 20px;
+
+          .proffit {
+            padding-left: 20px;
+            padding-right: 20px;
+            color: black;
+            font-weight: 400;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-family: "Eastman", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+
+            span {
+              font-family: "Eastman", Arial, sans-serif;
+              font-weight: 500;
+              padding-right: 5px;
+              color: black;
+            }
+
+            &.proffit-first {
+              font-weight: 500;
+            }
+          }
+        }
+
+        .tariff-btn {
+          button {
+            color: white;
+            border-radius: 30px;
+            text-transform: uppercase;
+            padding: 12px 30px 8px;
+            margin: 20px 0;
+            outline: none;
+            border: none;
+            font-family: "Eastman", Arial, sans-serif;
+          }
+        }
+
+        .tariff-current {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-family: "Eastman", Arial, sans-serif;
+          margin: 20px 0 25px;
+
+          & > div {
+            background-color: var(--green);
+            color: white;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 30px;
+          }
+        }
+      }
+
+      .tariff:nth-child(2) h5 {
+        border-color: #ffffff;
+      }
+
+      .tariff .price.long {
+        font-size: 22px;
+        margin-bottom: 0px;
+      }
+    }
+  }
+}

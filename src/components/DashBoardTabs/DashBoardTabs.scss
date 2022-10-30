@@ -1,0 +1,91 @@
+.dashboard-tabs-component {
+  display: flex;
+  align-items: center;
+
+  label {
+    margin-bottom: 0px;
+  }
+
+  .tabs {
+    display: flex;
+    position: relative;
+    background: white;
+    border-radius: 40px;
+    box-shadow: 0 0 1rem 0 rgb(136 152 170 / 20%) !important;
+    padding: 4px;
+
+    * {
+      z-index: 2;
+    }
+  }
+
+  input[type="radio"] {
+    display: none;
+  }
+
+  .tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 175px;
+    font-size: 14px;
+    font-weight: 300;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: color 0.15s ease-in;
+    position: relative;
+
+    & > div {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 0 9px;
+    }
+  }
+
+  input[type="radio"] {
+    &:checked {
+      & + label {
+        color: var(--secondary);
+      }
+    }
+  }
+
+  @for $i from 0 through 20 {
+    input[id="radio-#{$i}"] {
+      &:checked {
+        & ~ .glider {
+          transform: translateX($i * 100%);
+        }
+      }
+    }
+  }
+
+  .glider {
+    position: absolute;
+    display: flex;
+    height: 30px;
+    width: 175px;
+    background-color: var(--primary);
+    z-index: 1;
+    border-radius: 40px; // just a high number to create pill effect
+    transition: 0.25s ease-out;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 1100px) {
+    .glider,
+    .tab {
+      width: 100px;
+    }
+  }
+
+  // @media (max-width: 800px) {
+  //   .tabs {
+  //     width: 50%;
+  //   }
+  // }
+}

@@ -1,8 +1,12 @@
 /build
 /node_modules
 package-lock.json
-/build
 .eslintcache
 /.idea
 /.github/*
 .env
+.DS_Store
+deploy_dev.sh
+deploy_prod.sh
+restart_server.sh
+/public/tinymce

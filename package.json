@@ -8,24 +8,17 @@
     "url": "git+https://github.com/creativetimofficial/argon-dashboard-react.git"
   },
   "keywords": [
-    "react",
-    "reactjs",
-    "argon",
-    "argon-react",
-    "dashboard",
-    "dashboard-react",
-    "argon-dashboard",
-    "argon-dashboard-react"
+    "palmautic"
   ],
-  "author": "Creative Tim",
+  "author": "Palmautic",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/creativetimofficial/argon-dashboard-react/issues"
-  },
-  "homepage": "https://demos.creative-tim.com/argon-dashboard-react/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "postinstall": "patch-package",
+    "deploy_dev": "./deploy_dev.sh",
+    "deploy_prod": "./deploy_prod.sh",
+    "restart_server": "./restart_server.sh",
     "install-force": "npm install --force",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -45,32 +38,53 @@
   ],
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.15.3",
+    "@fullcalendar/core": "4.4.0",
+    "@fullcalendar/daygrid": "4.4.0",
+    "@fullcalendar/interaction": "4.4.0",
+    "@reduxjs/toolkit": "^1.8.5",
+    "@tinymce/tinymce-react": "^4.2.0",
     "bootstrap": "4.6.0",
+    "buffer": "^6.0.3",
     "chart.js": "2.9.4",
     "classnames": "2.3.1",
-    "moment": "2.29.4",
+    "formik": "^2.2.9",
+    "fs-extra": "^10.1.0",
+    "html-react-parser": "^3.0.4",
+    "moment": "^2.29.4",
     "nouislider": "15.2.0",
+    "patch-package": "^6.4.7",
+    "pupa": "^3.1.0",
     "react": "18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
+    "react-bootstrap-sweetalert": "^5.2.0",
     "react-chartjs-2": "2.11.1",
     "react-copy-to-clipboard": "5.1.0",
     "react-datetime": "3.1.1",
     "react-dom": "18.2.0",
+    "react-grid-layout": "1.3.4",
+    "react-icons": "^4.4.0",
+    "react-moveable": "^0.39.3",
+    "react-redux": "^8.0.2",
+    "react-reflex": "^4.0.9",
     "react-router-dom": "5.2.0",
     "react-scripts": "5.0.1",
+    "react-scroll": "^1.8.7",
+    "react-toastify": "^9.0.8",
+    "react-virtual": "^2.10.4",
+    "reactour": "^1.18.7",
     "reactstrap": "8.9.0",
-    "sass": "1.54.5"
+    "sass": "1.54.5",
+    "tinymce": "^6.2.0",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@welldone-software/why-did-you-render": "^7.0.1",
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.9"
   },
-  "peerDependencies": {
-    "react": ">=16.0.0",
-    "react-dom": ">=16.0.0"
-  },
   "optionalDependencies": {
     "eslint-plugin-flowtype": "8.0.3",
-    "jquery": "3.6.0",
+    "jquery": "^3.6.0",
     "typescript": "4.8.2"
   }
 }

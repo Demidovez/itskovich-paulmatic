@@ -1,0 +1,12 @@
+.dropdown-icon-component {
+  box-shadow: none;
+
+  .dropdown-icon {
+    box-shadow: none !important;
+    background-color: transparent !important;
+    padding: 0;
+    white-space: nowrap;
+    margin-top: -3px;
+    color: rgb(139, 139, 139);
+  }
+}
