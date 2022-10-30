@@ -23,7 +23,7 @@ const DashBoardStatistics = ({
 
   return (
     <>
-      <div className="header bg-gradient-info pb-6 pt-6">
+      <div id="commonstats" className="header bg-gradient-info pb-6 pt-6">
         <Container fluid>
           <div className="header-body">
             <Row>

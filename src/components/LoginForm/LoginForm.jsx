@@ -133,7 +133,7 @@ const LoginForm = ({ className = "" }) => {
       >
         <span>Логин или E-mail</span>
         <Input
-          placeholder="Логин или E-mail"
+          placeholder="my-account@example.com или myaccount"
           type="text"
           name="username"
           autoComplete="name"

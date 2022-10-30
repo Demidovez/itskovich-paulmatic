@@ -88,7 +88,7 @@ const PaymentForm = ({ className = "" }) => {
         .typeError("Требуется число")
         .required("Обязательное поле"),
       name: Yup.string()
-        .matches(NAME_REGEX, "Допускаются только буквы латинского алфавита")
+        .matches(NAME_REGEX, "только буквы латинского алфавита")
         .required("Обязательное поле"),
       date: Yup.string().required("Обязательное поле"),
       ccv: Yup.number()
