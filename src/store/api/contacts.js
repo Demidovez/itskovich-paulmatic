@@ -97,7 +97,7 @@ export const contactsApi = createApi({
     }),
     tryExport: builder.query({
       query: () => ({
-        url: "/exportCsv",
+        url: "/export",
         method: "GET",
         headers: getHeaders(),
       }),

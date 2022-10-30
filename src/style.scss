@@ -160,6 +160,8 @@ a.btn-icon-only {
   height: 2rem;
 }
 
-.create_csv .popover {
-  max-width: 800px !important;
+.create_csv {
+  .popover {
+    max-width: 800px !important;
+  }
 }

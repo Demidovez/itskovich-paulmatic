@@ -169,16 +169,18 @@ const Contacts = () => {
     dispatch(clearSelectedIds());
   };
 
+  console.log(exportResponse);
+
   useEffect(() => {
     if (!isFetching && exportResponse) {
-      if (exportResponse.link) {
-        const linkSource = getServerUrl() + exportResponse.link;
+      if (exportResponse.result) {
+        const linkSource = getServerUrl("getFile?key=") + exportResponse.result;
         const downloadLink = document.createElement("a");
         document.body.appendChild(downloadLink);
 
+        downloadLink.target = "_blank";
+        downloadLink.download = "sssss";
         downloadLink.href = linkSource;
-        downloadLink.target = "_self";
-        downloadLink.download = "Contacts";
         downloadLink.click();
         downloadLink.remove();
       } else {
