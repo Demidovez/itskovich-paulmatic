@@ -22,6 +22,8 @@ const ChatViewCard = ({ message, isSearched }) => {
     }
   }, [isSearched]);
 
+  console.log(message.Body);
+
   return (
     <Element
       key={message.Time}
@@ -54,7 +56,10 @@ const ChatViewCard = ({ message, isSearched }) => {
                   /<([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)>/g,
                   "&lt;$1&gt;"
                 )
-                .replaceAll("\n", "<br/>")
+                .replaceAll(
+                  "\n",
+                  (message.Body || "").includes(">:") ? "<br/>" : "\n"
+                )
             )}
             {message.Attachments ? (
               <div className="files">

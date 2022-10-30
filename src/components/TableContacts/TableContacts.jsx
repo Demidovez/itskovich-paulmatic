@@ -71,7 +71,7 @@ const DEFAULT_FIELDS = [
   },
   {
     label: "Последовательность",
-    name: "sequence",
+    name: "Sequence",
     style: {
       width: "14%",
       minWidth: "100px",
@@ -130,7 +130,10 @@ const TableContacts = ({
           className="align-items-center table-flush table-hover fixed-header"
           responsive
         >
-          <thead className="thead-light sticky-top" style={{ zIndex: 999 }}>
+          <thead
+            className="thead-light sticky-top"
+            style={{ zIndex: "inherit" }}
+          >
             <tr className="d-flex">
               {fields.map((field) => (
                 <th key={field.name + "1"} style={field.style}>
@@ -207,7 +210,7 @@ const TableContacts = ({
                             ))}
                       </td>
                     );
-                  } else if (["sequence"].includes(field.name)) {
+                  } else if (["Sequence"].includes(field.name)) {
                     return (
                       <td
                         key={field.name}
@@ -216,7 +219,7 @@ const TableContacts = ({
                           ...field.style,
                         }}
                       >
-                        Основная
+                        {contact[field.name]}
                       </td>
                     );
                   } else {
