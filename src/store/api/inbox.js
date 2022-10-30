@@ -23,7 +23,19 @@ export const inboxApi = createApi({
       }),
       transformResponse: (response) => response.result || [],
     }),
+    moveToFolder: builder.query({
+      query: (params) => ({
+        url: "/moveToFolder",
+        method: "GET",
+        params: params,
+        headers: getHeaders(),
+      }),
+    }),
   }),
 });
 
-export const { useLazySendMessageQuery, useLazySearchChatQuery } = inboxApi;
+export const {
+  useLazySendMessageQuery,
+  useLazySearchChatQuery,
+  useLazyMoveToFolderQuery,
+} = inboxApi;

@@ -12,6 +12,7 @@ import { ReactComponent as ContactsIcon } from "../src/assets/img/icons/common/c
 import { ReactComponent as InboxIcon } from "../src/assets/img/icons/common/inbox-menu-icon.svg";
 import { ReactComponent as SequencesIcon } from "../src/assets/img/icons/common/sequences-menu-icon.svg";
 import { ReactComponent as TasksIcon } from "../src/assets/img/icons/common/tasks-menu-icon.svg";
+import { ReactComponent as B2bIcon } from "../src/assets/img/icons/common/b2b-menu-icon.svg";
 
 export const ROUTES = {
   index: {
@@ -44,7 +45,7 @@ export const ROUTES = {
   b2b: {
     path: "/b2b",
     name: "B2B Database",
-    icon: () => <DashboardIcon fill="red" style={{ width: 40, height: 40 }} />,
+    icon: () => <B2bIcon fill="red" style={{ width: 40, height: 40 }} />,
     // icon: "ni ni-archive-2 text-red",
     component: BtoB,
     layout: "/admin",

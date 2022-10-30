@@ -11,6 +11,7 @@ import {
   DropdownMenu,
   DropdownToggle,
 } from "reactstrap";
+import { useLazyMoveToFolderQuery } from "store/api/inbox";
 import { deleteChat } from "store/slices/commonSlice";
 import { moveChatToFolder } from "store/slices/commonSlice";
 import { clearActiveChatId } from "store/slices/inboxSlice";
@@ -24,6 +25,8 @@ const ChatActionBar = () => {
   const [isShow, setIsShow] = useState(false);
   const [isAskSure, setIsAskSure] = useState(false);
 
+  const [moveToFolder] = useLazyMoveToFolderQuery();
+
   useEffect(() => {
     if (dropdownOpen) {
       setTimeout(() => setIsShow(true), 0);
@@ -36,7 +39,8 @@ const ChatActionBar = () => {
     setDropdownOpen((prevState) => !prevState);
   };
 
-  const moveToFolder = (folderId) => {
+  const onMoveToFolder = (folderId) => {
+    moveToFolder({ chatId: activeChatId, folderId });
     dispatch(moveChatToFolder({ folderId, activeChatId }));
   };
 
@@ -64,17 +68,24 @@ const ChatActionBar = () => {
           </div>
         </DropdownToggle>
         <DropdownMenu style={{ opacity: isShow ? 1 : 0, minWidth: "100%" }}>
+          <DropdownItem
+            onClick={() => onMoveToFolder(0)}
+            style={{ fontSize: 12 }}
+          >
+            Переместить в «Все»
+          </DropdownItem>
           {(folders || [])
             .filter((folder) => !["Все", "Финальные"].includes(folder.Name))
             .map((folder) => (
               <DropdownItem
-                onClick={() => moveToFolder(folder.id)}
+                onClick={() => onMoveToFolder(folder.id)}
                 style={{ fontSize: 12 }}
                 key={folder.id}
               >
                 Переместить в «{folder.Name}»
               </DropdownItem>
             ))}
+
           <DropdownItem
             onClick={() => setIsAskSure(true)}
             style={{ fontSize: 12 }}
