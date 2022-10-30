@@ -116,11 +116,11 @@ const RegisterForm = ({ className = "" }) => {
       nickname: Yup.string()
         .matches(NICKNAME_REGEX, "Буквы латинского алфавита, цифры и _")
         .required("Обязательное поле"),
-      directorUsername: Yup.string().required("Обязательное поле"),
+      directorUsername: Yup.string(),
       password: Yup.string()
         .min(5, "Требуется минимум 5 символов")
         .required("Обязательное поле"),
-      company: Yup.string(),
+      company: Yup.string().required("Обязательное поле"),
       // agree: Yup.boolean().oneOf([true], "Обязательное поле"),
     }),
     onSubmit: (values) => {
