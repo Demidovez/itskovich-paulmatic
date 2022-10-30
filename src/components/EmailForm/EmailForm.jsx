@@ -48,7 +48,7 @@ const EmailForm = ({
 
   useEffect(() => {
     if (!isFetching && emailServerResponse) {
-      if ((emailServerResponse || {}).InMailSettings) {
+      if ((emailServerResponse.result || {}).InMailSettings) {
         dispatch(
           setInMailSettingsStatus({
             ...emailServerResponse.InMailSettings,
