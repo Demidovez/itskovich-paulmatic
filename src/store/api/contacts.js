@@ -95,6 +95,13 @@ export const contactsApi = createApi({
         ...ids.map((id) => ({ type: "Contacts", id })),
       ],
     }),
+    tryExport: builder.query({
+      query: () => ({
+        url: "/exportCsv",
+        method: "GET",
+        headers: getHeaders(),
+      }),
+    }),
   }),
 });
 
@@ -104,4 +111,5 @@ export const {
   useDeleteContactsMutation,
   useUploadFileOfContactsMutation,
   useAddContactsMutation,
+  useLazyTryExportQuery,
 } = contactsApi;

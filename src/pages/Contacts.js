@@ -6,6 +6,7 @@ import {
   useLazyGetContactsQuery,
   useCreateOrUpdateContactMutation,
   useDeleteContactsMutation,
+  useLazyTryExportQuery,
 } from "../store/api/contacts";
 import { useEffect, useState } from "react";
 import ActionContactsBar from "components/ActionContactsBar/ActionContactsBar";
@@ -24,6 +25,7 @@ import { useLazyAddContactsToSequenceQuery } from "store/api/sequences";
 import { setLoaderStatus } from "store/slices/commonSlice";
 import Loader from "components/Loader/Loader";
 import useLoader from "hooks/useLoader";
+import { toast } from "react-toastify";
 
 const COUNT_ON_PAGE = 100;
 
@@ -150,6 +152,37 @@ const Contacts = () => {
 
   const [isShowLoader] = useLoader(isLoadingContacts);
 
+  const [tryExport, { data: exportResponse, isFetching, error, isError }] =
+    useLazyTryExportQuery();
+
+  const exportContacts = () => {
+    tryExport();
+    dispatch(clearSelectedIds());
+  };
+
+  useEffect(() => {
+    if (!isFetching && exportResponse) {
+      if (exportResponse.contentBase64) {
+        const linkSource = `data:text/csv;base64,${exportResponse.contentBase64}`;
+        const downloadLink = document.createElement("a");
+        document.body.appendChild(downloadLink);
+
+        downloadLink.href = linkSource;
+        downloadLink.target = "_self";
+        downloadLink.download = "Contacts";
+        downloadLink.click();
+      } else {
+        toast.error("Ошибка экспорта");
+      }
+    }
+  }, [exportResponse, isFetching]);
+
+  useEffect(() => {
+    if (error && isError) {
+      toast.error("Ошибка экспорта");
+    }
+  }, [error, isError]);
+
   return (
     <>
       <Container
@@ -179,6 +212,7 @@ const Contacts = () => {
                       disabled={selectedIds.length === 0}
                       onDelete={() => setIsShowModalDelete(true)}
                       onAddToSequence={() => setIsShowModalAddToSequence(true)}
+                      onExport={exportContacts}
                     />
                     <CreateContactsSelector
                       onCreate={() => setIsCreateNew(true)}
