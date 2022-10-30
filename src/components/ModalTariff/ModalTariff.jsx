@@ -17,7 +17,7 @@ const PRICE = {
   "-1": "Индивидуально",
 };
 
-const ModalTariff = ({ onClose }) => {
+const ModalTariff = ({ onClose, description = "Измените подписку" }) => {
   const history = useHistory();
 
   const dispatch = useDispatch();
@@ -74,7 +74,7 @@ const ModalTariff = ({ onClose }) => {
                 <div className="pt-0 ">
                   <div className="title">
                     <h4>Повысьте свои продажи</h4>
-                    <p>Для перехода на страницу Вам нужно изменить подписку</p>
+                    <p>{description}</p>
                   </div>
                   <div className="content">
                     {tariffs.map((tariff) => (

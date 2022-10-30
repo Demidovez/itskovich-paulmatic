@@ -72,7 +72,9 @@ const Menu = (props) => {
 
   const showBlockedMessage = (e) => {
     e.preventDefault();
-    dispatch(setShowTariffModal(true));
+    dispatch(
+      setShowTariffModal("Для перехода на страницу Вам нужно изменить подписку")
+    );
   };
 
   const createLinks = (routes) => {
