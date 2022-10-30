@@ -42,14 +42,13 @@ const UserHeader = () => {
                   }}
                 />
                 <div>
-                  <h1 className="display-2 text-black">
-                    {`Привет${
+                  <h1 className="display-3 text-black">
+                    {`Приветствуем${
                       Account.fullName ? ", " + Account.fullName : ""
                     }!`}
                   </h1>
                   <p className="text-black mt-0 mb-5">
-                    Это страница вашего профиля. Вы можете видеть прогресс вашей
-                    работы и управлять своими настройками!
+                    Это страница вашего профиля. Здесь Вы можете редактировать свои данные и управлять подписками.
                   </p>
                 </div>
               </div>

@@ -6,8 +6,9 @@ import { useEffect, useRef, useState } from "react";
 import { MdDone, MdDoneAll } from "react-icons/md";
 import { BsDownload } from "react-icons/bs";
 import "./ChatViewCard.scss";
+import { getServerUrl } from "store/api/server";
 
-const ChatViewCard = ({ message, isSearched, isLast }) => {
+const ChatViewCard = ({ message, isSearched }) => {
   useEffect(() => {
     if (isSearched) {
       scroller.scrollTo("message_searched", {
@@ -48,28 +49,23 @@ const ChatViewCard = ({ message, isSearched, isLast }) => {
           </CardHeader>
           <CardBody className="pt-2 pb-2 pl-3 pr-3 message-text">
             {parse(
-              (message.Body || "").replace(/\<body[^>]*\>([^]*)\<\/body/m, "")
+              (message.Body || "")
+                .replaceAll(
+                  /<([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)>/g,
+                  "&lt;$1&gt;"
+                )
+                .replaceAll("\n", "<br/>")
             )}
-            {isLast ? (
+            {message.Attachments ? (
               <div className="files">
-                {[
-                  {
-                    Name: "Ананас.jpg",
-                    Content:
-                      "https://petapixel.com/assets/uploads/2022/07/DALLEcopy.jpg",
-                  },
-                  {
-                    Name: "Картинка.jpg",
-                    Content:
-                      "https://static.vecteezy.com/packs/media/vectors/term-bg-1-666de2d9.jpg",
-                  },
-                ].map((file, index) => (
+                {message.Attachments.map((file, index) => (
                   <a
-                    href={file.Content}
+                    href={getServerUrl("getFile?key=") + file.ContentBase64}
                     target="_blank"
                     key={index}
                     onClick={() => {}}
                     className=""
+                    download={file.Name}
                   >
                     <div>
                       <BsDownload />

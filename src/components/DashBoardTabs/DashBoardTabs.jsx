@@ -17,7 +17,9 @@ const DashBoardTabs = ({ className = "", data = {} }) => {
     },
   ]);
 
-  const currentAccountId = useSelector((state) => state.common.Account.id);
+  const { id: currentAccountId, Subordinates } = useSelector(
+    (state) => state.common.Account
+  );
   const activeAccountId = useSelector(
     (state) => state.dashboard.activeAccountId
   );
@@ -38,7 +40,7 @@ const DashBoardTabs = ({ className = "", data = {} }) => {
 
   return (
     <>
-      {(persons || []).length > 1 ? (
+      {(Subordinates || []).length > 0 ? (
         <Container className="" fluid>
           <Row className="">
             <Col className="py-4">
@@ -60,7 +62,7 @@ const DashBoardTabs = ({ className = "", data = {} }) => {
                           (activeAccountId || currentAccountId) === person.id ||
                           person.id === 0
                             ? "active"
-                            : ""
+                            : "inactive"
                         }`}
                         htmlFor={`radio-${index}`}
                       >

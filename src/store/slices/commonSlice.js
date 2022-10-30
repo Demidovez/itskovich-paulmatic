@@ -5,7 +5,7 @@ const initialState = {
   interval: 15,
   isLoaded: false,
   isNeedSetEmailServer: false,
-  isShowedTariffModal: false,
+  showedMessageTariffModal: "",
   loader: {
     pages: {
       sequences: {
@@ -384,7 +384,7 @@ export const commonSlice = createSlice({
       state.tariffs = tariffs;
     },
     setShowTariffModal: (state, action) => {
-      state.isShowedTariffModal = action.payload;
+      state.showedMessageTariffModal = action.payload;
     },
   },
 });

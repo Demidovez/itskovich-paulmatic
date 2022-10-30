@@ -23,7 +23,7 @@ const ChatView = ({ className, chat = { Msgs: [] } }) => {
           {chat.Msgs.length ? (
             [...chat.Msgs]
               .sort((m1, m2) => m1.id - m2.id)
-              .map((message, index) => (
+              .map((message) => (
                 <Fragment key={message.Time}>
                   {message.Contact ? (
                     message.TaskType ? (
@@ -34,10 +34,6 @@ const ChatView = ({ className, chat = { Msgs: [] } }) => {
                     ) : (
                       <ChatViewCard
                         message={message}
-                        isLast={
-                          index === chat.Msgs.length - 1 &&
-                          chat.Contact.id === 227407
-                        }
                         isSearched={searchedMessageId === message.id}
                       />
                     )

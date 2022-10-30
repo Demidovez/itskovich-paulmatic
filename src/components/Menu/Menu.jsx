@@ -72,7 +72,9 @@ const Menu = (props) => {
 
   const showBlockedMessage = (e) => {
     e.preventDefault();
-    dispatch(setShowTariffModal(true));
+    dispatch(
+      setShowTariffModal("Для перехода на страницу Вам нужно изменить подписку")
+    );
   };
 
   const createLinks = (routes) => {
@@ -100,9 +102,10 @@ const Menu = (props) => {
                   />
                 </div>
               ) : null}
-              <i
+              {/* <i
                 className={`${prop.icon} pr-lg-2 pr-md-0 ml--2 ml-md-0 mt--1`}
-              />
+              /> */}
+              {prop.icon()}
               <span className="pl-1">{prop.name}</span>
             </NavLink>
           </NavItem>
@@ -269,43 +272,43 @@ const Menu = (props) => {
                 right
                 style={{ minWidth: "12rem" }}
               >
-                <DropdownItem
+                {/* <DropdownItem
                   onClick={() => {
                     localStorage.removeItem("tours");
                   }}
                 >
                   <i className="ni ni-spaceship" />
                   <span>Восстановить туры</span>
-                </DropdownItem>
+                </DropdownItem> */}
                 <DropdownItem
                   to={"/admin" + getpath(ROUTES["user-profile"].path)}
                   tag={Link}
                 >
                   <i className="ni ni-settings-gear-65" />
-                  <span>Settings</span>
+                  <span>Настройки</span>
                 </DropdownItem>
-                <DropdownItem
+                {/* <DropdownItem
                   onClick={() => dispatch(setIsNeedSetEmailServer(true))}
                 >
                   <i className="ni ni-email-83" />
                   <span>Настройки почты</span>
-                </DropdownItem>
-                <DropdownItem
+                </DropdownItem> */}
+                {/* <DropdownItem
                   to={"/admin" + getpath(ROUTES["user-profile"].path)}
                   tag={Link}
                 >
                   <i className="ni ni-calendar-grid-58" />
                   <span>Activity</span>
-                </DropdownItem>
-                <DropdownItem
+                </DropdownItem> */}
+                {/* <DropdownItem
                   to={"/admin" + getpath(ROUTES["user-profile"].path)}
                   tag={Link}
                 >
                   <i className="ni ni-support-16" />
                   <span>Support</span>
-                </DropdownItem>
-                <DropdownItem divider />
-                {createUserLinks(routes)}
+                </DropdownItem> */}
+                {/* <DropdownItem divider />
+                {createUserLinks(routes)} */}
                 <DropdownItem divider />
                 <DropdownItem
                   onClick={() => setIsAskSure(true)}

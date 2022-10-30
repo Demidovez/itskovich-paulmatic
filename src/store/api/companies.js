@@ -30,7 +30,7 @@ export const companiesApi = createApi({
         );
       },
       providesTags: (result) =>
-        result.Items
+        (result || {}).Items
           ? [
               ...result.Items.map(({ id }) => ({ type: "Companies", id })),
               { type: "Companies", id: "LIST" },

@@ -31,7 +31,7 @@ export const personsApi = createApi({
         );
       },
       providesTags: (result) =>
-        result.Items
+        (result || {}).Items
           ? [
               ...result.Items.map(({ id }) => ({ type: "Persons", id })),
               { type: "Persons", id: "LIST" },

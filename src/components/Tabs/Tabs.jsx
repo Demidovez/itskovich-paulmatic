@@ -6,6 +6,7 @@ import "./Tabs.scss";
 import { useDispatch } from "react-redux";
 import { addTables } from "store/slices/tablesSlice";
 import { setActiveTable } from "store/slices/tablesSlice";
+import { setShowTariffModal } from "store/slices/commonSlice";
 
 const Tabs = ({ tabs, activeTable, className }) => {
   const { companies, persons } = tabs;

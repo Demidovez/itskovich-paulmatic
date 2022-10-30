@@ -1,5 +1,5 @@
 import { Container, Row, Col } from "reactstrap";
-import DashBoardStatistics from "components/DashBoardStatistics/DashBoardStatistics.js";
+import DashBoardStatistics from "components/DashBoardStatistics/DashBoardStatistics";
 import FullCalendar from "components/FullCalendar/FullCalendar";
 import DashBoardTabs from "components/DashBoardTabs/DashBoardTabs";
 import InteractiveTour from "components/InteractiveTour/InteractiveTour";
@@ -14,23 +14,23 @@ const tourSteps = [
   {
     selector: "#nav_item_index",
     content:
-      "Страница Дашборд покажет текущие ваши показатели и ваших сотрудников.",
+      "Страница Дашборд покажет текущие ваши показатели и ваших подчиненных.",
   },
   {
     selector: ".dashboard-tabs-component .tabs",
-    content: "Просматривайте статистику сотрудников",
+    content: "Просматривайте статистику подчиненных",
   },
   {
-    selector: "#first-stat",
+    selector: "#commonstats",
     content: "Основные показатели",
   },
   {
     selector: "#sequences",
-    content: "Ваши последовательности",
+    content: "Статистика по последовательностям",
   },
   {
     selector: "#types",
-    content: "Все типы взаимодействий",
+    content: "Показывает самый используемый и самый эффективный тип взаимодействия",
   },
   {
     selector: ".fullcalendar-component",
@@ -38,7 +38,7 @@ const tourSteps = [
   },
   {
     selector: "#sales-value",
-    content: "Показатели продаж",
+    content: "Показатели перевода в лиды",
   },
 ];
 

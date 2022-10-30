@@ -106,7 +106,6 @@ const RegisterForm = ({ className = "" }) => {
     initialValues: {
       username: "",
       nickname: "",
-      useremail: "",
       directorUsername: "",
       password: "",
       company: "",
@@ -117,13 +116,10 @@ const RegisterForm = ({ className = "" }) => {
       nickname: Yup.string()
         .matches(
           NICKNAME_REGEX,
-          "Допускаются буквы латинского алфавита, цифры и _"
+          "Буквы латинского алфавита, цифры и _"
         )
         .required("Обязательное поле"),
-      useremail: Yup.string()
-        .email("Неверный E-mail")
-        .required("Обязательное поле"),
-      directorUsername: Yup.string().email("Неверный E-mail"),
+      directorUsername: Yup.string().required("Обязательное поле"),
       password: Yup.string()
         .min(5, "Требуется минимум 5 символов")
         .required("Обязательное поле"),
@@ -133,8 +129,7 @@ const RegisterForm = ({ className = "" }) => {
     onSubmit: (values) => {
       trySignUp({
         fullName: values.username,
-        nickname: values.nickname,
-        username: values.useremail,
+        username: values.nickname,
         password: values.password,
         company: values.company,
         directorUsername: values.directorUsername,
@@ -176,9 +171,9 @@ const RegisterForm = ({ className = "" }) => {
           formik.touched.nickname && formik.errors.nickname ? "has-error" : ""
         } mb-3`}
       >
-        <span>Никнейм</span>
+        <span>Логин</span>
         <Input
-          placeholder="Никнейм"
+          placeholder="Буквы латинского алфавита, цифры и _"
           type="text"
           name="nickname"
           autoComplete="name"
@@ -196,34 +191,12 @@ const RegisterForm = ({ className = "" }) => {
       </FormGroup>
       <FormGroup
         className={`field-wrapper ${
-          formik.touched.useremail && formik.errors.useremail ? "has-error" : ""
-        } mb-3`}
-      >
-        <span>E-mail</span>
-        <Input
-          placeholder="E-mail"
-          type="text"
-          name="useremail"
-          autoComplete="email"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.useremail}
-        />
-
-        <div className="field-error">
-          {formik.touched.useremail && formik.errors.useremail
-            ? formik.errors.useremail
-            : ""}
-        </div>
-      </FormGroup>
-      <FormGroup
-        className={`field-wrapper ${
           formik.touched.password && formik.errors.password ? "has-error" : ""
         } mb-3`}
       >
         <span>Пароль</span>
         <Input
-          placeholder="Пароль"
+          placeholder="Минимум 5 символов"
           type="password"
           name="password"
           autoComplete="new-password"
@@ -245,7 +218,7 @@ const RegisterForm = ({ className = "" }) => {
       >
         <span>Компания</span>
         <Input
-          placeholder="Компания"
+          placeholder="ООО 'Моя Компания'"
           type="text"
           name="company"
           autoComplete="organization"
@@ -266,12 +239,12 @@ const RegisterForm = ({ className = "" }) => {
             : ""
         } mb-0`}
       >
-        <span>Имя пользователя руководителя</span>
+        <span>Логин или почта руководителя</span>
         <Input
-          placeholder="Имя пользователя руководителя"
+          placeholder="my-director@example.com или mydirector"
           type="text"
           name="directorUsername"
-          autoComplete="email"
+          autoComplete="name"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.directorUsername}

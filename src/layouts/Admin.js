@@ -31,8 +31,8 @@ const Admin = (props) => {
   const isNeedSetEmailServer = useSelector(
     (state) => state.common.isNeedSetEmailServer
   );
-  const isShowedTariffModal = useSelector(
-    (state) => state.common.isShowedTariffModal
+  const showedMessageTariffModal = useSelector(
+    (state) => state.common.showedMessageTariffModal
   );
 
   // const fetchCommon = useFetchCommon();
@@ -82,7 +82,7 @@ const Admin = (props) => {
   };
 
   const onCloseTariffModal = () => {
-    dispatch(setShowTariffModal(false));
+    dispatch(setShowTariffModal(""));
   };
 
   return (
@@ -119,7 +119,12 @@ const Admin = (props) => {
       {isNeedSetEmailServer && (
         <ModalEmailSettings onClose={onCloseModalEmailSettings} />
       )}
-      {isShowedTariffModal && <ModalTariff onClose={onCloseTariffModal} />}
+      {showedMessageTariffModal && (
+        <ModalTariff
+          onClose={onCloseTariffModal}
+          description={showedMessageTariffModal}
+        />
+      )}
     </>
   );
 };

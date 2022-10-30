@@ -79,6 +79,7 @@ const ChatEditor = ({ className, sendMessage, chat = {} }) => {
         >
           <div className="d-flex">
             <DropdownWithIcon
+                id="tmpl-chooser"
               label="Шаблон"
               icon={() => <TbTemplate size="1.1rem" />}
               size="sm"
@@ -89,9 +90,9 @@ const ChatEditor = ({ className, sendMessage, chat = {} }) => {
             <AttachFilesToChat
               className="editor-btn"
               isEmpty={attachedFiles.length === 0}
-              onFileDeattach={(lastModified) =>
+              onFileDeattach={(id) =>
                 setAttachedFiles((files) =>
-                  files.filter((file) => file.lastModified !== lastModified)
+                  files.filter((file) => file.id !== id)
                 )
               }
               onFileAttached={(file) =>

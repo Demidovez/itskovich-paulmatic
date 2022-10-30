@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import useLoader from "hooks/useLoader";
 import Loader from "components/Loader/Loader";
 import { setLoaderStatus } from "store/slices/commonSlice";
+import { setShowTariffModal } from "store/slices/commonSlice";
 
 const companiesFields = [
   {
@@ -214,9 +215,15 @@ const tourSteps = [
 
 const BtoB = () => {
   const dispatch = useDispatch();
-  const [fetchCompanies, { data: companiesData }] = useLazyGetCompaniesQuery();
+  const [
+    fetchCompanies,
+    { data: companiesData, error: errorCompanies, isError: isErrorCompanies },
+  ] = useLazyGetCompaniesQuery();
 
-  const [fetchPersons, { data: personsData }] = useLazyGetPersonsQuery();
+  const [
+    fetchPersons,
+    { data: personsData, error: errorPersons, isError: isErrorPersons },
+  ] = useLazyGetPersonsQuery();
 
   const [addToContacts] = useLazyAddToContactsQuery();
   const [addToSequence] = useLazyAddToSequenceQuery();
@@ -242,6 +249,27 @@ const BtoB = () => {
 
   const [isShowLoaderPeople] = useLoader(isLoadingPeople, 1000);
   const [isShowLoaderCompanies] = useLoader(isLoadingCompanies, 1000);
+
+  useEffect(() => {
+    if (
+      (isErrorCompanies || isErrorPersons) &&
+      (errorCompanies || errorPersons)
+    ) {
+      if (
+        [
+          (((errorCompanies || {}).data && errorCompanies.data.error) || {})
+            .reason,
+          (((errorPersons || {}).data && errorPersons.data.error) || {}).reason,
+        ].includes("REASON_FEATURE_UNACCESSABLE")
+      ) {
+        dispatch(
+          setShowTariffModal(
+            errorPersons.data.error.message || errorCompanies.data.error.message
+          )
+        );
+      }
+    }
+  }, [errorCompanies, errorPersons, isErrorCompanies, isErrorPersons]);
 
   return (
     <Container fluid className="d-flex flex-column height-fill pt-4 pb-3">

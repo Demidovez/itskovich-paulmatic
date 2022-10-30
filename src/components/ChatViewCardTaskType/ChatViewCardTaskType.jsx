@@ -6,23 +6,6 @@ import { useEffect, useRef, useState } from "react";
 import TypeIcon from "components/TypeIcon/TypeIcon";
 import "./ChatViewCardTaskType.scss";
 
-// const TaskType = ({type}) => {
-//   let Icon;
-
-//   switch(type) {
-//     case "call": {
-//       Icon = () => < />
-//       break;
-//     }
-//       default: {
-//         Icon = () => < />
-//         break;
-//     }
-//   }
-
-//   return <></>
-// }
-
 const ChatViewCardTaskType = ({ message, isSearched }) => {
   useEffect(() => {
     if (isSearched) {
@@ -71,8 +54,11 @@ const ChatViewCardTaskType = ({ message, isSearched }) => {
             <div>
               {parse(
                 (message.Body || "")
-                  .replace("<body>", "")
-                  .replace("</body>", "")
+                  .replaceAll(
+                    /<([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)>/g,
+                    "&lt;$1&gt;"
+                  )
+                  .replaceAll("\n", "<br/>")
               )}
             </div>
           </CardBody>

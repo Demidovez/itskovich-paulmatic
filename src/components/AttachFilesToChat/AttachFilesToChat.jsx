@@ -20,32 +20,36 @@ const AttachFilesToChat = ({
     }
   }, [isEmpty]);
 
+  console.log(files);
+
   const onInputFile = async (e) => {
     const file = e.target.files[0];
-
-    console.log(file.size / 1024 / 1024);
 
     if (file.size / 1024 / 1024 > 50) {
       toast.error(`Файл слишком большой! Максимум 50 МБ`);
     } else if (file) {
-      setFiles((files) => [...files, file]);
+      const id = new Date().getTime();
+
+      setFiles((files) => [...files, { id, file }]);
 
       onFileAttached({
-        lastModified: file.lastModified,
+        id,
         Name: file.name,
         MimeType: file.type,
         ContentBase64: await fileToBase64(file),
       });
     }
+
+    e.target.value = "";
   };
 
   const onUploadFile = () => {
     inputFile.current.click();
   };
 
-  const onClickOnFile = (lastModified) => {
-    onFileDeattach(lastModified);
-    setFiles(files.filter((file) => file.lastModified !== lastModified));
+  const onClickOnFile = (id) => {
+    onFileDeattach(id);
+    setFiles(files.filter((file) => file.id !== id));
   };
 
   return (
@@ -71,12 +75,12 @@ const AttachFilesToChat = ({
         <div className="d-flex ">
           {files.map((file) => (
             <Badge
-              key={file.lastModified}
+              key={file.id}
               className="attached-file ml-2"
               pill
-              onClick={() => onClickOnFile(file.lastModified)}
+              onClick={() => onClickOnFile(file.id)}
             >
-              {file.name}
+              {file.file.name}
             </Badge>
           ))}
         </div>
