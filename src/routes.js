@@ -22,7 +22,7 @@ export const ROUTES = {
   index: {
     path: "/index",
     name: "Дашборд",
-    icon: () => <DashboardIcon style={{ width: 50, height: 50 }} />,
+    icon: () => <DashboardIcon style={{ width: 40, height: 40 }} />,
     // icon: "ni ni-tv-2 text-primary",
     component: Dashboard,
     layout: "/admin",
