@@ -43,7 +43,7 @@ const EmailForm = ({
     setCurrentPassword(Password);
   }, [Login, Password]);
 
-  const [trySaveEmailServer, { data: emailServerResponse, error, isFetching }] =
+  const [trySaveEmailServer, { data: emailServerResponse, isFetching }] =
     useLazyTrySaveEmailServerQuery();
 
   useEffect(() => {
@@ -74,8 +74,11 @@ const EmailForm = ({
         setIsLoading(false);
         setResultError("");
         onClose();
+      } else if (emailServerResponse.error) {
+        setResultError(emailServerResponse.error.message);
+        setIsLoading(false);
       } else {
-        setResultError("Ошибка! Попробуйте еще раз... ");
+        setResultError("Ошибка! Попробуйте позже...");
         setIsLoading(false);
       }
     } else if (isFetching) {
@@ -83,19 +86,7 @@ const EmailForm = ({
     }
   }, [emailServerResponse, isFetching, server]);
 
-  useEffect(() => {
-    if (error && error.status !== 200) {
-      setResultError(
-        error &&
-          (error.data.message ||
-            error.data.error.message ||
-            "Ошибка! Попробуйте еще раз...")
-      );
-      setIsLoading(false);
-    } else {
-      setResultError("");
-    }
-  }, [JSON.stringify(error), isFetching]);
+  console.log(emailServerResponse);
 
   return (
     <Formik
@@ -131,6 +122,7 @@ const EmailForm = ({
           .required("Обязательное поле"),
       })}
       onSubmit={(values) => {
+        setResultError("");
         trySaveEmailServer({
           ...values,
           ImapPort: +values.ImapPort,

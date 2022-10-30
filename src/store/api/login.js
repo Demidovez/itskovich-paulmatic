@@ -34,7 +34,6 @@ export const loginApi = createApi({
         body: body,
         headers: getHeaders(),
       }),
-      transformResponse: (response) => response.result,
     }),
     tryUpdate: builder.query({
       query: (body) => ({

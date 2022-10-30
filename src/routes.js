@@ -7,10 +7,14 @@ import BtoB from "pages/BtoB.js";
 import Tasks from "pages/Tasks";
 import Sequences from "pages/Sequences";
 import Inbox from "pages/Inbox";
-import { ReactComponent as DashboardIcon } from "../src/assets/img/icons/common/dasboard-menu-icon.svg";
-import { ReactComponent as ContactsIcon } from "../src/assets/img/icons/common/contacts-menu-icon.svg";
-import { ReactComponent as InboxIcon } from "../src/assets/img/icons/common/inbox-menu-icon.svg";
-import { ReactComponent as SequencesIcon } from "../src/assets/img/icons/common/sequences-menu-icon.svg";
+import { ReactComponent as DashboardIcon } from "../src/assets/img/icons/common/dashboard.svg";
+// import { ReactComponent as DashboardIcon } from "../src/assets/img/icons/common/dasboard-menu-icon.svg";
+import { ReactComponent as ContactsIcon } from "../src/assets/img/icons/common/contacts.svg";
+// import { ReactComponent as ContactsIcon } from "../src/assets/img/icons/common/contacts-menu-icon.svg";
+import { ReactComponent as InboxIcon } from "../src/assets/img/icons/common/inbox.svg";
+// import { ReactComponent as InboxIcon } from "../src/assets/img/icons/common/inbox-menu-icon.svg";
+import { ReactComponent as SequencesIcon } from "../src/assets/img/icons/common/sequences.svg";
+// import { ReactComponent as SequencesIcon } from "../src/assets/img/icons/common/sequences-menu-icon.svg";
 import { ReactComponent as TasksIcon } from "../src/assets/img/icons/common/tasks-menu-icon.svg";
 import { ReactComponent as B2bIcon } from "../src/assets/img/icons/common/b2b-menu-icon.svg";
 
@@ -18,9 +22,7 @@ export const ROUTES = {
   index: {
     path: "/index",
     name: "Дашборд",
-    icon: () => (
-      <DashboardIcon fill="var(--primary)" style={{ width: 40, height: 40 }} />
-    ),
+    icon: () => <DashboardIcon style={{ width: 50, height: 50 }} />,
     // icon: "ni ni-tv-2 text-primary",
     component: Dashboard,
     layout: "/admin",
