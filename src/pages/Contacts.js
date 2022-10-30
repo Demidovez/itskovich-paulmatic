@@ -1,5 +1,13 @@
 import React from "react";
-import { Card, CardHeader, Container, Row, Col, CardFooter } from "reactstrap";
+import {
+  Card,
+  CardHeader,
+  Container,
+  Row,
+  Col,
+  CardFooter,
+  Spinner,
+} from "reactstrap";
 import TableContacts from "components/TableContacts/TableContacts";
 import CreateContactsSelector from "components/CreateContactsSelector/CreateContactsSelector";
 import {
@@ -26,6 +34,7 @@ import { setLoaderStatus } from "store/slices/commonSlice";
 import Loader from "components/Loader/Loader";
 import useLoader from "hooks/useLoader";
 import { toast } from "react-toastify";
+import { getServerUrl } from "store/api/server";
 
 const COUNT_ON_PAGE = 100;
 
@@ -162,8 +171,8 @@ const Contacts = () => {
 
   useEffect(() => {
     if (!isFetching && exportResponse) {
-      if (exportResponse.contentBase64) {
-        const linkSource = `data:text/csv;base64,${exportResponse.contentBase64}`;
+      if (exportResponse.link) {
+        const linkSource = getServerUrl() + exportResponse.link;
         const downloadLink = document.createElement("a");
         document.body.appendChild(downloadLink);
 
@@ -171,6 +180,7 @@ const Contacts = () => {
         downloadLink.target = "_self";
         downloadLink.download = "Contacts";
         downloadLink.click();
+        downloadLink.remove();
       } else {
         toast.error("Ошибка экспорта");
       }
@@ -208,6 +218,10 @@ const Contacts = () => {
                     md={6}
                     className="d-flex justify-content-end align-items-center"
                   >
+                    {isFetching ? (
+                      <Spinner size="sm" color="primary" className="mr-3" />
+                    ) : null}
+
                     <ActionContactsBar
                       disabled={selectedIds.length === 0}
                       onDelete={() => setIsShowModalDelete(true)}

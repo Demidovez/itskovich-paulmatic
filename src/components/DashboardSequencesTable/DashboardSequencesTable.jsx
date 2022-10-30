@@ -62,19 +62,19 @@ const DashboardSequencesTable = ({ sequences = [] }) => {
                   <strong className="pr-1">
                     {Math.round((all ? sequence.OpenRate / all : 0) * 100)}%
                   </strong>{" "}
-                  ({sequence.OpenRate})
+                  {/* ({sequence.OpenRate}) */}
                 </td>
                 <td>
                   <strong className="pr-1">
                     {Math.round((all ? sequence.ReplyRate / all : 0) * 100)}%
                   </strong>{" "}
-                  ({sequence.ReplyRate})
+                  {/* ({sequence.ReplyRate}) */}
                 </td>
                 <td>
                   <strong className="pr-1">
                     {Math.round((all ? sequence.BounceRate / all : 0) * 100)}%
                   </strong>{" "}
-                  ({sequence.BounceRate})
+                  {/* ({sequence.BounceRate}) */}
                 </td>
                 <td>
                   <div className="d-flex">
