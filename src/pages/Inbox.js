@@ -10,9 +10,13 @@ import ChatActionBar from "components/ChatActionBar/ChatActionBar";
 
 const tourSteps = [
   {
-    selector: ".inbox",
-    content: "Здесь Вы можете вести переписку с клиентами",
+    selector: "#nav_item_inbox",
+    content: "Здесь Вы можете вести переписку с контактами, которые ответили в процессе последовательности. Сообщения будут доставляться и приниматься по почте",
   },
+  // {
+  //   selector: "#tmpl-chooser",
+  //   content: "Вы можете использовать заготовленные шаблоны для сообщений",
+  // },
 ];
 
 const Inbox = () => {

@@ -79,6 +79,7 @@ const ChatEditor = ({ className, sendMessage, chat = {} }) => {
         >
           <div className="d-flex">
             <DropdownWithIcon
+                id="tmpl-chooser"
               label="Шаблон"
               icon={() => <TbTemplate size="1.1rem" />}
               size="sm"

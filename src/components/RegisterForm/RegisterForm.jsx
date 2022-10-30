@@ -116,7 +116,7 @@ const RegisterForm = ({ className = "" }) => {
       nickname: Yup.string()
         .matches(
           NICKNAME_REGEX,
-          "Допускаются буквы латинского алфавита, цифры и _"
+          "Буквы латинского алфавита, цифры и _"
         )
         .required("Обязательное поле"),
       directorUsername: Yup.string().required("Обязательное поле"),
@@ -171,9 +171,9 @@ const RegisterForm = ({ className = "" }) => {
           formik.touched.nickname && formik.errors.nickname ? "has-error" : ""
         } mb-3`}
       >
-        <span>Никнейм</span>
+        <span>Логин</span>
         <Input
-          placeholder="Никнейм"
+          placeholder="Буквы латинского алфавита, цифры и _"
           type="text"
           name="nickname"
           autoComplete="name"
@@ -196,7 +196,7 @@ const RegisterForm = ({ className = "" }) => {
       >
         <span>Пароль</span>
         <Input
-          placeholder="Пароль"
+          placeholder="Минимум 5 символов"
           type="password"
           name="password"
           autoComplete="new-password"
@@ -218,7 +218,7 @@ const RegisterForm = ({ className = "" }) => {
       >
         <span>Компания</span>
         <Input
-          placeholder="Компания"
+          placeholder="ООО 'Моя Компания'"
           type="text"
           name="company"
           autoComplete="organization"
@@ -239,9 +239,9 @@ const RegisterForm = ({ className = "" }) => {
             : ""
         } mb-0`}
       >
-        <span>Никнейм или почта руководителя</span>
+        <span>Логин или почта руководителя</span>
         <Input
-          placeholder="Никнейм или почта руководителя"
+          placeholder="my-director@example.com или mydirector"
           type="text"
           name="directorUsername"
           autoComplete="name"

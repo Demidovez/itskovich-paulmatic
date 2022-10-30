@@ -85,7 +85,7 @@ const ProfileForm = ({ className = "" }) => {
       nickname: Yup.string()
         .matches(
           NICKNAME_REGEX,
-          "Допускаются буквы латинского алфавита, цифры и _"
+          "Буквы латинского алфавита, цифры и _"
         )
         .required("Обязательное поле"),
       directorUsername: Yup.string().email("Неверный E-mail"),
@@ -185,9 +185,9 @@ const ProfileForm = ({ className = "" }) => {
                         : ""
                     } mb-3`}
                   >
-                    <span>Никнейм</span>
+                    <span>Логин</span>
                     <Input
-                      placeholder="Никнейм"
+                      placeholder="Буквы латинского алфавита, цифры и _"
                       type="text"
                       name="nickname"
                       autoComplete="name"
