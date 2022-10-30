@@ -113,9 +113,9 @@ const ProfileForm = ({ className = "" }) => {
 
   const onDeleteSubmit = () => {
     setIsAskSure(false);
+    tryDelete();
     localStorage.clear();
     history.push("/auth/login");
-    tryDelete();
   };
 
   return (
