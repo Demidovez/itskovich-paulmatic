@@ -106,7 +106,6 @@ const RegisterForm = ({ className = "" }) => {
     initialValues: {
       username: "",
       nickname: "",
-      useremail: "",
       directorUsername: "",
       password: "",
       company: "",
@@ -120,10 +119,7 @@ const RegisterForm = ({ className = "" }) => {
           "Допускаются буквы латинского алфавита, цифры и _"
         )
         .required("Обязательное поле"),
-      useremail: Yup.string()
-        .email("Неверный E-mail")
-        .required("Обязательное поле"),
-      directorUsername: Yup.string().email("Неверный E-mail"),
+      directorUsername: Yup.string().required("Обязательное поле"),
       password: Yup.string()
         .min(5, "Требуется минимум 5 символов")
         .required("Обязательное поле"),
@@ -133,8 +129,7 @@ const RegisterForm = ({ className = "" }) => {
     onSubmit: (values) => {
       trySignUp({
         fullName: values.username,
-        nickname: values.nickname,
-        username: values.useremail,
+        username: values.nickname,
         password: values.password,
         company: values.company,
         directorUsername: values.directorUsername,
@@ -196,28 +191,6 @@ const RegisterForm = ({ className = "" }) => {
       </FormGroup>
       <FormGroup
         className={`field-wrapper ${
-          formik.touched.useremail && formik.errors.useremail ? "has-error" : ""
-        } mb-3`}
-      >
-        <span>E-mail</span>
-        <Input
-          placeholder="E-mail"
-          type="text"
-          name="useremail"
-          autoComplete="email"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.useremail}
-        />
-
-        <div className="field-error">
-          {formik.touched.useremail && formik.errors.useremail
-            ? formik.errors.useremail
-            : ""}
-        </div>
-      </FormGroup>
-      <FormGroup
-        className={`field-wrapper ${
           formik.touched.password && formik.errors.password ? "has-error" : ""
         } mb-3`}
       >
@@ -266,12 +239,12 @@ const RegisterForm = ({ className = "" }) => {
             : ""
         } mb-0`}
       >
-        <span>Имя пользователя руководителя</span>
+        <span>Никнейм или почта руководителя</span>
         <Input
-          placeholder="Имя пользователя руководителя"
+          placeholder="Никнейм или почта руководителя"
           type="text"
           name="directorUsername"
-          autoComplete="email"
+          autoComplete="name"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.directorUsername}
