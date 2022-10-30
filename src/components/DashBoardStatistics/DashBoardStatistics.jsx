@@ -92,7 +92,7 @@ const DashBoardStatistics = ({
                           Open Rate
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">
-                          {openRate}%
+                          {openRate ? openRate.toFixed(2) : 0}%
                         </span>
                       </div>
                       <Col className="col-auto">

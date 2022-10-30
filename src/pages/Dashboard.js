@@ -1,5 +1,5 @@
 import { Container, Row, Col } from "reactstrap";
-import DashBoardStatistics from "components/DashBoardStatistics/DashBoardStatistics.js";
+import DashBoardStatistics from "components/DashBoardStatistics/DashBoardStatistics";
 import FullCalendar from "components/FullCalendar/FullCalendar";
 import DashBoardTabs from "components/DashBoardTabs/DashBoardTabs";
 import InteractiveTour from "components/InteractiveTour/InteractiveTour";
