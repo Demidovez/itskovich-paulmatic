@@ -20,11 +20,13 @@ import { useEffect, useState } from "react";
 import { updateAccount } from "store/slices/commonSlice";
 import ModalYouSure from "components/ModalYouSure/ModalYouSure";
 import { useLazyTryDeleteQuery } from "store/api/login";
+import { useHistory } from "react-router-dom";
 
 const NICKNAME_REGEX = /^[A-Za-z0-9_]+$/;
 
 const ProfileForm = ({ className = "" }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [resultError, setResultError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -111,6 +113,8 @@ const ProfileForm = ({ className = "" }) => {
 
   const onDeleteSubmit = () => {
     setIsAskSure(false);
+    localStorage.clear();
+    history.push("/auth/login");
     tryDelete();
   };
 
