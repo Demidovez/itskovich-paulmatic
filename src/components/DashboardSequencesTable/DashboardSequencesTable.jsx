@@ -4,6 +4,7 @@ import "./DashboardSequencesTable.scss";
 // <i className="fas fa-arrow-up text-success mr-3" />
 
 const DashboardSequencesTable = ({ sequences = [] }) => {
+  // console.log(sequences);
   return (
     <Card
       className="dashboard-sequences-table-component shadow h-100"
