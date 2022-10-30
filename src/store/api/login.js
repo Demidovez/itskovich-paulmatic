@@ -27,6 +27,13 @@ export const loginApi = createApi({
       }),
       transformResponse: (response) => response.result,
     }),
+    tryDelete: builder.query({
+      query: () => ({
+        url: "/delete",
+        method: "GET",
+        headers: getHeaders(),
+      }),
+    }),
     trySaveEmailServer: builder.query({
       query: (body) => ({
         url: "/setEmailSettings",
@@ -62,4 +69,5 @@ export const {
   useLazyTrySaveEmailServerQuery,
   useLazyTryUpdateQuery,
   useLazyTryUpdatePaymentQuery,
+  useLazyTryDeleteQuery,
 } = loginApi;

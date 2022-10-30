@@ -15,8 +15,10 @@ import { ReactComponent as InboxIcon } from "../src/assets/img/icons/common/inbo
 // import { ReactComponent as InboxIcon } from "../src/assets/img/icons/common/inbox-menu-icon.svg";
 import { ReactComponent as SequencesIcon } from "../src/assets/img/icons/common/sequences.svg";
 // import { ReactComponent as SequencesIcon } from "../src/assets/img/icons/common/sequences-menu-icon.svg";
-import { ReactComponent as TasksIcon } from "../src/assets/img/icons/common/tasks-menu-icon.svg";
-import { ReactComponent as B2bIcon } from "../src/assets/img/icons/common/b2b-menu-icon.svg";
+import { ReactComponent as TasksIcon } from "../src/assets/img/icons/common/tasks.svg";
+// import { ReactComponent as TasksIcon } from "../src/assets/img/icons/common/tasks-menu-icon.svg";
+import { ReactComponent as B2bIcon } from "../src/assets/img/icons/common/b2b.svg";
+// import { ReactComponent as B2bIcon } from "../src/assets/img/icons/common/b2b-menu-icon.svg";
 
 export const ROUTES = {
   index: {

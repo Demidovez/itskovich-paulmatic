@@ -105,8 +105,8 @@ const Menu = (props) => {
               {/* <i
                 className={`${prop.icon} pr-lg-2 pr-md-0 ml--2 ml-md-0 mt--1`}
               /> */}
-              {prop.icon()}
-              <span className="pl-2">{prop.name}</span>
+              {/* {prop.icon()} */}
+              <span className="">{prop.name}</span>
             </NavLink>
           </NavItem>
         );

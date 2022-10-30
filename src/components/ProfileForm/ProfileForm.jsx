@@ -18,6 +18,8 @@ import { useSelector } from "react-redux";
 import { useLazyTryUpdateQuery } from "store/api/login";
 import { useEffect, useState } from "react";
 import { updateAccount } from "store/slices/commonSlice";
+import ModalYouSure from "components/ModalYouSure/ModalYouSure";
+import { useLazyTryDeleteQuery } from "store/api/login";
 
 const NICKNAME_REGEX = /^[A-Za-z0-9_]+$/;
 
@@ -83,10 +85,7 @@ const ProfileForm = ({ className = "" }) => {
     validationSchema: Yup.object({
       username: Yup.string().required("Обязательное поле"),
       nickname: Yup.string()
-        .matches(
-          NICKNAME_REGEX,
-          "Буквы латинского алфавита, цифры и _"
-        )
+        .matches(NICKNAME_REGEX, "Буквы латинского алфавита, цифры и _")
         .required("Обязательное поле"),
       directorUsername: Yup.string().email("Неверный E-mail"),
       password: Yup.string()
@@ -106,6 +105,14 @@ const ProfileForm = ({ className = "" }) => {
       });
     },
   });
+
+  const [isAskSure, setIsAskSure] = useState(false);
+  const [tryDelete] = useLazyTryDeleteQuery();
+
+  const onDeleteSubmit = () => {
+    setIsAskSure(false);
+    tryDelete();
+  };
 
   return (
     <div className="profile-form-component" style={{ background: "#4450ff" }}>
@@ -276,26 +283,41 @@ const ProfileForm = ({ className = "" }) => {
                     </div>
                   </FormGroup>
                 </Form>
-                <div className="position-relative mt-4 d-flex align-items-center">
-                  <Button
-                    className=""
-                    color="primary"
-                    type="button"
-                    onClick={formik.handleSubmit}
-                    disabled={isLoading}
-                    style={{
-                      background: "#f9b237",
-                      borderRadius: 40,
-                      minWidth: 120,
-                    }}
-                  >
-                    {isLoading ? (
-                      <Spinner color="white" size="sm" />
-                    ) : (
-                      "Сохранить"
-                    )}
-                  </Button>
-                  <div className="server-error">
+                <div className="position-relative mt-4">
+                  <div className="d-flex align-items-center justify-content-between">
+                    <Button
+                      className=""
+                      color="primary"
+                      type="button"
+                      onClick={formik.handleSubmit}
+                      disabled={isLoading}
+                      style={{
+                        background: "#f9b237",
+                        borderRadius: 40,
+                        minWidth: 120,
+                      }}
+                    >
+                      {isLoading ? (
+                        <Spinner color="white" size="sm" />
+                      ) : (
+                        "Сохранить"
+                      )}
+                    </Button>
+                    <Button
+                      className=""
+                      color="primary"
+                      type="button"
+                      style={{
+                        background: "var(--orange)",
+                        borderRadius: 40,
+                        minWidth: 120,
+                      }}
+                      onClick={() => setIsAskSure(true)}
+                    >
+                      Удалить аккаунт
+                    </Button>
+                  </div>
+                  <div className="server-error mt-2">
                     {resultError ? resultError : ""}
                   </div>
                 </div>
@@ -326,6 +348,15 @@ const ProfileForm = ({ className = "" }) => {
           <Col lg="1"></Col>
         </Row>
       </Container>
+      <ModalYouSure
+        isShow={isAskSure}
+        title={"Удалить аккаунт"}
+        text={"Вы действительно хотите удалить аккаунт?"}
+        onAgree={onDeleteSubmit}
+        onCancel={() => {
+          setIsAskSure(false);
+        }}
+      />
     </div>
   );
 };
