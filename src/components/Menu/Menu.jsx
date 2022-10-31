@@ -272,14 +272,14 @@ const Menu = (props) => {
                 right
                 style={{ minWidth: "12rem" }}
               >
-                {/* <DropdownItem
+                <DropdownItem
                   onClick={() => {
                     localStorage.removeItem("tours");
                   }}
                 >
                   <i className="ni ni-spaceship" />
-                  <span>Восстановить туры</span>
-                </DropdownItem> */}
+                  <span>Восстановить тур по платформе</span>
+                </DropdownItem>
                 <DropdownItem
                   to={"/admin" + getpath(ROUTES["user-profile"].path)}
                   tag={Link}

@@ -114,7 +114,7 @@ const ProfileForm = ({ className = "" }) => {
   const onDeleteSubmit = () => {
     setIsAskSure(false);
     tryDelete();
-    localStorage.clear();
+    // localStorage.clear();
     history.push("/auth/login");
   };
 
@@ -318,7 +318,7 @@ const ProfileForm = ({ className = "" }) => {
                       }}
                       onClick={() => setIsAskSure(true)}
                     >
-                      Удалить аккаунт
+                      Удалить мой аккаунт
                     </Button>
                   </div>
                   <div className="server-error mt-2">
@@ -355,7 +355,7 @@ const ProfileForm = ({ className = "" }) => {
       <ModalYouSure
         isShow={isAskSure}
         title={"Удалить аккаунт"}
-        text={"Вы действительно хотите удалить аккаунт?"}
+        text={"Вы действительно хотите удалить Ваш аккаунт?"}
         onAgree={onDeleteSubmit}
         onCancel={() => {
           setIsAskSure(false);

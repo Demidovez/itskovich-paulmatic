@@ -216,14 +216,15 @@ const TableContacts = ({
                     return (
                       <td
                         key={field.name}
+                        className={"ellipsized"}
                         style={{
                           whiteSpace: "normal",
                           ...field.style,
                         }}
                       >
-                        {(contact[field.name] || [])
-                          .map(({ Name }) => Name)
-                          .join(", ")}
+                        {/*{(contact[field.name] || [])*/}
+                        {/*  .map(({ Name }) => Name)*/}
+                        {/*  .join(", ")}*/}
                       </td>
                     );
                   } else {
