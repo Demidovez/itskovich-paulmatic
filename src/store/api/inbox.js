@@ -31,6 +31,16 @@ export const inboxApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    deleteChat: builder.query({
+      query: (id) => ({
+        url: "/clear",
+        method: "POST",
+        body: {
+          id,
+        },
+        headers: getHeaders(),
+      }),
+    }),
   }),
 });
 
@@ -38,4 +48,5 @@ export const {
   useLazySendMessageQuery,
   useLazySearchChatQuery,
   useLazyMoveToFolderQuery,
+  useLazyDeleteChatQuery,
 } = inboxApi;

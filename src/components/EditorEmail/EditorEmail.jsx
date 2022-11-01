@@ -5,7 +5,7 @@ import { convertBase64 } from "utils/utils";
 const EditorEmail = ({
   className,
   files = [],
-  content,
+  content = "",
   template = "",
   onChange = () => {},
   style = "",
@@ -20,6 +20,8 @@ const EditorEmail = ({
     () => template || content,
     [template, content.length > 0]
   );
+
+  // console.log(content);
 
   useEffect(() => {
     if (editorRef.current && content.length > 0) {

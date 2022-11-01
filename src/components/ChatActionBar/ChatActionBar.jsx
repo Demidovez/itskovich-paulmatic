@@ -11,6 +11,7 @@ import {
   DropdownMenu,
   DropdownToggle,
 } from "reactstrap";
+import { useLazyDeleteChatQuery } from "store/api/inbox";
 import { useLazyMoveToFolderQuery } from "store/api/inbox";
 import { deleteChat } from "store/slices/commonSlice";
 import { moveChatToFolder } from "store/slices/commonSlice";
@@ -26,6 +27,8 @@ const ChatActionBar = () => {
   const [isAskSure, setIsAskSure] = useState(false);
 
   const [moveToFolder] = useLazyMoveToFolderQuery();
+
+  const [tryDeleteChat] = useLazyDeleteChatQuery();
 
   useEffect(() => {
     if (dropdownOpen) {
@@ -48,6 +51,7 @@ const ChatActionBar = () => {
     dispatch(deleteChat(activeChatId));
     dispatch(clearActiveChatId());
     setIsAskSure(false);
+    tryDeleteChat(activeChatId);
   };
 
   return (

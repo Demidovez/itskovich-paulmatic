@@ -45,26 +45,30 @@ const TaskModalManualEmail = ({
   const account = useSelector((state) => state.common.Account);
 
   useEffect(() => {
-    const [template, key] = task.Body.split(":");
-    const emailBody =
-      template === "template" ? emailTemplates[key] || task.Body : task.Body;
+    try {
+      const [template, key] = task.Body.split(":");
+      const emailBody =
+        template === "template" ? emailTemplates[key] || task.Body : task.Body;
 
-    const injectedEmailBody = pupa(emailBody.replaceAll("{{.", "{{"), {
-      Contact: {
-        ...Object.fromEntries(
-          Object.entries(task.Contact).map(([k, v]) => [
-            k[0].toUpperCase() + k.slice(1),
-            v,
-          ])
-        ),
-      },
-      Me: {
-        ...account,
-      },
-    });
+      const injectedEmailBody = pupa(emailBody.replaceAll("{{.", "{{"), {
+        Contact: {
+          ...Object.fromEntries(
+            Object.entries(task.Contact).map(([k, v]) => [
+              k[0].toUpperCase() + k.slice(1),
+              v,
+            ])
+          ),
+        },
+        Me: {
+          ...account,
+        },
+      });
 
-    setCurrentTask((currTask) => ({ ...currTask, Body: injectedEmailBody }));
-    setEmailBody(injectedEmailBody);
+      setCurrentTask((currTask) => ({ ...currTask, Body: injectedEmailBody }));
+      setEmailBody(injectedEmailBody);
+    } catch (e) {
+      console.error(e);
+    }
   }, [task.Body, emailTemplates, account]);
 
   const onKeyDown = useCallback(

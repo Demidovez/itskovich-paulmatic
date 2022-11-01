@@ -43,15 +43,23 @@ const EmailForm = ({
     setCurrentPassword(Password);
   }, [Login, Password]);
 
-  const [trySaveEmailServer, { data: emailServerResponse, isFetching }] =
-    useLazyTrySaveEmailServerQuery();
+  const [
+    trySaveEmailServer,
+    { data: emailServerResponse, isFetching, error, isError },
+  ] = useLazyTrySaveEmailServerQuery();
+
+  useEffect(() => {}, []);
 
   useEffect(() => {
-    if (!isFetching && emailServerResponse) {
+    if (isError && error) {
+      setResultError(error.data.error.message || "Ошибка! Попробуйте позже");
+      setIsLoading(false);
+      console.log(111);
+    } else if (!isFetching && emailServerResponse) {
       if ((emailServerResponse.result || {}).InMailSettings) {
         dispatch(
           setInMailSettingsStatus({
-            ...emailServerResponse.InMailSettings,
+            ...emailServerResponse.result.InMailSettings,
             Creds: {
               Name: server.Creds.Name,
               Id: server.Creds.Id,
@@ -61,9 +69,9 @@ const EmailForm = ({
         localStorage.setItem(
           "Account",
           JSON.stringify({
-            ...emailServerResponse,
+            ...emailServerResponse.result,
             InMailSettings: {
-              ...emailServerResponse.InMailSettings,
+              ...emailServerResponse.result.InMailSettings,
               Creds: {
                 Name: server.Creds.Name,
                 Id: server.Creds.Id,
@@ -84,9 +92,7 @@ const EmailForm = ({
     } else if (isFetching) {
       setIsLoading(true);
     }
-  }, [emailServerResponse, isFetching, server]);
-
-  console.log(emailServerResponse);
+  }, [emailServerResponse, isFetching, server, error, isError]);
 
   return (
     <Formik

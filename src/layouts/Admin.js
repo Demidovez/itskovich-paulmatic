@@ -116,9 +116,9 @@ const Admin = (props) => {
         pauseOnHover={false}
       />
       {isSuccess && <CommonThings />}
-      {/*{isNeedSetEmailServer && (*/}
-      {/*  <ModalEmailSettings onClose={onCloseModalEmailSettings} />*/}
-      {/*)}*/}
+      {isNeedSetEmailServer && (
+        <ModalEmailSettings onClose={onCloseModalEmailSettings} />
+      )}
       {showedMessageTariffModal && (
         <ModalTariff
           onClose={onCloseTariffModal}

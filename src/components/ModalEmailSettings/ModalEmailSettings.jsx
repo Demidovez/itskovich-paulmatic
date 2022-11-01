@@ -59,6 +59,7 @@ const ModalEmailSettings = ({ onClose }) => {
       className="modal-email-settings-component modal-dialog-centered"
       modalClassName="d-flex"
       toggle={InMailSettings ? tryClose : () => {}}
+      // toggle={tryClose}
       isOpen={true}
       backdrop={InMailSettings ? true : "static"}
       style={{
