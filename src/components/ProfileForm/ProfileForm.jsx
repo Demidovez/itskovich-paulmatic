@@ -144,7 +144,9 @@ const ProfileForm = ({ className = "" }) => {
                         name="useremail"
                         autoComplete="email"
                         disabled={true}
-                        defaultValue={Account.username}
+                        defaultValue={
+                          (Account.InMailSettings || { Login: "" }).Login
+                        }
                       />
                       <Button
                         style={{
