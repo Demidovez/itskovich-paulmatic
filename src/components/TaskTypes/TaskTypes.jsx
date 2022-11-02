@@ -35,9 +35,9 @@ const TaskTypes = ({ types = [], task = {}, setCurrent }) => {
   return (
     <>
       <div className="task-types-component">
-        {types.map((type) => (
+        {types.map((type, index) => (
           <div
-            key={type.Creds.Name}
+            key={index}
             onClick={() => onSetType(type)}
             className={`type-icon ${
               task.Type === type.Creds.Name ? "active" : ""

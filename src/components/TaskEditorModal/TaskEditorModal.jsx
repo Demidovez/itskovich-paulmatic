@@ -115,8 +115,10 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
     ) {
       setIsChanged(true);
     } else if (
+      currentTask.Body &&
+      task.Body &&
       currentTask.Body.replace(/(<([^>]+)>)/gi, "") !==
-      task.Body.replace(/(<([^>]+)>)/gi, "")
+        task.Body.replace(/(<([^>]+)>)/gi, "")
     ) {
       setIsChanged(true);
     }

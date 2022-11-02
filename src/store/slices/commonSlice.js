@@ -101,7 +101,10 @@ export const commonSlice = createSlice({
         ...state.Tasks,
         Types: {
           ...state.Tasks.Types,
-          auto_email: { Creds: { Title: "Автоматический E-mail" } },
+          auto_email: {
+            Creds: { Title: "Автоматический E-mail", Name: "auto_mail" },
+            Actions: [{ Name: "send_letter", Title: "Отправить письмо" }],
+          },
         },
       };
     },
