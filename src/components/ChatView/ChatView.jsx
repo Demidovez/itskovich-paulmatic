@@ -16,6 +16,8 @@ const ChatView = ({ className, chat = { Msgs: [] } }) => {
     botRef && botRef.current.scrollIntoView();
   }, [chat.Msgs.length, botRef]);
 
+  console.log(chat.Msgs);
+
   return (
     <div className="overflow-auto flex-fill" id="scrollable-messages">
       <div className={`chat-view-component ${className}`}>

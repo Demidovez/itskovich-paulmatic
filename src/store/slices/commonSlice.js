@@ -268,6 +268,10 @@ export const commonSlice = createSlice({
             (message) => message.id === notify.Msgs[0].id
           );
 
+          const hasMessageWithoutId = chat.Msgs.some((message) =>
+            isNaN(message.id)
+          );
+
           return chat.Contact.id === notify.Contact.id
             ? {
                 ...chat,
@@ -276,6 +280,10 @@ export const commonSlice = createSlice({
                       message.id === notify.Msgs[0].id
                         ? notify.Msgs[0]
                         : message
+                    )
+                  : hasMessageWithoutId
+                  ? chat.Msgs.map((message) =>
+                      isNaN(message.id) ? notify.Msgs[0] : message
                     )
                   : [...chat.Msgs, notify.Msgs[0]],
               }
