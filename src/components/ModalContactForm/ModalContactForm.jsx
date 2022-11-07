@@ -82,6 +82,12 @@ const ModalContactForm = ({ contact, isShow, onSave, onRemove, onClose }) => {
           />
           <Input
             className="mb-4"
+            value={currentContact.Job || ""}
+            placeholder={"Должность"}
+            onChange={(e) => onInputChange(e, "Job")}
+          />
+          <Input
+            className="mb-4"
             value={currentContact.company || ""}
             placeholder={"Компания"}
             onChange={(e) => onInputChange(e, "company")}
