@@ -132,10 +132,7 @@ const TableContacts = ({
           className="align-items-center table-flush table-hover fixed-header"
           responsive
         >
-          <thead
-            className="thead-light sticky-top"
-            style={{ zIndex: "inherit" }}
-          >
+          <thead className="thead-light sticky-top" style={{ zIndex: 999 }}>
             <tr className="d-flex">
               {fields.map((field) => (
                 <th key={field.name + "1"} style={field.style}>

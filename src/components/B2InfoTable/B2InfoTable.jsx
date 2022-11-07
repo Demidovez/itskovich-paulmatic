@@ -16,7 +16,7 @@ const B2InfoTable = ({
   data,
   fetchData,
   fields = [],
-  isLoading = false,
+  isLoading = true,
   isLoaded = true,
   loadingLabel,
 }) => {
@@ -83,142 +83,148 @@ const B2InfoTable = ({
         className="b2-info-table-component h-100 overflow-auto"
         style={{ display: isLoading ? "none" : "block" }}
       >
-        <Table
-          className="align-items-center table-hover fixed-header"
-          responsive
-          style={{ tableLayout: "auto" }}
-        >
-          <thead className="thead-light sticky-top" style={{ zIndex: 999 }}>
-            <tr className="d-flex">
-              {fields.map((field) => (
-                <th key={field.name + "1"} style={field.style}>
-                  {field.label}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {((data || cacheTables[info.name] || {}).Items || []).map(
-              (company) => (
-                <tr key={company.id} className="d-flex">
-                  {fields.map((field) => {
-                    if (field.name === "checkbox") {
-                      return (
-                        <td
-                          className="p-0 pt-3"
-                          key={field.name}
-                          style={{
-                            whiteSpace: "normal",
-                            ...field.style,
-                          }}
-                        >
-                          <div className="custom-control checkbox-contact custom-checkbox pl-0">
-                            <input
-                              className="custom-control-input"
-                              checked={selectedIds.includes(company.id)}
-                              onChange={() => onSelectId(company.id)}
-                              id={"check_" + company.id}
-                              type="checkbox"
-                            />
-                            <Label
-                              className="custom-control-label"
-                              htmlFor={"check_" + company.id}
-                            ></Label>
-                          </div>
-                        </td>
-                      );
-                    } else if (
-                      field.name === "Socials" ||
-                      field.name === "Website"
-                    ) {
-                      return (
-                        <td
-                          key={field.name}
-                          style={{
-                            whiteSpace: "normal",
-                            ...field.style,
-                          }}
-                        >
-                          {company[field.name]
-                            .trim()
-                            .split(",")
-                            .map((socialItem, index) => (
-                              <small key={index}>
-                                <p
-                                  className={"ellipsized"}
-                                  style={{
-                                    fontSize: "small",
-                                    marginBottom: 0,
-                                  }}
-                                >
-                                  <a href={socialItem.trim()} target="_blank">
-                                    {socialItem.trim()}
-                                  </a>
-                                </p>
-                              </small>
-                            ))}
-                        </td>
-                      );
-                    } else if (field.name === "Linkedin") {
-                      return (
-                        <td
-                          key={field.name}
-                          style={{
-                            whiteSpace: "normal",
-                            ...field.style,
-                          }}
-                        >
-                          <a href={company[field.name]} target="_blank">
-                            {company[field.name]}
-                          </a>
-                        </td>
-                      );
-                    } else if (["Email"].includes(field.name)) {
-                      return (
-                        <HiddenTableCell
-                          key={field.name}
-                          value={company[field.name]}
-                          style={field.style}
-                        />
-                      );
-                    } else if (["Phone"].includes(field.name)) {
-                      return (
-                        <HiddenTableCell
-                          key={field.name}
-                          value={
-                            company[field.name] &&
-                            company[field.name]
+        {((data || cacheTables[info.name] || {}).Items || []).length === 0 ? (
+          <p className="message" style={{ display: data ? "block" : "none" }}>
+            По вашему запросу результаты не найдены
+          </p>
+        ) : (
+          <Table
+            className="align-items-center table-hover fixed-header"
+            responsive
+            style={{ tableLayout: "auto" }}
+          >
+            <thead className="thead-light sticky-top" style={{ zIndex: 999 }}>
+              <tr className="d-flex">
+                {fields.map((field) => (
+                  <th key={field.name + "1"} style={field.style}>
+                    {field.label}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {((data || cacheTables[info.name] || {}).Items || []).map(
+                (company) => (
+                  <tr key={company.Id || company.id} className="d-flex">
+                    {fields.map((field) => {
+                      if (field.name === "checkbox") {
+                        return (
+                          <td
+                            className="p-0 pt-3"
+                            key={field.name}
+                            style={{
+                              whiteSpace: "normal",
+                              ...field.style,
+                            }}
+                          >
+                            <div className="custom-control checkbox-contact custom-checkbox pl-0">
+                              <input
+                                className="custom-control-input"
+                                checked={selectedIds.includes(
+                                  company.Id || company.id
+                                )}
+                                onChange={() =>
+                                  onSelectId(company.Id || company.id)
+                                }
+                                id={"check_" + (company.Id || company.id)}
+                                type="checkbox"
+                              />
+                              <Label
+                                className="custom-control-label"
+                                htmlFor={"check_" + (company.Id || company.id)}
+                              ></Label>
+                            </div>
+                          </td>
+                        );
+                      } else if (
+                        field.name === "Socials" ||
+                        field.name === "Website"
+                      ) {
+                        return (
+                          <td
+                            key={field.name}
+                            style={{
+                              whiteSpace: "normal",
+                              ...field.style,
+                            }}
+                          >
+                            {company[field.name]
                               .trim()
-                              .split(";")
-                              .map((phone, index) => (
-                                <div key={index}>{phone.trim()}</div>
-                              ))
-                          }
-                          style={field.style}
-                        />
-                      );
-                    } else {
-                      return (
-                        <td
-                          key={field.name}
-                          style={{
-                            whiteSpace: "normal",
-                            ...field.style,
-                          }}
-                        >
-                          {company[field.name]}
-                        </td>
-                      );
-                    }
-                  })}
-                </tr>
-              )
-            )}
-          </tbody>
-        </Table>
-
-        {((data || cacheTables[info.name] || {}).Items || {}).length === 0 && (
-          <p className="message">По вашему запросу результаты не найдены</p>
+                              .split(",")
+                              .map((socialItem, index) => (
+                                <small key={index}>
+                                  <p
+                                    className={"ellipsized"}
+                                    style={{
+                                      fontSize: "small",
+                                      marginBottom: 0,
+                                    }}
+                                  >
+                                    <a href={socialItem.trim()} target="_blank">
+                                      {socialItem.trim()}
+                                    </a>
+                                  </p>
+                                </small>
+                              ))}
+                          </td>
+                        );
+                      } else if (field.name === "Linkedin") {
+                        return (
+                          <td
+                            key={field.name}
+                            style={{
+                              whiteSpace: "normal",
+                              ...field.style,
+                            }}
+                          >
+                            <a href={company[field.name]} target="_blank">
+                              {company[field.name]}
+                            </a>
+                          </td>
+                        );
+                      } else if (["Email"].includes(field.name)) {
+                        return (
+                          <HiddenTableCell
+                            key={field.name}
+                            value={company[field.name]}
+                            style={field.style}
+                          />
+                        );
+                      } else if (["Phone"].includes(field.name)) {
+                        return (
+                          <HiddenTableCell
+                            key={field.name}
+                            value={
+                              company[field.name] &&
+                              company[field.name]
+                                .trim()
+                                .split(";")
+                                .map((phone, index) => (
+                                  <div key={index}>{phone.trim()}</div>
+                                ))
+                            }
+                            style={field.style}
+                          />
+                        );
+                      } else {
+                        return (
+                          <td
+                            key={field.name}
+                            style={{
+                              whiteSpace: "normal",
+                              ...field.style,
+                            }}
+                          >
+                            {company[field.name]}
+                          </td>
+                        );
+                      }
+                    })}
+                  </tr>
+                )
+              )}
+            </tbody>
+          </Table>
         )}
       </div>
       <CardFooter

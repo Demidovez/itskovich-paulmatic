@@ -22,7 +22,7 @@ const SearchBar = ({ table, className }) => {
   useEffect(() => {
     if (value === null || isTyping === false) return;
 
-    if (value.length < 4) return;
+    // if (value.length < 4) return;
 
     const idTimer = setTimeout(() => {
       setIsTyping(false);

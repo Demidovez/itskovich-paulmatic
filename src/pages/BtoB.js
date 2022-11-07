@@ -145,7 +145,7 @@ const personsFields = [
     },
   },
   {
-    label: "Title",
+    label: "Должность",
     name: "Title",
     style: {
       width: "17%",
