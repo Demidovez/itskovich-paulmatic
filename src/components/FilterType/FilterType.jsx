@@ -4,7 +4,7 @@ import "./FilterType.scss";
 
 const FilterType = ({ data, value, onChange, isDisabled, dependValue }) => {
   switch (data.Type) {
-    case "choise":
+    case "choice":
       return (
         <FormGroup>
           <p className="mb-1">

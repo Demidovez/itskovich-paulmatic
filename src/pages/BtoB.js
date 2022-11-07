@@ -137,7 +137,7 @@ const personsFields = [
   },
   {
     label: "Имя",
-    name: "FullName",
+    name: "Name",
     style: {
       width: "16%",
       minWidth: "100px",
