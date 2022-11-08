@@ -46,6 +46,8 @@ const DashboardTypesInteractions = ({
 
   const types = useSelector((state) => state.common.Tasks.Types);
 
+  console.log(tasks);
+
   return (
     <Card className="shadow" id="types">
       <CardHeader className="border-0">
