@@ -110,10 +110,15 @@ const SequencePageSchedule = ({ isShow, onChange }) => {
         <div className="sequence-page-schedule-component modal-body d-flex flex-column overflow-auto ml--0 mr--0 pl-0 pr-0">
           <div className="header-schedule">
             <div className="d-flex">
-              <div style={{ width: 180 }}></div>
+              <div style={{ width: 180, minWidth: 180 }}></div>
               <div
                 className="flex-fill d-flex justify-content-between"
-                style={{ width: 924, maxWidth: 924, margin: "0 -12px" }}
+                style={{
+                  width: 924,
+                  maxWidth: 924,
+                  minWidth: 924,
+                  margin: "0 -12px",
+                }}
               >
                 {Array(25)
                   .fill()
@@ -130,7 +135,7 @@ const SequencePageSchedule = ({ isShow, onChange }) => {
             {DAYS.map((day, index) => (
               <div className="row-schedule" key={day.name}>
                 <div
-                  style={{ width: 180 }}
+                  style={{ width: 180, minWidth: 180 }}
                   onClick={() => addCheckedDay(index)}
                 >
                   <Checkbox
@@ -167,12 +172,12 @@ const SequencePageSchedule = ({ isShow, onChange }) => {
                 </div>
                 <div
                   style={{ width: 100 }}
-                  className="d-flex justify-content-center"
+                  className="d-flex justify-content-center "
                 >
                   <Button
                     color="secondary"
                     type="button"
-                    className="p-1 d-flex align-items-center justify-content-center"
+                    className="p-1 d-flex align-items-center justify-content-center mx-3"
                     style={{ borderRadius: "50%", width: 30, height: 30 }}
                     onClick={() => addJob(day.name, index)}
                     disabled={isFullTimeline[day.name]}

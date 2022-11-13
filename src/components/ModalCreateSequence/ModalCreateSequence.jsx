@@ -174,10 +174,10 @@ const ModalCreateSequence = ({ onClose }) => {
         }}
       >
         <div
-          className="h-100 d-flex flex-column modal-inner position-relative"
+          className="h-100 d-flex flex-column modal-inner position-relative overflow-auto"
           style={{ flex: 5 }}
         >
-          <div className="modal-header text-center pb-0">
+          <div className="modal-header text-center pb-1 d-flex align-items-center">
             <div className="w-100 d-flex align-items-center">
               <h4 className="modal-title d-flex pr-3">
                 Создать последовательность
@@ -221,11 +221,11 @@ const ModalCreateSequence = ({ onClose }) => {
             </div>
             <button
               aria-label="Close"
-              className="close"
+              className="close pr-2"
               data-dismiss="modal"
               type="button"
               onClick={tryClose}
-              style={{ position: "absolute", right: "1.25rem" }}
+              // style={{ position: "absolute", right: "1.25rem" }}
             >
               <span aria-hidden={true}>×</span>
             </button>
