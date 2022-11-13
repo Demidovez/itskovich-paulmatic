@@ -1,4 +1,5 @@
 import Checkbox from "components/Checkbox/Checkbox";
+import Scrollbar from "components/Scrollbar/Scrollbar";
 import SequenceTimeline from "components/SequenceTimeline/SequenceTimeline";
 import { useEffect, useState } from "react";
 import { GrAdd } from "react-icons/gr";
@@ -107,7 +108,7 @@ const SequencePageSchedule = ({ isShow, onChange }) => {
   return (
     <>
       {isShow ? (
-        <div className="sequence-page-schedule-component modal-body d-flex flex-column overflow-auto ml--0 mr--0 pl-0 pr-0">
+        <Scrollbar className="sequence-page-schedule-component modal-body d-flex flex-column overflow-auto ml--0 mr--0 pl-0 pr-0">
           <div className="header-schedule">
             <div className="d-flex">
               <div style={{ width: 180, minWidth: 180 }}></div>
@@ -188,7 +189,7 @@ const SequencePageSchedule = ({ isShow, onChange }) => {
               </div>
             ))}
           </div>
-        </div>
+        </Scrollbar>
       ) : null}
     </>
   );

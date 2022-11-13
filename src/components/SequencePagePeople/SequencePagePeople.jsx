@@ -113,10 +113,13 @@ const SequencePagePeople = ({ isShow, onChange }) => {
     <>
       {isShow ? (
         <div className="modal-body d-flex flex-column overflow-hidden p-0 mt-3">
-          <Row className="flex-fill p-0">
-            <div className="col mb-0 d-flex">
-              <Card className="shadow1 flex-fill overflow-hidden border-0">
-                <CardHeader className="border-0 ">
+          <Row className="flex-fill p-0 h-100">
+            <div className="col mb-0 d-flex h-100">
+              <Card
+                className="flex-fill overflow-hidden border-0"
+                style={{ maxHeight: "100%" }}
+              >
+                <CardHeader className="border-0 " style={{ flex: "0 0 auto" }}>
                   <Row>
                     <Col md={6} className="search-tour">
                       <SearchBarContacts
@@ -140,7 +143,10 @@ const SequencePagePeople = ({ isShow, onChange }) => {
                   selectedIds={selectedIds}
                   columns={columns}
                 />
-                <CardFooter className="d-flex justify-content-between align-items-center">
+                <CardFooter
+                  className="d-flex justify-content-between align-items-center"
+                  style={{ flex: "0 0 auto" }}
+                >
                   <div></div>
                   <Pagination
                     allCount={

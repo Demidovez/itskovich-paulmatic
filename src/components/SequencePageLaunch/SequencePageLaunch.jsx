@@ -1,3 +1,4 @@
+import Scrollbar from "components/Scrollbar/Scrollbar";
 import { DAYS } from "components/SequencePageSchedule/SequencePageSchedule";
 import { Fragment, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -91,7 +92,7 @@ const SequencePageLaunch = ({ isShow, onChange }) => {
   return (
     <>
       {isShow ? (
-        <div className="sequence-page-launch-component modal-body d-flex flex-column overflow-auto ml--0 mr--0 pl-0 pr-0 justify-content-center1">
+        <Scrollbar className="sequence-page-launch-component modal-body d-flex flex-column overflow-auto ml--0 mr--0 pl-0 pr-0 justify-content-center1">
           {pages.map((page, index) => (
             <div
               key={index}
@@ -110,7 +111,7 @@ const SequencePageLaunch = ({ isShow, onChange }) => {
               </div>
             </div>
           ))}
-        </div>
+        </Scrollbar>
       ) : null}
     </>
   );

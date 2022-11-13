@@ -1,4 +1,5 @@
 import HiddenTableCell from "components/HiddenTableCell/HiddenTableCell";
+import Scrollbar from "components/Scrollbar/Scrollbar";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Label, Table } from "reactstrap";
@@ -73,7 +74,7 @@ const DEFAULT_FIELDS = [
     label: "Последовательность",
     name: "Sequences",
     style: {
-      width: "14%",
+      width: "15%",
       minWidth: "100px",
       maxWidth: "400px",
     },
@@ -114,135 +115,135 @@ const TableContacts = ({
     }
   }, [columns]);
 
-  console.log(data.Items);
-
   return (
-    <div
-      className="table-contacts flex-fill"
-      style={{ overflow: "auto", height: 0 }}
-    >
-      {data.TotalCount === 0 ? (
-        <p className="message">
-          Контактов пока нет
-          <br />
-          Добавьте контакты вручную или загрузите файл
-        </p>
-      ) : (
-        <Table
-          className="align-items-center table-flush table-hover fixed-header"
-          responsive
-        >
-          <thead className="thead-light sticky-top" style={{ zIndex: 999 }}>
-            <tr className="d-flex">
-              {fields.map((field) => (
-                <th key={field.name + "1"} style={field.style}>
-                  {field.label}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {data.Items.map((contact) => (
-              <tr
-                key={contact.id}
-                className={`d-flex`}
-                onClick={() => onSelect(contact.id)}
-              >
-                {fields.map((field) => {
-                  if (field.name === "checkbox") {
-                    return (
-                      <td
-                        className="p-0 pt-3"
-                        key={field.name}
-                        style={{
-                          whiteSpace: "normal",
-                          ...field.style,
-                        }}
-                      >
-                        <div
-                          className="custom-control checkbox-contact custom-checkbox pl-0"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <input
-                            className="custom-control-input"
-                            checked={selectedIds.includes(contact.id)}
-                            onChange={() => onSelectContact(contact.id)}
-                            id={"check_" + contact.id}
-                            type="checkbox"
-                          />
-                          <Label
-                            className="custom-control-label"
-                            htmlFor={"check_" + contact.id}
-                          ></Label>
-                        </div>
-                      </td>
-                    );
-                  } else if (field.name === "linkedin") {
-                    return (
-                      <td
-                        key={field.name}
-                        style={{
-                          whiteSpace: "normal",
-                          ...field.style,
-                        }}
-                      >
-                        <a href={contact[field.name]} target="_blank">
-                          {contact[field.name]}
-                        </a>
-                      </td>
-                    );
-                  } else if (["phone"].includes(field.name)) {
-                    return (
-                      <td
-                        key={field.name}
-                        style={{
-                          whiteSpace: "normal",
-                          ...field.style,
-                        }}
-                      >
-                        {contact[field.name] &&
-                          contact[field.name]
-                            .trim()
-                            .split(";")
-                            .map((phone, index) => (
-                              <div key={index}>{phone.trim()}</div>
-                            ))}
-                      </td>
-                    );
-                  } else if (["Sequences"].includes(field.name)) {
-                    return (
-                      <td
-                        key={field.name}
-                        className={"ellipsized"}
-                        style={{
-                          whiteSpace: "normal",
-                          ...field.style,
-                        }}
-                      >
-                        {/*{(contact[field.name] || [])*/}
-                        {/*  .map(({ Name }) => Name)*/}
-                        {/*  .join(", ")}*/}
-                      </td>
-                    );
-                  } else {
-                    return (
-                      <td
-                        key={field.name}
-                        style={{
-                          whiteSpace: "normal",
-                          ...field.style,
-                        }}
-                      >
-                        {contact[field.name]}
-                      </td>
-                    );
-                  }
-                })}
+    <div className="overflow-hidden" style={{ flex: "0 1 auto" }}>
+      <Scrollbar
+        className="table-contacts flex-fill1 h-100"
+        // style={{ overflow: "auto", height: 0 }}
+      >
+        {data.TotalCount === 0 ? (
+          <p className="message">
+            Контактов пока нет
+            <br />
+            Добавьте контакты вручную или загрузите файл
+          </p>
+        ) : (
+          <Table
+            className="align-items-center table-flush table-hover fixed-header"
+            // responsive
+          >
+            <thead className="thead-light sticky-top" style={{ zIndex: 999 }}>
+              <tr className="d-flex">
+                {fields.map((field) => (
+                  <th key={field.name + "1"} style={field.style}>
+                    {field.label}
+                  </th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </Table>
-      )}
+            </thead>
+            <tbody>
+              {data.Items.map((contact) => (
+                <tr
+                  key={contact.id}
+                  className={`d-flex`}
+                  onClick={() => onSelect(contact.id)}
+                >
+                  {fields.map((field) => {
+                    if (field.name === "checkbox") {
+                      return (
+                        <td
+                          className="p-0 pt-3"
+                          key={field.name}
+                          style={{
+                            whiteSpace: "normal",
+                            ...field.style,
+                          }}
+                        >
+                          <div
+                            className="custom-control checkbox-contact custom-checkbox pl-0"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <input
+                              className="custom-control-input"
+                              checked={selectedIds.includes(contact.id)}
+                              onChange={() => onSelectContact(contact.id)}
+                              id={"check_" + contact.id}
+                              type="checkbox"
+                            />
+                            <Label
+                              className="custom-control-label"
+                              htmlFor={"check_" + contact.id}
+                            ></Label>
+                          </div>
+                        </td>
+                      );
+                    } else if (field.name === "linkedin") {
+                      return (
+                        <td
+                          key={field.name}
+                          style={{
+                            whiteSpace: "normal",
+                            ...field.style,
+                          }}
+                        >
+                          <a href={contact[field.name]} target="_blank">
+                            {contact[field.name]}
+                          </a>
+                        </td>
+                      );
+                    } else if (["phone"].includes(field.name)) {
+                      return (
+                        <td
+                          key={field.name}
+                          style={{
+                            whiteSpace: "normal",
+                            ...field.style,
+                          }}
+                        >
+                          {contact[field.name] &&
+                            contact[field.name]
+                              .trim()
+                              .split(";")
+                              .map((phone, index) => (
+                                <div key={index}>{phone.trim()}</div>
+                              ))}
+                        </td>
+                      );
+                    } else if (["Sequences"].includes(field.name)) {
+                      return (
+                        <td
+                          key={field.name}
+                          className={"ellipsized"}
+                          style={{
+                            whiteSpace: "normal",
+                            ...field.style,
+                          }}
+                        >
+                          {/*{(contact[field.name] || [])*/}
+                          {/*  .map(({ Name }) => Name)*/}
+                          {/*  .join(", ")}*/}
+                        </td>
+                      );
+                    } else {
+                      return (
+                        <td
+                          key={field.name}
+                          style={{
+                            whiteSpace: "normal",
+                            ...field.style,
+                          }}
+                        >
+                          {contact[field.name]}
+                        </td>
+                      );
+                    }
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
+      </Scrollbar>
     </div>
   );
 };

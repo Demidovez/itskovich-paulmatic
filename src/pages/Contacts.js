@@ -203,12 +203,15 @@ const Contacts = () => {
       >
         {isShowLoader ? <Loader className="mt-7" /> : null}
         <Row
-          className="flex-fill pt-4"
+          className="flex-fill pt-4 h-100"
           style={{ display: isShowLoader ? "none" : "flex" }}
         >
-          <div className="col mb-3 d-flex">
-            <Card className="shadow flex-fill overflow-hidden">
-              <CardHeader className="border-0 ">
+          <div className="col d-flex h-100">
+            <Card
+              className="shadow overflow-hidden w-100 mb-3 "
+              style={{ maxHeight: "100%" }}
+            >
+              <CardHeader className="border-0 " style={{ flex: "0 0 auto" }}>
                 <Row>
                   <Col md={6} className="search-tour">
                     <SearchBarContacts
@@ -236,12 +239,17 @@ const Contacts = () => {
                   </Col>
                 </Row>
               </CardHeader>
+
               <TableContacts
                 data={contactsData || cacheTables["contacts"]}
                 onSelect={onSelectActiveContact}
                 selectedIds={selectedIds}
               />
-              <CardFooter className="d-flex justify-content-between align-items-center">
+
+              <CardFooter
+                className="d-flex justify-content-between align-items-center"
+                style={{ flex: "0 0 auto" }}
+              >
                 <div></div>
                 <Pagination
                   allCount={
