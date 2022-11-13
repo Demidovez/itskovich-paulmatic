@@ -30,11 +30,11 @@ const columns = [
   },
   {
     label: "Последовательность",
-    name: "sequence",
+    name: "Sequences",
     isDisabled: true,
     style: {
-      width: "14%",
-      minWidth: "100px",
+      width: "20%",
+      minWidth: "200px",
       maxWidth: "400px",
     },
   },
