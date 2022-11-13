@@ -2,12 +2,21 @@
   .sequence-name-input {
     border-color: rgb(184, 184, 184);
     color: rgb(53, 53, 53);
-    width: 40%;
-    min-width: 400px;
+    width: 30%;
+    min-width: 200px;
   }
 
   .modal-content {
-    overflow: auto;
+    // overflow: auto;
+    background-color: transparent;
+    box-shadow: none;
+    // padding: 45px;
+  }
+
+  .modal-inner {
+    background-color: white;
+    box-shadow: 0 15px 35px rgb(50 50 93 / 20%), 0 5px 15px rgb(0 0 0 / 17%);
+    border-radius: 10px;
   }
 
   .page-sequence-item {
@@ -115,5 +124,14 @@
         }
       }
     }
+  }
+
+  .seaquences-create-info {
+    background: white;
+    width: 100%;
+    margin-left: 20px;
+    border-radius: 10px;
+    box-shadow: 0 15px 35px rgb(50 50 93 / 20%), 0 5px 15px rgb(0 0 0 / 17%);
+    overflow: auto;
   }
 }

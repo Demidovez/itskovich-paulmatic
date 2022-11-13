@@ -1,6 +1,4 @@
-import moment from "moment/moment";
-import { Card, CardBody, CardHeader } from "reactstrap";
-import parse from "html-react-parser";
+import { Card, CardBody } from "reactstrap";
 
 const ChatViewInfoCard = ({ message }) => {
   return (

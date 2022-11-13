@@ -45,6 +45,17 @@ export const sequencesApi = createApi({
         }
       },
     }),
+    sendLog: builder.query({
+      query: (model) => ({
+        url: "/create/log",
+        method: "POST",
+        body: model,
+        headers: getHeaders(),
+      }),
+      transformResponse: (response, _, arg) => {
+        return response.result || {};
+      },
+    }),
     stopSequences: builder.mutation({
       query: (sequenceIds) => ({
         url: "/stop",
@@ -116,4 +127,5 @@ export const {
   useStartSequencesMutation,
   useDeleteSequencesMutation,
   useCreateOrUpdateSequenceMutation,
+  useLazySendLogQuery,
 } = sequencesApi;

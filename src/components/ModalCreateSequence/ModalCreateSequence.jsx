@@ -8,12 +8,14 @@ import SequencePageSchedule from "components/SequencePageSchedule/SequencePageSc
 import SequencePageLaunch from "components/SequencePageLaunch/SequencePageLaunch";
 import Dropdown from "components/Dropdown/Dropdown";
 import { usePrompt } from "hooks/usePrompt";
+import parse from "html-react-parser";
 import { useSelector, useDispatch } from "react-redux";
 import PaginationCreateSequence from "components/PaginationCreateSequence/PaginationCreateSequence";
 import { useGetFoldersQuery } from "store/api/folders";
 import {
   saveFolderIdSequence,
   saveNameSequence,
+  saveTimeZoneSequence,
 } from "store/slices/sequenceMasterSlice";
 import {
   setCurrentContactPage,
@@ -23,6 +25,7 @@ import {
 import { useCreateOrUpdateSequenceMutation } from "store/api/sequences";
 import useYouSure from "hooks/useYouSure";
 import { addHtmlTemplates } from "store/slices/commonSlice";
+import { useLazySendLogQuery } from "store/api/sequences";
 
 const ModalCreateSequence = ({ onClose }) => {
   const { tryClose, tryForceClose, setIsChanged } = useYouSure(onClose);
@@ -34,6 +37,19 @@ const ModalCreateSequence = ({ onClose }) => {
 
   const sequenceResultData = useSelector((state) => state.sequenceMaster.data);
   const sequenceName = useSelector((state) => state.sequenceMaster.data.Name);
+  const timeZones = useSelector((state) => state.common.timeZones);
+
+  const [sendLog, { data: responseLogData, isError }] = useLazySendLogQuery();
+
+  useEffect(() => {
+    if (
+      sequenceResultData.Model.Steps.length &&
+      sequenceResultData.Model.Schedule.length
+    ) {
+      console.log(sequenceResultData);
+      sendLog(sequenceResultData);
+    }
+  }, [JSON.stringify(sequenceResultData)]);
 
   const activeFolderId = useSelector(
     (state) => state.sequences.selectedFolderId
@@ -134,121 +150,159 @@ const ModalCreateSequence = ({ onClose }) => {
     onClose();
   };
 
+  const [hasData, setHasData] = useState(false);
+
+  useEffect(() => {
+    if (isError || responseLogData) {
+      setHasData(true);
+    }
+  }, [isError, responseLogData]);
+
   return (
-    <Modal
-      className="modal-dialog-centered modal-create-sequence-component mt-0 mb-0 flex-column height-fill"
-      contentClassName="h-100 flex-fill"
-      isOpen={true}
-      toggle={tryClose}
-      style={{
-        maxWidth: "1200px",
-        width: "90%",
-        minWidth: "200px",
-        minHeight: "100%",
-        padding: "2.5rem 0",
-      }}
-    >
-      <div className="modal-header text-center pb-0 ">
-        <div className="w-100 d-flex align-items-center">
-          <h4 className="modal-title d-flex pr-3">
-            Создать последовательность
-          </h4>
-          <Input
-            type="text"
-            placeholder="Введите имя последовательности..."
-            value={sequenceName}
-            onChange={(e) => editSequenceName(e.target.value)}
-            className="sequence-name-input"
-          />
-          <Dropdown
-            items={[{ id: 0, Name: "Все" }, ...(foldersList || [])]}
-            fieldOfItem="Name"
-            className="ml-3"
-            outline={true}
-            defaultValue={
-              activeFolderId === 0
-                ? "Все"
-                : (foldersList || []).find(
-                    (folder) => folder.id === activeFolderId
-                  ).Name
-            }
-            isDisabled={(foldersList || []).length === 0}
-            onSelect={(folder) => dispatch(saveFolderIdSequence(folder.id))}
-          />
-        </div>
-        <button
-          aria-label="Close"
-          className="close"
-          data-dismiss="modal"
-          type="button"
-          onClick={tryClose}
-          style={{ position: "absolute", right: "1.25rem" }}
+    <>
+      <Modal
+        className="modal-dialog-centered modal-create-sequence-component mt-0 mb-0 flex-column height-fill"
+        contentClassName="h-100 flex-fill flex-row "
+        isOpen={true}
+        toggle={tryClose}
+        style={{
+          maxWidth: hasData ? "100%" : "1200px",
+          width: "90%",
+          minWidth: "200px",
+          minHeight: "100%",
+          padding: "2.5rem 0",
+        }}
+      >
+        <div
+          className="h-100 d-flex flex-column modal-inner position-relative"
+          style={{ flex: 5 }}
         >
-          <span aria-hidden={true}>×</span>
-        </button>
-      </div>
-      <SequencePageSteps
-        isShow={currentIndexPage === 0}
-        onChange={() => setIsChanged(true)}
-      />
-      {/* <SequencePageSettings
+          <div className="modal-header text-center pb-0">
+            <div className="w-100 d-flex align-items-center">
+              <h4 className="modal-title d-flex pr-3">
+                Создать последовательность
+              </h4>
+              <Input
+                type="text"
+                placeholder="Введите имя последовательности..."
+                value={sequenceName}
+                onChange={(e) => editSequenceName(e.target.value)}
+                className="sequence-name-input"
+              />
+              <Dropdown
+                items={[{ id: 0, Name: "Все" }, ...(foldersList || [])]}
+                fieldOfItem="Name"
+                className="ml-3"
+                outline={true}
+                defaultValue={
+                  activeFolderId === 0
+                    ? "Все"
+                    : (foldersList || []).find(
+                        (folder) => folder.id === activeFolderId
+                      ).Name
+                }
+                isDisabled={(foldersList || []).length === 0}
+                onSelect={(folder) => dispatch(saveFolderIdSequence(folder.id))}
+              />
+              <div className="d-flex align-items-center ml-3">
+                <div>Временная зона:</div>
+                <Dropdown
+                  items={timeZones}
+                  // fieldOfItem="Name"
+                  maxLength={hasData ? 15 : 1000}
+                  className="ml-3"
+                  outline={true}
+                  defaultValue={sequenceResultData.TimeZone}
+                  onSelect={(timezone) =>
+                    dispatch(saveTimeZoneSequence(timezone))
+                  }
+                />
+              </div>
+            </div>
+            <button
+              aria-label="Close"
+              className="close"
+              data-dismiss="modal"
+              type="button"
+              onClick={tryClose}
+              style={{ position: "absolute", right: "1.25rem" }}
+            >
+              <span aria-hidden={true}>×</span>
+            </button>
+          </div>
+          <SequencePageSteps
+            isShow={currentIndexPage === 0}
+            onChange={() => setIsChanged(true)}
+          />
+          {/* <SequencePageSettings
         isShow={currentIndexPage === 1}
         onChange={() => setIsChanged(true)}
       /> */}
-      <SequencePagePeople
-        isShow={currentIndexPage === 1}
-        onChange={() => setIsChanged(true)}
-      />
-      <SequencePageSchedule
-        isShow={currentIndexPage === 2}
-        onChange={() => setIsChanged(true)}
-      />
-      <SequencePageLaunch
-        isShow={currentIndexPage === 3}
-        onChange={() => setIsChanged(true)}
-      />
-      <div className="modal-footer d-flex justify-content-between p-0">
-        <div className="d-flex flex-fill h-100 m-0 ml-4 overflow-hidden">
-          <PaginationCreateSequence
-            pages={pages}
-            currentIndex={currentIndexPage}
-            setCurrentIndex={setCurrentIndexPage}
+          <SequencePagePeople
+            isShow={currentIndexPage === 1}
+            onChange={() => setIsChanged(true)}
           />
+          <SequencePageSchedule
+            isShow={currentIndexPage === 2}
+            onChange={() => setIsChanged(true)}
+          />
+          <SequencePageLaunch
+            isShow={currentIndexPage === 3}
+            onChange={() => setIsChanged(true)}
+          />
+          <div className="modal-footer d-flex justify-content-between p-0">
+            <div className="d-flex flex-fill h-100 m-0 ml-4 overflow-hidden">
+              <PaginationCreateSequence
+                pages={pages}
+                currentIndex={currentIndexPage}
+                setCurrentIndex={setCurrentIndexPage}
+              />
+            </div>
+            <div className="sequence-btns ml-7 mt-2 mb-2 mr-4">
+              <Button
+                color="danger"
+                outline
+                data-dismiss="modal"
+                type="button"
+                onClick={tryForceClose}
+                size="sm"
+              >
+                Отмена
+              </Button>
+              {currentIndexPage < pages.length - 1 ? (
+                <Button
+                  color="primary"
+                  type="button"
+                  onClick={() => nextPage()}
+                  size="sm"
+                >
+                  Дальше
+                </Button>
+              ) : (
+                <Button
+                  color="primary"
+                  type="button"
+                  onClick={() => onSubmit()}
+                  size="sm"
+                  disabled={!isDone}
+                >
+                  Создать
+                </Button>
+              )}
+            </div>
+          </div>
         </div>
-        <div className="sequence-btns ml-7 mt-2 mb-2 mr-4">
-          <Button
-            color="danger"
-            outline
-            data-dismiss="modal"
-            type="button"
-            onClick={tryForceClose}
-            size="sm"
+        {hasData && (
+          <div
+            className="seaquences-create-info"
+            style={{ flex: 2, whiteSpace: "break-spaces" }}
           >
-            Отмена
-          </Button>
-          {currentIndexPage < pages.length - 1 ? (
-            <Button
-              color="primary"
-              type="button"
-              onClick={() => nextPage()}
-              size="sm"
-            >
-              Дальше
-            </Button>
-          ) : (
-            <Button
-              color="primary"
-              type="button"
-              onClick={() => onSubmit()}
-              size="sm"
-              disabled={!isDone}
-            >
-              Создать
-            </Button>
-          )}
-        </div>
-      </div>
-    </Modal>
+            {/* {parse("<div>1111</div>")} */}
+            {JSON.stringify(sequenceResultData, null, 2).replaceAll(",", ", ")}
+          </div>
+        )}
+      </Modal>
+    </>
   );
 };
 

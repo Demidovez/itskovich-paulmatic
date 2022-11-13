@@ -22,6 +22,7 @@ const initialState = {
   data: {
     FolderId: 0,
     Name: "",
+    TimeZone: "(UTC+03:00) Москва, Санкт-Петербург",
     Model: {
       Steps: [],
       ContactIds: [],
@@ -58,6 +59,9 @@ export const sequenceMasterSlice = createSlice({
     saveSettingsSequence: (state, action) => {
       state.data.Model.Settings = action.payload;
     },
+    saveTimeZoneSequence: (state, action) => {
+      state.data.TimeZone = action.payload;
+    },
   },
 });
 
@@ -68,6 +72,7 @@ export const {
   saveContactIdsSequence,
   saveScheduleSequence,
   saveSettingsSequence,
+  saveTimeZoneSequence,
 } = sequenceMasterSlice.actions;
 
 export default sequenceMasterSlice.reducer;

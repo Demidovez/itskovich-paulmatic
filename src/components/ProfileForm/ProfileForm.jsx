@@ -21,6 +21,8 @@ import { updateAccount } from "store/slices/commonSlice";
 import ModalYouSure from "components/ModalYouSure/ModalYouSure";
 import { useLazyTryDeleteQuery } from "store/api/login";
 import { useHistory } from "react-router-dom";
+import Dropdown from "components/Dropdown/Dropdown";
+import { saveTimeZoneAccount } from "store/slices/commonSlice";
 
 const NICKNAME_REGEX = /^[A-Za-z0-9_]+$/;
 
@@ -29,6 +31,8 @@ const ProfileForm = ({ className = "" }) => {
   const history = useHistory();
   const [resultError, setResultError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const timeZones = useSelector((state) => state.common.timeZones);
 
   const [tryUpdate, { data: updateAccountResponse, error, isFetching }] =
     useLazyTryUpdateQuery();
@@ -104,6 +108,7 @@ const ProfileForm = ({ className = "" }) => {
         password: values.password,
         company: values.company,
         directorUsername: values.directorUsername,
+        timeZone: Account.TimeZone,
       });
     },
   });
@@ -287,6 +292,19 @@ const ProfileForm = ({ className = "" }) => {
                         ? formik.errors.directorUsername
                         : ""}
                     </div>
+                  </FormGroup>
+                  <FormGroup className={`field-wrapper mb-1 mt-3`}>
+                    <span>Временная зона</span>
+                    <Dropdown
+                      items={timeZones}
+                      className=""
+                      outline={true}
+                      isFull={true}
+                      defaultValue={Account.TimeZone}
+                      onSelect={(timezone) =>
+                        dispatch(saveTimeZoneAccount(timezone))
+                      }
+                    />
                   </FormGroup>
                 </Form>
                 <div className="position-relative mt-4">

@@ -57,3 +57,11 @@ export const fileToBase64 = (file) =>
     reader.onload = () => resolve(reader.result.split(",")[1]);
     reader.onerror = (error) => reject(error);
   });
+
+export const cropText = (text, maxLength) => {
+  if (text.length > maxLength) {
+    return text.slice(0, maxLength) + "...";
+  } else {
+    return text;
+  }
+};

@@ -5,6 +5,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
+import { cropText } from "utils/utils";
 
 const DropdownCustom = ({
   items,
@@ -15,6 +16,8 @@ const DropdownCustom = ({
   outline = false,
   classNameButton = "",
   defaultValue = "",
+  maxLength = 1000,
+  isFull = false,
   onSelect = () => {},
 }) => {
   const [value, setValue] = useState();
@@ -25,7 +28,7 @@ const DropdownCustom = ({
 
   useEffect(() => {
     if (dropdownOpen) {
-      setTimeout(() => setIsShow(true), 0);
+      setTimeout(() => setIsShow(true), 100);
     } else {
       setIsShow(false);
     }
@@ -43,6 +46,7 @@ const DropdownCustom = ({
       color={color}
       style={{
         opacity: isDisabled ? 0.6 : 1,
+        width: isFull ? "100%" : "auto",
       }}
       disabled={isDisabled}
       className={className}
@@ -51,10 +55,16 @@ const DropdownCustom = ({
         caret
         outline={outline}
         color={color}
-        style={{ overflow: "hidden" }}
+        style={{
+          overflow: "hidden",
+          width: isFull ? "100%" : "auto",
+        }}
         className={`d-flex align-items-center justify-content-between ${classNameButton}`}
       >
-        {(value && (fieldOfItem ? value[fieldOfItem] : value)) || defaultValue}
+        {cropText(
+          (value && (fieldOfItem ? value[fieldOfItem] : value)) || defaultValue,
+          maxLength
+        )}
       </DropdownToggle>
 
       <DropdownMenu
