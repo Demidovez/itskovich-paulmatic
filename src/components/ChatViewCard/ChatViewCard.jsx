@@ -22,8 +22,6 @@ const ChatViewCard = ({ message, isSearched }) => {
     }
   }, [isSearched]);
 
-  console.log(message.Body);
-
   return (
     <Element
       key={message.Time}

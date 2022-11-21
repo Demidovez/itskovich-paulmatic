@@ -18,10 +18,6 @@ const ChatEditor = ({ className, sendMessage, chat = {} }) => {
   const Account = useSelector((state) => state.common.Account);
 
   useEffect(() => {
-    console.log(attachedFiles);
-  }, [attachedFiles.length]);
-
-  useEffect(() => {
     templates &&
       setTamplatesList(
         Object.entries(templates).map((template) => ({

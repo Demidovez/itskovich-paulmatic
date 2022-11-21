@@ -57,6 +57,8 @@ const ChatsListBar = ({ className = "" }) => {
     }
   }, [searchedChatId]);
 
+  // console.log(chats);
+
   return (
     <div className={`chats-list-bar-component pl-3 pr-3 ${className} `}>
       {chats.length ? (
@@ -86,6 +88,9 @@ const ChatsListBar = ({ className = "" }) => {
                     )}
                   </span>
                 </div>
+              </div>
+              <div className="chat-subject">
+                {chat.Msgs.slice(-1)[0].Subject}
               </div>
               <div className="chat-preview">
                 {chat.Msgs.slice(-1)[0].PlainBodyShort ||

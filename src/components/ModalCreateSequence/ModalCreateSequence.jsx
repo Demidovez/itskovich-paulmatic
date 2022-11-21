@@ -40,14 +40,14 @@ const ModalCreateSequence = ({ onClose }) => {
   const sequenceName = useSelector((state) => state.sequenceMaster.data.Name);
   const timeZones = useSelector((state) => state.common.timeZones);
 
-  const [sendLog, { data: responseLogData, isError }] = useLazySendLogQuery();
+  const [sendLog, { data: responseLogData, isError, error }] =
+    useLazySendLogQuery();
 
   useEffect(() => {
     if (
       sequenceResultData.Model.Steps.length &&
       sequenceResultData.Model.Schedule.length
     ) {
-      console.log(sequenceResultData);
       sendLog(sequenceResultData);
     }
   }, [JSON.stringify(sequenceResultData)]);
@@ -146,18 +146,19 @@ const ModalCreateSequence = ({ onClose }) => {
 
   const onSubmit = () => {
     createOrUpdateSequence(sequenceResultData);
-    console.log(sequenceResultData);
     setIsChanged(false);
     onClose();
   };
 
-  const [hasData, setHasData] = useState(false);
+  const [logHtml, setLogHtml] = useState("");
 
   useEffect(() => {
-    if (isError || responseLogData) {
-      setHasData(true);
+    if (isError && error) {
+      setLogHtml((error || {}).message);
+    } else if (responseLogData) {
+      setLogHtml(responseLogData);
     }
-  }, [isError, responseLogData]);
+  }, [isError, error, responseLogData]);
 
   return (
     <>
@@ -167,7 +168,7 @@ const ModalCreateSequence = ({ onClose }) => {
         isOpen={true}
         toggle={tryClose}
         style={{
-          maxWidth: hasData ? "100%" : "1200px",
+          maxWidth: "100%",
           width: "100%",
           minWidth: "200px",
           minHeight: "100%",
@@ -181,37 +182,45 @@ const ModalCreateSequence = ({ onClose }) => {
         >
           <div className="modal-header text-center pb-1 d-flex align-items-center">
             <div className="w-100 d-flex align-items-center">
-              <h4 className="modal-title d-flex pr-3">
-                Создать последовательность
-              </h4>
+              <h4 className="modal-title d-flex pr-3">Последовательность</h4>
               <Input
                 type="text"
-                placeholder="Введите имя последовательности..."
+                placeholder="Имя последовательности..."
                 value={sequenceName}
                 onChange={(e) => editSequenceName(e.target.value)}
                 className="sequence-name-input"
               />
-              <Dropdown
-                items={[{ id: 0, Name: "Все" }, ...(foldersList || [])]}
-                fieldOfItem="Name"
-                className="ml-3"
-                outline={true}
-                defaultValue={
-                  activeFolderId === 0
-                    ? "Все"
-                    : (foldersList || []).find(
-                        (folder) => folder.id === activeFolderId
-                      ).Name
-                }
-                isDisabled={(foldersList || []).length === 0}
-                onSelect={(folder) => dispatch(saveFolderIdSequence(folder.id))}
-              />
               <div className="d-flex align-items-center ml-3">
-                <div>Временная зона:</div>
+                <div className="nowrap">Папка:</div>
+                <Dropdown
+                  items={[{ id: 0, Name: "Все" }, ...(foldersList || [])]}
+                  fieldOfItem="Name"
+                  className="ml-3 folder-selecter"
+                  // isFull={true}
+                  outline={true}
+                  defaultValue={
+                    activeFolderId === 0
+                      ? "Все"
+                      : (foldersList || []).find(
+                          (folder) => folder.id === activeFolderId
+                        ).Name
+                  }
+                  isDisabled={(foldersList || []).length === 0}
+                  onSelect={(folder) =>
+                    dispatch(saveFolderIdSequence(folder.id))
+                  }
+                  style={{
+                    width: 120,
+                  }}
+                />
+              </div>
+
+              <div className="d-flex align-items-center ml-3">
+                <div className="nowrap">Временная зона:</div>
                 <Dropdown
                   items={timeZones}
                   // fieldOfItem="Name"
-                  maxLength={hasData ? 15 : 1000}
+                  maxLength={1000}
                   className="ml-3"
                   outline={true}
                   defaultValue={sequenceResultData.TimeZone}
@@ -288,26 +297,23 @@ const ModalCreateSequence = ({ onClose }) => {
                   size="sm"
                   disabled={!isDone}
                 >
-                  Создать
+                  {sequenceResultData.Model.ContactIds.length > 0
+                    ? "Сохранить & Запуск"
+                    : "Сохранить"}
                 </Button>
               )}
             </div>
           </div>
         </div>
-        {hasData && (
-          <Scrollbar
-            className="seaquences-create-info"
-            style={{ flex: 2, whiteSpace: "break-spaces" }}
-          >
-            <>
-              {/* {parse("<div>1111</div>")} */}
-              {JSON.stringify(sequenceResultData, null, 2).replaceAll(
-                ",",
-                ", "
-              )}
-            </>
-          </Scrollbar>
-        )}
+        <Scrollbar
+          className="seaquences-create-info"
+          style={{ flex: 2, whiteSpace: "break-spaces", padding: "0 20px" }}
+        >
+          <>
+            {parse(logHtml)}
+            {/* {JSON.stringify(sequenceResultData, null, 2).replaceAll(",", ", ")} */}
+          </>
+        </Scrollbar>
       </Modal>
     </>
   );

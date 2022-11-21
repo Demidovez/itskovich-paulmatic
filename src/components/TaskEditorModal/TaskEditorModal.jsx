@@ -260,7 +260,7 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
                 )}
                 <div className="task-editor flex-fill d-flex flex-column pl-0 pr-0 pb-0">
                   <div className="mb-0 mt-1 pl-3" style={{ zIndex: 100 }}>
-                    {currentTask.Type === "manual_email" && (
+                    {/* {currentTask.Type === "manual_email" && (
                       <DropdownWithIcon
                         label="Шаблон"
                         icon={() => <TbTemplate size="1.1rem" />}
@@ -271,7 +271,7 @@ const TaskEditorModal = ({ onClose, task, mode = "create", onSubmit }) => {
                           callback(setActiveTemplate, templates[name])
                         }
                       />
-                    )}
+                    )} */}
                     <DropdownWithIcon
                       label="Переменные"
                       icon={() => <BiCodeCurly size="1.1rem" />}

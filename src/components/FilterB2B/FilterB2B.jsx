@@ -7,8 +7,6 @@ import FilterType from "../FilterType/FilterType";
 import "./FilterB2B.scss";
 
 const FilterB2B = ({ name, filters, style, className }) => {
-  // console.log(name, filters);
-
   const filterState = useSelector((state) => state.filter[name]);
 
   const dispatch = useDispatch();

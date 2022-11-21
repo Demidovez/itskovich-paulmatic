@@ -143,13 +143,6 @@ const SequencesTable = ({ isSelectedAll, selectedIds }) => {
 
   useEffect(() => {
     fetchSequences();
-
-    // const intervalId = setInterval(() => {
-    //   console.log("request of fetchSequences");
-    //   fetchSequences();
-    // }, 30000); // TODO1: 30000
-
-    // return () => clearInterval(intervalId);
   }, [fetchSequences]);
 
   useEffect(() => {

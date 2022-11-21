@@ -11,7 +11,8 @@ const initialState = {
       label: "Расписание",
     },
     People: {
-      isDone: false,
+      isDone: true,
+      // isDone: false,
       label: "Люди",
     },
     Duration: {
@@ -48,7 +49,7 @@ export const sequenceMasterSlice = createSlice({
     },
     saveContactIdsSequence: (state, action) => {
       state.data.Model.ContactIds = action.payload;
-      state.pages.People.isDone = state.data.Model.ContactIds.length > 0;
+      // state.pages.People.isDone = state.data.Model.ContactIds.length > 0;
     },
     saveScheduleSequence: (state, action) => {
       state.data.Model.Schedule = action.payload;

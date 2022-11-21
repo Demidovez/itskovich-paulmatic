@@ -169,8 +169,6 @@ const Contacts = () => {
     dispatch(clearSelectedIds());
   };
 
-  console.log(exportResponse);
-
   useEffect(() => {
     if (!isFetching && exportResponse) {
       if (exportResponse.result) {

@@ -97,15 +97,7 @@ const TaskModalManualEmail = ({
       JSON.stringify({ ...task, Body: "" })
     ) {
       setIsChanged(true);
-      console.log(1);
     }
-    // else if (
-    //   currentTask.Body.replace(/(<([^>]+)>)/gi, "") !==
-    //   task.Body.replace(/(<([^>]+)>)/gi, "")
-    // ) {
-    //   setIsChanged(true);
-    //   console.log(currentTask.Body, task.Body);
-    // }
   }, [JSON.stringify(currentTask), task]);
 
   return (

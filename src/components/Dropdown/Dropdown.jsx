@@ -19,6 +19,7 @@ const DropdownCustom = ({
   maxLength = 1000,
   isFull = false,
   onSelect = () => {},
+  style = {},
 }) => {
   const [value, setValue] = useState();
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -46,7 +47,7 @@ const DropdownCustom = ({
       color={color}
       style={{
         opacity: isDisabled ? 0.6 : 1,
-        width: isFull ? "100%" : "auto",
+        width: isFull ? "100%" : style.width || "auto",
       }}
       disabled={isDisabled}
       className={className}
@@ -56,8 +57,9 @@ const DropdownCustom = ({
         outline={outline}
         color={color}
         style={{
+          ...style,
           overflow: "hidden",
-          width: isFull ? "100%" : "auto",
+          width: isFull ? "100%" : style.width || "auto",
         }}
         className={`d-flex align-items-center justify-content-between ${classNameButton}`}
       >

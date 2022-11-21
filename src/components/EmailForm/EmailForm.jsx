@@ -54,7 +54,6 @@ const EmailForm = ({
     if (isError && error) {
       setResultError(error.data.error.message || "Ошибка! Попробуйте позже");
       setIsLoading(false);
-      console.log(111);
     } else if (!isFetching && emailServerResponse) {
       if ((emailServerResponse.result || {}).InMailSettings) {
         dispatch(

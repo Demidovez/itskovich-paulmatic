@@ -77,8 +77,6 @@ const B2InfoTable = ({
       );
   }, [data, isLoaded]);
 
-  console.log((data || cacheTables[info.name] || {}).Items || []);
-
   return (
     <>
       <div

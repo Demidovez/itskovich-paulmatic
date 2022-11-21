@@ -56,7 +56,7 @@ const SequencePageStepsItem = ({
             .startOf("day")
             .add(delay, "seconds")
             .diff(moment().startOf("day"), "days") + 1}
-          {step.step > 0 ? (
+          {step.step >= 0 ? (
             <MdExpandMore
               size="1.5rem"
               className="mt--1"

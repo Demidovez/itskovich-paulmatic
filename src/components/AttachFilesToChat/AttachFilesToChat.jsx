@@ -20,8 +20,6 @@ const AttachFilesToChat = ({
     }
   }, [isEmpty]);
 
-  console.log(files);
-
   const onInputFile = async (e) => {
     const file = e.target.files[0];
 

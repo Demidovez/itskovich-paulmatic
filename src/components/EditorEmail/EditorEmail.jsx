@@ -21,8 +21,6 @@ const EditorEmail = ({
     [template, content.length > 0]
   );
 
-  // console.log(content);
-
   useEffect(() => {
     if (editorRef.current && content.length > 0) {
       editorRef.current.setContent(content);

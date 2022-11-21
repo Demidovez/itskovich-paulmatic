@@ -48,7 +48,6 @@ const PaymentForm = ({ className = "" }) => {
         setIsLoading(false);
       }
     } else if (isFetching) {
-      console.log("asdasdasd");
       setIsLoading(true);
     }
   }, [updatePaymentResponse, isFetching]);

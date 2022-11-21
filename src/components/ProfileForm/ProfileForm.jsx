@@ -90,13 +90,12 @@ const ProfileForm = ({ className = "" }) => {
     enableReinitialize: true,
     validationSchema: Yup.object({
       username: Yup.string().required("Обязательное поле"),
-      nickname: Yup.string()
-        .matches(NICKNAME_REGEX, "Буквы латинского алфавита, цифры и _")
-        .required("Обязательное поле"),
+      nickname: Yup.string().matches(
+        NICKNAME_REGEX,
+        "Буквы латинского алфавита, цифры и _"
+      ), //.required("Обязательное поле"),
       directorUsername: Yup.string().email("Неверный E-mail"),
-      password: Yup.string()
-        .min(5, "Требуется минимум 5 символов")
-        .required("Обязательное поле"),
+      password: Yup.string().min(5, "Требуется минимум 5 символов"), //.required("Обязательное поле"),
       company: Yup.string().required("Обязательное поле"),
       // agree: Yup.boolean().oneOf([true], "Обязательное поле"),
     }),
@@ -196,7 +195,7 @@ const ProfileForm = ({ className = "" }) => {
                         : " "}
                     </div>
                   </FormGroup>
-                  <FormGroup
+                  {/* <FormGroup
                     className={`field-wrapper ${
                       formik.touched.nickname && formik.errors.nickname
                         ? "has-error"
@@ -244,7 +243,7 @@ const ProfileForm = ({ className = "" }) => {
                         ? formik.errors.password
                         : ""}
                     </div>
-                  </FormGroup>
+                  </FormGroup> */}
                   <FormGroup
                     className={`field-wrapper ${
                       formik.touched.company && formik.errors.company
