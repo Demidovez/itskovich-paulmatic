@@ -2,14 +2,18 @@ import { Fragment, useEffect, useState } from "react";
 import "./DashBoardTabs.scss";
 import { useDispatch } from "react-redux";
 import { BsFillStarFill } from "react-icons/bs";
+import { MdOutlineClose } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { setActiveTabId } from "store/slices/dashboardSlice";
 import { useLazyGetDashboardStatsQuery } from "store/api/dashboard";
 import { setActiveAccountId } from "store/slices/dashboardSlice";
 import { Col, Container, Row } from "reactstrap";
+import ModalYouSure from "components/ModalYouSure/ModalYouSure";
+import { useLazyTryDeleteSubordinateQuery } from "store/api/login";
 
 const DashBoardTabs = ({ className = "", data = {} }) => {
   const dispatch = useDispatch();
+  const [isAskSure, setIsAskSure] = useState(false);
   const [persons, setPersons] = useState([
     {
       id: 0,
@@ -24,6 +28,8 @@ const DashBoardTabs = ({ className = "", data = {} }) => {
     (state) => state.dashboard.activeAccountId
   );
 
+  const [tryDeleteSubordinate] = useLazyTryDeleteSubordinateQuery();
+
   useEffect(() => {
     if (Object.values(data).length) {
       setPersons(
@@ -37,6 +43,13 @@ const DashBoardTabs = ({ className = "", data = {} }) => {
       );
     }
   }, [Object.values(data).length]);
+
+  console.log(persons);
+
+  const onDeleteSubmit = () => {
+    setIsAskSure(false);
+    tryDeleteSubordinate(activeAccountId);
+  };
 
   return (
     <>
@@ -70,6 +83,12 @@ const DashBoardTabs = ({ className = "", data = {} }) => {
                           <BsFillStarFill style={{ marginRight: 5 }} />
                         ) : null}
                         <div>{person.label}</div>
+                        {index !== 0 ? (
+                          <MdOutlineClose
+                            style={{ marginRight: 5 }}
+                            onClick={() => setIsAskSure(true)}
+                          />
+                        ) : null}
                       </label>
                     </Fragment>
                   ))}
@@ -81,6 +100,15 @@ const DashBoardTabs = ({ className = "", data = {} }) => {
           </Row>
         </Container>
       ) : null}
+      <ModalYouSure
+        isShow={isAskSure}
+        title={"Удалить аккаунт"}
+        text={"Этот аккаунт будет удален из списка Ваших подчиненных. Удалить?"}
+        onAgree={onDeleteSubmit}
+        onCancel={() => {
+          setIsAskSure(false);
+        }}
+      />
     </>
   );
 };

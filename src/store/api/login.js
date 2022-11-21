@@ -60,6 +60,14 @@ export const loginApi = createApi({
       }),
       transformResponse: (response) => response.result,
     }),
+    tryDeleteSubordinate: builder.query({
+      query: (id) => ({
+        url: "/deleteSubordinate",
+        method: "GET",
+        params: { id },
+        headers: getHeaders(),
+      }),
+    }),
   }),
 });
 
@@ -70,4 +78,5 @@ export const {
   useLazyTryUpdateQuery,
   useLazyTryUpdatePaymentQuery,
   useLazyTryDeleteQuery,
+  useLazyTryDeleteSubordinateQuery,
 } = loginApi;
