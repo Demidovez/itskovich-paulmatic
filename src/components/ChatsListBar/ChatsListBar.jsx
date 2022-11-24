@@ -57,8 +57,6 @@ const ChatsListBar = ({ className = "" }) => {
     }
   }, [searchedChatId]);
 
-  // console.log(chats);
-
   return (
     <div className={`chats-list-bar-component pl-3 pr-3 ${className} `}>
       {chats.length ? (

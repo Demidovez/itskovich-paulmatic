@@ -129,7 +129,7 @@ const TableContacts = ({
         ) : (
           <Table
             className="align-items-center table-flush table-hover fixed-header"
-            // responsive
+            responsive
           >
             <thead className="thead-light sticky-top" style={{ zIndex: 999 }}>
               <tr className="d-flex">

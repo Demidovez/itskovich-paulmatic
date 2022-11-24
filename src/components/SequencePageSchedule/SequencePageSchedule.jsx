@@ -52,6 +52,8 @@ const SequencePageSchedule = ({ isShow, onChange }) => {
   const [jobs, setJobs] = useState({});
   const [isFullTimeline, setIsFullTimeline] = useState({});
 
+  // const cashed
+
   useEffect(() => {
     const jobs = DAYS.reduce((acc, day) => ({ ...acc, [day.name]: [] }), {});
 

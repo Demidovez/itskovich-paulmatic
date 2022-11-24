@@ -24,53 +24,7 @@ const SequencePageSteps = ({ isShow, onChange }) => {
   const dispatch = useDispatch();
   const [dataForModalEditor, setDataForModalEditor] = useState({});
 
-  const [steps, setSteps] = useState([
-    {
-      id: new Date().getTime(),
-      Type: "linkedin",
-      step: 0,
-      Action: "cold_msg",
-      Body: "Привет, {{.Contact.Name}}!",
-      Name: "LinkedIn",
-      Description: "Написать холодное сообщение",
-      Subject: "Наконец-то достучались до тебя, {{.Contact.Name}}!",
-      delay: 86400,
-    },
-    {
-      id: new Date().getTime() + 1,
-      Type: "manual_email",
-      step: 1,
-      Action: "send_letter",
-      Body: "<body>Hi, {{.Contact.Name}}!</body>",
-      Name: "Мануальный Email",
-      Description: "Отправить письмо",
-      Subject:
-        "Здравствуйте, наконец-то достучались до тебя, {{.Contact.Name}}!",
-      delay: 86400,
-    },
-    {
-      id: new Date().getTime() + 2,
-      Type: "linkedin",
-      step: 2,
-      Action: "view_profile",
-      Body: "Aloha, {{.Contact.Name}}!",
-      Name: "LinkedIn",
-      Description: "Просмотреть профиль",
-      Subject: "",
-      delay: 86400,
-    },
-    {
-      id: new Date().getTime() + 3,
-      Type: "linkedin",
-      step: 3,
-      Action: "private_msg",
-      Body: "Приветствую, {{.Contact.Name}}!",
-      Name: "LinkedIn",
-      Description: "Написать личное сообщение",
-      Subject: "",
-      delay: 86400,
-    },
-  ]);
+  const [steps, setSteps] = useState([]);
 
   useEffect(() => {
     dispatch(

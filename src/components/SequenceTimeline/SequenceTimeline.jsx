@@ -11,13 +11,14 @@ const SequenceTimeline = ({
 }) => {
   const containerRef = useRef(null);
   const [dirtyAreas, setDirtyAreas] = useState([]);
-  const [layout, setLayout] = useState([]);
+  const [layout, setLayout] = useState(jobs);
 
   useEffect(() => {
     // Находим новый item в массиве, которого еще нет в лайауте
     const newJob = jobs.find((job) => !layout.some((l) => l.id === job.id));
 
     if (newJob) {
+      console.log(newJob);
       setLayout((unSortedlayout) => {
         // Сортируем лайаут по возрастанию, так как items могли переместиться
         const layout = [...unSortedlayout].sort((a, b) => a.x - b.x);
@@ -102,7 +103,7 @@ const SequenceTimeline = ({
         }
       });
     }
-  }, [jobs.length]);
+  }, [JSON.stringify(jobs)]);
 
   useEffect(() => {
     const areas = layout.map((item) => [item.x, item.x + item.w]);
