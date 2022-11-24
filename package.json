@@ -50,6 +50,7 @@
     "formik": "^2.2.9",
     "fs-extra": "^10.1.0",
     "html-react-parser": "^3.0.4",
+    "mac-scrollbar": "^0.10.3",
     "moment": "^2.29.4",
     "nouislider": "15.2.0",
     "patch-package": "^6.4.7",
@@ -74,7 +75,6 @@
     "reactour": "^1.18.7",
     "reactstrap": "8.9.0",
     "sass": "1.54.5",
-    "simplebar-react": "^2.4.3",
     "tinymce": "^6.2.0",
     "yup": "^0.32.11"
   },

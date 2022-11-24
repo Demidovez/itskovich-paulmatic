@@ -1,5 +1,4 @@
 import HiddenTableCell from "components/HiddenTableCell/HiddenTableCell";
-import Scrollbar from "components/Scrollbar/Scrollbar";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Label, Table } from "reactstrap";
@@ -117,7 +116,7 @@ const TableContacts = ({
 
   return (
     <div className="overflow-hidden" style={{ flex: "0 1 auto" }}>
-      <Scrollbar
+      <div
         className="table-contacts flex-fill1 h-100"
         // style={{ overflow: "auto", height: 0 }}
       >
@@ -243,7 +242,7 @@ const TableContacts = ({
             </tbody>
           </Table>
         )}
-      </Scrollbar>
+      </div>
     </div>
   );
 };

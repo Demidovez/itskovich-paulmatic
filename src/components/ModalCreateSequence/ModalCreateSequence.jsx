@@ -26,7 +26,6 @@ import { useCreateOrUpdateSequenceMutation } from "store/api/sequences";
 import useYouSure from "hooks/useYouSure";
 import { addHtmlTemplates } from "store/slices/commonSlice";
 import { useLazySendLogQuery } from "store/api/sequences";
-import Scrollbar from "components/Scrollbar/Scrollbar";
 
 const ModalCreateSequence = ({ onClose }) => {
   const { tryClose, tryForceClose, setIsChanged } = useYouSure(onClose);
@@ -305,7 +304,7 @@ const ModalCreateSequence = ({ onClose }) => {
             </div>
           </div>
         </div>
-        <Scrollbar
+        <div
           className="seaquences-create-info"
           style={{ flex: 2, whiteSpace: "break-spaces", padding: "0 20px" }}
         >
@@ -313,7 +312,7 @@ const ModalCreateSequence = ({ onClose }) => {
             {parse(logHtml)}
             {/* {JSON.stringify(sequenceResultData, null, 2).replaceAll(",", ", ")} */}
           </>
-        </Scrollbar>
+        </div>
       </Modal>
     </>
   );

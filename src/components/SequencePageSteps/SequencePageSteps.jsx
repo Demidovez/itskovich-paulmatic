@@ -11,7 +11,6 @@ import { saveStepsSequence } from "store/slices/sequenceMasterSlice";
 import { Button } from "reactstrap";
 import TaskEditorModal from "components/TaskEditorModal/TaskEditorModal";
 import ModalYouSure from "components/ModalYouSure/ModalYouSure";
-import Scrollbar from "components/Scrollbar/Scrollbar";
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -144,7 +143,7 @@ const SequencePageSteps = ({ isShow, onChange }) => {
   return (
     <>
       {isShow ? (
-        <Scrollbar className=" sequence-page-steps-component modal-body d-flex flex-column overflow-auto p-0">
+        <div className=" sequence-page-steps-component modal-body d-flex flex-column overflow-auto p-0">
           <>
             <div className="add-step">
               {steps.length ? (
@@ -235,7 +234,7 @@ const SequencePageSteps = ({ isShow, onChange }) => {
               />
             )}
           </>
-        </Scrollbar>
+        </div>
       ) : null}
     </>
   );

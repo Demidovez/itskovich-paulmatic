@@ -21,6 +21,8 @@ import { ROUTES } from "routes";
 import { getpath } from "utils/utils";
 import { setShowTariffModal } from "store/slices/commonSlice";
 import ModalTariff from "components/ModalTariff/ModalTariff";
+import { GlobalScrollbar } from "mac-scrollbar";
+import "mac-scrollbar/dist/mac-scrollbar.css";
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);
@@ -125,6 +127,7 @@ const Admin = (props) => {
           description={showedMessageTariffModal}
         />
       )}
+      <GlobalScrollbar suppressAutoHide={true} />
     </>
   );
 };
