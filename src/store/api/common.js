@@ -11,7 +11,10 @@ export const commonApi = createApi({
         method: "GET",
         headers: getHeaders(),
       }),
-      transformResponse: (response) => response.result || {},
+      transformResponse: (response) => {
+        // console.log(response.result);
+        return response.result || {};
+      },
     }),
     getTariffs: builder.query({
       query: () => ({

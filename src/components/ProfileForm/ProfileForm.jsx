@@ -32,7 +32,7 @@ const ProfileForm = ({ className = "" }) => {
   const [resultError, setResultError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const timeZones = useSelector((state) => state.common.timeZones);
+  const timeZones = useSelector((state) => state.common.TimeZones);
 
   const [tryUpdate, { data: updateAccountResponse, error, isFetching }] =
     useLazyTryUpdateQuery();
@@ -107,7 +107,7 @@ const ProfileForm = ({ className = "" }) => {
         password: values.password,
         company: values.company,
         directorUsername: values.directorUsername,
-        timeZone: Account.TimeZone,
+        timeZone: Account.TimeZoneId,
       });
     },
   });
@@ -121,6 +121,8 @@ const ProfileForm = ({ className = "" }) => {
     // localStorage.clear();
     history.push("/auth/login");
   };
+
+  console.log(timeZones, Account.TimeZoneId);
 
   return (
     <div className="profile-form-component" style={{ background: "#4450ff" }}>
@@ -296,12 +298,19 @@ const ProfileForm = ({ className = "" }) => {
                     <span>Временная зона</span>
                     <Dropdown
                       items={timeZones}
+                      fieldOfItem="Name"
                       className=""
                       outline={true}
                       isFull={true}
-                      defaultValue={Account.TimeZone}
+                      defaultValue={
+                        (
+                          timeZones.find(
+                            (zone) => zone.Id === Account.TimeZoneId
+                          ) || {}
+                        ).Name
+                      }
                       onSelect={(timezone) =>
-                        dispatch(saveTimeZoneAccount(timezone))
+                        dispatch(saveTimeZoneAccount(timezone.Id))
                       }
                     />
                   </FormGroup>

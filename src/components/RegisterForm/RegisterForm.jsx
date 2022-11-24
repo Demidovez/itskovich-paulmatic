@@ -252,6 +252,21 @@ const RegisterForm = ({ className = "" }) => {
             : ""}
         </div>
       </FormGroup>
+      {/* <FormGroup className={`field-wrapper mb-1 mt-3`}>
+        <span>Временная зона</span>
+        <Dropdown
+          items={timeZones}
+          fieldOfItem="Name"
+          className=""
+          outline={true}
+          isFull={true}
+          defaultValue={
+            (timeZones.find((zone) => zone.Id === 56) || {})
+              .Name
+          }
+          onSelect={(timezone) => dispatch(saveTimeZoneAccount(timezone.Id))}
+        />
+      </FormGroup> */}
       <>
         {/* <Row className="my-4">
         <Col

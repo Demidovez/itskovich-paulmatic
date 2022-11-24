@@ -37,7 +37,7 @@ const ModalCreateSequence = ({ onClose }) => {
 
   const sequenceResultData = useSelector((state) => state.sequenceMaster.data);
   const sequenceName = useSelector((state) => state.sequenceMaster.data.Name);
-  const timeZones = useSelector((state) => state.common.timeZones);
+  const timeZones = useSelector((state) => state.common.TimeZones);
 
   const [sendLog, { data: responseLogData, isError, error }] =
     useLazySendLogQuery();
@@ -218,13 +218,18 @@ const ModalCreateSequence = ({ onClose }) => {
                 <div className="nowrap">Временная зона:</div>
                 <Dropdown
                   items={timeZones}
-                  // fieldOfItem="Name"
+                  fieldOfItem="Name"
                   maxLength={1000}
+                  // isFull={true}
                   className="ml-3"
                   outline={true}
-                  defaultValue={sequenceResultData.TimeZone}
+                  defaultValue={
+                    timeZones.find(
+                      (zone) => zone.Id === sequenceResultData.TimeZoneId
+                    ).Name
+                  }
                   onSelect={(timezone) =>
-                    dispatch(saveTimeZoneSequence(timezone))
+                    dispatch(saveTimeZoneSequence(timezone.Id))
                   }
                 />
               </div>
