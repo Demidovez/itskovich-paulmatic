@@ -124,6 +124,7 @@ const initialState = {
       },
       FeatureAbilities: {},
     },
+    Subordinates: [],
   },
   AccountSettings: {
     EmailServers: [],
@@ -162,6 +163,12 @@ export const commonSlice = createSlice({
     updateAccount: (state, action) => {
       state.Account = { ...state.Account, ...action.payload };
     },
+    // deleteSubordinate: (state, action) => {
+    //   console.log(current(state.Account.Subordinates), action.payload);
+    //   state.Account.Subordinates = state.Account.Subordinates.filter(
+    //     (subordinate) => subordinate.id !== action.payload
+    //   );
+    // },
     updatePayment: (state, action) => {
       state.Account = state.Account;
     },
@@ -508,6 +515,7 @@ export const {
   updateAccount,
   updatePayment,
   saveTimeZoneAccount,
+  // deleteSubordinate,
 } = commonSlice.actions;
 
 export default commonSlice.reducer;

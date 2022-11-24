@@ -10,6 +10,7 @@ import { setActiveAccountId } from "store/slices/dashboardSlice";
 import { Col, Container, Row } from "reactstrap";
 import ModalYouSure from "components/ModalYouSure/ModalYouSure";
 import { useLazyTryDeleteSubordinateQuery } from "store/api/login";
+import { toast } from "react-toastify";
 
 const DashBoardTabs = ({ className = "", data = {} }) => {
   const dispatch = useDispatch();
@@ -28,7 +29,10 @@ const DashBoardTabs = ({ className = "", data = {} }) => {
     (state) => state.dashboard.activeAccountId
   );
 
-  const [tryDeleteSubordinate] = useLazyTryDeleteSubordinateQuery();
+  const [
+    tryDeleteSubordinate,
+    { data: resultDeleteSubordinate, isError, error },
+  ] = useLazyTryDeleteSubordinateQuery();
 
   useEffect(() => {
     if (Object.values(data).length) {
@@ -44,7 +48,18 @@ const DashBoardTabs = ({ className = "", data = {} }) => {
     }
   }, [Object.values(data).length]);
 
-  console.log(persons);
+  useEffect(() => {
+    if (isError) {
+      toast.error(`Ошибка удаления`);
+    } else if (resultDeleteSubordinate) {
+      setPersons((pesons) =>
+        pesons.filter(
+          (person) => person.id !== resultDeleteSubordinate.result.id
+        )
+      );
+      dispatch(setActiveAccountId(currentAccountId));
+    }
+  }, [error, isError, resultDeleteSubordinate]);
 
   const onDeleteSubmit = () => {
     setIsAskSure(false);
