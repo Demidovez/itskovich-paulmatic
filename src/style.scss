@@ -4,6 +4,34 @@
   --height-menu: 4.5rem;
 }
 
+body {
+  overflow-x: hidden;
+}
+
+body *,
+html {
+  // overflow-y: scroll;
+  scrollbar-width: thin; /* "auto" or "thin" */
+  scrollbar-color: rgb(88, 88, 88, 0.5) rgb(213, 213, 213, 0); /* scroll thumb and track */
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(255, 255, 255, 1);
+  // border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
 @font-face {
   font-family: "Eastman";
   src: url("../src/assets/fonts/Eastman-Light.woff") format("woff");
@@ -33,10 +61,6 @@
   src: url("../src/assets/fonts/Eastman-Extrabold.woff") format("woff");
   font-weight: 700;
   font-style: normal;
-}
-
-body {
-  overflow-x: hidden;
 }
 
 .height-fill {
