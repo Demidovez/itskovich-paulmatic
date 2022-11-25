@@ -23,14 +23,30 @@ import { setCommonInfoHtmlTemplates } from "store/slices/commonSlice";
 import { setFolders } from "store/slices/commonSlice";
 import { setChats } from "store/slices/commonSlice";
 import { useHistory } from "react-router-dom";
+import Dropdown from "components/Dropdown/Dropdown";
+import { setTimeZones } from "store/slices/commonSlice";
+import { useSelector } from "react-redux";
 
 const NICKNAME_REGEX = /^[A-Za-z0-9_]+$/;
+
+const timeZones = [
+  {
+    Name: "Санкт-Петербург (UTC+3, МСК+12)",
+    Id: 89,
+  },
+  {
+    Name: "Москва (UTC+3, МСК+12)",
+    Id: 56,
+  },
+];
 
 const RegisterForm = ({ className = "" }) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [resultError, setResultError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const [timeZone, setTimeZone] = useState(56);
 
   const [trySignUp, { data: signUpResponse, error, isFetching }] =
     useLazyTrySignUpQuery();
@@ -90,6 +106,7 @@ const RegisterForm = ({ className = "" }) => {
       dispatch(setCommonInfoHtmlTemplates(commonData.Templates));
       dispatch(setFolders(commonData.Folders));
       dispatch(setChats(commonData.Chats));
+      dispatch(setTimeZones(commonData.TimeZones));
     }
   }, [commonData]);
 
@@ -130,6 +147,7 @@ const RegisterForm = ({ className = "" }) => {
         password: values.password,
         company: values.company,
         directorUsername: values.directorUsername,
+        timeZone: timeZone,
       });
     },
   });
@@ -252,7 +270,7 @@ const RegisterForm = ({ className = "" }) => {
             : ""}
         </div>
       </FormGroup>
-      {/* <FormGroup className={`field-wrapper mb-1 mt-3`}>
+      <FormGroup className={`field-wrapper mb-1 mt-3`}>
         <span>Временная зона</span>
         <Dropdown
           items={timeZones}
@@ -261,12 +279,11 @@ const RegisterForm = ({ className = "" }) => {
           outline={true}
           isFull={true}
           defaultValue={
-            (timeZones.find((zone) => zone.Id === 56) || {})
-              .Name
+            (timeZones.find((zone) => zone.Id === timeZone) || {}).Name
           }
-          onSelect={(timezone) => dispatch(saveTimeZoneAccount(timezone.Id))}
+          onSelect={(timezone) => setTimeZone(timezone.Id)}
         />
-      </FormGroup> */}
+      </FormGroup>
       <>
         {/* <Row className="my-4">
         <Col

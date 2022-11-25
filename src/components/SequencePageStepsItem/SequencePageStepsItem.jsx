@@ -18,6 +18,7 @@ import TypeIcon from "components/TypeIcon/TypeIcon";
 const SequencePageStepsItem = ({
   step,
   onChange,
+  delayByFirstDay,
   delay,
   openModal,
   onDelete,
@@ -32,6 +33,20 @@ const SequencePageStepsItem = ({
       openModal();
     }
   };
+
+  const [delays, setDelays] = useState([0, 0, 0]);
+
+  useEffect(() => {
+    const days = Math.floor(delay / (60 * 60 * 24));
+    const hours = Math.floor((delay % (60 * 60 * 24)) / (60 * 60));
+    const minutes = Math.floor(
+      (delay - days * (60 * 60 * 24) - hours * (60 * 60)) / 60
+    );
+
+    setDelays([days, hours, minutes]);
+  }, [delay]);
+
+  console.log(delay, delays);
 
   return (
     <div className="d-flex sequence-step">
@@ -50,29 +65,36 @@ const SequencePageStepsItem = ({
         <div className="flex-fill vertical-line" />
       </div>
       <div className="w-100 pb-4">
-        <span className="step-label">
+        <div className="step-label">
           Шаг {step.step + 1} - День{" "}
           {moment()
             .startOf("day")
-            .add(delay, "seconds")
+            .add(delayByFirstDay, "seconds")
             .diff(moment().startOf("day"), "days") + 1}
           {step.step >= 0 ? (
             <MdExpandMore
               size="1.5rem"
-              className="mt--1"
+              className="mt-0"
               onClick={() => setIsShowModalDelay(true)}
               style={{ cursor: "pointer" }}
             />
           ) : (
             <MdExpandMore
               size="1.5rem"
-              className="mt--1"
+              className="mt-0"
               style={{ opacity: 0 }}
             />
           )}
+          {delays.some((delay) => delay > 0) && (
+            <div className="ml-4 delay-label">
+              Задержка - {delays[0] ? delays[0] + " день " : ""}
+              {delays[1] ? delays[1] + " часа " : ""}
+              {delays[2] ? delays[2] + " минут " : ""}
+            </div>
+          )}
           <MdOutlineDragIndicator
             size="1.5rem"
-            className="ml-3 mt--1"
+            className="ml-3 mt-0"
             id={`tooltip_${step.id}`}
           />
           <Tooltip
@@ -83,7 +105,7 @@ const SequencePageStepsItem = ({
           >
             Перетащить
           </Tooltip>
-        </span>
+        </div>
         <div
           className="sequence-desc ml-0 mr-0 mt-2 mb-2 d-flex"
           onClick={onDoubleClick}

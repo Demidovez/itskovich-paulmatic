@@ -145,8 +145,9 @@ const SequencePageSteps = ({ isShow, onChange }) => {
                                         stepId: step.id,
                                       })
                                     }
-                                    delay={steps
-                                      .slice(1, index + 1)
+                                    delay={step.delay}
+                                    delayByFirstDay={steps
+                                      .slice(0, index + 1)
                                       .reduce(
                                         (acc, step) => (acc += step.delay),
                                         0
