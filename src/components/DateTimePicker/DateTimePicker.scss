@@ -44,4 +44,9 @@
     width: 40px;
     height: 40px;
   }
+
+  .rdt.rdtOpen .rdtPicker {
+    left: -50px;
+    min-width: 300px;
+  }
 }
