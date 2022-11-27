@@ -26,6 +26,8 @@ import { useCreateOrUpdateSequenceMutation } from "store/api/sequences";
 import useYouSure from "hooks/useYouSure";
 import { addHtmlTemplates } from "store/slices/commonSlice";
 import { useLazySendLogQuery } from "store/api/sequences";
+import DateTimePicker from "components/DateTimePicker/DateTimePicker";
+import { setLogStartNameSequence } from "store/slices/sequenceMasterSlice";
 
 const ModalCreateSequence = ({ onClose }) => {
   const { tryClose, tryForceClose, setIsChanged } = useYouSure(onClose);
@@ -159,6 +161,10 @@ const ModalCreateSequence = ({ onClose }) => {
     }
   }, [isError, error, responseLogData]);
 
+  const onLogDateTime = (datetime) => {
+    dispatch(setLogStartNameSequence(datetime));
+  };
+
   return (
     <>
       <Modal
@@ -224,8 +230,10 @@ const ModalCreateSequence = ({ onClose }) => {
                   className="ml-3"
                   outline={true}
                   defaultValue={
-                    timeZones.find(
-                      (zone) => zone.Id === sequenceResultData.TimeZoneId
+                    (
+                      timeZones.find(
+                        (zone) => zone.Id === sequenceResultData.TimeZoneId
+                      ) || {}
                     ).Name
                   }
                   onSelect={(timezone) =>
@@ -311,9 +319,13 @@ const ModalCreateSequence = ({ onClose }) => {
         </div>
         <div
           className="seaquences-create-info"
-          style={{ flex: 2, whiteSpace: "break-spaces", padding: "0 20px" }}
+          style={{ flex: 2, whiteSpace: "break-spaces", padding: "20px 20px" }}
         >
           <>
+            <DateTimePicker
+              datetime={sequenceResultData.LogStartName}
+              onDateTime={onLogDateTime}
+            />
             {parse(logHtml)}
             {/* {JSON.stringify(sequenceResultData, null, 2).replaceAll(",", ", ")} */}
           </>

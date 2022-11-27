@@ -24,6 +24,7 @@ const initialState = {
     FolderId: 0,
     Name: "",
     TimeZoneId: 56,
+    LogStartName: new Date().toString(),
     Model: {
       Steps: [],
       ContactIds: [],
@@ -37,6 +38,9 @@ export const sequenceMasterSlice = createSlice({
   name: "sequenceMaster",
   initialState,
   reducers: {
+    setLogStartNameSequence: (state, action) => {
+      state.data.LogStartName = action.payload;
+    },
     saveFolderIdSequence: (state, action) => {
       state.data.FolderId = action.payload;
     },
@@ -74,6 +78,7 @@ export const {
   saveScheduleSequence,
   saveSettingsSequence,
   saveTimeZoneSequence,
+  setLogStartNameSequence,
 } = sequenceMasterSlice.actions;
 
 export default sequenceMasterSlice.reducer;

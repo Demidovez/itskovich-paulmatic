@@ -46,8 +46,6 @@ const SequencePageStepsItem = ({
     setDelays([days, hours, minutes]);
   }, [delay]);
 
-  console.log(delay, delays);
-
   return (
     <div className="d-flex sequence-step">
       <div className="d-flex flex-column pl-0 pr-3 align-items-center">
