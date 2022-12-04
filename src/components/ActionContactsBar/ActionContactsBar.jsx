@@ -4,7 +4,6 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  Button,
 } from "reactstrap";
 
 const ActionContactsBar = ({

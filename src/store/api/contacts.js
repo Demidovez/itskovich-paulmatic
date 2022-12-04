@@ -34,9 +34,17 @@ export const contactsApi = createApi({
       }),
       transformResponse: (response, _, arg) => {
         if (response.result && response.result.id === arg.id) {
-          toast.success(`${response.result.name} обновлен`);
+          toast.success(
+            `${
+              response.result.FistName + " " + response.result.LastName
+            } обновлен`
+          );
         } else if (response.result && response.result.id !== arg.id) {
-          toast.success(`${response.result.name} создан`);
+          toast.success(
+            `${
+              response.result.FistName + " " + response.result.LastName
+            } создан`
+          );
         } else {
           toast.error(`Ошибка!`);
         }
@@ -75,6 +83,15 @@ export const contactsApi = createApi({
       },
       invalidatesTags: [{ type: "Contacts", id: "LIST" }],
     }),
+    getSchemaFile: builder.query({
+      query: (firstRowsOfFile) => ({
+        url: "/upload/getSchema",
+        method: "POST",
+        body: firstRowsOfFile,
+        headers: getHeaders(),
+      }),
+      transformResponse: (response) => response.result,
+    }),
     deleteContacts: builder.mutation({
       query: (ids) => ({
         url: "/delete",
@@ -112,4 +129,5 @@ export const {
   useUploadFileOfContactsMutation,
   useAddContactsMutation,
   useLazyTryExportQuery,
+  useLazyGetSchemaFileQuery,
 } = contactsApi;

@@ -188,7 +188,7 @@ export const commonSlice = createSlice({
       state.Tasks = {
         ...state.Tasks,
         Types: {
-          ...state.Tasks.Types,
+          ...state.Tasks?.Types,
           auto_email: {
             Creds: { Title: "Автоматический E-mail", Name: "auto_mail" },
             Actions: [{ Name: "send_letter", Title: "Отправить письмо" }],
@@ -212,17 +212,20 @@ export const commonSlice = createSlice({
       state.Folders = action.payload;
     },
     setChats: (state, action) => {
-      state.Chats.Folders = [
-        ...action.payload.Folders,
-        { id: 0, Name: "Все" },
-      ].sort((f1, f2) => f1.id - f2.id);
+      if (action.payload) {
+        state.Chats.Folders = [
+          ...action.payload.Folders,
+          { id: 0, Name: "Все" },
+        ].sort((f1, f2) => f1.id - f2.id);
 
-      state.Chats.Chats = [...(action.payload.Chats || [])].sort(
-        (c1, c2) =>
-          moment(c2.Msgs.slice(-1)[0].Time) - moment(c1.Msgs.slice(-1)[0].Time)
-      );
+        state.Chats.Chats = [...(action.payload.Chats || [])].sort(
+          (c1, c2) =>
+            moment(c2.Msgs.slice(-1)[0].Time) -
+            moment(c1.Msgs.slice(-1)[0].Time)
+        );
 
-      state.Chats.ModifiedTime = new Date().getTime();
+        state.Chats.ModifiedTime = new Date().getTime();
+      }
     },
     setInMailSettingsStatus: (state, action) => {
       state.Account.InMailSettings = action.payload;

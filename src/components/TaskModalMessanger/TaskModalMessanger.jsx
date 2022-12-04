@@ -106,15 +106,19 @@ const TaskModalMessanger = ({
             style={{ borderLeft: "1px solid #e7e7e7" }}
           >
             <AvatarSymbols
-              name={currentTask.Contact.name}
+              name={
+                currentTask.Contact.FirstName +
+                " " +
+                currentTask.Contact.LastName
+              }
               className="ml-4 mr-3"
             />
             <div>
               <div className="" style={{ fontWeight: "600" }}>
-                {currentTask.Contact.name}
+                {currentTask.Contact.FirstName}
               </div>
               <div style={{ opacity: 0.6, fontSize: "14px" }}>
-                {currentTask.Contact.email}
+                {currentTask.Contact.Email}
               </div>
             </div>
           </div>

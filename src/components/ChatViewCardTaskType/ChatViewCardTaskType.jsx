@@ -37,7 +37,11 @@ const ChatViewCardTaskType = ({ message, isSearched }) => {
           <CardHeader className="pt-0 pb-0 pl-2 pr-2 d-flex justify-content-between align-items-center">
             <div className="d-flex align-items-center">
               <div className="pl-2 message-user pr-3">
-                {message.My ? "Вы" : (message.Contact || {}).name || ""}
+                {message.My
+                  ? "Вы"
+                  : (message.Contact || {}).FirstName +
+                      " " +
+                      (message.Contact || {}).LastName || ""}
               </div>
               <TypeIcon
                 type={message.TaskType || "auto_email"}

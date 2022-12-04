@@ -122,8 +122,6 @@ const ProfileForm = ({ className = "" }) => {
     history.push("/auth/login");
   };
 
-  console.log(timeZones, Account.TimeZoneId);
-
   return (
     <div className="profile-form-component" style={{ background: "#4450ff" }}>
       <Container className="align-items-center" fluid>

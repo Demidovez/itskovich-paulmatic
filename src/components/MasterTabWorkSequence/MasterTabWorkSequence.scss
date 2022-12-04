@@ -1,0 +1,130 @@
+.master-tab-work-sequence-component {
+  display: flex;
+
+  .content {
+    display: flex;
+  }
+
+  .steps {
+    padding: 0 20px;
+    width: 200px;
+
+    .step {
+      cursor: pointer;
+      transition: all 0.2s;
+      opacity: 0.7;
+      margin-bottom: 4px;
+      font-size: 14px;
+
+      &.active {
+        opacity: 1;
+        color: var(--primary);
+      }
+    }
+  }
+
+  .people {
+    display: flex;
+    flex-direction: column;
+
+    .people-header {
+      margin-right: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      & > div {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .add-contact {
+        z-index: 100;
+        display: flex;
+        justify-content: end;
+        background: white;
+        position: relative;
+
+        & > div {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          background-color: var(--primary);
+          color: white;
+
+          transition: all 0.3s ease-in-out;
+          cursor: pointer;
+          box-shadow: 0 1px 7px 3px rgb(0 0 0 / 15%) !important;
+
+          &:hover {
+            transform: scale(1.05);
+          }
+        }
+
+        & + .select {
+          position: absolute;
+          background-color: white;
+          right: 0px;
+          z-index: 1000;
+          // transform: translateY(140%);
+          top: calc(100% + 15px);
+          padding: 7px;
+          border-radius: 10px;
+          box-shadow: 0 15px 35px rgb(50 50 93 / 20%),
+            0 5px 15px rgb(0 0 0 / 17%);
+
+          .select-items {
+            & div {
+              cursor: pointer;
+              // font-size: 13px;
+              transition: all 0.2s;
+              padding: 5px 15px;
+              margin: 3px 0;
+              border-radius: 10px;
+
+              &:hover {
+                background-color: var(--primary);
+                color: white;
+              }
+            }
+          }
+
+          .arrow {
+            position: absolute;
+            top: calc(-0.75rem);
+            right: 0;
+            width: 1.5rem;
+            height: 0.75rem;
+            margin: 0 0.4375rem;
+            // background-color: red;
+          }
+
+          .arrow::before,
+          .arrow::after {
+            position: absolute;
+            display: block;
+            content: "";
+            border-color: transparent;
+            border-style: solid;
+          }
+
+          .arrow::before {
+            top: 0;
+            border-width: 0 0.75rem 0.75rem;
+            border-bottom-color: transparent;
+          }
+
+          .arrow::after {
+            top: 1px;
+            border-width: 0 0.75rem 0.75rem;
+            border-bottom-color: #fff;
+          }
+        }
+      }
+    }
+  }
+}

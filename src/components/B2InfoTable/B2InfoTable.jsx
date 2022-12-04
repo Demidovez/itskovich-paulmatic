@@ -206,6 +206,18 @@ const B2InfoTable = ({
                             style={field.style}
                           />
                         );
+                      } else if (["Company"].includes(field.name)) {
+                        return (
+                          <td
+                            key={field.name}
+                            style={{
+                              whiteSpace: "normal",
+                              ...field.style,
+                            }}
+                          >
+                            {company[field.name]}
+                          </td>
+                        );
                       } else {
                         return (
                           <td

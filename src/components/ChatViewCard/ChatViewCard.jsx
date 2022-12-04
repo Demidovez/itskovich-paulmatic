@@ -38,7 +38,11 @@ const ChatViewCard = ({ message, isSearched }) => {
         <Card className={`shadow`} style={{ maxWidth: "80%" }}>
           <CardHeader className="pt-1 pb-1 pl-2 pr-2 d-flex justify-content-between align-items-center">
             <div className="pl-2 message-user pr-4">
-              {message.My ? "Вы" : (message.Contact || {}).name || ""}
+              {message.My
+                ? "Вы"
+                : (message.Contact || {}).FirstName +
+                    " " +
+                    (message.Contact || {}).LastName || ""}
             </div>
             <div className="d-flex align-items-center">
               <div className="pr-2 message-time" style={{ paddingTop: 2 }}>

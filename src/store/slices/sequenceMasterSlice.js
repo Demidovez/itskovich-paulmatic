@@ -38,6 +38,10 @@ export const sequenceMasterSlice = createSlice({
   name: "sequenceMaster",
   initialState,
   reducers: {
+    initMaster: (state, action) => {
+      // state.data = action.payload;
+      console.log(action.payload);
+    },
     setLogStartNameSequence: (state, action) => {
       state.data.LogStartName = action.payload;
     },
@@ -71,6 +75,7 @@ export const sequenceMasterSlice = createSlice({
 });
 
 export const {
+  initMaster,
   saveFolderIdSequence,
   saveNameSequence,
   saveStepsSequence,

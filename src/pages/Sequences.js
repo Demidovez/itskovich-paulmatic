@@ -6,7 +6,7 @@ import { selectAllTasks } from "store/slices/tasksSlice";
 import SequencesFolders from "components/SequencesFolders/SequencesFolders";
 import SequencesTable from "components/SequencesTable/SequencesTable";
 import SequencesSearchBar from "components/SequencesSearchBar/SequencesSearchBar";
-import ModalCreateSequence from "components/ModalCreateSequence/ModalCreateSequence";
+import ModalMasterTabsSequence from "components/ModalMasterTabsSequence/ModalMasterTabsSequence";
 import {
   selectAllSequences,
   clearSelectedIds,
@@ -125,7 +125,9 @@ const Sequences = () => {
           </Row>
         </Card>
       </Container>
-      {isShowCreator && <ModalCreateSequence onClose={doneCreateSequence} />}
+      {isShowCreator && (
+        <ModalMasterTabsSequence onClose={doneCreateSequence} />
+      )}
     </>
   );
 };

@@ -45,6 +45,24 @@ export const sequencesApi = createApi({
         }
       },
     }),
+    addContactToSequence: builder.query({
+      query: ({ id, contact }) => ({
+        url: "/addContact",
+        method: "POST",
+        params: {
+          id,
+        },
+        body: contact,
+        headers: getHeaders(),
+      }),
+      transformResponse: (response, _, arg) => {
+        if ((response.result || {}).error) {
+          toast.error(`Ошибка!`);
+        } else {
+          toast.success(`Контакт добавлен`);
+        }
+      },
+    }),
     sendLog: builder.query({
       query: (model) => ({
         url: "/create/log",
@@ -116,6 +134,34 @@ export const sequencesApi = createApi({
       },
       invalidatesTags: [{ type: "Sequence", id: "LIST" }],
     }),
+    getStats: builder.query({
+      query: (params) => ({
+        url: "/stats",
+        method: "GET",
+        params,
+        headers: getHeaders(),
+      }),
+      transformResponse: (response) =>
+        response.result || { Items: [], TotalCount: 0 },
+    }),
+    uploadFile: builder.mutation({
+      query: ({ file, id }) => ({
+        url: "/uploadContacts",
+        method: "POST",
+        params: {
+          id,
+        },
+        body: file,
+        headers: getHeaders({}, true),
+      }),
+      transformResponse: (response) => {
+        if (response.result) {
+          toast.success(`${response.result} контактов добавлено!`);
+        } else {
+          toast.error(`Ошибка!`);
+        }
+      },
+    }),
   }),
 });
 
@@ -123,9 +169,12 @@ export const {
   useLazyGetSequencesQuery,
   useGetSequencesQuery,
   useLazyAddContactsToSequenceQuery,
+  useLazyAddContactToSequenceQuery,
   useStopSequencesMutation,
   useStartSequencesMutation,
   useDeleteSequencesMutation,
   useCreateOrUpdateSequenceMutation,
   useLazySendLogQuery,
+  useLazyGetStatsQuery,
+  useUploadFileMutation,
 } = sequencesApi;

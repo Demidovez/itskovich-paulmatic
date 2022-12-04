@@ -10,6 +10,7 @@ import { setCurrentSequencesPage } from "store/slices/sequencesSlice";
 import Pagination from "components/Pagination/Pagination";
 import SequencesTableItem from "components/SequencesTableItem/SequencesTableItem";
 import { setLoaderStatus } from "store/slices/commonSlice";
+import ModalMasterTabsSequence from "components/ModalMasterTabsSequence/ModalMasterTabsSequence";
 
 const COUNT_ON_PAGE = 100;
 
@@ -153,6 +154,8 @@ const SequencesTable = ({ isSelectedAll, selectedIds }) => {
     dispatch(setCurrentSequencesPage(page));
   };
 
+  const [editSequence, setEditSequence] = useState(null);
+
   return (
     <>
       <div className="table-sequences-component h-100 overflow-auto mt-4">
@@ -197,6 +200,7 @@ const SequencesTable = ({ isSelectedAll, selectedIds }) => {
                   isSelect={selectedIds.includes(sequence.id) || isSelectedAll}
                   onSelect={() => onSelectSequence(sequence.id)}
                   key={sequence.id}
+                  onClick={() => setEditSequence(sequence.id)}
                 />
               ))}
             </tbody>
@@ -212,6 +216,12 @@ const SequencesTable = ({ isSelectedAll, selectedIds }) => {
           moveToPage={onSetCurrentPage}
         />
       </CardFooter>
+      {editSequence && (
+        <ModalMasterTabsSequence
+          onClose={() => setEditSequence(null)}
+          sequenceId={editSequence}
+        />
+      )}
     </>
   );
 };

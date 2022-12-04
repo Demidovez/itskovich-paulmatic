@@ -18,7 +18,6 @@ const SequenceTimeline = ({
     const newJob = jobs.find((job) => !layout.some((l) => l.id === job.id));
 
     if (newJob) {
-      console.log(newJob);
       setLayout((unSortedlayout) => {
         // Сортируем лайаут по возрастанию, так как items могли переместиться
         const layout = [...unSortedlayout].sort((a, b) => a.x - b.x);

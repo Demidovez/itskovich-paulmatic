@@ -1,9 +1,8 @@
-import HiddenTableCell from "components/HiddenTableCell/HiddenTableCell";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Label, Table } from "reactstrap";
 import { addContactId } from "store/slices/contactsSlice";
-import "./TableContacts.scss";
+import "./TableSequenceContacts.scss";
 
 const DEFAULT_FIELDS = [
   {
@@ -19,75 +18,99 @@ const DEFAULT_FIELDS = [
     label: "Имя",
     name: "FirstName",
     style: {
-      width: "16%",
+      width: "20%",
       minWidth: "100px",
-      maxWidth: "400px",
+      maxWidth: "800px",
     },
   },
   {
-    label: "Компания",
-    name: "Сompany",
+    label: "Фамилия",
+    name: "LastName",
     style: {
       width: "20%",
       minWidth: "100px",
-      maxWidth: "400px",
-    },
-  },
-  {
-    label: "Должность",
-    name: "Job",
-    style: {
-      width: "20%",
-      minWidth: "100px",
-      maxWidth: "400px",
+      maxWidth: "800px",
     },
   },
   {
     label: "E-mail",
     name: "Email",
     style: {
-      width: "16%",
-      minWidth: "100px",
-      maxWidth: "400px",
+      width: "40%",
+      minWidth: "250px",
+      maxWidth: "800px",
     },
   },
   {
-    label: "Телефон",
-    name: "Phone",
+    label: "Статус",
+    name: "Status",
     style: {
-      width: "13%",
+      width: "22%",
       minWidth: "100px",
-      maxWidth: "400px",
+      maxWidth: "800px",
     },
   },
   {
-    label: "LinkedIn",
-    name: "Linkedin",
+    label: "Доставлено",
+    name: "Delivered",
     style: {
-      width: "23%",
+      width: "20%",
       minWidth: "100px",
-      maxWidth: "400px",
+      maxWidth: "800px",
     },
   },
   {
-    label: "Последовательность",
-    name: "Sequences",
+    label: "Открыто",
+    name: "Opened",
     style: {
       width: "15%",
+      minWidth: "80px",
+      maxWidth: "800px",
+    },
+  },
+  {
+    label: "Ответил",
+    name: "Replied",
+    style: {
+      width: "15%",
+      minWidth: "80px",
+      maxWidth: "800px",
+    },
+  },
+  {
+    label: "Текущий шаг",
+    name: "StepIndex",
+    style: {
+      width: "37%",
       minWidth: "100px",
-      maxWidth: "400px",
+      maxWidth: "800px",
     },
   },
 ];
 
-const TableContacts = ({
-  onSelect,
+const STATS_STYLE = {
+  Approaching: {},
+  Replied: {
+    color: "white",
+    background: "green",
+  },
+  Opened: {
+    color: "white",
+    background: "#0099ff",
+  },
+  Bounce: {
+    color: "white",
+    background: "#8f0000",
+  },
+};
+
+const TableSequenceContacts = ({
   data = { Items: [] },
   selectedIds,
-  columns,
   fillHeader = true,
+  onSelect = () => {},
 }) => {
-  const [fields, setFields] = useState([]);
+  const [fields, setFields] = useState(DEFAULT_FIELDS);
 
   const dispatch = useDispatch();
 
@@ -95,32 +118,15 @@ const TableContacts = ({
     dispatch(addContactId(id));
   };
 
-  useEffect(() => {
-    if (columns) {
-      setFields(
-        DEFAULT_FIELDS.map((field) => {
-          const userField = columns.find(
-            (column) => column.name === field.name
-          );
-
-          if (userField) {
-            return userField;
-          } else {
-            return field;
-          }
-        }).filter((field) => field.isDisabled !== true)
-      );
-    } else {
-      setFields(DEFAULT_FIELDS.filter((field) => field.isDisabled !== true));
-    }
-  }, [columns]);
-
   return (
-    <div className="overflow-hidden" style={{ flex: "0 1 auto" }}>
-      <div
-        className="table-contacts flex-fill1 h-100"
-        // style={{ overflow: "auto", height: 0 }}
-      >
+    <div className="table-sequence-contacts flex-fill1 h-100 overflow-auto pt-3">
+      {data.TotalCount === 0 ? (
+        <p className="message">
+          Контактов пока нет
+          <br />
+          Добавьте контакты вручную или загрузите файл
+        </p>
+      ) : (
         <Table
           className="align-items-center table-flush table-hover fixed-header"
           responsive
@@ -142,7 +148,7 @@ const TableContacts = ({
           <tbody>
             {data.Items.map((contact) => (
               <tr
-                key={contact.id}
+                key={contact.Contact.id}
                 className={`d-flex`}
                 onClick={() => onSelect(contact.id)}
               >
@@ -175,7 +181,7 @@ const TableContacts = ({
                         </div>
                       </td>
                     );
-                  } else if (field.name === "Linkedin") {
+                  } else if (field.name === "FirstName") {
                     return (
                       <td
                         key={field.name}
@@ -184,12 +190,10 @@ const TableContacts = ({
                           ...field.style,
                         }}
                       >
-                        <a href={contact[field.name]} target="_blank">
-                          {contact[field.name]}
-                        </a>
+                        {contact.Contact.FirstName}
                       </td>
                     );
-                  } else if (["Phone"].includes(field.name)) {
+                  } else if (field.name === "LastName") {
                     return (
                       <td
                         key={field.name}
@@ -198,31 +202,22 @@ const TableContacts = ({
                           ...field.style,
                         }}
                       >
-                        {contact[field.name] &&
-                          contact[field.name]
-                            .trim()
-                            .split(";")
-                            .map((phone, index) => (
-                              <div key={index}>{phone.trim()}</div>
-                            ))}
+                        {contact.Contact.LastName}
                       </td>
                     );
-                  } else if (["Sequences"].includes(field.name)) {
+                  } else if (field.name === "Email") {
                     return (
                       <td
                         key={field.name}
-                        className={"ellipsized"}
                         style={{
                           whiteSpace: "normal",
                           ...field.style,
                         }}
                       >
-                        {/*{(contact[field.name] || [])*/}
-                        {/*  .map(({ Name }) => Name)*/}
-                        {/*  .join(", ")}*/}
+                        {contact.Contact.Email}
                       </td>
                     );
-                  } else {
+                  } else if (field.name === "Status") {
                     return (
                       <td
                         key={field.name}
@@ -231,7 +226,42 @@ const TableContacts = ({
                           ...field.style,
                         }}
                       >
-                        {contact[field.name]}
+                        <span
+                          style={{
+                            borderRadius: 10,
+                            padding: "3px 8px",
+                            fontSize: 12,
+                            ...STATS_STYLE[contact.Status.Name],
+                          }}
+                        >
+                          {contact.Status.Name}
+                        </span>
+                      </td>
+                    );
+                  } else if (
+                    ["Delivered", "Opened", "Replied"].includes(field.name)
+                  ) {
+                    return (
+                      <td
+                        key={field.name}
+                        style={{
+                          whiteSpace: "normal",
+                          ...field.style,
+                        }}
+                      >
+                        {contact.Stats[field.name]}
+                      </td>
+                    );
+                  } else if (field.name === "StepIndex") {
+                    return (
+                      <td
+                        key={field.name}
+                        style={{
+                          whiteSpace: "normal",
+                          ...field.style,
+                        }}
+                      >
+                        {1 + contact.StepIndex}
                       </td>
                     );
                   }
@@ -240,10 +270,10 @@ const TableContacts = ({
             ))}
           </tbody>
         </Table>
-      </div>
+      )}
     </div>
   );
 };
 
-export default React.memo(TableContacts);
-// export default TableContacts;
+export default TableSequenceContacts;
+// export default React.memo(TableSequenceContacts);

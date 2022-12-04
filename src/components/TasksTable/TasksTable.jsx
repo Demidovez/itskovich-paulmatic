@@ -221,7 +221,10 @@ const TasksTable = () => {
     <>
       <div className="table-tasks-component h1-100 overflow-auto">
         {((cached || tasksData || {}).Items || []).length === 0 ? (
-          <p className="message">Задачи появятся, когда вы будет запущена хотя бы одна последовательность</p>
+          <p className="message">
+            Задачи появятся, когда вы будет запущена хотя бы одна
+            последовательность
+          </p>
         ) : (
           <Table
             className="align-items-center table-hover fixed-header"
@@ -309,7 +312,7 @@ const TasksTable = () => {
                             <strong className="pr-1 ">
                               {task[field.name]}
                             </strong>{" "}
-                            - {task.Contact.name}
+                            - {task.Contact.FirstName} {task.Contact.LastName}
                             {/* - [#{task.id}] */}
                           </div>
                         </td>

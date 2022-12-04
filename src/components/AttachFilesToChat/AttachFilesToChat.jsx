@@ -31,7 +31,7 @@ const AttachFilesToChat = ({
       setFiles((files) => [...files, { id, file }]);
 
       onFileAttached({
-        id,
+        Id: id,
         Name: file.name,
         MimeType: file.type,
         ContentBase64: await fileToBase64(file),

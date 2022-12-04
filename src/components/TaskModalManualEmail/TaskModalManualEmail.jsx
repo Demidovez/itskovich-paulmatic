@@ -168,13 +168,20 @@ const TaskModalManualEmail = ({
               className="col pl-5 d-flex"
               style={{ borderLeft: "1px solid #e7e7e7" }}
             >
-              <AvatarSymbols name={currentTask.Contact.name} className="mr-3" />
+              <AvatarSymbols
+                name={
+                  currentTask.Contact.FirstName +
+                  " " +
+                  currentTask.Contact.LastName
+                }
+                className="mr-3"
+              />
               <div>
                 <div className="" style={{ fontWeight: "600" }}>
-                  {currentTask.Contact.name}
+                  {currentTask.Contact.FirstName} {currentTask.Contact.LastName}
                 </div>
                 <div style={{ opacity: 0.6, fontSize: "14px" }}>
-                  {currentTask.Contact.email}
+                  {currentTask.Contact.Email}
                 </div>
               </div>
             </div>

@@ -24,7 +24,7 @@ const ChatsListBar = ({ className = "" }) => {
           (chat) =>
             chat.FolderID === activeFolderId &&
             (searchChatUser
-              ? chat.Contact.name
+              ? (chat.Contact.FirstName + " " + chat.Contact.LastName)
                   .toLowerCase()
                   .includes(searchChatUser.toLowerCase())
               : true)
@@ -34,7 +34,7 @@ const ChatsListBar = ({ className = "" }) => {
       setChats(
         allChats.filter((chat) =>
           searchChatUser
-            ? chat.Contact.name
+            ? (chat.Contact.FirstName + " " + chat.Contact.LastName)
                 .toLowerCase()
                 .includes(searchChatUser.toLowerCase())
             : true
@@ -73,7 +73,9 @@ const ChatsListBar = ({ className = "" }) => {
               onClick={() => selectActiveChatId(chat.Contact.id)}
             >
               <div className="d-flex justify-content-between align-items-center mb-1">
-                <div className="chat-user">{chat.Contact.name}</div>
+                <div className="chat-user">
+                  {chat.Contact.FirstName + " " + chat.Contact.LastName}
+                </div>
                 <div className="chat-time d-flex align-items-center">
                   {moment(chat.Msgs.slice(-1)[0].Time).format(
                     "DD MMM yy HH:mm"

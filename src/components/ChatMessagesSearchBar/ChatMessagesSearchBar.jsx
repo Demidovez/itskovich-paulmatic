@@ -148,7 +148,9 @@ const ChatMessagesSearchBar = ({ className = "" }) => {
               >
                 <div className="d-flex justify-content-between align-items-center mb-1">
                   <div className="result-user">
-                    {getWrappedName(message.Contact.name)}
+                    {getWrappedName(
+                      message.Contact.FirstName + " " + message.Contact.LastName
+                    )}
                   </div>
                   <div className="result-time">
                     {moment(message.Time).format("DD MMM yy HH:mm")}

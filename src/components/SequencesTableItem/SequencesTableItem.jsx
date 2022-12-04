@@ -7,9 +7,14 @@ import {
   useStartSequencesMutation,
 } from "store/api/sequences";
 
-const SequencesTableItem = ({ sequence, fields, isSelect, onSelect }) => {
+const SequencesTableItem = ({
+  sequence,
+  fields,
+  isSelect,
+  onSelect,
+  onClick,
+}) => {
   const [isStopped, setIsStopped] = useState(sequence.Stopped);
-  const [sequenceToModal, setSequenceToModal] = useState(null);
 
   const [startSequences] = useStartSequencesMutation();
   const [stopSequences] = useStopSequencesMutation();
@@ -28,21 +33,9 @@ const SequencesTableItem = ({ sequence, fields, isSelect, onSelect }) => {
     }
   };
 
-  const openModal = (task) => {
-    setSequenceToModal(task);
-  };
-
-  const closeModal = () => {
-    setSequenceToModal(null);
-  };
-
   return (
     <>
-      <tr
-        key={sequence.id}
-        className="d-flex"
-        onClick={() => openModal(sequence)}
-      >
+      <tr key={sequence.id} className="d-flex" onClick={onClick}>
         {fields.map((field) => {
           if (field.name === "checkbox") {
             return (

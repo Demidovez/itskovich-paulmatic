@@ -32,7 +32,7 @@ const companiesFields = [
   },
   {
     label: "Название",
-    name: "Name",
+    name: "Company",
     style: {
       width: "15%",
       minWidth: "100px",
@@ -137,7 +137,16 @@ const personsFields = [
   },
   {
     label: "Имя",
-    name: "Name",
+    name: "FirstName",
+    style: {
+      width: "16%",
+      minWidth: "100px",
+      maxWidth: "400px",
+    },
+  },
+  {
+    label: "Фамилия",
+    name: "LastName",
     style: {
       width: "16%",
       minWidth: "100px",

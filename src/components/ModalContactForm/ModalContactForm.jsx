@@ -65,20 +65,26 @@ const ModalContactForm = ({ contact, isShow, onSave, onRemove, onClose }) => {
           <Input
             className="mb-4"
             placeholder={"Имя"}
-            value={currentContact.name || ""}
-            onChange={(e) => onInputChange(e, "name")}
+            value={currentContact.FirstName || ""}
+            onChange={(e) => onInputChange(e, "FirstName")}
           />
           <Input
             className="mb-4"
-            value={currentContact.email || ""}
+            placeholder={"Фамилия"}
+            value={currentContact.LastName || ""}
+            onChange={(e) => onInputChange(e, "LastName")}
+          />
+          <Input
+            className="mb-4"
+            value={currentContact.Email || ""}
             placeholder={"Email"}
-            onChange={(e) => onInputChange(e, "email")}
+            onChange={(e) => onInputChange(e, "Email")}
           />
           <Input
             className="mb-4"
-            value={currentContact.phone || ""}
+            value={currentContact.Phone || ""}
             placeholder={"Телефон"}
-            onChange={(e) => onInputChange(e, "phone")}
+            onChange={(e) => onInputChange(e, "Phone")}
           />
           <Input
             className="mb-4"
@@ -88,15 +94,15 @@ const ModalContactForm = ({ contact, isShow, onSave, onRemove, onClose }) => {
           />
           <Input
             className="mb-4"
-            value={currentContact.company || ""}
+            value={currentContact.Company || ""}
             placeholder={"Компания"}
-            onChange={(e) => onInputChange(e, "company")}
+            onChange={(e) => onInputChange(e, "Company")}
           />
           <Input
             className="mb-4"
             placeholder={"LinkedIn"}
-            value={currentContact.linkedin || ""}
-            onChange={(e) => onInputChange(e, "linkedin")}
+            value={currentContact.Linkedin || ""}
+            onChange={(e) => onInputChange(e, "Linkedin")}
           />
           <Row>
             <div className="col">
@@ -125,7 +131,7 @@ const ModalContactForm = ({ contact, isShow, onSave, onRemove, onClose }) => {
                 color="primary"
                 className="w-100"
                 onClick={handleSave}
-                disabled={!currentContact.name || !currentContact.email}
+                disabled={!currentContact.FirstName || !currentContact.Email}
               >
                 {contact ? "Сохранить" : "Создать"}
               </Button>
