@@ -25,6 +25,15 @@ const DEFAULT_FIELDS = [
     },
   },
   {
+    label: "Фамилия",
+    name: "LastName",
+    style: {
+      width: "16%",
+      minWidth: "100px",
+      maxWidth: "400px",
+    },
+  },
+  {
     label: "Компания",
     name: "Сompany",
     style: {
@@ -240,6 +249,13 @@ const TableContacts = ({
             ))}
           </tbody>
         </Table>
+        {data.TotalCount === 0 ? (
+          <p className="message">
+            Контактов пока нет
+            <br />
+            Добавьте контакты вручную или загрузите файл
+          </p>
+        ) : null}
       </div>
     </div>
   );
