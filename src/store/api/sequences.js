@@ -155,11 +155,7 @@ export const sequencesApi = createApi({
         headers: getHeaders({}, true),
       }),
       transformResponse: (response) => {
-        if (response.result) {
-          toast.success(`${response.result} контактов добавлено!`);
-        } else {
-          toast.error(`Ошибка!`);
-        }
+        toast.success(`Контакты добавлены!`);
       },
     }),
   }),

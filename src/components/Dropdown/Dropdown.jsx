@@ -16,16 +16,22 @@ const DropdownCustom = ({
   outline = false,
   classNameButton = "",
   defaultValue = "",
+  currentValue = null,
   maxLength = 1000,
   isFull = false,
   onSelect = () => {},
   style = {},
+  // isTransparent = false,
 }) => {
   const [value, setValue] = useState();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isShow, setIsShow] = useState(false);
 
   const toggle = () => setDropdownOpen((prevState) => !prevState);
+
+  // useEffect(() => {
+  //   currentValue && setValue(currentValue);
+  // }, [currentValue]);
 
   useEffect(() => {
     if (dropdownOpen) {
@@ -63,10 +69,13 @@ const DropdownCustom = ({
         }}
         className={`d-flex align-items-center justify-content-between ${classNameButton}`}
       >
-        {cropText(
-          (value && (fieldOfItem ? value[fieldOfItem] : value)) || defaultValue,
-          maxLength
-        )}
+        {currentValue === null
+          ? cropText(
+              (value && (fieldOfItem ? value[fieldOfItem] : value)) ||
+                defaultValue,
+              maxLength
+            )
+          : currentValue}
       </DropdownToggle>
 
       <DropdownMenu

@@ -85,7 +85,7 @@ export const contactsApi = createApi({
     }),
     getSchemaFile: builder.query({
       query: (firstRowsOfFile) => ({
-        url: "/upload/getSchema",
+        url: "/upload/detectSchema",
         method: "POST",
         body: firstRowsOfFile,
         headers: getHeaders(),

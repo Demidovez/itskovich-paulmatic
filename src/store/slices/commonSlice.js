@@ -105,6 +105,9 @@ const initialState = {
     },
   },
   tariffs: [],
+  Contacts: {
+    Fields: [],
+  },
   Tasks: {
     Statuses: [],
     Types: {},
@@ -195,6 +198,9 @@ export const commonSlice = createSlice({
           },
         },
       };
+    },
+    setCommonInfoContacts: (state, action) => {
+      state.Contacts = action.payload;
     },
     setCommonInfoSequences: (state, action) => {
       state.Sequences = action.payload;
@@ -518,6 +524,7 @@ export const {
   updatePayment,
   saveTimeZoneAccount,
   // deleteSubordinate,
+  setCommonInfoContacts,
 } = commonSlice.actions;
 
 export default commonSlice.reducer;

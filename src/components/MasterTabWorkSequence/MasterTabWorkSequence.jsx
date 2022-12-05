@@ -21,6 +21,8 @@ import { toast } from "react-toastify";
 import { useLazyAddContactToSequenceQuery } from "store/api/sequences";
 import { useUploadFileMutation } from "store/api/sequences";
 import { useLazyGetSchemaFileQuery } from "store/api/contacts";
+import ModalCSVColumns from "components/ModalCSVColumns/ModalCSVColumns";
+import { csvFileToArray } from "utils/utils";
 
 const STEPS = [
   {
@@ -50,6 +52,7 @@ const MasterTabWorkSequence = ({ isShow = false, sequenceId }) => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const [isShowCreateContacts, setIsShowCreateContacts] = useState(false);
+  const [isShowCSV, setIsShowCSV] = useState(false);
   const [isCreateNew, setIsCreateNew] = useState(false);
   const [formData, setFormData] = useState(null);
 
@@ -57,6 +60,12 @@ const MasterTabWorkSequence = ({ isShow = false, sequenceId }) => {
   const cacheTables = useSelector((state) => state.tables.cache);
 
   const [getStats, { data: statsResponse }] = useLazyGetStatsQuery();
+
+  const [addContact, { isSuccess: isSuccessAddContact }] =
+    useLazyAddContactToSequenceQuery();
+
+  const [uploadFile, { isSuccess: isSuccessUploadFile, isError, error }] =
+    useUploadFileMutation();
 
   useEffect(() => {
     if (sequenceId !== null) {
@@ -68,11 +77,16 @@ const MasterTabWorkSequence = ({ isShow = false, sequenceId }) => {
         q: search,
       });
     }
-  }, [sequenceId, activeStepId, search, currentPage]);
+  }, [
+    sequenceId,
+    activeStepId,
+    search,
+    currentPage,
+    isSuccessAddContact,
+    isSuccessUploadFile,
+  ]);
 
   const popoverRef = useRef(null);
-
-  const [addContact, {}] = useLazyAddContactToSequenceQuery();
 
   const onCreateContact = () => {
     setIsShowCreateContacts(false);
@@ -86,8 +100,8 @@ const MasterTabWorkSequence = ({ isShow = false, sequenceId }) => {
 
   const inputFile = useRef(null);
 
-  const [uploadFile, { isError, error }] = useUploadFileMutation();
-  const [getSchemaFile, {}] = useLazyGetSchemaFileQuery();
+  const [getSchemaFile, { data: schemaResponse, isSuccess, isFetching }] =
+    useLazyGetSchemaFileQuery();
 
   useEffect(() => {
     if (isError && error) {
@@ -95,24 +109,61 @@ const MasterTabWorkSequence = ({ isShow = false, sequenceId }) => {
     }
   }, [isError, error]);
 
-  const onInputFile = (e) => {
-    const formData = new FormData();
-    formData.append("f", e.target.files[0]);
+  useEffect(() => {
+    if (isSuccess) {
+      setIsShowCSV(true);
+    }
+  }, [isSuccess, isFetching]);
 
-    setFormData(formData);
-    getSchemaFile([]);
+  const onInputFile = (e) => {
+    try {
+      const formData = new FormData();
+      formData.append("f", e.target.files[0]);
+
+      const reader = new FileReader();
+      reader.onload = async ({ target }) => {
+        const rows = csvFileToArray(target.result);
+        getSchemaFile([
+          Object.keys(rows[0]).join(";").replaceAll("\r", ""),
+          Object.values(rows[0]).join(";").replaceAll("\r", ""),
+        ]);
+      };
+      reader.readAsText(e.target.files[0]);
+
+      setFormData(formData);
+
+      inputFile.current.value = null;
+    } catch (err) {
+      toast.error("Ошибка загрузки файла");
+      console.error(err);
+    }
   };
 
   const onUploadFile = () => {
     setIsShowCreateContacts(false);
     inputFile.current.click();
+    console.log("onUploadFile");
   };
 
-  useEffect(() => {
-    if (formData) {
-      // uploadFile({ file: formData, id: sequenceId });
-    }
-  }, [formData]);
+  const onSaveCSVFile = (columns) => {
+    formData.append(
+      "schema",
+      JSON.stringify({
+        Items: columns.map((column) => ({
+          FileField: column.field,
+          Expample: column.desc,
+          ContactFieldId: column.idColumn,
+        })),
+      })
+    );
+
+    setIsShowCSV(false);
+    uploadFile({
+      file: formData,
+      id: sequenceId,
+    });
+    setFormData(null);
+  };
 
   return (
     <>
@@ -243,6 +294,13 @@ const MasterTabWorkSequence = ({ isShow = false, sequenceId }) => {
         isShow={isCreateNew}
         onSave={onSave}
         onClose={() => setIsCreateNew(false)}
+      />
+
+      <ModalCSVColumns
+        isShow={isShowCSV}
+        onClose={() => setIsShowCSV(false)}
+        onSave={onSaveCSVFile}
+        columns={(schemaResponse || { Items: [] }).Items}
       />
     </>
   );

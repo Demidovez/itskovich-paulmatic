@@ -29,6 +29,7 @@ import { updateAccount } from "store/slices/commonSlice";
 import { setShowTariffModal } from "store/slices/commonSlice";
 import { updateChatByOneMessageHiddenly } from "store/slices/commonSlice";
 import { setTimeZones } from "store/slices/commonSlice";
+import { setCommonInfoContacts } from "store/slices/commonSlice";
 
 const CommonThings = () => {
   const dispatch = useDispatch();
@@ -165,6 +166,7 @@ const CommonThings = () => {
   useEffect(() => {
     if (commonData) {
       dispatch(setCommonInfoTasks(commonData.Tasks));
+      dispatch(setCommonInfoContacts(commonData.Contacts));
       dispatch(setCommonInfoHtmlTemplates(commonData.Templates));
       dispatch(setFolders(commonData.Folders));
       dispatch(setTimeZones(commonData.TimeZones));
