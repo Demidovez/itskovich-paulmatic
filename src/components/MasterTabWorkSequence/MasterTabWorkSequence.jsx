@@ -23,6 +23,8 @@ import { useUploadFileMutation } from "store/api/sequences";
 import { useLazyGetSchemaFileQuery } from "store/api/contacts";
 import ModalCSVColumns from "components/ModalCSVColumns/ModalCSVColumns";
 import { csvFileToArray } from "utils/utils";
+import ModalYouSure from "components/ModalYouSure/ModalYouSure";
+import { useLazyRemoveContactsQuery } from "store/api/sequences";
 
 const STEPS = [
   {
@@ -55,9 +57,9 @@ const MasterTabWorkSequence = ({ isShow = false, sequenceId }) => {
   const [isShowCSV, setIsShowCSV] = useState(false);
   const [isCreateNew, setIsCreateNew] = useState(false);
   const [formData, setFormData] = useState(null);
-
-  const { selectedIds, searchValue } = useSelector((state) => state.contacts);
-  const cacheTables = useSelector((state) => state.tables.cache);
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [isSelectedAll, setIsSelectedAll] = useState(false);
+  const [isAskSure, setIsAskSure] = useState(false);
 
   const [getStats, { data: statsResponse }] = useLazyGetStatsQuery();
 
@@ -66,6 +68,11 @@ const MasterTabWorkSequence = ({ isShow = false, sequenceId }) => {
 
   const [uploadFile, { isSuccess: isSuccessUploadFile, isError, error }] =
     useUploadFileMutation();
+
+  const [
+    removeContacts,
+    { isSuccess: isSuccessDeleting, isError: isErrorDeleting },
+  ] = useLazyRemoveContactsQuery();
 
   useEffect(() => {
     if (sequenceId !== null) {
@@ -84,6 +91,8 @@ const MasterTabWorkSequence = ({ isShow = false, sequenceId }) => {
     currentPage,
     isSuccessAddContact,
     isSuccessUploadFile,
+    isSuccessDeleting,
+    isErrorDeleting,
   ]);
 
   const popoverRef = useRef(null);
@@ -146,6 +155,7 @@ const MasterTabWorkSequence = ({ isShow = false, sequenceId }) => {
   };
 
   const onSaveCSVFile = (columns) => {
+    console.log(columns);
     formData.append(
       "schema",
       JSON.stringify({
@@ -163,6 +173,40 @@ const MasterTabWorkSequence = ({ isShow = false, sequenceId }) => {
       id: sequenceId,
     });
     setFormData(null);
+  };
+
+  const onSelectContact = (id) => {
+    const hasId = selectedIds.includes(id);
+
+    setIsSelectedAll(false);
+
+    if (hasId) {
+      setSelectedIds((ids) => ids.filter((currId) => currId !== id));
+    } else {
+      setSelectedIds((ids) => [...ids, id]);
+    }
+  };
+
+  useEffect(() => {
+    if (isSelectedAll && statsResponse) {
+      setSelectedIds(statsResponse.Items.map(({ Contact }) => Contact.id));
+    }
+  }, [isSelectedAll, statsResponse]);
+
+  const onChangeAllSelected = () => {
+    if (isSelectedAll) {
+      setIsSelectedAll(false);
+      setSelectedIds([]);
+    } else {
+      setIsSelectedAll(true);
+    }
+  };
+
+  const onDeleteContacts = () => {
+    removeContacts({ id: sequenceId, contactIds: selectedIds.join(",") });
+    setIsAskSure(false);
+    setSelectedIds([]);
+    setIsSelectedAll(false);
   };
 
   return (
@@ -196,7 +240,22 @@ const MasterTabWorkSequence = ({ isShow = false, sequenceId }) => {
           <div className="people w-100 overflow-hidden flex-fill">
             <div className="people-header pt-1" style={{ flex: 1 }}>
               <div>
-                <Checkbox label="Все" className="pl-4 ml-2" scale={1.2} />
+                <Checkbox
+                  id="allseqcontacts"
+                  label="Все"
+                  className="pl-4 ml-2"
+                  scale={1.2}
+                  checked={isSelectedAll}
+                  onChange={onChangeAllSelected}
+                />
+                {selectedIds.length ? (
+                  <span
+                    className="delete-contacts"
+                    onClick={() => setIsAskSure(true)}
+                  >
+                    удалить
+                  </span>
+                ) : null}
               </div>
               <div style={{ position: "relative" }}>
                 <Input
@@ -260,17 +319,11 @@ const MasterTabWorkSequence = ({ isShow = false, sequenceId }) => {
               </div>
             </div>
             <TableSequenceContacts
-              // data={{
-              //   Items: (personsData || { Items: [] }).Items.map((item) => ({
-              //     ...item,
-              //     Contact: {},
-              //     Stats: {},
-              //     Status: { Delivered: 0 },
-              //   })),
-              // }}
               data={statsResponse}
-              selectedIds={[]}
+              selectedIds={selectedIds}
+              onSelect={onSelectContact}
               fillHeader={false}
+              isSelectedAll={isSelectedAll}
             />
           </div>
         </div>
@@ -301,6 +354,14 @@ const MasterTabWorkSequence = ({ isShow = false, sequenceId }) => {
         onClose={() => setIsShowCSV(false)}
         onSave={onSaveCSVFile}
         columns={(schemaResponse || { Items: [] }).Items}
+      />
+
+      <ModalYouSure
+        isShow={isAskSure}
+        title={"Удалить выбранные контакты?"}
+        text={"Вы действительно хотите удалить выбранные контакты?"}
+        onAgree={onDeleteContacts}
+        onCancel={() => setIsAskSure(false)}
       />
     </>
   );

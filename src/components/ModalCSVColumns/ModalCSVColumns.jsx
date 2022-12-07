@@ -59,17 +59,6 @@ const ModalCSVColumns = ({
     setIsChanged(false);
   };
 
-  // const handleRemove = () => {
-  //   onRemove(currentContact.id);
-  //   setIsChanged(false);
-  // };
-
-  // const onInputChange = ({ target }, field) => {
-  //   setIsChanged(true);
-  // };
-
-  // console.log(columns, ContactsFields);
-
   const onClearColumnName = (id) => {
     setSignedColumns((columns) =>
       columns.map((column) =>
@@ -78,10 +67,12 @@ const ModalCSVColumns = ({
     );
   };
 
-  const onSetColumnName = (id, name) => {
+  const onSetColumnName = (id, data) => {
     setSignedColumns((columns) =>
       columns.map((column) =>
-        column.id === id ? { ...column, column: name } : column
+        column.id === id
+          ? { ...column, column: data.Name, idColumn: data.Id }
+          : column
       )
     );
   };
@@ -143,7 +134,7 @@ const ModalCSVColumns = ({
                     classNameButton="empty-dropdown"
                     // defaultValue={column.column}
                     currentValue={column.column}
-                    onSelect={(data) => onSetColumnName(column.id, data.Name)}
+                    onSelect={(data) => onSetColumnName(column.id, data)}
                   />
                   <AiOutlineDelete
                     size="1.5rem"

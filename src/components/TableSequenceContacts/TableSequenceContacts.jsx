@@ -18,8 +18,8 @@ const DEFAULT_FIELDS = [
     label: "Имя",
     name: "FirstName",
     style: {
-      width: "20%",
-      minWidth: "100px",
+      width: "25%",
+      minWidth: "170px",
       maxWidth: "800px",
     },
   },
@@ -27,8 +27,8 @@ const DEFAULT_FIELDS = [
     label: "Фамилия",
     name: "LastName",
     style: {
-      width: "20%",
-      minWidth: "100px",
+      width: "25%",
+      minWidth: "170px",
       maxWidth: "800px",
     },
   },
@@ -109,14 +109,9 @@ const TableSequenceContacts = ({
   selectedIds,
   fillHeader = true,
   onSelect = () => {},
+  // isSelectedAll = false,
 }) => {
-  const [fields, setFields] = useState(DEFAULT_FIELDS);
-
-  const dispatch = useDispatch();
-
-  const onSelectContact = (id) => {
-    dispatch(addContactId(id));
-  };
+  const [fields] = useState(DEFAULT_FIELDS);
 
   return (
     <div className="table-sequence-contacts flex-fill1 h-100 overflow-auto pt-3">
@@ -150,13 +145,13 @@ const TableSequenceContacts = ({
               <tr
                 key={contact.Contact.id}
                 className={`d-flex`}
-                onClick={() => onSelect(contact.id)}
+                onClick={() => onSelect(contact.Contact.id)}
               >
                 {fields.map((field) => {
                   if (field.name === "checkbox") {
                     return (
                       <td
-                        className="p-0 pt-3"
+                        className="p-0 d-flex justify-content-center align-items-center"
                         key={field.name}
                         style={{
                           whiteSpace: "normal",
@@ -169,14 +164,14 @@ const TableSequenceContacts = ({
                         >
                           <input
                             className="custom-control-input"
-                            checked={selectedIds.includes(contact.id)}
-                            onChange={() => onSelectContact(contact.id)}
-                            id={"check_" + contact.id}
+                            checked={selectedIds.includes(contact.Contact.id)}
+                            onChange={() => onSelect(contact.Contact.id)}
+                            id={"seqcont_" + contact.Contact.id}
                             type="checkbox"
                           />
                           <Label
                             className="custom-control-label"
-                            htmlFor={"check_" + contact.id}
+                            htmlFor={"seqcont_" + contact.Contact.id}
                           ></Label>
                         </div>
                       </td>

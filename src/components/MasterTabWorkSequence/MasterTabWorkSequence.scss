@@ -126,5 +126,17 @@
         }
       }
     }
+
+    .delete-contacts {
+      color: rgb(220, 15, 15);
+      margin-bottom: 7px;
+      cursor: pointer;
+      border-bottom: 1px solid transparent;
+      transition: all 0.2s;
+
+      &:hover {
+        border-color: rgb(220, 15, 15);
+      }
+    }
   }
 }

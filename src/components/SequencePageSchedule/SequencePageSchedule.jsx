@@ -117,7 +117,7 @@ const SequencePageSchedule = ({ isShow, onChange }) => {
                 className="flex-fill d-flex justify-content-between"
                 style={{
                   width: 924,
-                  maxWidth: 924,
+                  // maxWidth: 924,
                   minWidth: 924,
                   margin: "0 -12px",
                 }}
@@ -154,7 +154,7 @@ const SequencePageSchedule = ({ isShow, onChange }) => {
                   className={`timeline  ${
                     checkedDays.includes(index) ? "active" : ""
                   }`}
-                  style={{ width: 900, maxWidth: 900, minWidth: 900 }}
+                  style={{ width: 900, maxWidth: 9000, minWidth: 900 }}
                 >
                   <SequenceTimeline
                     disabled={!checkedDays.includes(index)}

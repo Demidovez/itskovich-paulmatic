@@ -121,7 +121,7 @@ const SequenceTimeline = ({
     <div
       className="sequence-timeline-component"
       ref={containerRef}
-      style={{ width: 900 }}
+      style={{ width: "100%" }}
     >
       {layout.map((item) => (
         <SequenceTimelineItem

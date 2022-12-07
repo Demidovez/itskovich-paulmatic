@@ -158,6 +158,19 @@ export const sequencesApi = createApi({
         toast.success(`Контакты добавлены!`);
       },
     }),
+    removeContacts: builder.query({
+      query: (params) => ({
+        url: "/removeContacts",
+        method: "GET",
+        params,
+        headers: getHeaders(),
+      }),
+      transformResponse: (response) => {
+        toast.success("Контакты удалены");
+
+        return response;
+      },
+    }),
   }),
 });
 
@@ -173,4 +186,5 @@ export const {
   useLazySendLogQuery,
   useLazyGetStatsQuery,
   useUploadFileMutation,
+  useLazyRemoveContactsQuery,
 } = sequencesApi;
