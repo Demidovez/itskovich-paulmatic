@@ -147,6 +147,13 @@ const ModalMasterTabsSequence = ({ onClose, sequenceId = null }) => {
           <MasterTabWorkSequence
             isShow={activeTabId === 1}
             sequenceId={sequenceId}
+            sequenceName={
+              (
+                cachedSequences.Items.find(
+                  (sequence) => sequence.id === sequenceId
+                ) || {}
+              ).Name
+            }
           />
         </div>
 

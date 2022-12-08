@@ -159,14 +159,16 @@ export const sequencesApi = createApi({
       },
     }),
     removeContacts: builder.query({
-      query: (params) => ({
+      query: ({ id, contactIds }) => ({
         url: "/removeContacts",
         method: "GET",
-        params,
+        params: { id, contactIds },
         headers: getHeaders(),
       }),
-      transformResponse: (response) => {
-        toast.success("Контакты удалены");
+      transformResponse: (response, _, arg) => {
+        toast.success(
+          `${arg.count} контактов удалено из последовательности "${arg.name}"`
+        );
 
         return response;
       },

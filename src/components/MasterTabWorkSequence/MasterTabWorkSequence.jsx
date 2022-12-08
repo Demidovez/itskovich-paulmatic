@@ -5,6 +5,7 @@ import {
   PopoverBody,
   UncontrolledPopover,
 } from "reactstrap";
+import React from "react";
 import { useEffect, useRef, useState } from "react";
 import "./MasterTabWorkSequence.scss";
 import TableContacts from "components/TableContacts/TableContacts";
@@ -49,7 +50,11 @@ const STEPS = [
   },
 ];
 
-const MasterTabWorkSequence = ({ isShow = false, sequenceId }) => {
+const MasterTabWorkSequence = ({
+  isShow = false,
+  sequenceId,
+  sequenceName = "",
+}) => {
   const [activeStepId, setActiveStepId] = useState(-1);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
@@ -92,7 +97,7 @@ const MasterTabWorkSequence = ({ isShow = false, sequenceId }) => {
     isSuccessAddContact,
     isSuccessUploadFile,
     isSuccessDeleting,
-    isErrorDeleting,
+    // isErrorDeleting,
   ]);
 
   const popoverRef = useRef(null);
@@ -203,7 +208,12 @@ const MasterTabWorkSequence = ({ isShow = false, sequenceId }) => {
   };
 
   const onDeleteContacts = () => {
-    removeContacts({ id: sequenceId, contactIds: selectedIds.join(",") });
+    removeContacts({
+      id: sequenceId,
+      contactIds: selectedIds.join(","),
+      count: selectedIds.length,
+      name: sequenceName,
+    });
     setIsAskSure(false);
     setSelectedIds([]);
     setIsSelectedAll(false);
@@ -248,16 +258,19 @@ const MasterTabWorkSequence = ({ isShow = false, sequenceId }) => {
                   checked={isSelectedAll}
                   onChange={onChangeAllSelected}
                 />
-                {selectedIds.length ? (
-                  <span
-                    className="delete-contacts"
-                    onClick={() => setIsAskSure(true)}
-                  >
-                    удалить
-                  </span>
-                ) : null}
               </div>
               <div style={{ position: "relative" }}>
+                {selectedIds.length ? (
+                  <Button
+                    color="danger"
+                    className="mr-0"
+                    outline
+                    type="button"
+                    onClick={() => setIsAskSure(true)}
+                  >
+                    Удалить
+                  </Button>
+                ) : null}
                 <Input
                   placeholder="Поиск..."
                   type="search"
@@ -367,4 +380,4 @@ const MasterTabWorkSequence = ({ isShow = false, sequenceId }) => {
   );
 };
 
-export default MasterTabWorkSequence;
+export default React.memo(MasterTabWorkSequence);
