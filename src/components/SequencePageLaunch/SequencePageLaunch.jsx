@@ -7,7 +7,7 @@ import "./SequencePageLaunch.scss";
 
 const SequencePageLaunch = ({ isShow, onChange }) => {
   const pagesData = useSelector((state) => state.sequenceMaster.pages);
-  const model = useSelector((state) => state.sequenceMaster.data.Model);
+  const model = useSelector((state) => state.sequenceMaster.data.Spec.Model);
   const Types = useSelector((state) => state.common.Tasks.Types);
   const [pages, setPages] = useState([]);
 

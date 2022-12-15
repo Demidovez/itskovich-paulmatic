@@ -46,19 +46,22 @@ export const DAYS = [
   },
 ];
 
-const SequencePageSchedule = ({ isShow, onChange }) => {
+const SequencePageSchedule = ({ isShow, onChange, init = [] }) => {
   const dispatch = useDispatch();
   const [checkedDays, setCheckedDays] = useState([]);
   const [jobs, setJobs] = useState({});
   const [isFullTimeline, setIsFullTimeline] = useState({});
 
-  // const cashed
+  // console.log(init);
 
   useEffect(() => {
-    const jobs = DAYS.reduce((acc, day) => ({ ...acc, [day.name]: [] }), {});
+    const jobs = DAYS.reduce(
+      (acc, day, index) => ({ ...acc, [day.name]: init[index] || [] }),
+      {}
+    );
 
     setJobs(jobs);
-  }, []);
+  }, [init]);
 
   useEffect(() => {
     dispatch(

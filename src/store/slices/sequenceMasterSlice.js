@@ -21,15 +21,19 @@ const initialState = {
     },
   },
   data: {
-    FolderId: 0,
-    Name: "",
-    TimeZoneId: 56,
-    LogStartName: new Date().toString(),
-    Model: {
-      Steps: [],
-      ContactIds: [],
-      Schedule: [],
-      Settings: {},
+    Spec: {
+      accountId: null,
+      id: null,
+      FolderId: 0,
+      Name: "",
+      TimeZoneId: 56,
+      LogStartName: new Date().toString(),
+      Model: {
+        Steps: [],
+        ContactIds: [],
+        Schedule: [],
+        Settings: {},
+      },
     },
   },
 };
@@ -39,37 +43,37 @@ export const sequenceMasterSlice = createSlice({
   initialState,
   reducers: {
     initMaster: (state, action) => {
-      // state.data = action.payload;
-      console.log(action.payload);
+      state.data = action.payload;
+      // console.log(action.payload);
     },
     setLogStartNameSequence: (state, action) => {
-      state.data.LogStartName = action.payload;
+      state.data.Spec.LogStartName = action.payload;
     },
     saveFolderIdSequence: (state, action) => {
-      state.data.FolderId = action.payload;
+      state.data.Spec.FolderId = action.payload;
     },
     saveNameSequence: (state, action) => {
-      state.data.Name = action.payload;
+      state.data.Spec.Name = action.payload;
     },
     saveStepsSequence: (state, action) => {
-      state.data.Model.Steps = action.payload;
-      state.pages.Steps.isDone = state.data.Model.Steps.length > 0;
+      state.data.Spec.Model.Steps = action.payload;
+      state.pages.Steps.isDone = state.data.Spec.Model.Steps.length > 0;
     },
     saveContactIdsSequence: (state, action) => {
-      state.data.Model.ContactIds = action.payload;
+      state.data.Spec.Model.ContactIds = action.payload;
       // state.pages.People.isDone = state.data.Model.ContactIds.length > 0;
     },
     saveScheduleSequence: (state, action) => {
-      state.data.Model.Schedule = action.payload;
-      state.pages.Schedule.isDone = state.data.Model.Schedule.some(
+      state.data.Spec.Model.Schedule = action.payload;
+      state.pages.Schedule.isDone = state.data.Spec.Model.Schedule.some(
         (day) => day.length > 0
       );
     },
     saveSettingsSequence: (state, action) => {
-      state.data.Model.Settings = action.payload;
+      state.data.Spec.Model.Settings = action.payload;
     },
     saveTimeZoneSequence: (state, action) => {
-      state.data.TimeZoneId = action.payload;
+      state.data.Spec.TimeZoneId = action.payload;
     },
   },
 });

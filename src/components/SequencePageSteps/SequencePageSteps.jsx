@@ -20,19 +20,25 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
-const SequencePageSteps = ({ isShow, onChange }) => {
+const SequencePageSteps = ({ isShow, onChange, initSteps = [] }) => {
   const dispatch = useDispatch();
   const [dataForModalEditor, setDataForModalEditor] = useState({});
 
-  const [steps, setSteps] = useState([]);
+  const [steps, setSteps] = useState(
+    initSteps.map((step, index) => ({ ...step, step: index }))
+  );
 
   useEffect(() => {
     dispatch(
       saveStepsSequence(
         steps.map((step) => ({
+          id: step.id,
+          step: step.step,
           Action: step.Action,
-          Delay: step.delay,
-          DueTime: moment("0001-01-01").add(step.delay, "second").format(),
+          Delay: step.Delay,
+          DueTime: moment(step.DueTime || "0001-01-01")
+            .add(step.Delay, "second")
+            .format(),
           Body: step.Body,
           Subject: step.Subject,
           Type: step.Type,
@@ -59,9 +65,9 @@ const SequencePageSteps = ({ isShow, onChange }) => {
         ...steps,
         {
           ...step,
-          id: new Date().getTime(),
+          id: step.id ?? new Date().getTime(),
           step: steps.length,
-          delay: 86400,
+          Delay: 86400,
         },
       ]);
     }
@@ -97,7 +103,7 @@ const SequencePageSteps = ({ isShow, onChange }) => {
   return (
     <>
       {isShow ? (
-        <div className=" sequence-page-steps-component modal-body d-flex flex-column overflow-auto p-0">
+        <div className="sequence-page-steps-component modal-body d-flex flex-column overflow-auto p-0">
           <>
             <div className="add-step">
               {steps.length ? (
@@ -145,11 +151,11 @@ const SequencePageSteps = ({ isShow, onChange }) => {
                                         stepId: step.id,
                                       })
                                     }
-                                    delay={step.delay}
+                                    delay={step.Delay}
                                     delayByFirstDay={steps
                                       .slice(0, index + 1)
                                       .reduce(
-                                        (acc, step) => (acc += step.delay),
+                                        (acc, step) => (acc += step.Delay),
                                         0
                                       )}
                                   />

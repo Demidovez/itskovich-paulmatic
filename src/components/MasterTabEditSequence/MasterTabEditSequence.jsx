@@ -1,14 +1,11 @@
-import { Button, Input, Modal } from "reactstrap";
+import { Button, Input } from "reactstrap";
 import { useEffect, useState } from "react";
 import "./MasterTabEditSequence.scss";
 import SequencePageSteps from "components/SequencePageSteps/SequencePageSteps";
-import SequencePageSettings from "components/SequencePageSettings/SequencePageSettings";
 import SequencePagePeople from "components/SequencePagePeople/SequencePagePeople";
 import SequencePageSchedule from "components/SequencePageSchedule/SequencePageSchedule";
 import SequencePageLaunch from "components/SequencePageLaunch/SequencePageLaunch";
 import Dropdown from "components/Dropdown/Dropdown";
-import { usePrompt } from "hooks/usePrompt";
-import parse from "html-react-parser";
 import { useSelector, useDispatch } from "react-redux";
 import PaginationCreateSequence from "components/PaginationCreateSequence/PaginationCreateSequence";
 import { useGetFoldersQuery } from "store/api/folders";
@@ -23,42 +20,40 @@ import {
   searchValueContactPage,
 } from "store/slices/contactsSlice";
 import { useCreateOrUpdateSequenceMutation } from "store/api/sequences";
-import useYouSure from "hooks/useYouSure";
 import { addHtmlTemplates } from "store/slices/commonSlice";
-import { useLazySendLogQuery } from "store/api/sequences";
-import DateTimePicker from "components/DateTimePicker/DateTimePicker";
-import { setLogStartNameSequence } from "store/slices/sequenceMasterSlice";
+import { toast } from "react-toastify";
 
-const MasterTabEditSequence = ({ onClose, isShow }) => {
-  const { tryClose, tryForceClose, setIsChanged } = useYouSure(onClose);
-
+const MasterTabEditSequence = ({ onClose, isShow, model }) => {
   const dispatch = useDispatch();
 
-  const [resultError, setResultError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  const sequenceResultData = useSelector((state) => state.sequenceMaster.data);
   const sequenceName = useSelector((state) => state.sequenceMaster.data.Name);
   const timeZones = useSelector((state) => state.common.TimeZones);
-
-  const [sendLog, { data: responseLogData, isError, error }] =
-    useLazySendLogQuery();
-
-  useEffect(() => {
-    if (
-      sequenceResultData.Model.Steps.length &&
-      sequenceResultData.Model.Schedule.length
-    ) {
-      sendLog(sequenceResultData);
-    }
-  }, [JSON.stringify(sequenceResultData)]);
 
   const activeFolderId = useSelector(
     (state) => state.sequences.selectedFolderId
   );
 
-  const [createOrUpdateSequence, { data: resultOfCreateOrUpdateSequence }] =
-    useCreateOrUpdateSequenceMutation();
+  const [
+    createOrUpdateSequence,
+    { data: resultOfCreateOrUpdateSequence, isError, error, isSuccess },
+  ] = useCreateOrUpdateSequenceMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      onClose();
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError && error) {
+      try {
+        toast.error(error.data.error.message);
+      } catch (err) {
+        console.error(err);
+        toast.error("Ошибка сохранения");
+      }
+    }
+  }, [isError, error]);
 
   useEffect(() => {
     if (
@@ -85,7 +80,6 @@ const MasterTabEditSequence = ({ onClose, isShow }) => {
 
   const [currentIndexPage, setCurrentIndexPage] = useState(0);
 
-  // TODO: Заменить на pagesData
   const [pages, setPages] = useState([
     {
       name: "steps",
@@ -135,7 +129,6 @@ const MasterTabEditSequence = ({ onClose, isShow }) => {
   };
 
   const editSequenceName = (name) => {
-    setIsChanged(true);
     dispatch(saveNameSequence(name));
   };
 
@@ -146,23 +139,8 @@ const MasterTabEditSequence = ({ onClose, isShow }) => {
   };
 
   const onSubmit = () => {
-    createOrUpdateSequence(sequenceResultData);
-    setIsChanged(false);
-    onClose();
-  };
-
-  const [logHtml, setLogHtml] = useState("");
-
-  useEffect(() => {
-    if (isError && error) {
-      setLogHtml((error || {}).message);
-    } else if (responseLogData) {
-      setLogHtml(responseLogData);
-    }
-  }, [isError, error, responseLogData]);
-
-  const onLogDateTime = (datetime) => {
-    dispatch(setLogStartNameSequence(datetime));
+    createOrUpdateSequence(model);
+    console.log(model);
   };
 
   return (
@@ -213,11 +191,8 @@ const MasterTabEditSequence = ({ onClose, isShow }) => {
               className="ml-3"
               outline={true}
               defaultValue={
-                (
-                  timeZones.find(
-                    (zone) => zone.Id === sequenceResultData.TimeZoneId
-                  ) || {}
-                ).Name
+                (timeZones.find((zone) => zone.Id === model.TimeZoneId) || {})
+                  .Name
               }
               onSelect={(timezone) =>
                 dispatch(saveTimeZoneSequence(timezone.Id))
@@ -228,20 +203,16 @@ const MasterTabEditSequence = ({ onClose, isShow }) => {
       </div>
       <SequencePageSteps
         isShow={currentIndexPage === 0}
-        onChange={() => setIsChanged(true)}
+        onChange={() => {}}
+        initSteps={model.Model.Steps}
       />
-      <SequencePagePeople
-        isShow={currentIndexPage === 1}
-        onChange={() => setIsChanged(true)}
-      />
+      <SequencePagePeople isShow={currentIndexPage === 1} onChange={() => {}} />
       <SequencePageSchedule
         isShow={currentIndexPage === 2}
-        onChange={() => setIsChanged(true)}
+        onChange={() => {}}
+        init={model.Model.Schedule}
       />
-      <SequencePageLaunch
-        isShow={currentIndexPage === 3}
-        onChange={() => setIsChanged(true)}
-      />
+      <SequencePageLaunch isShow={currentIndexPage === 3} onChange={() => {}} />
       <div className="modal-footer d-flex justify-content-between p-0">
         <div className="d-flex flex-fill h-100 m-0 ml-4 overflow-hidden">
           <PaginationCreateSequence
@@ -256,7 +227,7 @@ const MasterTabEditSequence = ({ onClose, isShow }) => {
             outline
             data-dismiss="modal"
             type="button"
-            onClick={tryForceClose}
+            onClick={onClose}
             size="sm"
           >
             Отмена
@@ -278,7 +249,7 @@ const MasterTabEditSequence = ({ onClose, isShow }) => {
               size="sm"
               disabled={!isDone}
             >
-              {sequenceResultData.Model.ContactIds.length > 0
+              {model.Model.ContactIds.length > 0
                 ? "Сохранить & Запуск"
                 : "Сохранить"}
             </Button>

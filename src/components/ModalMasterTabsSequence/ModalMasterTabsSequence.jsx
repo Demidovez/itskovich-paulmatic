@@ -57,33 +57,35 @@ const ModalMasterTabsSequence = ({ onClose, sequenceId = null }) => {
   const [activeTabId, setActiveTabId] = useState(0);
 
   const cachedSequences = useSelector((state) => state.sequences.cached);
-  const sequenceResultData = useSelector((state) => state.sequenceMaster.data);
+  const sequenceResultData = useSelector(
+    (state) => state.sequenceMaster.data.Spec
+  );
 
-  const [sendLog, { data: responseLogData, isError, error }] =
-    useLazySendLogQuery();
+  // const [sendLog, { data: responseLogData, isError, error }] =
+  //   useLazySendLogQuery();
 
-  useEffect(() => {
-    if (
-      sequenceResultData.Model.Steps.length &&
-      sequenceResultData.Model.Schedule.length
-    ) {
-      sendLog(sequenceResultData);
-    }
-  }, [JSON.stringify(sequenceResultData)]);
+  // useEffect(() => {
+  //   if (
+  //     sequenceResultData.Model.Steps.length &&
+  //     sequenceResultData.Model.Schedule.length
+  //   ) {
+  //     sendLog(sequenceResultData);
+  //   }
+  // }, [JSON.stringify(sequenceResultData)]);
 
-  const [logHtml, setLogHtml] = useState("");
+  // const [logHtml, setLogHtml] = useState("");
 
-  useEffect(() => {
-    if (isError && error) {
-      setLogHtml((error || {}).message);
-    } else if (responseLogData) {
-      setLogHtml(responseLogData);
-    }
-  }, [isError, error, responseLogData]);
+  // useEffect(() => {
+  //   if (isError && error) {
+  //     setLogHtml((error || {}).message);
+  //   } else if (responseLogData) {
+  //     setLogHtml(responseLogData);
+  //   }
+  // }, [isError, error, responseLogData]);
 
-  const onLogDateTime = (datetime) => {
-    dispatch(setLogStartNameSequence(datetime));
-  };
+  // const onLogDateTime = (datetime) => {
+  //   dispatch(setLogStartNameSequence(datetime));
+  // };
 
   useEffect(() => {
     if (sequenceId !== null && cachedSequences) {
@@ -102,7 +104,7 @@ const ModalMasterTabsSequence = ({ onClose, sequenceId = null }) => {
         isOpen={true}
         toggle={tryClose}
         style={{
-          maxWidth: "100%",
+          maxWidth: "1600px",
           width: "100%",
           minWidth: "200px",
           minHeight: "100%",
@@ -143,7 +145,11 @@ const ModalMasterTabsSequence = ({ onClose, sequenceId = null }) => {
               </button>
             </div>
           )}
-          <MasterTabEditSequence isShow={activeTabId === 0} />
+          <MasterTabEditSequence
+            isShow={activeTabId === 0}
+            onClose={tryForceClose}
+            model={sequenceResultData}
+          />
           <MasterTabWorkSequence
             isShow={activeTabId === 1}
             sequenceId={sequenceId}
@@ -157,7 +163,7 @@ const ModalMasterTabsSequence = ({ onClose, sequenceId = null }) => {
           />
         </div>
 
-        <div
+        {/* <div
           className="seaquences-create-info"
           style={{ flex: 2, whiteSpace: "break-spaces", padding: "20px 20px" }}
         >
@@ -168,7 +174,7 @@ const ModalMasterTabsSequence = ({ onClose, sequenceId = null }) => {
             />
             {parse(logHtml)}
           </>
-        </div>
+        </div> */}
       </Modal>
     </>
   );

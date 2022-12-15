@@ -160,7 +160,6 @@ const MasterTabWorkSequence = ({
   };
 
   const onSaveCSVFile = (columns) => {
-    console.log(columns);
     formData.append(
       "schema",
       JSON.stringify({
