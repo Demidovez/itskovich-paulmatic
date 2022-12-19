@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import SequenceTimelineItem from "components/SequenceTimelineItem/SequenceTimelineItem";
 
 const SequenceTimeline = ({
-  jobs,
+  jobs = [],
   onRemoveJob,
   setJobs,
   onFullTimeline,

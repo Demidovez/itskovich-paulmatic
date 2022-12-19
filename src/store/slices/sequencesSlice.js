@@ -4,7 +4,9 @@ const initialState = {
   selectedIds: [],
   isSelectedAll: false,
   currentPage: 0,
-  cached: {},
+  cached: {
+    Items: [],
+  },
   isFetching: false,
   selectedFolderId: 0,
 };
@@ -32,7 +34,7 @@ export const sequencesSlice = createSlice({
       }
     },
     setSequencesToCache: (state, action) => {
-      state.cached = action.payload;
+      state.cached = action.payload || { Items: [] };
       state.isFetching = false;
     },
     setSequencesRequestStatus: (state, action) => {

@@ -14,133 +14,36 @@ import {
   saveNameSequence,
   saveTimeZoneSequence,
 } from "store/slices/sequenceMasterSlice";
-import {
-  setCurrentContactPage,
-  clearSelectedIds,
-  searchValueContactPage,
-} from "store/slices/contactsSlice";
-import { useCreateOrUpdateSequenceMutation } from "store/api/sequences";
-import { addHtmlTemplates } from "store/slices/commonSlice";
-import { toast } from "react-toastify";
+import useMasterPages from "hooks/useMasterPages";
 
-const MasterTabEditSequence = ({ onClose, isShow, model }) => {
+const DATA_DEFAULT = {
+  Spec: {
+    Model: { Steps: [] },
+    TimeZoneId: 56,
+    Name: "",
+  },
+};
+
+const MasterTabEditSequence = ({
+  onClose,
+  isShow,
+  onSubmit,
+  data = DATA_DEFAULT,
+}) => {
+  const {
+    Spec: { Model, TimeZoneId, Name, FolderID },
+  } = data;
   const dispatch = useDispatch();
 
-  const sequenceName = useSelector((state) => state.sequenceMaster.data.Name);
   const timeZones = useSelector((state) => state.common.TimeZones);
 
-  const activeFolderId = useSelector(
-    (state) => state.sequences.selectedFolderId
-  );
+  const { data: foldersList = [] } = useGetFoldersQuery();
 
-  const [
-    createOrUpdateSequence,
-    { data: resultOfCreateOrUpdateSequence, isError, error, isSuccess },
-  ] = useCreateOrUpdateSequenceMutation();
-
-  useEffect(() => {
-    if (isSuccess) {
-      onClose();
-    }
-  }, [isSuccess]);
-
-  useEffect(() => {
-    if (isError && error) {
-      try {
-        toast.error(error.data.error.message);
-      } catch (err) {
-        console.error(err);
-        toast.error("Ошибка сохранения");
-      }
-    }
-  }, [isError, error]);
-
-  useEffect(() => {
-    if (
-      resultOfCreateOrUpdateSequence &&
-      resultOfCreateOrUpdateSequence.templates
-    ) {
-      dispatch(addHtmlTemplates(resultOfCreateOrUpdateSequence.templates));
-    }
-  }, [resultOfCreateOrUpdateSequence]);
-
-  useEffect(() => {
-    resetContactsData();
-
-    return () => {
-      resetContactsData();
-    };
-  }, []);
-
-  useEffect(() => {
-    dispatch(saveFolderIdSequence(activeFolderId));
-  }, [activeFolderId]);
-
-  const { data: foldersList } = useGetFoldersQuery();
-
-  const [currentIndexPage, setCurrentIndexPage] = useState(0);
-
-  const [pages, setPages] = useState([
-    {
-      name: "steps",
-      title: "Шаги",
-      isDone: false,
-    },
-    // {
-    //   name: "settings",
-    //   title: "Настройки",
-    //   isDone: false,
-    // },
-    {
-      name: "people",
-      title: "Люди",
-      isDone: false,
-    },
-    {
-      name: "schedule",
-      title: "Расписание",
-      isDone: false,
-    },
-    {
-      name: "launch",
-      title: "Запуск",
-      isDone: false,
-    },
-  ]);
-
-  const pagesData = useSelector((state) => state.sequenceMaster.pages);
-  const [isDone, setIsDone] = useState(false);
-
-  useEffect(() => {
-    const isDone = !Object.values(pagesData).some(
-      (page) => page.isDone === false
-    );
-
-    setIsDone(isDone);
-  }, [JSON.stringify(pagesData)]);
-
-  const nextPage = () => {
-    setCurrentIndexPage((prev) => prev + 1);
-    setPages(
-      pages.map((page, i) =>
-        i <= currentIndexPage ? { ...page, isDone: true } : page
-      )
-    );
-  };
+  const { pages, nextPage, isDone, currentPage, setCurrentPage } =
+    useMasterPages();
 
   const editSequenceName = (name) => {
     dispatch(saveNameSequence(name));
-  };
-
-  const resetContactsData = () => {
-    dispatch(clearSelectedIds());
-    dispatch(setCurrentContactPage(0));
-    dispatch(searchValueContactPage(""));
-  };
-
-  const onSubmit = () => {
-    createOrUpdateSequence(model);
-    console.log(model);
   };
 
   return (
@@ -154,26 +57,24 @@ const MasterTabEditSequence = ({ onClose, isShow, model }) => {
           <Input
             type="text"
             placeholder="Имя последовательности..."
-            value={sequenceName}
+            value={Name}
             onChange={(e) => editSequenceName(e.target.value)}
             className="sequence-name-input"
           />
           <div className="d-flex align-items-center ml-3">
             <div className="nowrap">Папка:</div>
             <Dropdown
-              items={[{ id: 0, Name: "Все" }, ...(foldersList || [])]}
+              items={[{ id: 0, Name: "Все" }, ...foldersList]}
               fieldOfItem="Name"
               className="ml-3 folder-selecter"
               // isFull={true}
               outline={true}
               defaultValue={
-                activeFolderId === 0
+                FolderID === 0
                   ? "Все"
-                  : (foldersList || []).find(
-                      (folder) => folder.id === activeFolderId
-                    ).Name
+                  : foldersList.find((folder) => folder.id === FolderID)?.Name
               }
-              isDisabled={(foldersList || []).length === 0}
+              isDisabled={foldersList.length === 0}
               onSelect={(folder) => dispatch(saveFolderIdSequence(folder.id))}
               style={{
                 width: 120,
@@ -191,8 +92,7 @@ const MasterTabEditSequence = ({ onClose, isShow, model }) => {
               className="ml-3"
               outline={true}
               defaultValue={
-                (timeZones.find((zone) => zone.Id === model.TimeZoneId) || {})
-                  .Name
+                (timeZones.find((zone) => zone.Id === TimeZoneId) || {}).Name
               }
               onSelect={(timezone) =>
                 dispatch(saveTimeZoneSequence(timezone.Id))
@@ -201,24 +101,22 @@ const MasterTabEditSequence = ({ onClose, isShow, model }) => {
           </div>
         </div>
       </div>
-      <SequencePageSteps
-        isShow={currentIndexPage === 0}
-        onChange={() => {}}
-        initSteps={model.Model.Steps}
+      <SequencePageSteps isShow={currentPage === 0} steps={Model.Steps} />
+      <SequencePagePeople
+        isShow={currentPage === 1}
+        contactIds={Model.ContactIds}
       />
-      <SequencePagePeople isShow={currentIndexPage === 1} onChange={() => {}} />
       <SequencePageSchedule
-        isShow={currentIndexPage === 2}
-        onChange={() => {}}
-        init={model.Model.Schedule}
+        isShow={currentPage === 2}
+        schedule={Model.Schedule}
       />
-      <SequencePageLaunch isShow={currentIndexPage === 3} onChange={() => {}} />
+      <SequencePageLaunch isShow={currentPage === 3} />
       <div className="modal-footer d-flex justify-content-between p-0">
         <div className="d-flex flex-fill h-100 m-0 ml-4 overflow-hidden">
           <PaginationCreateSequence
             pages={pages}
-            currentIndex={currentIndexPage}
-            setCurrentIndex={setCurrentIndexPage}
+            currentIndex={currentPage}
+            setCurrentIndex={setCurrentPage}
           />
         </div>
         <div className="sequence-btns ml-7 mt-2 mb-2 mr-4">
@@ -232,7 +130,7 @@ const MasterTabEditSequence = ({ onClose, isShow, model }) => {
           >
             Отмена
           </Button>
-          {currentIndexPage < pages.length - 1 ? (
+          {currentPage < pages.length - 1 ? (
             <Button
               color="primary"
               type="button"
@@ -249,9 +147,7 @@ const MasterTabEditSequence = ({ onClose, isShow, model }) => {
               size="sm"
               disabled={!isDone}
             >
-              {model.Model.ContactIds.length > 0
-                ? "Сохранить & Запуск"
-                : "Сохранить"}
+              {Model.ContactIds.length > 0 ? "Сохранить & Запуск" : "Сохранить"}
             </Button>
           )}
         </div>

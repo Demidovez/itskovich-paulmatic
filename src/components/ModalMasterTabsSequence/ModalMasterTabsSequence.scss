@@ -1,4 +1,11 @@
 .modal-master-tabs-sequence-component {
+  max-width: 1600px;
+  width: 100%;
+  min-width: 200px;
+  min-height: 100%;
+  padding: 2.5rem 4rem;
+  overflow: hidden;
+
   .sequence-tabs {
     display: flex;
     justify-content: center;

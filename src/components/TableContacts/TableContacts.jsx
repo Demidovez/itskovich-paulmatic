@@ -90,7 +90,8 @@ const DEFAULT_FIELDS = [
 ];
 
 const TableContacts = ({
-  onSelect,
+  onSelect = () => {},
+  onChecked,
   data = { Items: [] },
   selectedIds,
   columns,
@@ -101,7 +102,11 @@ const TableContacts = ({
   const dispatch = useDispatch();
 
   const onSelectContact = (id) => {
-    dispatch(addContactId(id));
+    if (onChecked) {
+      onChecked(id);
+    } else {
+      dispatch(addContactId(id));
+    }
   };
 
   useEffect(() => {

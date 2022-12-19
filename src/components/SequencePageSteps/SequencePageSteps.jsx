@@ -11,6 +11,7 @@ import { saveStepsSequence } from "store/slices/sequenceMasterSlice";
 import { Button } from "reactstrap";
 import TaskEditorModal from "components/TaskEditorModal/TaskEditorModal";
 import ModalYouSure from "components/ModalYouSure/ModalYouSure";
+import { updatedSteps } from "store/slices/sequenceMasterSlice";
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -20,34 +21,9 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
-const SequencePageSteps = ({ isShow, onChange, initSteps = [] }) => {
+const SequencePageSteps = ({ isShow, steps = [] }) => {
   const dispatch = useDispatch();
   const [dataForModalEditor, setDataForModalEditor] = useState({});
-
-  const [steps, setSteps] = useState(
-    initSteps.map((step, index) => ({ ...step, step: index }))
-  );
-
-  useEffect(() => {
-    dispatch(
-      saveStepsSequence(
-        steps.map((step) => ({
-          id: step.id,
-          step: step.step,
-          Action: step.Action,
-          Delay: step.Delay,
-          DueTime: moment(step.DueTime || "0001-01-01")
-            .add(step.Delay, "second")
-            .format(),
-          Body: step.Body,
-          Subject: step.Subject,
-          Type: step.Type,
-          Name: step.Name,
-          Description: step.Description,
-        }))
-      )
-    );
-  }, [JSON.stringify(steps)]);
 
   const addStep = () => {
     setDataForModalEditor({
@@ -56,12 +32,13 @@ const SequencePageSteps = ({ isShow, onChange, initSteps = [] }) => {
   };
 
   const createOrUpdateStep = (step) => {
+    let newSteps = [];
     if (step.id) {
-      setSteps((steps) =>
-        steps.map((oldStep) => (oldStep.id === step.id ? step : oldStep))
+      newSteps = steps.map((oldStep) =>
+        oldStep.id === step.id ? step : oldStep
       );
     } else {
-      setSteps([
+      newSteps = [
         ...steps,
         {
           ...step,
@@ -69,8 +46,10 @@ const SequencePageSteps = ({ isShow, onChange, initSteps = [] }) => {
           step: steps.length,
           Delay: 86400,
         },
-      ]);
+      ];
     }
+
+    dispatch(updatedSteps(newSteps));
   };
 
   const onDragEnd = (result) => {
@@ -80,7 +59,9 @@ const SequencePageSteps = ({ isShow, onChange, initSteps = [] }) => {
 
     const items = reorder(steps, result.source.index, result.destination.index);
 
-    setSteps(items.map((item, i) => ({ ...item, step: i })));
+    const newSteps = items.map((item, i) => ({ ...item, step: i }));
+
+    dispatch(updatedSteps(newSteps));
   };
 
   const updateStep = (editedStep) => {
@@ -88,16 +69,15 @@ const SequencePageSteps = ({ isShow, onChange, initSteps = [] }) => {
       step.id === editedStep.id ? editedStep : step
     );
 
-    setSteps(editedSteps);
+    dispatch(updatedSteps(editedSteps));
   };
 
   const onDelete = (id) => {
-    setSteps((steps) => steps.filter((step) => step.id !== id));
+    dispatch(updatedSteps(steps.filter((step) => step.id !== id)));
   };
 
   const callback = (callback, ...args) => {
     callback(...args);
-    onChange();
   };
 
   return (

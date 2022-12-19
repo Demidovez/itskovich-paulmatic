@@ -81,3 +81,14 @@ export const csvFileToArray = (string) => {
 
   return array;
 };
+
+export const decodeJobLabel = (label) => {
+  const [start, end] = label
+    .split("-")
+    .map((part) => part.split(":").map(Number));
+
+  const x = start[0] * 2 + (start[1] ? 1 : 0);
+  const w = end[0] * 2 + (end[1] ? 1 : 0) - x;
+
+  return { x, w };
+};

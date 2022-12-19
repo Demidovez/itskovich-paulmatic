@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { GrAdd } from "react-icons/gr";
 import { useDispatch } from "react-redux";
 import { Button } from "reactstrap";
+import { saveJobs } from "store/slices/sequenceMasterSlice";
 import { saveScheduleSequence } from "store/slices/sequenceMasterSlice";
+import { decodeJobLabel } from "utils/utils";
 import { generateTimeLabel } from "utils/utils";
 import "./SequencePageSchedule.scss";
 
@@ -46,37 +48,37 @@ export const DAYS = [
   },
 ];
 
-const SequencePageSchedule = ({ isShow, onChange, init = [] }) => {
+const SequencePageSchedule = ({ isShow, schedule = [] }) => {
   const dispatch = useDispatch();
+
   const [checkedDays, setCheckedDays] = useState([]);
   const [jobs, setJobs] = useState({});
   const [isFullTimeline, setIsFullTimeline] = useState({});
 
-  // console.log(init);
-
   useEffect(() => {
     const jobs = DAYS.reduce(
-      (acc, day, index) => ({ ...acc, [day.name]: init[index] || [] }),
+      (acc, day, index) => ({
+        ...acc,
+        [day.name]: (schedule[index] || []).map((label, indexJob) => {
+          const { x, w } = decodeJobLabel(label);
+
+          setCheckedDays((days) => [...days, index]);
+
+          return {
+            label,
+            x,
+            w,
+            id: indexJob,
+          };
+        }),
+      }),
       {}
     );
 
     setJobs(jobs);
-  }, [init]);
-
-  useEffect(() => {
-    dispatch(
-      saveScheduleSequence(
-        Object.values(jobs).map((job) =>
-          job.map((item) =>
-            generateTimeLabel(item.x * 30, (item.x + item.w) * 30, true)
-          )
-        )
-      )
-    );
-  }, [JSON.stringify(jobs)]);
+  }, []); // schedule
 
   const addCheckedDay = (index) => {
-    onChange();
     setCheckedDays((checkedDays) =>
       checkedDays.includes(index)
         ? checkedDays.filter((day) => day !== index)
@@ -85,13 +87,15 @@ const SequencePageSchedule = ({ isShow, onChange, init = [] }) => {
   };
 
   const addJob = (day, indexTimeline) => {
-    onChange();
     setJobs((jobs) => ({
       ...jobs,
       [day]: [
         ...(jobs[day] || []),
         {
           id: new Date().getTime(),
+          x: 0,
+          w: 10,
+          label: "xx:xx-yy:yy",
         },
       ],
     }));
@@ -101,12 +105,33 @@ const SequencePageSchedule = ({ isShow, onChange, init = [] }) => {
     }
   };
 
+  const saveJobsToMaster = (newJobs) => {
+    const labels = Object.values(newJobs).map((jobs) =>
+      jobs.map((job) =>
+        generateTimeLabel(job.x * 30, (job.x + job.w) * 30, true)
+      )
+    );
+
+    dispatch(saveJobs(labels));
+  };
+
+  const updateJobs = (day, updatedJobs) => {
+    const newJobs = { ...jobs, [day]: updatedJobs };
+
+    saveJobsToMaster(newJobs);
+
+    setJobs(newJobs);
+  };
+
   const removeJob = (day, id) => {
-    onChange();
-    setJobs((jobs) => ({
+    const newJobs = {
       ...jobs,
       [day]: jobs[day].filter((job) => job.id !== id),
-    }));
+    };
+
+    saveJobsToMaster(newJobs);
+
+    setJobs(newJobs);
   };
 
   return (
@@ -161,11 +186,8 @@ const SequencePageSchedule = ({ isShow, onChange, init = [] }) => {
                 >
                   <SequenceTimeline
                     disabled={!checkedDays.includes(index)}
-                    jobs={jobs[day.name] || []}
-                    setJobs={(editedJobs) => {
-                      setJobs({ ...jobs, [day.name]: editedJobs });
-                      // onChange();
-                    }}
+                    jobs={jobs[day.name]}
+                    setJobs={(editedJobs) => updateJobs(day.name, editedJobs)}
                     onRemoveJob={(id) => removeJob(day.name, id)}
                     onFullTimeline={(isFull) =>
                       setIsFullTimeline({

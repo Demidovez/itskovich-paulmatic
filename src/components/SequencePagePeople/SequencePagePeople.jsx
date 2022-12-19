@@ -3,11 +3,6 @@ import TableContacts from "components/TableContacts/TableContacts";
 import CreateContactsSelector from "components/CreateContactsSelector/CreateContactsSelector";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  clearSelectedIds,
-  setCurrentContactPage,
-  searchValueContactPage,
-} from "store/slices/contactsSlice";
 import Pagination from "components/Pagination/Pagination";
 import { setCache } from "store/slices/tablesSlice";
 import SearchBarContacts from "components/SearchBarContacts/SearchBarContacts";
@@ -42,19 +37,13 @@ const columns = [
 
 const COUNT_ON_PAGE = 100;
 
-const SequencePagePeople = ({ isShow, onChange }) => {
-  const [isCreateNew, setIsCreateNew] = useState(false);
+const SequencePagePeople = ({ isShow, contactIds }) => {
   const dispatch = useDispatch();
-  const { selectedIds, currentPage, searchValue } = useSelector(
-    (state) => state.contacts
-  );
 
-  useEffect(() => {
-    dispatch(saveContactIdsSequence(selectedIds || []));
-    selectedIds.length && onChange(); // TODO: А если мы редактируем последовательность? (selectedIds может быть больше 0)
-  }, [(selectedIds || []).toString()]);
-
-  const cacheTables = useSelector((state) => state.tables.cache);
+  const [isCreateNew, setIsCreateNew] = useState(false);
+  // const [selectedIds, setSelectedIds] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [searchValue, setSearchValue] = useState("");
 
   const [searchContacts, contactsData] = useLazyGetContactsQuery({
     selectFromResult: ({ data }) => data,
@@ -79,12 +68,11 @@ const SequencePagePeople = ({ isShow, onChange }) => {
       contactsData &&
       contactsData.TotalCount &&
       currentPage > 0 &&
-      selectedIds.length > 0
+      contactIds.length > 0
     ) {
-      contactsData.TotalCount && onSetCurrentPage(0);
-      dispatch(clearSelectedIds());
+      onSetCurrentPage(0);
     }
-  }, [contactsData && contactsData.TotalCount]);
+  }, [contactsData && contactsData.TotalCount, contactIds]);
 
   const [createOrUpdateContact] = useCreateOrUpdateContactMutation();
 
@@ -101,12 +89,24 @@ const SequencePagePeople = ({ isShow, onChange }) => {
   };
 
   const onSearch = (searchStr) => {
-    dispatch(searchValueContactPage(searchStr));
+    setSearchValue(searchStr);
     onSetCurrentPage(0);
   };
 
   const onSetCurrentPage = (page) => {
-    dispatch(setCurrentContactPage(page));
+    setCurrentPage(page);
+  };
+
+  const onChecked = (id) => {
+    let newContactIds = contactIds;
+
+    if (contactIds.includes(id)) {
+      newContactIds = contactIds.filter((contactId) => contactId !== id);
+    } else {
+      newContactIds = [...contactIds, id];
+    }
+
+    dispatch(saveContactIdsSequence(newContactIds));
   };
 
   return (
@@ -138,9 +138,9 @@ const SequencePagePeople = ({ isShow, onChange }) => {
                   </Row>
                 </CardHeader>
                 <TableContacts
-                  data={contactsData || cacheTables["contacts"]}
-                  onSelect={() => {}}
-                  selectedIds={selectedIds}
+                  data={contactsData}
+                  selectedIds={contactIds}
+                  onChecked={onChecked}
                   columns={columns}
                 />
                 <CardFooter
@@ -149,12 +149,7 @@ const SequencePagePeople = ({ isShow, onChange }) => {
                 >
                   <div></div>
                   <Pagination
-                    allCount={
-                      contactsData
-                        ? contactsData.TotalCount
-                        : cacheTables["contacts"] &&
-                          cacheTables["contacts"].TotalCount
-                    }
+                    allCount={contactsData?.TotalCount || 0}
                     countOnPage={COUNT_ON_PAGE}
                     page={currentPage}
                     moveToPage={onSetCurrentPage}

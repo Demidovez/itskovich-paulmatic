@@ -20,11 +20,12 @@ const initialState = {
       label: "Продолжительность",
     },
   },
+  isEditing: false,
   data: {
     Spec: {
       accountId: null,
       id: null,
-      FolderId: 0,
+      FolderID: 0,
       Name: "",
       TimeZoneId: 56,
       LogStartName: new Date().toString(),
@@ -44,42 +45,70 @@ export const sequenceMasterSlice = createSlice({
   reducers: {
     initMaster: (state, action) => {
       state.data = action.payload;
-      // console.log(action.payload);
+    },
+    updatedSteps: (state, action) => {
+      state.data.Spec.Model.Steps = action.payload;
+      state.isEditing = true;
+      console.log("updatedSteps");
+    },
+    saveJobs: (state, action) => {
+      state.data.Spec.Model.Schedule = action.payload;
+      state.isEditing = true;
+      console.log("saveJobs");
     },
     setLogStartNameSequence: (state, action) => {
       state.data.Spec.LogStartName = action.payload;
+      state.isEditing = true;
+      console.log("setLogStartNameSequence");
     },
     saveFolderIdSequence: (state, action) => {
-      state.data.Spec.FolderId = action.payload;
+      state.data.Spec.FolderID = action.payload;
+      state.isEditing = true;
+      console.log("saveFolderIdSequence");
     },
     saveNameSequence: (state, action) => {
       state.data.Spec.Name = action.payload;
+      state.isEditing = true;
+      console.log("saveNameSequence");
     },
     saveStepsSequence: (state, action) => {
       state.data.Spec.Model.Steps = action.payload;
       state.pages.Steps.isDone = state.data.Spec.Model.Steps.length > 0;
+      state.isEditing = true;
+      console.log("saveStepsSequence");
     },
     saveContactIdsSequence: (state, action) => {
       state.data.Spec.Model.ContactIds = action.payload;
-      // state.pages.People.isDone = state.data.Model.ContactIds.length > 0;
+      state.isEditing = true;
+      console.log("saveContactIdsSequence");
     },
     saveScheduleSequence: (state, action) => {
       state.data.Spec.Model.Schedule = action.payload;
       state.pages.Schedule.isDone = state.data.Spec.Model.Schedule.some(
         (day) => day.length > 0
       );
+      state.isEditing = true;
+      console.log("saveScheduleSequence");
     },
     saveSettingsSequence: (state, action) => {
       state.data.Spec.Model.Settings = action.payload;
+      state.isEditing = true;
+      console.log("saveSettingsSequence");
     },
     saveTimeZoneSequence: (state, action) => {
       state.data.Spec.TimeZoneId = action.payload;
+      state.isEditing = true;
+      console.log("saveTimeZoneSequence");
+    },
+    doneMaster: () => {
+      return initialState;
     },
   },
 });
 
 export const {
   initMaster,
+  updatedSteps,
   saveFolderIdSequence,
   saveNameSequence,
   saveStepsSequence,
@@ -88,6 +117,8 @@ export const {
   saveSettingsSequence,
   saveTimeZoneSequence,
   setLogStartNameSequence,
+  doneMaster,
+  saveJobs,
 } = sequenceMasterSlice.actions;
 
 export default sequenceMasterSlice.reducer;
