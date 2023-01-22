@@ -1,0 +1,343 @@
+import { useFormik } from 'formik';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import {
+  Button,
+  Col,
+  Form,
+  FormGroup,
+  Input,
+  InputGroup,
+  InputGroupText,
+  Row,
+  Spinner,
+} from 'reactstrap';
+import * as Yup from 'yup';
+
+import Dropdown from '~src/components/Dropdown/Dropdown';
+import { useLazyGetCommonInfoQuery } from '~src/store/api/common';
+import { useLazyTrySignUpQuery } from '~src/store/api/login';
+import { saveAccount } from '~src/store/slices/commonSlice';
+import { setCommonInfoTasks } from '~src/store/slices/commonSlice';
+import { setCommonInfoHtmlTemplates } from '~src/store/slices/commonSlice';
+import { setFolders } from '~src/store/slices/commonSlice';
+import { setChats } from '~src/store/slices/commonSlice';
+import { setTimeZones } from '~src/store/slices/commonSlice';
+
+import './RegisterForm.scss';
+
+const NICKNAME_REGEX = /^[A-Za-z0-9_]+$/;
+
+const timeZones = [
+  {
+    Name: 'Санкт-Петербург (UTC+3, МСК+12)',
+    Id: 89,
+  },
+  {
+    Name: 'Москва (UTC+3, МСК+12)',
+    Id: 56,
+  },
+];
+
+const RegisterForm = ({ className = '' }) => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const [ resultError, setResultError ] = useState('');
+  const [ isLoading, setIsLoading ] = useState(false);
+
+  const [ timeZone, setTimeZone ] = useState(56);
+
+  const [ trySignUp, { data: signUpResponse, error, isFetching } ] =
+    useLazyTrySignUpQuery();
+
+  const [
+    getCommonInfo,
+    {
+      data: commonData,
+      error: errorCommonData,
+      isFetching: isFetchingCommonData,
+    },
+  ] = useLazyGetCommonInfoQuery();
+
+  useEffect(() => {
+    if (!isFetching && signUpResponse) {
+      if ((signUpResponse || {}).sessionToken) {
+        dispatch(saveAccount(signUpResponse));
+        localStorage.setItem('Account', JSON.stringify(signUpResponse));
+        getCommonInfo();
+      } else {
+        setResultError('Неизвестная ошибка! Попробуйте позже... ');
+        setIsLoading(false);
+      }
+    } else if (isFetching) {
+      setIsLoading(true);
+    }
+  }, [ signUpResponse, isFetching ]);
+
+  useEffect(() => {
+    if (
+      (error && error.status !== 200) ||
+      (errorCommonData && errorCommonData.status !== 200)
+    ) {
+      setResultError(
+        (error &&
+          error.data &&
+          (error.data.message || error.data.error.message)) ||
+          (errorCommonData &&
+            errorCommonData.data &&
+            (errorCommonData.data.message ||
+              errorCommonData.data.error.message)),
+      );
+      setIsLoading(false);
+    } else {
+      setResultError('');
+    }
+  }, [
+    JSON.stringify(error),
+    JSON.stringify(errorCommonData),
+    isFetching,
+    isFetchingCommonData,
+  ]);
+
+  useEffect(() => {
+    if (commonData) {
+      dispatch(setCommonInfoTasks(commonData.Tasks));
+      dispatch(setCommonInfoHtmlTemplates(commonData.Templates));
+      dispatch(setFolders(commonData.Folders));
+      dispatch(setChats(commonData.Chats));
+      dispatch(setTimeZones(commonData.TimeZones));
+    }
+  }, [commonData]);
+
+  useEffect(() => {
+    if (!isFetchingCommonData && commonData) {
+      history.push('/admin/' + commonData.Account.username + '/index');
+      setIsLoading(true);
+    } else if (isFetchingCommonData) {
+      setIsLoading(true);
+    }
+  }, [ isFetchingCommonData, commonData ]);
+
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      nickname: '',
+      directorUsername: '',
+      password: '',
+      company: '',
+      // agree: false,
+    },
+    validationSchema: Yup.object({
+      username: Yup.string().required('Обязательное поле'),
+      nickname: Yup.string()
+        .matches(NICKNAME_REGEX, 'Буквы латинского алфавита, цифры и _')
+        .required('Обязательное поле'),
+      directorUsername: Yup.string(),
+      password: Yup.string()
+        .min(5, 'Требуется минимум 5 символов')
+        .required('Обязательное поле'),
+      company: Yup.string().required('Обязательное поле'),
+      // agree: Yup.boolean().oneOf([true], "Обязательное поле"),
+    }),
+    onSubmit: (values) => {
+      trySignUp({
+        fullName: values.username,
+        username: values.nickname,
+        password: values.password,
+        company: values.company,
+        directorUsername: values.directorUsername,
+        timeZone: timeZone,
+      });
+    },
+  });
+
+  return (
+    <Form
+      role="form"
+      className={`register-form-component ${className}`}
+      onSubmit={formik.handleSubmit}
+    >
+      <FormGroup
+        className={`field-wrapper ${
+          formik.touched.username && formik.errors.username ? 'has-error' : ''
+        } mb-3`}
+      >
+        <span>Имя</span>
+        <Input
+          placeholder="Имя"
+          type="text"
+          name="username"
+          autoComplete="name"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.username}
+          className="py-2"
+        />
+
+        <div className="field-error">
+          {formik.touched.username && formik.errors.username
+            ? formik.errors.username
+            : ' '}
+        </div>
+      </FormGroup>
+      <FormGroup
+        className={`field-wrapper ${
+          formik.touched.nickname && formik.errors.nickname ? 'has-error' : ''
+        } mb-3`}
+      >
+        <span>Логин</span>
+        <Input
+          placeholder="Буквы латинского алфавита, цифры и _"
+          type="text"
+          name="nickname"
+          autoComplete="name"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.nickname}
+          className="py-2"
+        />
+
+        <div className="field-error">
+          {formik.touched.nickname && formik.errors.nickname
+            ? formik.errors.nickname
+            : ' '}
+        </div>
+      </FormGroup>
+      <FormGroup
+        className={`field-wrapper ${
+          formik.touched.password && formik.errors.password ? 'has-error' : ''
+        } mb-3`}
+      >
+        <span>Пароль</span>
+        <Input
+          placeholder="Минимум 5 символов"
+          type="password"
+          name="password"
+          autoComplete="new-password"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.password}
+        />
+
+        <div className="field-error">
+          {formik.touched.password && formik.errors.password
+            ? formik.errors.password
+            : ''}
+        </div>
+      </FormGroup>
+      <FormGroup
+        className={`field-wrapper ${
+          formik.touched.company && formik.errors.company ? 'has-error' : ''
+        } mb-3`}
+      >
+        <span>Компания</span>
+        <Input
+          placeholder="ООО 'Моя Компания'"
+          type="text"
+          name="company"
+          autoComplete="organization"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.company}
+        />
+        <div className="field-error">
+          {formik.touched.company && formik.errors.company
+            ? formik.errors.company
+            : ''}
+        </div>
+      </FormGroup>
+      <FormGroup
+        className={`field-wrapper ${
+          formik.touched.directorUsername && formik.errors.directorUsername
+            ? 'has-error'
+            : ''
+        } mb-0`}
+      >
+        <span>Логин или почта руководителя</span>
+        <Input
+          placeholder="my-director@example.com или mydirector"
+          type="text"
+          name="directorUsername"
+          autoComplete="name"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.directorUsername}
+        />
+        <div className="field-error">
+          {formik.touched.directorUsername && formik.errors.directorUsername
+            ? formik.errors.directorUsername
+            : ''}
+        </div>
+      </FormGroup>
+      <FormGroup className={'field-wrapper mb-1 mt-3'}>
+        <span>Временная зона</span>
+        <Dropdown
+          items={timeZones}
+          fieldOfItem="Name"
+          className=""
+          outline={true}
+          isFull={true}
+          defaultValue={
+            (timeZones.find((zone) => zone.Id === timeZone) || {}).Name
+          }
+          onSelect={(timezone) => setTimeZone(timezone.Id)}
+        />
+      </FormGroup>
+      <>
+        {/* <Row className="my-4">
+        <Col
+          xs="12"
+          className={`field-wrapper ${
+            formik.touched.agree && formik.errors.agree ? "has-error" : ""
+          }`}
+        >
+          <div className="custom-control custom-control-alternative custom-checkbox">
+            <input
+              className="custom-control-input"
+              id="customCheckRegister"
+              type="checkbox"
+              name="agree"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.agree}
+            />
+            <label
+              className="custom-control-label"
+              htmlFor="customCheckRegister"
+            >
+              <span className="text-muted">
+                I agree with the{" "}
+                <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                  Privacy Policy
+                </a>
+              </span>
+            </label>
+            <div className="field-error">
+              {formik.touched.agree && formik.errors.agree
+                ? formik.errors.agree
+                : ""}
+            </div>
+          </div>
+        </Col>
+      </Row> */}
+      </>
+      <div className="server-error">{resultError ? resultError : ''}</div>
+      <div className="text-center position-relative ">
+        <Button
+          className="w-100"
+          color="primary"
+          type="button"
+          onClick={formik.handleSubmit}
+          disabled={isLoading}
+          style={{ background: '#4450ff' }}
+        >
+          {isLoading ? <Spinner color="white" size="sm" /> : 'Создать аккаунт'}
+        </Button>
+      </div>
+    </Form>
+  );
+};
+
+export default RegisterForm;
