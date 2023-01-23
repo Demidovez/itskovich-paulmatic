@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 
@@ -15,7 +15,7 @@ import '~src/assets/vendor/sweetalert2/dist/sweetalert2.min.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 import 'style.scss';
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+const root = createRoot(document.getElementById('root') as HTMLDivElement);
 
 const router = createBrowserRouter([
   {
